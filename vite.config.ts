@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import path from 'path';
+import * as path from 'path';
 import handlebars from 'vite-plugin-handlebars';
 
 export default defineConfig({

@@ -25,10 +25,13 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+
+    // "typeRoots": ["types", "node_modules/@types"],
   },
   "include": [
     "src",
     "src/**/*.ts",
-    "vite.config.ts"
-  ],
+    "vite.config.ts",
+    "types.d.ts",
+  ]
 }

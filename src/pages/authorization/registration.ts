@@ -1,14 +1,15 @@
 import * as Handlebars from 'handlebars';
 import template from './registration-template.hbs?raw';
-import { EPages } from '../../enum';
+import { PAGES } from '../../constants';
+import type { IRegistrationState } from '../../types';
 import styles from './styles.module.pcss';
 
-export const GetRegistrationPage = (state) => {
+export const GetRegistrationPage = (state: IRegistrationState) => {
     const content = Handlebars.compile(template);
     console.log({ styles, state });
     return content({
         styles,
         state,
-        page: EPages.AUTHORIZATION,
+        page: PAGES.AUTHORIZATION,
     });
 };

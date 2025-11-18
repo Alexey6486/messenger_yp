@@ -1,6 +1,11 @@
 import * as Handlebars from 'handlebars';
 import * as Pages from './pages';
-import { EPages } from './enum';
+import { PAGES } from './constants';
+import type {
+    ILoginState,
+    IRegistrationState,
+    TPages,
+} from './types';
 import Button from './components/button';
 
 Handlebars.registerPartial('Button', Button);
@@ -8,15 +13,15 @@ Handlebars.registerPartial('Button', Button);
 export default class App {
     private appElement: HTMLElement | null;
     private state: {
-        loginForm: { password: string; name: string };
-        currentPage: EPages;
-        registrationForm: { second_name: string; first_name: string }
+        loginForm: ILoginState;
+        currentPage: TPages;
+        registrationForm: IRegistrationState;
     };
 
     constructor() {
         this.appElement = document.getElementById('app');
         this.state = {
-            currentPage: EPages.AUTHORIZATION,
+            currentPage: PAGES.AUTHORIZATION,
             loginForm: {
                 name: 'name',
                 password: '',
@@ -29,13 +34,13 @@ export default class App {
     }
 
     render() {
-        if (this.state.currentPage === EPages.AUTHORIZATION) {
-            if ("innerHTML" in this.appElement) {
+        if (this.state.currentPage === PAGES.AUTHORIZATION) {
+            if (this.appElement && "innerHTML" in this.appElement) {
                 this.appElement.innerHTML = Pages.GetLoginPage(this.state.loginForm);
             }
         }
-        else if (this.state.currentPage === EPages.REGISTRATION) {
-            if ("innerHTML" in this.appElement) {
+        else if (this.state.currentPage === PAGES.REGISTRATION) {
+            if (this.appElement && "innerHTML" in this.appElement) {
                 this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.registrationForm);
             }
         }
@@ -43,29 +48,33 @@ export default class App {
     }
 
     attachEventListener() {
-        if (this.state.currentPage === EPages.AUTHORIZATION) {
+        if (this.state.currentPage === PAGES.AUTHORIZATION) {
             const btn = document.getElementById('to-registration');
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const dataset = e?.target?.dataset;
-                if (dataset && dataset.page) {
-                    this.changePage(e.target?.dataset?.page);
-                }
-            });
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = e?.target as HTMLElement;
+                    if (target?.dataset?.page) {
+                        this.changePage(target.dataset.page as TPages);
+                    }
+                });
+            }
         }
-        else if (this.state.currentPage === EPages.REGISTRATION) {
+        else if (this.state.currentPage === PAGES.REGISTRATION) {
             const btn = document.getElementById('to-login');
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const dataset = e?.target?.dataset;
-                if (dataset && dataset.page) {
-                    this.changePage(e.target?.dataset?.page);
-                }
-            });
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = e?.target as HTMLElement;
+                    if (target?.dataset?.page) {
+                        this.changePage(target.dataset.page as TPages);
+                    }
+                });
+            }
         }
     };
 
-    changePage(page) {
+    changePage(page: TPages) {
         this.state.currentPage = page;
         this.render();
     }
