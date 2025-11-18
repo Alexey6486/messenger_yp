@@ -1,5 +1,5 @@
 import * as Handlebars from 'handlebars';
-import template from './login.html?raw';
+import template from './login-template.html?raw';
 import styles from './styles.module.pcss';
 
 export const GetLoginPage = (state) => {

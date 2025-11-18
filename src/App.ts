@@ -1,5 +1,5 @@
-import * as Pages from './pages/index';
-import { EPages } from './enum/index';
+import * as Pages from './pages';
+import { EPages } from './enum';
 
 export default class App {
     private appElement: HTMLElement | null;
