@@ -1,14 +1,15 @@
 import * as Handlebars from 'handlebars';
 import template from './login-template.hbs?raw';
-import { EPages } from '../../enum';
+import { PAGES } from '../../constants';
+import type { ILoginState } from '../../types';
 import styles from './styles.module.pcss';
 
-export const GetLoginPage = (state) => {
+export const GetLoginPage = (state: ILoginState) => {
     const content = Handlebars.compile(template);
     console.log({ styles, state });
     return content({
         styles,
         state,
-        page: EPages.REGISTRATION,
+        page: PAGES.REGISTRATION,
     });
 };
