@@ -13,9 +13,11 @@
     "postcss": "^8.5.6",
     "postcss-preset-env": "^10.4.0",
     "typescript": "^5.9.3",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "vite-plugin-handlebars": "^2.0.0"
   },
   "dependencies": {
+    "@types/handlebars": "^4.0.40",
     "express": "^5.1.0",
     "handlebars": "^4.7.8"
   }

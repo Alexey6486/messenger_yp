@@ -1,12 +1,20 @@
-import { EPages } from './enum';
+import * as Pages from './pages/index';
+import { EPages } from './enum/index';
 
 export default class App {
+    private appElement: HTMLElement | null;
+    private state: {
+        loginForm: { password: string; name: string };
+        currentPage: EPages;
+        registrationForm: { second_name: string; first_name: string }
+    };
+
     constructor() {
         this.appElement = document.getElementById('app');
         this.state = {
             currentPage: EPages.AUTHORIZATION,
             loginForm: {
-                name: '',
+                name: 'test',
                 password: '',
             },
             registrationForm: {
@@ -17,9 +25,10 @@ export default class App {
     }
 
     render() {
-        let template;
         if (this.state.currentPage === EPages.AUTHORIZATION) {
-            // template = Handlebars.compile();
+            if ("innerHTML" in this.appElement) {
+                this.appElement.innerHTML = Pages.GetLoginPage(this.state.loginForm);
+            }
         }
     }
 }
