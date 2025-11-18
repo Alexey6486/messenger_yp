@@ -1,5 +1,6 @@
 import * as Handlebars from 'handlebars';
 import template from './login-template.hbs?raw';
+import { EPages } from '../../enum';
 import styles from './styles.module.pcss';
 
 export const GetLoginPage = (state) => {
@@ -8,5 +9,6 @@ export const GetLoginPage = (state) => {
     return content({
         styles,
         state,
+        page: EPages.REGISTRATION,
     });
 };

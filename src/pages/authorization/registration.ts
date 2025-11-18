@@ -1,5 +1,6 @@
 import * as Handlebars from 'handlebars';
-import template from './registration-template.html?raw';
+import template from './registration-template.hbs?raw';
+import { EPages } from '../../enum';
 import styles from './styles.module.pcss';
 
 export const GetRegistrationPage = (state) => {
@@ -8,5 +9,6 @@ export const GetRegistrationPage = (state) => {
     return content({
         styles,
         state,
+        page: EPages.AUTHORIZATION,
     });
 };

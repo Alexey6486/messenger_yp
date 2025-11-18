@@ -39,5 +39,34 @@ export default class App {
                 this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.registrationForm);
             }
         }
+        this.attachEventListener();
+    }
+
+    attachEventListener() {
+        if (this.state.currentPage === EPages.AUTHORIZATION) {
+            const btn = document.getElementById('to-registration');
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dataset = e?.target?.dataset;
+                if (dataset && dataset.page) {
+                    this.changePage(e.target?.dataset?.page);
+                }
+            });
+        }
+        else if (this.state.currentPage === EPages.REGISTRATION) {
+            const btn = document.getElementById('to-login');
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dataset = e?.target?.dataset;
+                if (dataset && dataset.page) {
+                    this.changePage(e.target?.dataset?.page);
+                }
+            });
+        }
+    };
+
+    changePage(page) {
+        this.state.currentPage = page;
+        this.render();
     }
 }
