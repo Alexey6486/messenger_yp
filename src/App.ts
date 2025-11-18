@@ -1,5 +1,9 @@
+import * as Handlebars from 'handlebars';
 import * as Pages from './pages';
 import { EPages } from './enum';
+import Button from './components/button';
+
+Handlebars.registerPartial('Button', Button);
 
 export default class App {
     private appElement: HTMLElement | null;
@@ -14,11 +18,11 @@ export default class App {
         this.state = {
             currentPage: EPages.AUTHORIZATION,
             loginForm: {
-                name: 'test',
+                name: 'name',
                 password: '',
             },
             registrationForm: {
-                first_name: '',
+                first_name: 'first_name',
                 second_name: '',
             },
         }
@@ -28,6 +32,11 @@ export default class App {
         if (this.state.currentPage === EPages.AUTHORIZATION) {
             if ("innerHTML" in this.appElement) {
                 this.appElement.innerHTML = Pages.GetLoginPage(this.state.loginForm);
+            }
+        }
+        else if (this.state.currentPage === EPages.REGISTRATION) {
+            if ("innerHTML" in this.appElement) {
+                this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.registrationForm);
             }
         }
     }
