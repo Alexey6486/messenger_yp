@@ -32,5 +32,17 @@ export default defineConfig({
     server: {
         port: 3000,
         open: true,
+        headers: {
+            'Content-Type': 'application/javascript'
+        },
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                entryFileNames: `[name].js`,
+                chunkFileNames: `[name].js`,
+                assetFileNames: `[name].[ext]`
+            }
+        }
     },
 });
