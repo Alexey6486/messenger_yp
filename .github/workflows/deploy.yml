@@ -39,8 +39,7 @@ jobs:
         env:
           VITE_BASE: /messenger_yp/
 
-      - name:
-          Debug: Verify build
+      - name: Debug: Verify build
         run: ls -la dist/
 
       - name: Setup Pages
