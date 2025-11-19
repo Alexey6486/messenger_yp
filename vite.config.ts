@@ -33,11 +33,8 @@ export default defineConfig({
         port: 3000,
         open: true,
     },
+    base: '/',
     build: {
-        rollupOptions: {
-            input: {
-                main: path.resolve(__dirname, 'index.html'),
-            },
-        },
+        outDir: 'dist',
     },
 });
