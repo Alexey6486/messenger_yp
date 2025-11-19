@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import * as path from 'path';
 import handlebars from 'vite-plugin-handlebars';
+import postcssPresetEnv from 'postcss-preset-env';
 
 export default defineConfig({
     plugins: [
@@ -25,7 +26,15 @@ export default defineConfig({
     css: {
         postcss: {
             plugins: [
-        //         require('postcss-preset-env')({}),
+                postcssPresetEnv({
+                    autoprefixer: {
+                        grid: true,
+                    },
+                    features: {
+                        'nesting-rules': true,
+                    },
+                    browsers: 'last 2 versions',
+                }),
         //         // require('autoprefixer'),
         //         // Only minify in production
         //         // ...(process.env.NODE_ENV === 'production'

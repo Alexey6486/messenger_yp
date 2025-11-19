@@ -27,11 +27,16 @@
     "noUncheckedSideEffectImports": true,
 
     // "typeRoots": ["types", "node_modules/@types"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": [
     "src",
     "src/**/*.ts",
     "vite.config.ts",
     "types.d.ts",
-  ]
+  ],
+  "exclude": ["dist"]
 }
