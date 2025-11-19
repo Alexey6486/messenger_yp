@@ -6,7 +6,6 @@ import styles from './styles.module.pcss';
 
 export const GetRegistrationPage = (state: IRegistrationState) => {
     const content = Handlebars.compile(template);
-    console.log({ styles, state });
     return content({
         styles,
         state,
