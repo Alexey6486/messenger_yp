@@ -6,7 +6,7 @@ const PORT = 3000;
 app.use(express.static('./dist'));
 
 app.get('/*route', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, './dist/index.html'));
 
     res.status(200);
 });
