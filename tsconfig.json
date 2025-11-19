@@ -14,9 +14,6 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    // "resolveJsonModule": true,
-    // "isolatedModules": true,
-    // "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
@@ -26,7 +23,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    // "typeRoots": ["types", "node_modules/@types"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
@@ -38,5 +34,5 @@
     "vite.config.ts",
     "types.d.ts",
   ],
-  "exclude": ["dist"]
+  "exclude": ["node_modules"]
 }

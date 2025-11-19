@@ -9,20 +9,11 @@ export default defineConfig({
             include: ['src/**/*.hbs', 'src/**/*.html'],
         }),
     ],
-
-    // TypeScript-specific settings
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'), // Common alias for src folder
+            '@': path.resolve(__dirname, 'src'),
         },
     },
-
-    // css: {
-    //     modules: {
-    //         localsConvention: 'camelCase',
-    //     },
-    // },
-
     css: {
         postcss: {
             plugins: [
@@ -35,11 +26,6 @@ export default defineConfig({
                     },
                     browsers: 'last 2 versions',
                 }),
-        //         // require('autoprefixer'),
-        //         // Only minify in production
-        //         // ...(process.env.NODE_ENV === 'production'
-        //         //     ? [require('cssnano')({preset: 'default'})]
-        //         //     : []),
             ],
         },
     },
