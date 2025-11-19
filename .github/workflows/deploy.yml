@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -38,6 +38,10 @@ jobs:
           npm run build
         env:
           VITE_BASE: /messenger_yp/
+
+      - name:
+          Debug: Verify build
+        run: ls -la dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
