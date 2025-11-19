@@ -23,7 +23,7 @@ jobs:
         run: npx vite build --base=/messenger_yp
 
       - name: Deploy
-        uses: peaceiris/actions-messenger-yp@v3
+        uses: peaceiris/actions-messenger_yp@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
