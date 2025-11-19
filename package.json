@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "start": "tsc && vite build && ndoe server.cjs",
+    "start": "tsc && vite build && node server.cjs",
     "preview": "vite preview"
   },
   "devDependencies": {
