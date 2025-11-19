@@ -20,7 +20,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npx vite build --base=/messenger-yp
+        run: npx vite build --base=/messenger_yp
 
       - name: Deploy
         uses: peaceiris/actions-messenger-yp@v3
