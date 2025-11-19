@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "start": "tsc && vite build && ndoe server.cjs",
+    "start": "tsc && vite build && node server.cjs",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "postcss": "^8.5.6",
     "postcss-preset-env": "^10.4.0",
     "typescript": "^5.9.3",
