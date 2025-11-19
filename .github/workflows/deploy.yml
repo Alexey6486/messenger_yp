@@ -35,6 +35,9 @@ jobs:
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
 
+      - name: Print VITE_BASE path
+        run: echo "VITE_BASE ${{ github.event.repository.name }}"
+
       - name: Debug Verify build
         run: ls -la dist/assets/
 
@@ -57,3 +60,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Print deployment URL
+        run: echo "Site deployed to ${{ steps.deployment.outputs.page_url }}"
