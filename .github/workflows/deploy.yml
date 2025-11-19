@@ -34,7 +34,9 @@ jobs:
         run: npm install
 
       - name: Build for GitHub Pages
-        run: npm run build --base=/messenger_yp
+        run: npm run build
+        env:
+          VITE_BASE: /
 
       - name: Debug Verify build
         run: ls -la dist/
