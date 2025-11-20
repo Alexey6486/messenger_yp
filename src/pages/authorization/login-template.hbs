@@ -11,7 +11,7 @@
                     type="text"
                     label="Логин"
                     error=state.errors.login
-                    value=state.data.login
+                    value=state.fields.login
                     dataset="login"
             }}
             {{>
@@ -21,17 +21,22 @@
                     type="password"
                     label="Пароль"
                     error=state.errors.password
-                    value=state.data.password
+                    value=state.fields.password
                     dataset="password"
             }}
         </div>
-        <div class="{{styles.buttons}}">
+        <div class="{{styles.buttons}}" id="{{buttonsId}}">
             {{>
                 Button
-                    id="to-registration"
+                    text="Войти"
+                    class=styles.button
+                    type=btn_type_auth
+            }}
+            {{>
+                Button
                     text="Зарегистрироваться"
                     class=styles.button
-                    data-page=page
+                    type=btn_type_reg
             }}
         </div>
     </div>

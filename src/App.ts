@@ -1,13 +1,15 @@
 import * as Handlebars from 'handlebars';
 import * as Pages from './pages';
-import { INIT_LOGIN_STATE, INIT_REGISTRATION_STATE, PAGES } from './constants';
+import {
+    IDS,
+    INIT_LOGIN_STATE,
+    INIT_REGISTRATION_STATE,
+    PAGES,
+} from './constants';
 import type {
     IState,
     TPages,
     TFormsFields,
-    ILoginForm,
-    IRegistrationForm,
-    IFormState,
 } from './types';
 import Button from './components/button';
 import Field from './components/field';
@@ -24,20 +26,22 @@ export default class App {
         this.state = {
             currentPage: PAGES.AUTHORIZATION,
             focusElement: null,
-            authorization: INIT_LOGIN_STATE,
-            registration: INIT_REGISTRATION_STATE,
+            pages: {
+                authorization: { form: INIT_LOGIN_STATE },
+                registration: { form: INIT_REGISTRATION_STATE },
+            }
         }
     }
 
     render() {
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
             if (this.appElement && "innerHTML" in this.appElement) {
-                this.appElement.innerHTML = Pages.GetLoginPage(this.state.authorization);
+                this.appElement.innerHTML = Pages.GetLoginPage(this.state.pages.authorization.form);
             }
         }
         else if (this.state.currentPage === PAGES.REGISTRATION) {
             if (this.appElement && "innerHTML" in this.appElement) {
-                this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.registration);
+                this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
             }
         }
         this.attachEventListener();
@@ -54,30 +58,50 @@ export default class App {
         }
     }
 
-    setChangePageListener(buttonId: string) {
-        const btn = document.getElementById(buttonId);
-        if (btn) {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = e?.target as HTMLElement;
-                if (target?.dataset?.page) {
-                    this.changePage(target.dataset.page as TPages);
+    setChangePageListener(buttonsBlockId: string) {
+        const targetBlock = document.getElementById(buttonsBlockId);
+        if (targetBlock) {
+            targetBlock.addEventListener('click', (e) => {
+                const targetElement = e?.target as HTMLElement | undefined;
+                const targetDataSet = targetElement?.dataset?.btn as TPages | undefined;
+                if (targetDataSet) {
+                    switch (targetDataSet) {
+                        case PAGES.AUTHORIZATION: {
+                            if (this.state.currentPage === PAGES.AUTHORIZATION) {
+                                console.log('authorizing...');
+                            }
+                            else if (this.state.currentPage === PAGES.REGISTRATION) {
+                                this.changePage(targetDataSet);
+                            }
+                            break;
+                        }
+                        case PAGES.REGISTRATION: {
+                            if (this.state.currentPage === PAGES.AUTHORIZATION) {
+                                this.changePage(targetDataSet);
+                            }
+                            else if (this.state.currentPage === PAGES.REGISTRATION) {
+                                console.log('registration...');
+                            }
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                 }
-            });
+            })
         }
     }
 
-    setInputListener<T extends TFormsFields>(page: TPages) {
+    setInputListener(state: Partial<TFormsFields>) {
         const fields = document.querySelectorAll('[data-input]');
         fields.forEach((el) => {
             el.addEventListener('input', (e) => {
                 const targetElement = e?.target as HTMLInputElement | undefined;
                 const targetValue = targetElement?.value;
-                const targetInput: keyof T | undefined = targetElement?.dataset?.input as keyof T | undefined;
-                if (targetValue !== undefined && targetInput) {
-                    // @ts-ignore
-                    ((this.state[page] as IFormState<T>).data as T)[targetInput] = targetValue;
-                    this.state.focusElement = targetInput as string;
+                const targetInput: keyof Partial<TFormsFields> | undefined = targetElement?.dataset?.input as keyof Partial<TFormsFields> | undefined;
+                if (targetValue !== undefined && targetInput !== undefined) {
+                    state[targetInput] = targetValue;
+                    this.state.focusElement = targetInput;
                     this.render();
                 }
             })
@@ -87,12 +111,12 @@ export default class App {
     attachEventListener() {
         this.setFocusAndCursor();
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
-            this.setChangePageListener('to-registration');
-            this.setInputListener<ILoginForm>(PAGES.AUTHORIZATION);
+            this.setChangePageListener(IDS.FORM_BUTTONS_ID);
+            this.setInputListener(this.state.pages.authorization.form.fields);
         }
         else if (this.state.currentPage === PAGES.REGISTRATION) {
-            this.setChangePageListener('to-login');
-            this.setInputListener<IRegistrationForm>(PAGES.REGISTRATION);
+            this.setChangePageListener(IDS.FORM_BUTTONS_ID);
+            this.setInputListener(this.state.pages.registration.form.fields);
         }
     };
 

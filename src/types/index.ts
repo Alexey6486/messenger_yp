@@ -5,4 +5,5 @@ export type {
     ILoginForm,
     IRegistrationForm,
     TFormsFields,
+    IPageState,
 } from './state';

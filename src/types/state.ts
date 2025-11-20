@@ -1,11 +1,4 @@
-import type { TPages } from '@/types/pages';
-
-export interface IState {
-    authorization: IFormState<ILoginForm>
-    registration: IFormState<IRegistrationForm>
-    currentPage: TPages
-    focusElement: string | null
-}
+import type { TPages } from '@/types';
 
 export interface ILoginForm {
     login: string
@@ -18,8 +11,21 @@ export interface IRegistrationForm {
 }
 
 export interface IFormState<T> {
-    data: T
+    fields: T
     errors: T
 }
 
-export type TFormsFields = ILoginForm | IRegistrationForm;
+export interface IPageState<T> {
+    form: IFormState<T>
+}
+
+export interface IState {
+    currentPage: TPages
+    focusElement: string | null
+    pages: {
+        authorization: IPageState<ILoginForm>
+        registration: IPageState<IRegistrationForm>
+    }
+}
+
+export type TFormsFields = ILoginForm & IRegistrationForm;

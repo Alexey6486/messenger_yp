@@ -1,6 +1,6 @@
 import * as Handlebars from 'handlebars';
 import template from './login-template.hbs?raw';
-import { PAGES } from '@/constants';
+import { IDS, PAGES } from '@/constants';
 import type { IFormState, ILoginForm } from '@/types';
 import styles from './styles.module.pcss';
 
@@ -9,6 +9,8 @@ export const GetLoginPage = (state: IFormState<ILoginForm>) => {
     return content({
         styles,
         state,
-        page: PAGES.REGISTRATION,
+        buttonsId: IDS.FORM_BUTTONS_ID,
+        btn_type_auth: PAGES.AUTHORIZATION,
+        btn_type_reg: PAGES.REGISTRATION,
     });
 };

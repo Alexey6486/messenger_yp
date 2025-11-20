@@ -1,7 +1,7 @@
 import type { IFormState, ILoginForm, IRegistrationForm } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
-    data: {
+    fields: {
         login: '',
         password: '',
     },
@@ -12,7 +12,7 @@ export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
 };
 
 export const INIT_REGISTRATION_STATE: IFormState<IRegistrationForm> = {
-    data: {
+    fields: {
         first_name: '',
         second_name: '',
     },
