@@ -8,6 +8,7 @@
 
 ## Деплой
 
+![Netlify](https://radiant-chimera-91049a.netlify.app/)
 ![Github Pages](https://alexey6486.github.io/messenger_yp/)
 
 ## Установка
