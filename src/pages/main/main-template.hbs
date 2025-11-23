@@ -1,0 +1,39 @@
+<div class="{{styles.container}}">
+    <div class="{{styles.left}}">
+        <div class="{{styles.profile}}">Профиль</div>
+        <div class="{{styles.search}} {{#if state.search.length}}{{styles.filled}}{{/if}}">
+            <input type="text" value="{{state.search}}" placeholder="Поиск">
+        </div>
+        <div class="{{styles.chats}}">
+            {{>
+            Chat
+                    id='state.chats.id'
+                    class=styles.chat
+                    avatar='this.avatar'
+                    title='this.title'
+                    data='this.last_message.time'
+                    text='this.last_message.content'
+                    counter='this.unread_count'
+            }}
+            {{#each state.chats}}
+                {{>
+                Chat
+                    id=this.id
+                    class=(classLookup @root.styles 'chat')
+                    avatar=this.avatar
+                    title=this.title
+                    data=this.last_message.time
+                    text=this.last_message.content
+                    counter=this.unread_count
+                }}
+            {{/each}}
+        </div>
+    </div>
+    <div class="{{styles.right}}">
+        {{#if state.currentChatId}}
+            <div>сообщения...</div>
+        {{else}}
+            <div class="{{styles.placeholder}}">Выберете чат, чтобы отправить сообщение</div>
+        {{/if}}
+    </div>
+</div>

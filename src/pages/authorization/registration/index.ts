@@ -1,0 +1,1 @@
+export { GetRegistrationPage } from './registration';

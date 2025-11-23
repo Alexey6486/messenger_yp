@@ -4,6 +4,7 @@ import {
     IDS,
     INIT_LOGIN_STATE,
     INIT_REGISTRATION_STATE,
+    INIT_MAIN_PAGE_STATE,
     PAGES,
 } from './constants';
 import type {
@@ -13,9 +14,15 @@ import type {
 } from './types';
 import Button from './components/button';
 import Field from './components/field';
+import Chat from './components/chat';
 
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Field', Field);
+Handlebars.registerPartial('Chat', Chat);
+
+Handlebars.registerHelper('classLookup', function(obj, key) {
+    return obj && obj[key];
+});
 
 export default class App {
     private appElement: HTMLElement | null;
@@ -24,27 +31,47 @@ export default class App {
     constructor() {
         this.appElement = document.getElementById('app');
         this.state = {
-            currentPage: PAGES.AUTHORIZATION,
+            currentPage: PAGES.MAIN,
             focusElement: null,
             pages: {
-                authorization: { form: INIT_LOGIN_STATE },
-                registration: { form: INIT_REGISTRATION_STATE },
+                authorization: { form: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
+                registration: { form: JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE)) },
+                main: JSON.parse(JSON.stringify(INIT_MAIN_PAGE_STATE)),
             }
         }
     }
 
     render() {
+        if (!(this.appElement && "innerHTML" in this.appElement)) {
+            return;
+        }
+
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
-            if (this.appElement && "innerHTML" in this.appElement) {
-                this.appElement.innerHTML = Pages.GetLoginPage(this.state.pages.authorization.form);
-            }
+            this.appElement.innerHTML = Pages.GetLoginPage(this.state.pages.authorization.form);
         }
         else if (this.state.currentPage === PAGES.REGISTRATION) {
-            if (this.appElement && "innerHTML" in this.appElement) {
-                this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
-            }
+            this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
         }
+        else if (this.state.currentPage === PAGES.MAIN) {
+            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main);
+        }
+
         this.attachEventListener();
+    }
+
+    resetForm(targetPageState: TPages) {
+        switch (targetPageState) {
+            case PAGES.AUTHORIZATION: {
+                this.state.pages.authorization.form = JSON.parse(JSON.stringify(INIT_LOGIN_STATE));
+                break;
+            }
+            case PAGES.REGISTRATION: {
+                this.state.pages.registration.form = JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE));
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     setFocusAndCursor() {
@@ -69,18 +96,20 @@ export default class App {
                         case PAGES.AUTHORIZATION: {
                             if (this.state.currentPage === PAGES.AUTHORIZATION) {
                                 console.log('authorizing...');
+                                this.changePage(PAGES.MAIN, true);
                             }
                             else if (this.state.currentPage === PAGES.REGISTRATION) {
-                                this.changePage(targetDataSet);
+                                this.changePage(targetDataSet, true);
                             }
                             break;
                         }
                         case PAGES.REGISTRATION: {
                             if (this.state.currentPage === PAGES.AUTHORIZATION) {
-                                this.changePage(targetDataSet);
+                                this.changePage(targetDataSet, true);
                             }
                             else if (this.state.currentPage === PAGES.REGISTRATION) {
                                 console.log('registration...');
+                                this.changePage(PAGES.MAIN, true);
                             }
                             break;
                         }
@@ -120,8 +149,11 @@ export default class App {
         }
     };
 
-    changePage(page: TPages) {
-        this.state.currentPage = page;
+    changePage(targetPage: TPages, isFormReset?: boolean) {
+        if (isFormReset) {
+            this.resetForm(this.state.currentPage);
+        }
+        this.state.currentPage = targetPage;
         this.render();
     }
 }

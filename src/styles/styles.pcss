@@ -1,8 +1,11 @@
 :root {
     --color-lg: #bbbbbb;
+    --color-gr: #AFAFAF;
+    --color-slg: #fbfbfb;
     --color-er: #f46060;
     --color-bl: #313131;
-    --shadow: 0 1px 5px 1px rgba(0,0,0,0.1);
+    --color-hv: #5E99FD;
+    --shadow-btn: 0 1px 5px 1px rgba(0,0,0,0.1);
 }
 
 * {
@@ -24,6 +27,11 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
+#app {
+    width: 100vw;
+    height: 100vh;
+}
+
 button {
     font: inherit;
     outline: none;
@@ -37,9 +45,9 @@ button {
     max-width: 280px;
     height: 40px;
     padding: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-btn);
     border-radius: 4px;
-    color: $color-bl;
+    color: var(--color-bl);
 }
 
 input {

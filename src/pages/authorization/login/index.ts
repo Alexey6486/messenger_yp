@@ -1,0 +1,1 @@
+export { GetLoginPage } from './login';
