@@ -12,4 +12,5 @@ export type {
     IChatLastMessage,
     TUserRole,
     IChatUserResponse,
+    IErrorPageState,
 } from './state';

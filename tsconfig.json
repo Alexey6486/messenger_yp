@@ -30,13 +30,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-    }
+    },
+
+
   },
   "include": [
     "src",
     "src/**/*.ts",
+    "types/**/*.ts",
     "vite.config.ts",
-    "types.d.ts",
   ],
   "exclude": ["node_modules", "dist"]
 }

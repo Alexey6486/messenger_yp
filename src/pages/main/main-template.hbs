@@ -5,16 +5,6 @@
             <input type="text" value="{{state.search}}" placeholder="Поиск">
         </div>
         <div class="{{styles.chats}}">
-            {{>
-            Chat
-                    id='state.chats.id'
-                    class=styles.chat
-                    avatar='this.avatar'
-                    title='this.title'
-                    data='this.last_message.time'
-                    text='this.last_message.content'
-                    counter='this.unread_count'
-            }}
             {{#each state.chats}}
                 {{>
                 Chat

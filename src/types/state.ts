@@ -27,16 +27,6 @@ export interface IPageState<T> {
     form: IFormState<T>
 }
 
-export interface IState {
-    currentPage: TPages
-    focusElement: string | null
-    pages: {
-        authorization: IPageState<ILoginForm>
-        registration: IPageState<IRegistrationFormUi>
-        main: any
-    }
-}
-
 export type TFormsFields = ILoginForm & IRegistrationFormUi;
 
 export interface IUserBase {
@@ -79,4 +69,20 @@ export interface IMainPageState {
     currentChatId: string | null
     search: string
     chats: IChat[]
+}
+
+export interface IErrorPageState {
+    text: string
+    code: string
+}
+
+export interface IState {
+    currentPage: TPages
+    focusElement: string | null
+    error: IErrorPageState
+    pages: {
+        authorization: IPageState<ILoginForm>
+        registration: IPageState<IRegistrationFormUi>
+        main: any
+    }
 }

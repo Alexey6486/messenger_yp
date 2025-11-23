@@ -43,16 +43,37 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
     search: '',
     chats: [
         {
-            id: 'chat_id',
+            id: 'chat_id_1',
             title: 'title',
-            avatar: 'chat_avatar',
-            unread_count: 'unread_count',
+            avatar: '',
+            unread_count: '12',
             created_by: 'created_by',
             last_message: {
                 time: 'time',
                 content: 'content',
                 user: {
-                    id: 'user_id',
+                    id: 'user_id_1',
+                    first_name: 'first_name',
+                    second_name: 'second_name',
+                    display_name: 'display_name',
+                    avatar: 'user_avatar',
+                    login: 'login',
+                    email: 'email',
+                    phone: 'phone',
+                },
+            },
+        },
+        {
+            id: 'chat_id_2',
+            title: 'title',
+            avatar: '',
+            unread_count: '2',
+            created_by: 'created_by',
+            last_message: {
+                time: 'time',
+                content: 'content',
+                user: {
+                    id: 'user_id_2',
                     first_name: 'first_name',
                     second_name: 'second_name',
                     display_name: 'display_name',

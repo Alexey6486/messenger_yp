@@ -33,6 +33,10 @@ export default class App {
         this.state = {
             currentPage: PAGES.MAIN,
             focusElement: null,
+            error: {
+                code: '404',
+                text: 'Страница не найдена',
+            },
             pages: {
                 authorization: { form: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
                 registration: { form: JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE)) },
@@ -54,6 +58,9 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.MAIN) {
             this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main);
+        }
+        else if (this.state.currentPage === PAGES.ERROR) {
+            this.appElement.innerHTML = Pages.GetErrorPage(this.state.error);
         }
 
         this.attachEventListener();
@@ -113,6 +120,10 @@ export default class App {
                             }
                             break;
                         }
+                        case PAGES.ERROR: {
+                            this.changePage(PAGES.MAIN);
+                            break;
+                        }
                         default:
                             break;
                     }
@@ -146,6 +157,9 @@ export default class App {
         else if (this.state.currentPage === PAGES.REGISTRATION) {
             this.setChangePageListener(IDS.FORM_BUTTONS_ID);
             this.setInputListener(this.state.pages.registration.form.fields);
+        }
+        else if (this.state.currentPage === PAGES.ERROR) {
+            this.setChangePageListener(IDS.ERROR_RETURN_ID);
         }
     };
 
