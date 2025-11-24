@@ -109,6 +109,12 @@ input {
 .drop-down {
     position: relative;
 
+    &.active {
+        & > .drop-down-options {
+            display: block;
+        }
+    }
+
     & > .drop-down-button {
         display: flex;
         align-items: center;
@@ -136,10 +142,6 @@ input {
 
             & > .drop-down-option-icon {}
             & > .drop-down-option-text {}
-        }
-
-        &.active {
-            display: block;
         }
 
         &.top {

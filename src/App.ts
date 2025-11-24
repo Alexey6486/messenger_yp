@@ -190,19 +190,28 @@ export default class App {
     }
 
     setDropDownListener(dataset: string) {
-        const fields = document.querySelectorAll(`[data-dd=${dataset}]`);
-        fields.forEach((el) => {
-            el.addEventListener('click', (e) => {
-                const targetElement = e?.target as HTMLInputElement | undefined;
-                if (targetElement?.id) {
-                    if (this.state.openedDropDownId === targetElement.id) {
-                        this.render();
+        const dropdowns = document.querySelectorAll(`[data-dd=${dataset}]`);
+
+        dropdowns.forEach(dropdown => {
+            const toggleBtn = dropdown.querySelector('.drop-down-button');
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (dropdown.classList.contains('active')) {
+                        dropdown.classList.remove('active');
                     } else {
-                        this.state.openedDropDownId = targetElement.id;
-                        this.render(true);
+                        dropdown.classList.add('active');
                     }
-                }
-            });
+                });
+
+                document.addEventListener('click', function(e) {
+                    const target = e.target as Node | null;
+                    if (!dropdown.contains(target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+            }
         });
     }
 
