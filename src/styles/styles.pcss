@@ -1,13 +1,15 @@
 :root {
-    --color-lg: #bbbbbb;
+    --color-lg: #BBBBBB;
     --color-gr: #AFAFAF;
-    --color-slg: #fbfbfb;
-    --color-g: #dedede;
-    --color-er: #f46060;
+    --color-slg: #FBFBFB;
+    --color-g: #DEDEDE;
+    --color-er: #F46060;
     --color-bl: #313131;
     --color-hv: #5E99FD;
+    --color-bp: rgba(0, 0, 0, 0.1);
     --color-br: rgba(126, 253, 215, 0.15);
-    --shadow-btn: 0 1px 5px 1px rgba(0,0,0,0.1);
+    --shadow-btn: 0 1px 5px 1px var(--color-bp);
+    --trns: 0.3s ease-in-out;
 }
 
 * {
@@ -49,7 +51,7 @@ button {
     height: 40px;
     padding: 12px;
     color: var(--color-bl);
-    transition: box-shadow 0.3s ease-in-out;
+    transition: box-shadow var(--trns);
 
     &:hover {
         box-shadow: var(--shadow-btn);

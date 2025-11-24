@@ -12,4 +12,9 @@ export const IDS: Record<string, string> = {
     FORM_LOGIN_ID: 'form-login',
     FORM_REGISTRATION_ID: 'form-registration',
     ERROR_RETURN_ID: 'error-return-btn',
+    CHATS_LIST_ID: 'chats-list',
+};
+
+export const DATASET: Record<string, string> = {
+    CHAT: 'chat',
 };

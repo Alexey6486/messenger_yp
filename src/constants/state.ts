@@ -50,7 +50,7 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
             created_by: 'created_by',
             last_message: {
                 time: 'time',
-                content: 'content',
+                content: 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentc3',
                 user: {
                     id: 'user_id_1',
                     first_name: 'first_name',
@@ -71,7 +71,7 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
             created_by: 'created_by',
             last_message: {
                 time: 'time',
-                content: 'content',
+                content: 'content content content content content content content content content content content',
                 user: {
                     id: 'user_id_2',
                     first_name: 'first_name',

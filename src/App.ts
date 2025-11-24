@@ -5,13 +5,14 @@ import {
     INIT_LOGIN_STATE,
     INIT_REGISTRATION_STATE,
     INIT_MAIN_PAGE_STATE,
-    PAGES,
+    PAGES, DATASET,
 } from './constants';
 import type {
     IState,
     TPages,
     TFormsFields,
 } from './types';
+import { searchChatId } from './utils';
 import Button from './components/button';
 import Field from './components/field';
 import Chat from './components/chat';
@@ -20,8 +21,20 @@ Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Field', Field);
 Handlebars.registerPartial('Chat', Chat);
 
-Handlebars.registerHelper('classLookup', function(obj, key) {
-    return obj && obj[key];
+Handlebars.registerHelper('lookup', function(obj, key) {
+    return obj[key] || obj;
+});
+Handlebars.registerHelper('map', function(array, transformFn, options) {
+    if (!Array.isArray(array)) return '';
+
+    const mapped = array.map((item, index) =>
+        transformFn(item, index, options.hash)
+    );
+
+    return options.fn(mapped);
+});
+Handlebars.registerHelper('isChatActive', function(obj, key) {
+    return obj.currentChatId === key;
 });
 
 export default class App {
@@ -148,6 +161,24 @@ export default class App {
         })
     }
 
+    setChatSwitchListener(chatsId: string) {
+        const targetBlock = document.getElementById(chatsId);
+        if (targetBlock) {
+            targetBlock.addEventListener('click', (e) => {
+                e.stopImmediatePropagation()
+                const targetElement = e?.target as HTMLElement | undefined;
+                if (targetElement) {
+                    console.log({targetElement})
+                    const chatId = searchChatId(targetElement, DATASET.CHAT, IDS.CHATS_LIST_ID);
+                    if (chatId) {
+                        this.state.pages.main.currentChatId = chatId;
+                        this.render();
+                    }
+                }
+            });
+        }
+    }
+
     attachEventListener() {
         this.setFocusAndCursor();
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
@@ -160,6 +191,9 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.ERROR) {
             this.setChangePageListener(IDS.ERROR_RETURN_ID);
+        }
+        else if (this.state.currentPage === PAGES.MAIN) {
+            this.setChatSwitchListener(IDS.CHATS_LIST_ID);
         }
     };
 
