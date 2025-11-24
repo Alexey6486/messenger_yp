@@ -17,4 +17,5 @@ export const IDS: Record<string, string> = {
 
 export const DATASET: Record<string, string> = {
     CHAT: 'chat',
+    DD: 'drop-down',
 };

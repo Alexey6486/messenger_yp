@@ -80,6 +80,7 @@ export interface IState {
     currentPage: TPages
     focusElement: string | null
     error: IErrorPageState
+    openedDropDownId: string | null
     pages: {
         authorization: IPageState<ILoginForm>
         registration: IPageState<IRegistrationFormUi>

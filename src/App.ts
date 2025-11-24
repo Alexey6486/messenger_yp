@@ -5,7 +5,8 @@ import {
     INIT_LOGIN_STATE,
     INIT_REGISTRATION_STATE,
     INIT_MAIN_PAGE_STATE,
-    PAGES, DATASET,
+    PAGES,
+    DATASET,
 } from './constants';
 import type {
     IState,
@@ -16,10 +17,14 @@ import { searchChatId } from './utils';
 import Button from './components/button';
 import Field from './components/field';
 import Chat from './components/chat';
+import DropDownOption from './components/drop-down-option';
+import DropDown from './components/drop-down';
 
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Field', Field);
 Handlebars.registerPartial('Chat', Chat);
+Handlebars.registerPartial('DropDownOption', DropDownOption);
+Handlebars.registerPartial('DropDown', DropDown);
 
 Handlebars.registerHelper('lookup', function(obj, key) {
     return obj[key] || obj;
@@ -36,6 +41,9 @@ Handlebars.registerHelper('map', function(array, transformFn, options) {
 Handlebars.registerHelper('isChatActive', function(obj, key) {
     return obj.currentChatId === key;
 });
+Handlebars.registerHelper('isDdActive', function(obj) {
+    return obj.openedDropDownId === obj.id;
+});
 
 export default class App {
     private appElement: HTMLElement | null;
@@ -46,6 +54,7 @@ export default class App {
         this.state = {
             currentPage: PAGES.MAIN,
             focusElement: null,
+            openedDropDownId: null,
             error: {
                 code: '404',
                 text: 'Страница не найдена',
@@ -58,9 +67,13 @@ export default class App {
         }
     }
 
-    render() {
+    render(openDropDown?: boolean) {
         if (!(this.appElement && "innerHTML" in this.appElement)) {
             return;
+        }
+
+        if (this.state.openedDropDownId && !openDropDown) {
+            this.state.openedDropDownId = null;
         }
 
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
@@ -70,7 +83,7 @@ export default class App {
             this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
         }
         else if (this.state.currentPage === PAGES.MAIN) {
-            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main);
+            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main, this.state.openedDropDownId);
         }
         else if (this.state.currentPage === PAGES.ERROR) {
             this.appElement.innerHTML = Pages.GetErrorPage(this.state.error);
@@ -115,7 +128,6 @@ export default class App {
                     switch (targetDataSet) {
                         case PAGES.AUTHORIZATION: {
                             if (this.state.currentPage === PAGES.AUTHORIZATION) {
-                                console.log('authorizing...');
                                 this.changePage(PAGES.MAIN, true);
                             }
                             else if (this.state.currentPage === PAGES.REGISTRATION) {
@@ -128,7 +140,6 @@ export default class App {
                                 this.changePage(targetDataSet, true);
                             }
                             else if (this.state.currentPage === PAGES.REGISTRATION) {
-                                console.log('registration...');
                                 this.changePage(PAGES.MAIN, true);
                             }
                             break;
@@ -168,7 +179,6 @@ export default class App {
                 e.stopImmediatePropagation()
                 const targetElement = e?.target as HTMLElement | undefined;
                 if (targetElement) {
-                    console.log({targetElement})
                     const chatId = searchChatId(targetElement, DATASET.CHAT, IDS.CHATS_LIST_ID);
                     if (chatId) {
                         this.state.pages.main.currentChatId = chatId;
@@ -177,6 +187,23 @@ export default class App {
                 }
             });
         }
+    }
+
+    setDropDownListener(dataset: string) {
+        const fields = document.querySelectorAll(`[data-dd=${dataset}]`);
+        fields.forEach((el) => {
+            el.addEventListener('click', (e) => {
+                const targetElement = e?.target as HTMLInputElement | undefined;
+                if (targetElement?.id) {
+                    if (this.state.openedDropDownId === targetElement.id) {
+                        this.render();
+                    } else {
+                        this.state.openedDropDownId = targetElement.id;
+                        this.render(true);
+                    }
+                }
+            });
+        });
     }
 
     attachEventListener() {
@@ -194,6 +221,7 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.MAIN) {
             this.setChatSwitchListener(IDS.CHATS_LIST_ID);
+            this.setDropDownListener(DATASET.DD);
         }
     };
 

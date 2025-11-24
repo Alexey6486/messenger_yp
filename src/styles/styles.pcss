@@ -105,3 +105,49 @@ input {
         opacity: 1;
     }
 }
+
+.drop-down {
+    position: relative;
+
+    & > .drop-down-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        box-shadow: var(--shadow-btn);
+        cursor: pointer;
+    }
+
+    & > .drop-down-options {
+        position: absolute;
+        left: 0;
+        padding: 10px;
+        box-shadow: var(--shadow-btn);
+        background-color: white;
+        display: none;
+
+        & > .drop-down-option {
+            display: flex;
+            align-items: center;
+            height: 40px;
+            width: max-content;
+
+            & > .drop-down-option-icon {}
+            & > .drop-down-option-text {}
+        }
+
+        &.active {
+            display: block;
+        }
+
+        &.top {
+            bottom: 110%;
+        }
+
+        &.bottom {
+            top: 110%;
+        }
+    }
+}
