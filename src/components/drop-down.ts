@@ -1,7 +1,12 @@
 export default `
 <div class="drop-down" id="{{id}}" data-dd="{{dataset}}">
 <div class="drop-down-button">
-{{> (getIconComponentPartial icon) icon }}
+{{>
+ButtonRound
+    id=''
+    type=''
+    icon=icon
+}}
 </div>
 <div class="drop-down-options {{direction}}">
 {{#each options}}
