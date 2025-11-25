@@ -8,4 +8,5 @@ export const ICONS = {
     FILE: 'IconFile',
     ARROW_RIGHT: 'IconArrowRight',
     ARROW_LEFT: 'IconArrowLeft',
+    PLACEHOLDER: 'IconPlaceholder',
 };

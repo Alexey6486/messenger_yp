@@ -1,6 +1,18 @@
 <div class="{{styles.container}}">
     <div class="{{styles.left}}">
-        <div class="{{styles.profile}}">Профиль</div>
+        <div class="{{styles.profile}}">
+            {{>
+            DropDown
+                    id=(lookup @root.ddNav 'id')
+                    dataset=(lookup @root.ddNav 'dataset')
+                    options=(lookup @root.ddNav 'options')
+                    direction=(lookup @root.ddNav 'direction')
+                    icon=(lookup @root.ddNav 'icon')
+            }}
+            <div class="{{styles.link}}">
+                Профиль
+            </div>
+        </div>
         <div class="{{styles.search}} {{#if state.search.length}}{{styles.filled}}{{/if}}">
             <input type="text" value="{{state.search}}" placeholder="Поиск">
         </div>

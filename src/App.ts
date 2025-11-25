@@ -14,7 +14,7 @@ import type {
     TPages,
     TFormsFields,
 } from './types';
-import { searchChatId } from './utils';
+import { searchDataset } from './utils';
 
 import Button from './components/button';
 import ButtonRound from './components/button-round';
@@ -35,6 +35,7 @@ import IconPhoto from './components/icons/icon-photo';
 import IconFile from './components/icons/icon-file';
 import IconArrowRight from './components/icons/icon-arrow-right';
 import IconArrowLeft from './components/icons/icon-arrow-left';
+import IconPlaceholder from './components/icons/icon-placeholder';
 
 import PaperclipSvg from './icons-svg/paperclip';
 import PhotoSvg from './icons-svg/photo';
@@ -55,6 +56,7 @@ Handlebars.registerPartial(ICONS.PHOTO, IconPhoto);
 Handlebars.registerPartial(ICONS.FILE, IconFile);
 Handlebars.registerPartial(ICONS.ARROW_RIGHT, IconArrowRight);
 Handlebars.registerPartial(ICONS.ARROW_LEFT, IconArrowLeft);
+Handlebars.registerPartial(ICONS.PLACEHOLDER, IconPlaceholder);
 
 Handlebars.registerPartial('PaperclipSvg', PaperclipSvg);
 Handlebars.registerPartial('PhotoSvg', PhotoSvg);
@@ -99,7 +101,7 @@ Handlebars.registerHelper('getIconComponentPartial', function(type) {
         [ICONS.ARROW_RIGHT]: ICONS.ARROW_RIGHT,
         [ICONS.ARROW_LEFT]: ICONS.ARROW_LEFT,
     };
-    return map[type] || ICONS.DOTS;
+    return map[type] || ICONS.PLACEHOLDER;
 });
 
 export default class App {
@@ -231,7 +233,7 @@ export default class App {
                 e.stopImmediatePropagation()
                 const targetElement = e?.target as HTMLElement | undefined;
                 if (targetElement) {
-                    const chatId = searchChatId(targetElement, DATASET.CHAT, IDS.CHATS_LIST_ID);
+                    const chatId = searchDataset(targetElement, DATASET.CHAT, IDS.CHATS_LIST_ID);
                     if (chatId) {
                         this.state.pages.main.currentChatId = chatId;
                         this.render();
@@ -246,6 +248,7 @@ export default class App {
 
         dropdowns.forEach(dropdown => {
             const toggleBtn = dropdown.querySelector('.drop-down-button');
+            const options = dropdown.querySelector('.drop-down-options');
 
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function(e) {
@@ -261,6 +264,19 @@ export default class App {
                     const target = e.target as Node | null;
                     if (!dropdown.contains(target)) {
                         dropdown.classList.remove('active');
+                    }
+                });
+            }
+
+            if (options) {
+                options.addEventListener('click', function(e) {
+                    e.stopImmediatePropagation()
+                    const targetElement = e?.target as HTMLElement | undefined;
+                    if (targetElement) {
+                        const optionId = searchDataset(targetElement, DATASET.OPTION, undefined, 'drop-down-options');
+                        if (optionId) {
+
+                        }
                     }
                 });
             }

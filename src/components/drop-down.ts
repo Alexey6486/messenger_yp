@@ -15,6 +15,7 @@ DropDownOption
     id=this.id
     text=this.text
     icon=this.icon
+    dataset=this.dataset
 }}
 {{/each}}
 </div>
