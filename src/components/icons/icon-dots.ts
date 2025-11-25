@@ -1,3 +1,3 @@
 export default `
-<div class="drop-down-icon icon-dots">{{> DotsSvg }}</div>
+<div class="icon icon-dots">{{> DotsSvg }}</div>
 `;

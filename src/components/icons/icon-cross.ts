@@ -1,3 +1,3 @@
 export default `
-<div class="drop-down-icon icon-cross">{{> CrossSvg }}</div>
+<div class="icon icon-cross">{{> CrossSvg }}</div>
 `;

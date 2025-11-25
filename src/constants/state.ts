@@ -50,6 +50,7 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
     },
     currentChatId: 'chat_id_1',
     search: '',
+    message: '',
     chats: [
         {
             id: 'chat_id_1',

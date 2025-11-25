@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
 }
 
-button {
+.button {
     font: inherit;
     outline: none;
     border: 0;
@@ -56,6 +56,39 @@ button {
 
     &:hover {
         box-shadow: var(--shadow-btn);
+
+    }
+}
+
+.button-round {
+    font: inherit;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+    background-color: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bl);
+    transition: box-shadow var(--trns);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    &:hover {
+        box-shadow: var(--shadow-btn);
+
+        & > .icon > svg {
+            & > line,
+            & > circle {
+                stroke: var(--color-hv);
+            }
+
+            & > rect,
+            & > path {
+                fill: var(--color-hv);
+            }
+        }
     }
 }
 
@@ -116,11 +149,13 @@ input {
         }
 
         & > .drop-down-button {
-            & > .drop-down-icon > svg {
+            & > .icon > svg {
                 & > line,
                 & > circle {
                     stroke: var(--color-hv);
                 }
+
+                & > rect,
                 & > path {
                     fill: var(--color-hv);
 
@@ -136,15 +171,18 @@ input {
         border-radius: 50%;
         width: 40px;
         height: 40px;
-        box-shadow: var(--shadow-btn);
         cursor: pointer;
 
         &:hover {
-            & > .drop-down-icon > svg {
+            box-shadow: var(--shadow-btn);
+
+            & > .icon > svg {
                 & > line,
                 & > circle {
                     stroke: var(--color-hv);
                 }
+
+                & > rect,
                 & > path {
                     fill: var(--color-hv);
                 }
@@ -177,11 +215,13 @@ input {
                 background-color: var(--color-gl);
 
                 & > .drop-down-option-icon {
-                    & > .drop-down-icon > svg {
+                    & > .icon > svg {
                         & > line,
                         & > circle {
                             stroke: var(--color-hv);
                         }
+
+                        & > rect,
                         & > path {
                             fill: var(--color-hv);
                         }
@@ -208,7 +248,7 @@ input {
     }
 }
 
-.drop-down-icon {
+.icon {
     position: relative;
     display: flex;
     align-items: center;
@@ -217,10 +257,12 @@ input {
     & > svg {
         & > line,
         & > circle {
-            stroke: var(--color-bl);
+            stroke: var(--color-gr);
         }
+
+        & > rect,
         & > path {
-            fill: var(--color-bl);
+            fill: var(--color-gr);
         }
     }
 }

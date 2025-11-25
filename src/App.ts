@@ -17,6 +17,7 @@ import type {
 import { searchChatId } from './utils';
 
 import Button from './components/button';
+import ButtonRound from './components/button-round';
 import Field from './components/field';
 import DropDownOption from './components/drop-down-option';
 import DropDown from './components/drop-down';
@@ -32,6 +33,8 @@ import IconCross from './components/icons/icon-cross';
 import IconCenter from './components/icons/icon-center';
 import IconPhoto from './components/icons/icon-photo';
 import IconFile from './components/icons/icon-file';
+import IconArrowRight from './components/icons/icon-arrow-right';
+import IconArrowLeft from './components/icons/icon-arrow-left';
 
 import PaperclipSvg from './icons-svg/paperclip';
 import PhotoSvg from './icons-svg/photo';
@@ -40,6 +43,8 @@ import CrossSvg from './icons-svg/cross';
 import PlusSvg from './icons-svg/plus';
 import CenterSvg from './icons-svg/center';
 import DotsSvg from './icons-svg/dots';
+import ArrowRightSvg from './icons-svg/arrow-right';
+import ArrowLeftSvg from './icons-svg/arrow-left';
 
 Handlebars.registerPartial(ICONS.DOTS, IconDots);
 Handlebars.registerPartial(ICONS.PAPERCLIP, IconPaperclip);
@@ -48,6 +53,8 @@ Handlebars.registerPartial(ICONS.CROSS, IconCross);
 Handlebars.registerPartial(ICONS.CENTER, IconCenter);
 Handlebars.registerPartial(ICONS.PHOTO, IconPhoto);
 Handlebars.registerPartial(ICONS.FILE, IconFile);
+Handlebars.registerPartial(ICONS.ARROW_RIGHT, IconArrowRight);
+Handlebars.registerPartial(ICONS.ARROW_LEFT, IconArrowLeft);
 
 Handlebars.registerPartial('PaperclipSvg', PaperclipSvg);
 Handlebars.registerPartial('PhotoSvg', PhotoSvg);
@@ -56,8 +63,11 @@ Handlebars.registerPartial('PlusSvg', PlusSvg);
 Handlebars.registerPartial('CenterSvg', CenterSvg);
 Handlebars.registerPartial('CrossSvg', CrossSvg);
 Handlebars.registerPartial('DotsSvg', DotsSvg);
+Handlebars.registerPartial('ArrowRightSvg', ArrowRightSvg);
+Handlebars.registerPartial('ArrowLeftSvg', ArrowLeftSvg);
 
 Handlebars.registerPartial('Button', Button);
+Handlebars.registerPartial('ButtonRound', ButtonRound);
 Handlebars.registerPartial('Field', Field);
 Handlebars.registerPartial('Chat', Chat);
 Handlebars.registerPartial('DropDownOption', DropDownOption);
@@ -86,6 +96,8 @@ Handlebars.registerHelper('getIconComponentPartial', function(type) {
         [ICONS.CENTER]: ICONS.CENTER,
         [ICONS.PHOTO]: ICONS.PHOTO,
         [ICONS.FILE]: ICONS.FILE,
+        [ICONS.ARROW_RIGHT]: ICONS.ARROW_RIGHT,
+        [ICONS.ARROW_LEFT]: ICONS.ARROW_LEFT,
     };
     return map[type] || ICONS.DOTS;
 });

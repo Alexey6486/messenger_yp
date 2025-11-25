@@ -240,6 +240,17 @@
         & > .footer {
             padding: 20px 0 0;
             box-shadow: 0 -1px 0 0 var(--color-bp);
+            display: flex;
+            align-items: center;
+
+            & > .message-form {
+                flex-grow: 1;
+                margin: 0 15px;
+
+                & > .message-input {
+                    width: 100%;
+                }
+            }
         }
     }
 }

@@ -68,6 +68,7 @@ export interface IMainPageState {
     user: IUserResponse | null
     currentChatId: string | null
     search: string
+    message: string
     chats: IChat[]
 }
 

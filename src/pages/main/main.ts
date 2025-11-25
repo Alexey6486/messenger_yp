@@ -13,6 +13,11 @@ export const GetMainPage = (state: IMainPageState) => {
         fnc: formatContentLength,
         chatsId: IDS.CHATS_LIST_ID,
         dataset: DATASET.CHAT,
+        submit: {
+            id: 'send-message',
+            type: 'send-message',
+            icon: ICONS.ARROW_RIGHT,
+        },
         ddTop: {
             id: 'ddTop',
             dataset: DATASET.DD,

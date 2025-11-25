@@ -6,4 +6,6 @@ export const ICONS = {
     CENTER: 'IconCenter',
     PHOTO: 'IconPhoto',
     FILE: 'IconFile',
+    ARROW_RIGHT: 'IconArrowRight',
+    ARROW_LEFT: 'IconArrowLeft',
 };

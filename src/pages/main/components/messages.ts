@@ -8,6 +8,8 @@ export default `
 {{>
     MessagesFooter
         class=(lookup @root.styles)
+        submit=(lookup @root.submit)
+        message=(lookup @root.state.message)
 }}
 </div>
 `;
