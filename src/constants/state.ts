@@ -38,8 +38,17 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
 };
 
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
-    user: null,
-    currentChatId: null,
+    user: {
+        id: '1',
+        first_name: 'Иван',
+        second_name: 'Иванов',
+        display_name: 'Иван',
+        avatar: '',
+        login: 'ivan',
+        email: 'ivan@yandex.ru',
+        phone: '123456789',
+    },
+    currentChatId: 'chat_id_1',
     search: '',
     chats: [
         {

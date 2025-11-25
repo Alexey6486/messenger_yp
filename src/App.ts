@@ -7,6 +7,7 @@ import {
     INIT_MAIN_PAGE_STATE,
     PAGES,
     DATASET,
+    ICONS,
 } from './constants';
 import type {
     IState,
@@ -14,35 +15,79 @@ import type {
     TFormsFields,
 } from './types';
 import { searchChatId } from './utils';
+
 import Button from './components/button';
 import Field from './components/field';
-import Chat from './components/chat';
 import DropDownOption from './components/drop-down-option';
 import DropDown from './components/drop-down';
+import Chat from './pages/main/components/chat';
+import Messages from './pages/main/components/messages';
+import MessagesHeader from './pages/main/components/messages-header';
+import MessagesFooter from './pages/main/components/messages-footer';
+
+import IconDots from './components/icons/icon-dots';
+import IconPaperclip from './components/icons/icon-paperclip';
+import IconPlus from './components/icons/icon-plus';
+import IconCross from './components/icons/icon-cross';
+import IconCenter from './components/icons/icon-center';
+import IconPhoto from './components/icons/icon-photo';
+import IconFile from './components/icons/icon-file';
+
+import PaperclipSvg from './icons-svg/paperclip';
+import PhotoSvg from './icons-svg/photo';
+import FileSvg from './icons-svg/file';
+import CrossSvg from './icons-svg/cross';
+import PlusSvg from './icons-svg/plus';
+import CenterSvg from './icons-svg/center';
+import DotsSvg from './icons-svg/dots';
+
+Handlebars.registerPartial(ICONS.DOTS, IconDots);
+Handlebars.registerPartial(ICONS.PAPERCLIP, IconPaperclip);
+Handlebars.registerPartial(ICONS.PLUS, IconPlus);
+Handlebars.registerPartial(ICONS.CROSS, IconCross);
+Handlebars.registerPartial(ICONS.CENTER, IconCenter);
+Handlebars.registerPartial(ICONS.PHOTO, IconPhoto);
+Handlebars.registerPartial(ICONS.FILE, IconFile);
+
+Handlebars.registerPartial('PaperclipSvg', PaperclipSvg);
+Handlebars.registerPartial('PhotoSvg', PhotoSvg);
+Handlebars.registerPartial('FileSvg', FileSvg);
+Handlebars.registerPartial('PlusSvg', PlusSvg);
+Handlebars.registerPartial('CenterSvg', CenterSvg);
+Handlebars.registerPartial('CrossSvg', CrossSvg);
+Handlebars.registerPartial('DotsSvg', DotsSvg);
 
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Field', Field);
 Handlebars.registerPartial('Chat', Chat);
 Handlebars.registerPartial('DropDownOption', DropDownOption);
 Handlebars.registerPartial('DropDown', DropDown);
+Handlebars.registerPartial('Messages', Messages);
+Handlebars.registerPartial('MessagesHeader', MessagesHeader);
+Handlebars.registerPartial('MessagesFooter', MessagesFooter);
 
 Handlebars.registerHelper('lookup', function(obj, key) {
     return obj[key] || obj;
 });
 Handlebars.registerHelper('map', function(array, transformFn, options) {
     if (!Array.isArray(array)) return '';
-
-    const mapped = array.map((item, index) =>
-        transformFn(item, index, options.hash)
-    );
-
+    const mapped = array.map((item, index) => transformFn(item, index, options.hash));
     return options.fn(mapped);
 });
 Handlebars.registerHelper('isChatActive', function(obj, key) {
     return obj.currentChatId === key;
 });
-Handlebars.registerHelper('isDdActive', function(obj) {
-    return obj.openedDropDownId === obj.id;
+Handlebars.registerHelper('getIconComponentPartial', function(type) {
+    const map = {
+        [ICONS.DOTS]: ICONS.DOTS,
+        [ICONS.PAPERCLIP]: ICONS.PAPERCLIP,
+        [ICONS.PLUS]: ICONS.PLUS,
+        [ICONS.CROSS]: ICONS.CROSS,
+        [ICONS.CENTER]: ICONS.CENTER,
+        [ICONS.PHOTO]: ICONS.PHOTO,
+        [ICONS.FILE]: ICONS.FILE,
+    };
+    return map[type] || ICONS.DOTS;
 });
 
 export default class App {
@@ -54,7 +99,6 @@ export default class App {
         this.state = {
             currentPage: PAGES.MAIN,
             focusElement: null,
-            openedDropDownId: null,
             error: {
                 code: '404',
                 text: 'Страница не найдена',
@@ -67,13 +111,9 @@ export default class App {
         }
     }
 
-    render(openDropDown?: boolean) {
+    render() {
         if (!(this.appElement && "innerHTML" in this.appElement)) {
             return;
-        }
-
-        if (this.state.openedDropDownId && !openDropDown) {
-            this.state.openedDropDownId = null;
         }
 
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
@@ -83,7 +123,7 @@ export default class App {
             this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
         }
         else if (this.state.currentPage === PAGES.MAIN) {
-            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main, this.state.openedDropDownId);
+            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main);
         }
         else if (this.state.currentPage === PAGES.ERROR) {
             this.appElement.innerHTML = Pages.GetErrorPage(this.state.error);

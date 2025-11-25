@@ -25,30 +25,13 @@
     </div>
     <div class="{{styles.right}}">
         {{#if state.currentChatId}}
-            <div>
-                сообщения...
-            </div>
+            {{>
+            Messages
+                class=(lookup @root.styles)
+            }}
         {{else}}
             <div class="{{styles.placeholder}}">
                 Выберете чат, чтобы отправить сообщение
-                {{>
-                DropDown
-                    id=(lookup @root.ddTop 'id')
-                    dataset=(lookup @root.ddTop 'dataset')
-                    buttonText=(lookup @root.ddTop 'buttonText')
-                    options=(lookup @root.ddTop 'options')
-                    isActive=(isDdActive @root.ddTop)
-                    direction=(lookup @root.ddTop 'direction')
-                }}
-                {{>
-                DropDown
-                    id=(lookup @root.ddBottom 'id')
-                    dataset=(lookup @root.ddBottom 'dataset')
-                    buttonText=(lookup @root.ddBottom 'buttonText')
-                    options=(lookup @root.ddBottom 'options')
-                    isActive=(isDdActive @root.ddBottom)
-                    direction=(lookup @root.ddBottom 'direction')
-                }}
             </div>
         {{/if}}
     </div>

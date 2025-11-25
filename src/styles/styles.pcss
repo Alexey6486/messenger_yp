@@ -3,6 +3,7 @@
     --color-gr: #AFAFAF;
     --color-slg: #FBFBFB;
     --color-g: #DEDEDE;
+    --color-gl: #F0F0F0;
     --color-er: #F46060;
     --color-bl: #313131;
     --color-hv: #5E99FD;
@@ -113,6 +114,19 @@ input {
         & > .drop-down-options {
             display: block;
         }
+
+        & > .drop-down-button {
+            & > .drop-down-icon > svg {
+                & > line,
+                & > circle {
+                    stroke: var(--color-hv);
+                }
+                & > path {
+                    fill: var(--color-hv);
+
+                }
+            }
+        }
     }
 
     & > .drop-down-button {
@@ -124,12 +138,22 @@ input {
         height: 40px;
         box-shadow: var(--shadow-btn);
         cursor: pointer;
+
+        &:hover {
+            & > .drop-down-icon > svg {
+                & > line,
+                & > circle {
+                    stroke: var(--color-hv);
+                }
+                & > path {
+                    fill: var(--color-hv);
+                }
+            }
+        }
     }
 
     & > .drop-down-options {
         position: absolute;
-        left: 0;
-        padding: 10px;
         box-shadow: var(--shadow-btn);
         background-color: white;
         display: none;
@@ -139,17 +163,64 @@ input {
             align-items: center;
             height: 40px;
             width: max-content;
+            padding: 0 10px;
+            cursor: pointer;
+            min-width: 100%;
 
-            & > .drop-down-option-icon {}
+            & > .drop-down-option-icon {
+                margin-right: 10px;
+            }
+
             & > .drop-down-option-text {}
+
+            &:hover {
+                background-color: var(--color-gl);
+
+                & > .drop-down-option-icon {
+                    & > .drop-down-icon > svg {
+                        & > line,
+                        & > circle {
+                            stroke: var(--color-hv);
+                        }
+                        & > path {
+                            fill: var(--color-hv);
+                        }
+                    }
+                }
+            }
         }
 
         &.top {
-            bottom: 110%;
+            bottom: 120%;
         }
 
         &.bottom {
-            top: 110%;
+            top: 120%;
+        }
+
+        &.left {
+            right: 0;
+        }
+
+        &.right {
+            left: 0;
+        }
+    }
+}
+
+.drop-down-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > svg {
+        & > line,
+        & > circle {
+            stroke: var(--color-bl);
+        }
+        & > path {
+            fill: var(--color-bl);
         }
     }
 }

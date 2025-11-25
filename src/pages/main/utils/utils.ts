@@ -1,5 +1,5 @@
 import type { IChat } from '@/types';
-import { MSG_PREVIEW_LENGTH_MAX, MSG_PREVIEW_LENGTH_CUT } from '@/pages/main/constants';
+import { MSG_PREVIEW_LENGTH_MAX, MSG_PREVIEW_LENGTH_CUT } from '@/pages/main/constants/constants';
 
 export const formatContentLength = (item: IChat): IChat => {
     return {
