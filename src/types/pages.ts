@@ -1,1 +1,1 @@
-export type TPages = 'authorization' | 'registration' | 'main' | 'error';
+export type TPages = 'authorization' | 'registration' | 'main' | 'error' | 'profile';

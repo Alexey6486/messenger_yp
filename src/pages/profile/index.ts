@@ -1,0 +1,1 @@
+export { GetProfilePage } from './profile';

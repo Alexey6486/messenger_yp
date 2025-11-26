@@ -2,7 +2,7 @@ import * as Handlebars from 'handlebars';
 import template from './main-template.hbs?raw';
 import type { IMainPageState } from '@/types';
 import { formatContentLength } from '@/pages/main/utils/utils';
-import { DATASET, ICONS, IDS, PAGES } from '@/constants';
+import { DATASET, ICONS, IDS, PAGES, CLASSES } from '@/constants';
 import styles from './styles.module.pcss';
 
 export const GetMainPage = (state: IMainPageState) => {
@@ -12,7 +12,10 @@ export const GetMainPage = (state: IMainPageState) => {
         state,
         fnc: formatContentLength,
         chatsId: IDS.CHATS_LIST_ID,
-        dataset: DATASET.CHAT,
+        chatsDataset: DATASET.CHAT,
+        messageDataset: DATASET.MESSAGE,
+        profileBtnDataset: DATASET.PAGE_LINK,
+        profileLink: CLASSES.PL,
         submit: {
             id: 'send-message',
             type: 'send-message',

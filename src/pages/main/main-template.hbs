@@ -9,7 +9,7 @@
                     direction=(lookup @root.ddNav 'direction')
                     icon=(lookup @root.ddNav 'icon')
             }}
-            <div class="{{styles.link}}">
+            <div class="{{styles.link}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
                 Профиль
             </div>
         </div>
@@ -28,7 +28,7 @@
                         data=this.last_message.time
                         text=this.last_message.content
                         counter=this.unread_count
-                        dataset=(lookup @root.dataset)
+                        dataset=(lookup @root.chatsDataset)
                         isActive=(isChatActive @root.state this.id)
                     }}
                 {{/each}}
@@ -40,6 +40,8 @@
             {{>
             Messages
                 class=(lookup @root.styles)
+                me=(lookup @root.state.user.id)
+                messages=(lookup @root.state.messages)
             }}
         {{else}}
             <div class="{{styles.placeholder}}">

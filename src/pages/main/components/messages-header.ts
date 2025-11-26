@@ -1,6 +1,6 @@
 export default `
 <div class="{{class.header}}">
-<div class="{{class.user}}">
+<div class="{{class.user}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
 <div class="{{class.user-icon}}">
 </div>
 <div class="{{class.user-name}}">{{lookup @root.state.user 'first_name'}}</div>

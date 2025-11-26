@@ -5,6 +5,7 @@ export const PAGES: Record<string, TPages> = {
     REGISTRATION: 'registration',
     MAIN: 'main',
     ERROR: 'error',
+    PROFILE: 'profile',
 };
 
 export const IDS: Record<string, string> = {
@@ -19,4 +20,14 @@ export const DATASET: Record<string, string> = {
     CHAT: 'chat',
     DD: 'drop-down',
     OPTION: 'option',
+    MESSAGE: 'message',
+    PROFILE_BTN: 'profileBtn',
+    ERROR: 'error',
+    PAGE_LINK: 'pageLink',
+};
+
+export const CLASSES: Record<string, string> = {
+    DDO: 'drop-down-options',
+    PL: 'profile-link',
+    ACT: 'active',
 };

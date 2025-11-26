@@ -3,6 +3,7 @@ import type {
     ILoginForm,
     IMainPageState,
     IRegistrationFormUi,
+    IProfilePageState,
 } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
@@ -37,9 +38,11 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
     },
 };
 
+export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {}
+
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
     user: {
-        id: '1',
+        id: 'logged_user',
         first_name: 'Иван',
         second_name: 'Иванов',
         display_name: 'Иван',
@@ -51,6 +54,50 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
     currentChatId: 'chat_id_1',
     search: '',
     message: '',
+    messages: [
+        {
+            id: 'msg_1',
+            title: 'title',
+            avatar: '',
+            unread_count: '12',
+            created_by: 'user_id_1',
+            last_message: {
+                time: '12:45',
+                content: 'contentcon tentcontentco ntentc on tent conten tconte ntcon tentco n tentcon tentcon tentc3',
+                user: {
+                    id: 'user_id_1',
+                    first_name: 'first_name',
+                    second_name: 'second_name',
+                    display_name: 'display_name',
+                    avatar: 'user_avatar',
+                    login: 'login',
+                    email: 'email',
+                    phone: 'phone',
+                },
+            },
+        },
+        {
+            id: 'msg_2',
+            title: 'title',
+            avatar: '',
+            unread_count: '12',
+            created_by: 'logged_user',
+            last_message: {
+                time: '16:55',
+                content: 'content ont en',
+                user: {
+                    id: 'logged_user',
+                    first_name: 'Иван',
+                    second_name: 'Иванов',
+                    display_name: 'Иван',
+                    avatar: 'user_avatar',
+                    login: 'login',
+                    email: 'email',
+                    phone: 'phone',
+                },
+            },
+        },
+    ],
     chats: [
         {
             id: 'chat_id_1',

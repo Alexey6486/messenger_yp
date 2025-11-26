@@ -70,6 +70,7 @@ export interface IMainPageState {
     search: string
     message: string
     chats: IChat[]
+    messages: IChat[] | null
 }
 
 export interface IErrorPageState {
@@ -77,10 +78,13 @@ export interface IErrorPageState {
     code: string
 }
 
+export interface IProfilePageState {}
+
 export interface IState {
     currentPage: TPages
     focusElement: string | null
     error: IErrorPageState
+    profile: IProfilePageState | null
     pages: {
         authorization: IPageState<ILoginForm>
         registration: IPageState<IRegistrationFormUi>

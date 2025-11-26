@@ -13,4 +13,5 @@ export type {
     TUserRole,
     IChatUserResponse,
     IErrorPageState,
+    IProfilePageState,
 } from './state';

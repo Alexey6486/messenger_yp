@@ -5,9 +5,11 @@ import {
     INIT_LOGIN_STATE,
     INIT_REGISTRATION_STATE,
     INIT_MAIN_PAGE_STATE,
+    INIT_PROFILE_PAGE_STATE,
     PAGES,
     DATASET,
     ICONS,
+    CLASSES,
 } from './constants';
 import type {
     IState,
@@ -25,6 +27,8 @@ import Chat from './pages/main/components/chat';
 import Messages from './pages/main/components/messages';
 import MessagesHeader from './pages/main/components/messages-header';
 import MessagesFooter from './pages/main/components/messages-footer';
+import Message from './pages/main/components/message';
+import DatePlate from './pages/main/components/date-plate';
 
 import IconDots from './components/icons/icon-dots';
 import IconPaperclip from './components/icons/icon-paperclip';
@@ -77,6 +81,8 @@ Handlebars.registerPartial('DropDown', DropDown);
 Handlebars.registerPartial('Messages', Messages);
 Handlebars.registerPartial('MessagesHeader', MessagesHeader);
 Handlebars.registerPartial('MessagesFooter', MessagesFooter);
+Handlebars.registerPartial('Message', Message);
+Handlebars.registerPartial('DatePlate', DatePlate);
 
 Handlebars.registerHelper('lookup', function(obj, key) {
     return obj[key] || obj;
@@ -103,6 +109,9 @@ Handlebars.registerHelper('getIconComponentPartial', function(type) {
     };
     return map[type] || ICONS.PLACEHOLDER;
 });
+Handlebars.registerHelper('isMe', function(authorId, myId) {
+    return myId === authorId;
+});
 
 export default class App {
     private appElement: HTMLElement | null;
@@ -111,8 +120,9 @@ export default class App {
     constructor() {
         this.appElement = document.getElementById('app');
         this.state = {
-            currentPage: PAGES.MAIN,
+            currentPage: PAGES.PROFILE,
             focusElement: null,
+            profile: JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE)),
             error: {
                 code: '404',
                 text: 'Страница не найдена',
@@ -141,6 +151,9 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.ERROR) {
             this.appElement.innerHTML = Pages.GetErrorPage(this.state.error);
+        }
+        else if (this.state.currentPage === PAGES.PROFILE) {
+            this.appElement.innerHTML = Pages.GetProfilePage(this.state.profile);
         }
 
         this.attachEventListener();
@@ -253,34 +266,62 @@ export default class App {
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    if (dropdown.classList.contains('active')) {
-                        dropdown.classList.remove('active');
+                    if (dropdown.classList.contains(CLASSES.ACT)) {
+                        dropdown.classList.remove(CLASSES.ACT);
                     } else {
-                        dropdown.classList.add('active');
+                        dropdown.classList.add(CLASSES.ACT);
                     }
                 });
 
                 document.addEventListener('click', function(e) {
                     const target = e.target as Node | null;
                     if (!dropdown.contains(target)) {
-                        dropdown.classList.remove('active');
+                        dropdown.classList.remove(CLASSES.ACT);
                     }
                 });
             }
 
             if (options) {
-                options.addEventListener('click', function(e) {
+                options.addEventListener('click', (e) => {
                     e.stopImmediatePropagation()
                     const targetElement = e?.target as HTMLElement | undefined;
                     if (targetElement) {
-                        const optionId = searchDataset(targetElement, DATASET.OPTION, undefined, 'drop-down-options');
+                        const optionId = searchDataset(targetElement, DATASET.OPTION, undefined, CLASSES.DDO);
                         if (optionId) {
-
+                            switch (optionId) {
+                                case PAGES.AUTHORIZATION: {
+                                    this.changePage(PAGES.AUTHORIZATION);
+                                    break
+                                }
+                                case PAGES.REGISTRATION: {
+                                    this.changePage(PAGES.REGISTRATION);
+                                    break
+                                }
+                                case PAGES.ERROR: {
+                                    this.changePage(PAGES.ERROR);
+                                    break
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
                         }
                     }
                 });
             }
         });
+    }
+
+    setToPageListener(dataset: string, targetPage: TPages) {
+        const links = document.querySelectorAll(dataset);
+        if (links) {
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopImmediatePropagation();
+                    this.changePage(targetPage);
+                });
+            });
+        }
     }
 
     attachEventListener() {
@@ -295,10 +336,15 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.ERROR) {
             this.setChangePageListener(IDS.ERROR_RETURN_ID);
+            this.setToPageListener(`[data-error=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
         }
         else if (this.state.currentPage === PAGES.MAIN) {
             this.setChatSwitchListener(IDS.CHATS_LIST_ID);
             this.setDropDownListener(DATASET.DD);
+            this.setToPageListener(`[data-profile-btn=${DATASET.PAGE_LINK}]`, PAGES.PROFILE);
+        }
+        else if (this.state.currentPage === PAGES.PROFILE) {
+            this.setToPageListener(`[data-btn=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
         }
     };
 
