@@ -1,7 +1,7 @@
 import * as Handlebars from 'handlebars';
 import template from './profile-template.hbs?raw';
 import type { IProfilePageState } from '@/types';
-import { DATASET, ICONS } from '@/constants';
+import { DATASET, ICONS, IDS } from '@/constants';
 import styles from './styles.module.pcss';
 
 export const GetProfilePage = (state: IProfilePageState | null) => {
@@ -9,6 +9,19 @@ export const GetProfilePage = (state: IProfilePageState | null) => {
     return content({
         styles,
         state,
+        isEditDisabled: !state?.isDataEdit,
+        ids: {
+            changeData: IDS.ACD,
+            changePassword: IDS.ACP,
+            logout: IDS.ALG,
+            buttons: IDS.ABS,
+            saveData: IDS.ASD,
+            savePassword: IDS.ASP,
+            cancel: IDS.ACL,
+        },
+        datasets: {
+            account: DATASET.BTN,
+        },
         icons: {
             arrowLeft: ICONS.ARROW_LEFT,
         },

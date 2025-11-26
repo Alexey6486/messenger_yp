@@ -14,6 +14,13 @@ export const IDS: Record<string, string> = {
     FORM_REGISTRATION_ID: 'form-registration',
     ERROR_RETURN_ID: 'error-return-btn',
     CHATS_LIST_ID: 'chats-list',
+    ACD: 'account-change-data',
+    ACP: 'account-change-password',
+    ALG: 'account-logout',
+    ABS: 'account-buttons',
+    ASD: 'account-save-data',
+    ASP: 'account-save-password',
+    ACL: 'account-cancel',
 };
 
 export const DATASET: Record<string, string> = {
@@ -24,6 +31,8 @@ export const DATASET: Record<string, string> = {
     PROFILE_BTN: 'profileBtn',
     ERROR: 'error',
     PAGE_LINK: 'pageLink',
+    ACCOUNT: 'account',
+    BTN: 'btn',
 };
 
 export const CLASSES: Record<string, string> = {

@@ -78,13 +78,22 @@ export interface IErrorPageState {
     code: string
 }
 
-export interface IProfilePageState {}
+export interface IProfilePageState {
+    isDataEdit: boolean
+    isPasswordEdit: boolean
+    password: {
+        old: string,
+        new: string,
+        repeat: string,
+    },
+    user: IUserResponse
+}
 
 export interface IState {
     currentPage: TPages
     focusElement: string | null
     error: IErrorPageState
-    profile: IProfilePageState | null
+    profile: IProfilePageState
     pages: {
         authorization: IPageState<ILoginForm>
         registration: IPageState<IRegistrationFormUi>

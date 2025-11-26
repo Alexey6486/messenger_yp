@@ -38,7 +38,25 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
     },
 };
 
-export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {}
+export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
+    isDataEdit: false,
+    isPasswordEdit: false,
+    password: {
+        old: '',
+        new: '',
+        repeat: '',
+    },
+    user: {
+        id: 'logged_user',
+        first_name: 'Иван',
+        second_name: 'Иванов',
+        display_name: 'Иван',
+        avatar: '',
+        login: 'ivan',
+        email: 'ivan@yandex.ru',
+        phone: '123456789',
+    },
+}
 
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
     user: {

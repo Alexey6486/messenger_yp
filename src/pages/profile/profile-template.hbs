@@ -7,4 +7,155 @@
             icon=icons.arrowLeft
         }}
     </div>
+    <div class="{{styles.right}}">
+        <div class="{{styles.content}}">
+            <div class="{{styles.avatar}}">
+                <div class="{{styles.image}}">
+                    <div class="{{styles.mask}}">
+                        Поменять аватар
+                    </div>
+                </div>
+                <div class="{{styles.name}}">{{state.user.first_name}}</div>
+            </div>
+            <div class="{{styles.fields}}">
+                {{#if state.isPasswordEdit}}
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="password"
+                            fieldName="Старый пароль"
+                            value=state.password.old
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="new"
+                            fieldName="Новый пароль"
+                            value=state.password.new
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="repeat"
+                            fieldName="Повторите новый пароль"
+                            value=state.password.repeat
+                        }}
+                    </div>
+                {{else}}
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="email"
+                            fieldName="Почта"
+                            value=state.user.email
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="login"
+                            fieldName="Логин"
+                            value=state.user.login
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="first_name"
+                            fieldName="Имя"
+                            value=state.user.first_name
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="second_name"
+                            fieldName="Фамилия"
+                            value=state.user.second_name
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="display_name"
+                            fieldName="Имя в чате"
+                            value=state.user.display_name
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                    <div class="{{styles.block}}">
+                        {{>
+                        ProfileField
+                            class=styles
+                            id="phone"
+                            fieldName="Телефон"
+                            value=state.user.phone
+                            isDisabled=isEditDisabled
+                        }}
+                    </div>
+                {{/if}}
+            </div>
+            <div class="{{styles.buttons}}" id="{{ids.buttons}}">
+                {{#if state.isDataEdit}}
+                    <div class="{{styles.buttons-center}}">
+                        {{>
+                        Button
+                            id=ids.saveData
+                            type=datasets.account
+                            text='Сохранить'
+                        }}
+                    </div>
+                    <div class="{{styles.buttons-center}}">
+                        {{>
+                        Button
+                            id=ids.cancel
+                            type=datasets.account
+                            text='Отмена'
+                        }}
+                    </div>
+                {{else if state.isPasswordEdit}}
+                    <div class="{{styles.buttons-center}}">
+                        {{>
+                        Button
+                            id=ids.cancel
+                            type=datasets.account
+                            text='Сохранить'
+                        }}
+                    </div>
+                    <div class="{{styles.buttons-center}}">
+                        {{>
+                        Button
+                            id=ids.cancel
+                            type=datasets.account
+                            text='Отмена'
+                        }}
+                    </div>
+                {{else}}
+                    <div class="{{styles.block}}">
+                        <div id="{{ids.changeData}}" data-btn="{{datasets.account}}" class="{{styles.button-link}}">Изменить данные</div>
+                    </div>
+                    <div class="{{styles.block}}">
+                        <div id="{{ids.changePassword}}" data-btn="{{datasets.account}}" class="{{styles.button-link}}">Изменить пароль</div>
+                    </div>
+                    <div class="{{styles.block}}">
+                        <div id="{{ids.logout}}" data-btn="{{datasets.account}}" class="{{styles.button-link}} {{styles.red}}">Выйти из аккаунта</div>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
 </div>

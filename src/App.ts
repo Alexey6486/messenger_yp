@@ -29,6 +29,7 @@ import MessagesHeader from './pages/main/components/messages-header';
 import MessagesFooter from './pages/main/components/messages-footer';
 import Message from './pages/main/components/message';
 import DatePlate from './pages/main/components/date-plate';
+import ProfileField from './pages/profile/components/profile-field.hbs?raw';
 
 import IconDots from './components/icons/icon-dots';
 import IconPaperclip from './components/icons/icon-paperclip';
@@ -83,6 +84,7 @@ Handlebars.registerPartial('MessagesHeader', MessagesHeader);
 Handlebars.registerPartial('MessagesFooter', MessagesFooter);
 Handlebars.registerPartial('Message', Message);
 Handlebars.registerPartial('DatePlate', DatePlate);
+Handlebars.registerPartial('ProfileField', ProfileField);
 
 Handlebars.registerHelper('lookup', function(obj, key) {
     return obj[key] || obj;
@@ -111,6 +113,9 @@ Handlebars.registerHelper('getIconComponentPartial', function(type) {
 });
 Handlebars.registerHelper('isMe', function(authorId, myId) {
     return myId === authorId;
+});
+Handlebars.registerHelper('not', function(value) {
+    return !value;
 });
 
 export default class App {
@@ -167,6 +172,10 @@ export default class App {
             }
             case PAGES.REGISTRATION: {
                 this.state.pages.registration.form = JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE));
+                break;
+            }
+            case PAGES.PROFILE: {
+                this.state.pages.registration.form = JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE));
                 break;
             }
             default:
@@ -324,6 +333,56 @@ export default class App {
         }
     }
 
+    setDataChangeButtonsListener(dataset: string) {
+        const links = document.querySelectorAll(dataset);
+        if (links) {
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopImmediatePropagation();
+                    const targetElement = e?.target as HTMLElement | undefined;
+                    if (targetElement) {
+                        const elementId = searchDataset(targetElement, DATASET.BTN, IDS.ABS);
+                        switch (elementId) {
+                            case IDS.ACD: {
+                                this.state.profile.isDataEdit = true;
+                                this.render();
+                                break;
+                            }
+                            case IDS.ACP: {
+                                this.state.profile.isPasswordEdit = true;
+                                this.render();
+                                break;
+                            }
+                            case IDS.ALG: {
+                                this.changePage(PAGES.AUTHORIZATION, true);
+                                break;
+                            }
+                            case IDS.ASD: {
+                                this.state.profile.isDataEdit = false;
+                                this.render();
+                                break;
+                            }
+                            case IDS.ASP: {
+                                this.state.profile.isPasswordEdit = false;
+                                this.render();
+                                break;
+                            }
+                            case IDS.ACL: {
+                                this.state.profile.isPasswordEdit = false;
+                                this.state.profile.isDataEdit = false;
+                                this.render();
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    }
+
     attachEventListener() {
         this.setFocusAndCursor();
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
@@ -345,6 +404,7 @@ export default class App {
         }
         else if (this.state.currentPage === PAGES.PROFILE) {
             this.setToPageListener(`[data-btn=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
+            this.setDataChangeButtonsListener(`[data-btn=${DATASET.BTN}]`);
         }
     };
 
