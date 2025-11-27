@@ -10,12 +10,16 @@ import {
     DATASET,
     ICONS,
     CLASSES,
+    MODALS,
+    DD_ACTIONS,
+    VARIOUS,
 } from './constants';
 import type {
     IState,
     TPages,
     TFormsFields,
 } from './types';
+import { PARTIALS_TYPES } from './constants';
 import { searchDataset } from './utils';
 
 import Button from './components/button';
@@ -30,6 +34,9 @@ import MessagesFooter from './pages/main/components/messages-footer';
 import Message from './pages/main/components/message';
 import DatePlate from './pages/main/components/date-plate';
 import ProfileField from './pages/profile/components/profile-field.hbs?raw';
+import PartialPlaceholder from './components/placeholder';
+
+import ModalAddUser from './pages/modal/components/add-user';
 
 import IconDots from './components/icons/icon-dots';
 import IconPaperclip from './components/icons/icon-paperclip';
@@ -52,16 +59,16 @@ import DotsSvg from './icons-svg/dots';
 import ArrowRightSvg from './icons-svg/arrow-right';
 import ArrowLeftSvg from './icons-svg/arrow-left';
 
-Handlebars.registerPartial(ICONS.DOTS, IconDots);
-Handlebars.registerPartial(ICONS.PAPERCLIP, IconPaperclip);
-Handlebars.registerPartial(ICONS.PLUS, IconPlus);
-Handlebars.registerPartial(ICONS.CROSS, IconCross);
-Handlebars.registerPartial(ICONS.CENTER, IconCenter);
-Handlebars.registerPartial(ICONS.PHOTO, IconPhoto);
-Handlebars.registerPartial(ICONS.FILE, IconFile);
-Handlebars.registerPartial(ICONS.ARROW_RIGHT, IconArrowRight);
-Handlebars.registerPartial(ICONS.ARROW_LEFT, IconArrowLeft);
-Handlebars.registerPartial(ICONS.PLACEHOLDER, IconPlaceholder);
+Handlebars.registerPartial(ICONS.IconDots, IconDots);
+Handlebars.registerPartial(ICONS.IconPaperclip, IconPaperclip);
+Handlebars.registerPartial(ICONS.IconPlus, IconPlus);
+Handlebars.registerPartial(ICONS.IconCross, IconCross);
+Handlebars.registerPartial(ICONS.IconCenter, IconCenter);
+Handlebars.registerPartial(ICONS.IconPhoto, IconPhoto);
+Handlebars.registerPartial(ICONS.IconFile, IconFile);
+Handlebars.registerPartial(ICONS.IconArrowRight, IconArrowRight);
+Handlebars.registerPartial(ICONS.IconArrowLeft, IconArrowLeft);
+Handlebars.registerPartial(ICONS.IconPlaceholder, IconPlaceholder);
 
 Handlebars.registerPartial('PaperclipSvg', PaperclipSvg);
 Handlebars.registerPartial('PhotoSvg', PhotoSvg);
@@ -73,6 +80,7 @@ Handlebars.registerPartial('DotsSvg', DotsSvg);
 Handlebars.registerPartial('ArrowRightSvg', ArrowRightSvg);
 Handlebars.registerPartial('ArrowLeftSvg', ArrowLeftSvg);
 
+Handlebars.registerPartial(VARIOUS.PartialPlaceholder, PartialPlaceholder);
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('ButtonRound', ButtonRound);
 Handlebars.registerPartial('Field', Field);
@@ -86,6 +94,8 @@ Handlebars.registerPartial('Message', Message);
 Handlebars.registerPartial('DatePlate', DatePlate);
 Handlebars.registerPartial('ProfileField', ProfileField);
 
+Handlebars.registerPartial(MODALS.AddUserModal, ModalAddUser);
+
 Handlebars.registerHelper('lookup', function(obj, key) {
     return obj[key] || obj;
 });
@@ -97,19 +107,18 @@ Handlebars.registerHelper('map', function(array, transformFn, options) {
 Handlebars.registerHelper('isChatActive', function(obj, key) {
     return obj.currentChatId === key;
 });
-Handlebars.registerHelper('getIconComponentPartial', function(type) {
-    const map = {
-        [ICONS.DOTS]: ICONS.DOTS,
-        [ICONS.PAPERCLIP]: ICONS.PAPERCLIP,
-        [ICONS.PLUS]: ICONS.PLUS,
-        [ICONS.CROSS]: ICONS.CROSS,
-        [ICONS.CENTER]: ICONS.CENTER,
-        [ICONS.PHOTO]: ICONS.PHOTO,
-        [ICONS.FILE]: ICONS.FILE,
-        [ICONS.ARROW_RIGHT]: ICONS.ARROW_RIGHT,
-        [ICONS.ARROW_LEFT]: ICONS.ARROW_LEFT,
-    };
-    return map[type] || ICONS.PLACEHOLDER;
+Handlebars.registerHelper('getPartialComponent', function(partialName: string, partialType: string) {
+    switch (partialType) {
+        case PARTIALS_TYPES.ICON: {
+            return ICONS[partialName] || ICONS.IconPlaceholder;
+        }
+        case PARTIALS_TYPES.MODAL: {
+            return MODALS[partialName] || VARIOUS.PartialPlaceholder;
+        }
+        default: {
+            return VARIOUS.PartialPlaceholder;
+        }
+    }
 });
 Handlebars.registerHelper('isMe', function(authorId, myId) {
     return myId === authorId;
@@ -125,7 +134,7 @@ export default class App {
     constructor() {
         this.appElement = document.getElementById('app');
         this.state = {
-            currentPage: PAGES.PROFILE,
+            currentPage: PAGES.MAIN,
             focusElement: null,
             profile: JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE)),
             error: {
@@ -269,9 +278,9 @@ export default class App {
         const dropdowns = document.querySelectorAll(`[data-dd=${dataset}]`);
 
         dropdowns.forEach(dropdown => {
-            const toggleBtn = dropdown.querySelector('.drop-down-button');
-            const options = dropdown.querySelector('.drop-down-options');
 
+            const toggleBtn = dropdown.querySelector(`.${CLASSES.DDB}`);
+            const options = dropdown.querySelector(`.${CLASSES.DDO}`);
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -308,6 +317,16 @@ export default class App {
                                 }
                                 case PAGES.ERROR: {
                                     this.changePage(PAGES.ERROR);
+                                    break
+                                }
+                                case DD_ACTIONS.ADD_USER_MODAL: {
+                                    if (!(this.appElement && "innerHTML" in this.appElement)) {
+                                        break;
+                                    }
+                                    this.appElement.insertAdjacentHTML(
+                                        'afterend',
+                                        Pages.GetModal({ name: 'test' }, MODALS.AddUserModal),
+                                    );
                                     break
                                 }
                                 default: {

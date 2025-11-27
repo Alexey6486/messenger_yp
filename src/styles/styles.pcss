@@ -259,3 +259,24 @@ input {
         }
     }
 }
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-sh);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 8000;
+
+    & > .modal-container {
+        padding: 20px;
+        box-shadow: var(--shadow-btn);
+        background-color: white;
+        min-width: 400px;
+        min-height: 300px;
+    }
+}

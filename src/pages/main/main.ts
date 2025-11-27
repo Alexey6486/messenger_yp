@@ -2,7 +2,7 @@ import * as Handlebars from 'handlebars';
 import template from './main-template.hbs?raw';
 import type { IMainPageState } from '@/types';
 import { formatContentLength } from '@/pages/main/utils/utils';
-import { DATASET, ICONS, IDS, PAGES, CLASSES } from '@/constants';
+import { DATASET, ICONS, IDS, PAGES, CLASSES, DD_ACTIONS, PARTIALS_TYPES } from '@/constants';
 import styles from './styles.module.pcss';
 
 export const GetMainPage = (state: IMainPageState) => {
@@ -15,17 +15,23 @@ export const GetMainPage = (state: IMainPageState) => {
         chatsDataset: DATASET.CHAT,
         messageDataset: DATASET.MESSAGE,
         profileBtnDataset: DATASET.PAGE_LINK,
-        profileLink: CLASSES.PL,
+        profileLink: CLASSES.PRL,
         submit: {
             id: 'send-message',
             type: 'send-message',
-            icon: ICONS.ARROW_RIGHT,
+            icon: {
+                partialName: ICONS.IconArrowRight,
+                partialType: PARTIALS_TYPES.ICON,
+            },
         },
         ddNav: {
             id: 'ddNav',
             dataset: DATASET.DD,
             direction: 'bottom right',
-            icon: ICONS.DOTS,
+            icon: {
+                partialName: ICONS.IconDots,
+                partialType: PARTIALS_TYPES.ICON,
+            },
             options: [
                 {
                     id: PAGES.AUTHORIZATION,
@@ -51,18 +57,27 @@ export const GetMainPage = (state: IMainPageState) => {
             id: 'ddTop',
             dataset: DATASET.DD,
             direction: 'bottom left',
-            icon: ICONS.DOTS,
+            icon: {
+                partialName: ICONS.IconDots,
+                partialType: PARTIALS_TYPES.ICON,
+            },
             options: [
                 {
-                    id: 'add-user',
+                    id: DD_ACTIONS.ADD_USER_MODAL,
                     text: 'Добавить пользователя',
-                    icon: ICONS.PLUS,
+                    icon: {
+                        partialName: ICONS.IconPlus,
+                        partialType: PARTIALS_TYPES.ICON,
+                    },
                     dataset: DATASET.OPTION,
                 },
                 {
-                    id: 'remove-user',
+                    id: DD_ACTIONS.REMOVE_USER_MODAL,
                     text: 'Удалить пользователя',
-                    icon: ICONS.CROSS,
+                    icon: {
+                        partialName: ICONS.IconCross,
+                        partialType: PARTIALS_TYPES.ICON,
+                    },
                     dataset: DATASET.OPTION,
                 },
             ],
@@ -72,24 +87,36 @@ export const GetMainPage = (state: IMainPageState) => {
             dataset: DATASET.DD,
             buttonText: 'T',
             direction: 'top right',
-            icon: ICONS.PAPERCLIP,
+            icon: {
+                partialName: ICONS.IconPaperclip,
+                partialType: PARTIALS_TYPES.ICON,
+            },
             options: [
                 {
                     id: 'photo',
                     text: 'Фото или видео',
-                    icon: ICONS.PHOTO,
+                    icon: {
+                        partialName: ICONS.IconPhoto,
+                        partialType: PARTIALS_TYPES.ICON,
+                    },
                     dataset: DATASET.OPTION,
                 },
                 {
                     id: 'file',
                     text: 'Файл',
-                    icon: ICONS.FILE,
+                    icon: {
+                        partialName: ICONS.IconFile,
+                        partialType: PARTIALS_TYPES.ICON,
+                    },
                     dataset: DATASET.OPTION,
                 },
                 {
                     id: 'location',
                     text: 'Локация',
-                    icon: ICONS.CENTER,
+                    icon: {
+                        partialName: ICONS.IconCenter,
+                        partialType: PARTIALS_TYPES.ICON,
+                    },
                     dataset: DATASET.OPTION,
                 },
             ],

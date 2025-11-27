@@ -1,5 +1,5 @@
 export default `
-<div class="{{class.footer}}">
+<footer class="{{class.footer}}">
     {{>
     DropDown
         id=(lookup @root.ddBottom 'id')
@@ -15,7 +15,8 @@ export default `
     ButtonRound
         id=submit.id
         type=submit.type
-        icon=submit.icon
+        partialName=submit.icon.partialName
+        partialType=submit.icon.partialType
     }}
-</div>
+</footer>
 `;

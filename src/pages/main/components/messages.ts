@@ -6,7 +6,7 @@ export default `
         profileBtnDataset=(lookup @root.profileBtnDataset)
         profileLink=(lookup @root.profileLink)
 }}
-<div class="{{class.main}}">
+<main class="{{class.main}}">
 {{#if messages}}
 {{>
 DatePlate
@@ -26,7 +26,7 @@ Message
 {{else}}
 Сообщений пока нет...
 {{/if}}
-</div>
+</main>
 {{>
     MessagesFooter
         class=(lookup @root.styles)

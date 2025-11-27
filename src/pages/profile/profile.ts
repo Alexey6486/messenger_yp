@@ -1,7 +1,7 @@
 import * as Handlebars from 'handlebars';
 import template from './profile-template.hbs?raw';
 import type { IProfilePageState } from '@/types';
-import { DATASET, ICONS, IDS } from '@/constants';
+import { DATASET, ICONS, IDS, PARTIALS_TYPES } from '@/constants';
 import styles from './styles.module.pcss';
 
 export const GetProfilePage = (state: IProfilePageState | null) => {
@@ -23,7 +23,10 @@ export const GetProfilePage = (state: IProfilePageState | null) => {
             account: DATASET.BTN,
         },
         icons: {
-            arrowLeft: ICONS.ARROW_LEFT,
+            arrowLeft: {
+                partialName: ICONS.IconArrowLeft,
+                partialType: PARTIALS_TYPES.ICON,
+            },
         },
         pageLinks: {
             main: DATASET.PAGE_LINK,

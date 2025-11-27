@@ -5,7 +5,8 @@ export default `
 ButtonRound
     id=''
     type=''
-    icon=icon
+    partialName=icon.partialName
+    partialType=icon.partialType
 }}
 </div>
 <div class="drop-down-options {{direction}}">
@@ -14,7 +15,8 @@ ButtonRound
 DropDownOption
     id=this.id
     text=this.text
-    icon=this.icon
+    iconPartialName=this.icon.partialName
+    iconPartialType=this.icon.partialType
     dataset=this.dataset
 }}
 {{/each}}

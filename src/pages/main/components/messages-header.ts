@@ -1,5 +1,5 @@
 export default `
-<div class="{{class.header}}">
+<header class="{{class.header}}">
 <div class="{{class.user}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
 <div class="{{class.user-icon}}">
 </div>
@@ -13,5 +13,5 @@ DropDown
     direction=(lookup @root.ddTop 'direction')
     icon=(lookup @root.ddTop 'icon')
 }}
-</div>
+</header>
 `;
