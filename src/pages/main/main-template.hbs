@@ -13,8 +13,10 @@
                 Профиль
             </div>
         </div>
-        <div class="{{styles.search}} {{#if state.search.length}}{{styles.filled}}{{/if}}">
-            <input type="text" value="{{state.search}}" placeholder="Поиск">
+        <div class="{{styles.search}} {{#if state.searchForm.fields.search.length}}{{styles.filled}}{{/if}}">
+            <form>
+                <input type="text" value="{{state.searchForm.fields.search}}" placeholder="Поиск" data-input="{{searchDataset}}">
+            </form>
         </div>
         <div id="{{chatsId}}" class="{{styles.chats}}">
             {{#map state.chats fnc}}

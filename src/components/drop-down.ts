@@ -9,7 +9,7 @@ ButtonRound
     partialType=icon.partialType
 }}
 </div>
-<div class="drop-down-options {{direction}}">
+<ul class="drop-down-options {{direction}}">
 {{#each options}}
 {{>
 DropDownOption
@@ -20,6 +20,6 @@ DropDownOption
     dataset=this.dataset
 }}
 {{/each}}
-</div>
+</ul>
 </div>
 `;

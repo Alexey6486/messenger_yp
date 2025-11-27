@@ -16,6 +16,7 @@ export const GetMainPage = (state: IMainPageState) => {
         messageDataset: DATASET.MESSAGE,
         profileBtnDataset: DATASET.PAGE_LINK,
         profileLink: CLASSES.PRL,
+        searchDataset: DATASET.SEARCH,
         submit: {
             id: 'send-message',
             type: 'send-message',

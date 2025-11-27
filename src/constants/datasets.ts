@@ -7,4 +7,5 @@ export const DATASET: Record<string, string> = {
     BTN: 'btn',
     MODAL: 'modal',
     CLOSE: 'close',
+    SEARCH: 'search',
 };

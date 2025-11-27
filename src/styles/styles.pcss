@@ -170,6 +170,9 @@ input {
     }
 
     & > .drop-down-options {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
         position: absolute;
         box-shadow: var(--shadow-btn);
         background-color: white;
@@ -184,14 +187,18 @@ input {
             cursor: pointer;
             min-width: 100%;
 
-            & > .drop-down-option-icon {
-                margin-right: 10px;
-            }
+            & > .drop-down-option-link {
+                display: flex;
+                align-items: center;
 
+                & > .drop-down-option-icon {
+                    margin-right: 10px;
+                }
+            }
             &:hover {
                 background-color: var(--color-gl);
 
-                & > .drop-down-option-text {
+                & .drop-down-option-text {
                     color: var(--color-hv);
                 }
 
@@ -208,6 +215,7 @@ input {
                 }
             }
         }
+
 
         &.top {
             bottom: 120%;

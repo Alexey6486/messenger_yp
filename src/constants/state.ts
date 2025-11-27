@@ -42,9 +42,9 @@ export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
     isDataEdit: false,
     isPasswordEdit: false,
     password: {
-        old: '',
-        new: '',
-        repeat: '',
+        oldPassword: '',
+        newPassword: '',
+        repeatPassword: '',
     },
     user: {
         id: 'logged_user',
@@ -70,7 +70,10 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
         phone: '123456789',
     },
     currentChatId: 'chat_id_1',
-    search: '',
+    searchForm: {
+        fields: { search: '' },
+        errors: { search: '' },
+    },
     message: '',
     messages: [
         {

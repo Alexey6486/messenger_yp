@@ -10,7 +10,7 @@ export default `
     }}
     <form class="{{class.message-form}}">
         <input id="message-input" class="{{class.message-input}}" type="text" value="{{message}}" placeholder="Сообщение" />
-   </form>
+    </form>
     {{>
     ButtonRound
         id=submit.id

@@ -443,6 +443,7 @@ export default class App {
             this.setChatSwitchListener(IDS.CHATS_LIST_ID);
             this.setDropDownListener(DATASET.DD);
             this.setToPageListener(`[data-profile-btn=${DATASET.PAGE_LINK}]`, PAGES.PROFILE);
+            this.setInputListener(this.state.pages.main.searchForm.fields);
         }
         else if (this.state.currentPage === PAGES.PROFILE) {
             this.setToPageListener(`[data-btn=${DATASET.PAGE_LINK}]`, PAGES.MAIN);

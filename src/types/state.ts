@@ -1,5 +1,9 @@
 import type { TPages } from '@/types';
 
+export interface ISearchForm {
+    search: string
+}
+
 export interface ILoginForm {
     login: string
     password: string
@@ -27,7 +31,7 @@ export interface IPageState<T> {
     form: IFormState<T>
 }
 
-export type TFormsFields = ILoginForm & IRegistrationFormUi;
+export type TFormsFields = ILoginForm & IRegistrationFormUi & ISearchForm;
 
 export interface IUserBase {
     id: string
@@ -67,7 +71,7 @@ export interface IChat {
 export interface IMainPageState {
     user: IUserResponse | null
     currentChatId: string | null
-    search: string
+    searchForm: IFormState<ISearchForm>
     message: string
     chats: IChat[]
     messages: IChat[] | null
@@ -82,9 +86,9 @@ export interface IProfilePageState {
     isDataEdit: boolean
     isPasswordEdit: boolean
     password: {
-        old: string,
-        new: string,
-        repeat: string,
+        oldPassword: string,
+        newPassword: string,
+        repeatPassword: string,
     },
     user: IUserResponse
 }
