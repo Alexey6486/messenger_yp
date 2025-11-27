@@ -5,4 +5,6 @@ export const DATASET: Record<string, string> = {
     MESSAGE: 'message',
     PAGE_LINK: 'pageLink',
     BTN: 'btn',
+    MODAL: 'modal',
+    CLOSE: 'close',
 };

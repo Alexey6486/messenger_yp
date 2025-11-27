@@ -273,10 +273,45 @@ input {
     z-index: 8000;
 
     & > .modal-container {
-        padding: 20px;
+        padding: 30px 20px 20px;
         box-shadow: var(--shadow-btn);
         background-color: white;
         min-width: 400px;
         min-height: 300px;
+        position: relative;
+
+        & > .modal-container-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+            width: 15px;
+            height: 15px;
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                top: 7px;
+                width: 15px;
+                height: 1px;
+                background-color: var(--color-bl);
+            }
+
+            &::before {
+                rotate: 45deg;
+            }
+
+            &::after {
+                rotate: -45deg;
+            }
+
+            &:hover {
+                &::before,
+                &::after {
+                    background-color: var(--color-hv);
+                }
+            }
+        }
     }
 }

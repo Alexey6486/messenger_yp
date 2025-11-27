@@ -274,6 +274,25 @@ export default class App {
         }
     }
 
+    setModalListener() {
+        const modal = document.querySelector(`[data-modal=${DATASET.MODAL}]`);
+
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                e.stopImmediatePropagation();
+                const targetElement = e?.target as HTMLInputElement | undefined;
+                if (targetElement && targetElement.dataset[DATASET.CLOSE] === DATASET.CLOSE) {
+                    if (modal.remove) {
+                        modal.remove();
+                    }
+                    else if (modal.parentNode) {
+                        modal.parentNode.removeChild(modal);
+                    }
+                }
+            });
+        }
+    }
+
     setDropDownListener(dataset: string) {
         const dropdowns = document.querySelectorAll(`[data-dd=${dataset}]`);
 
@@ -327,6 +346,10 @@ export default class App {
                                         'afterend',
                                         Pages.GetModal({ name: 'test' }, MODALS.AddUserModal),
                                     );
+                                    if (dropdown.classList.contains(CLASSES.ACT)) {
+                                        dropdown.classList.remove(CLASSES.ACT);
+                                    }
+                                    this.setModalListener();
                                     break
                                 }
                                 default: {
