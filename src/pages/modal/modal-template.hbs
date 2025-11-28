@@ -1,5 +1,5 @@
 <div id="modal" class="modal" data-modal="modal" data-close="close">
-<div class="modal-container">
+<main class="modal-container">
 <div class="modal-close" data-close="close"></div>
 <div class="modal-header"><h3>{{state.title}}</h3></div>
 <div class="modal-content">
@@ -10,7 +10,7 @@
 {{>
 Button
     id=state.button.save.id
-    type=state.button.save.dataset
+    dataset=state.button.save.dataset
     text=state.button.save.text
 }}
 </div>
@@ -18,5 +18,5 @@ Button
 <div class="modal-error">{{state.error}}</div>
 {{/if}}
 </div>
-</div>
+</main>
 </div>

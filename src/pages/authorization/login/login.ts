@@ -9,8 +9,8 @@ export const GetLoginPage = (state: IFormState<ILoginForm>) => {
     return content({
         styles,
         state,
-        buttonsId: IDS.FORM_BUTTONS_ID,
-        formId: IDS.FORM_LOGIN_ID,
+        buttonsId: IDS.FBT,
+        formId: IDS.FLG,
         btn_type_auth: PAGES.AUTHORIZATION,
         btn_type_reg: PAGES.REGISTRATION,
     });

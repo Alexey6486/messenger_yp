@@ -3,19 +3,19 @@
         <div class="{{styles.profile}}">
             {{>
             DropDown
-                    id=(lookup @root.ddNav 'id')
-                    dataset=(lookup @root.ddNav 'dataset')
-                    options=(lookup @root.ddNav 'options')
-                    direction=(lookup @root.ddNav 'direction')
-                    icon=(lookup @root.ddNav 'icon')
+                id=(lookup @root.ddNav 'id')
+                dataset=(lookup @root.ddNav 'dataset')
+                options=(lookup @root.ddNav 'options')
+                direction=(lookup @root.ddNav 'direction')
+                icon=(lookup @root.ddNav 'icon')
             }}
             <a class="{{styles.link}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
                 Профиль
             </a>
         </div>
         <div class="{{styles.search}} {{#if state.searchForm.fields.search.length}}{{styles.filled}}{{/if}}">
-            <form>
-                <input type="text" value="{{state.searchForm.fields.search}}" placeholder="Поиск" data-input="{{searchDataset}}">
+            <form id="{{searchFormId}}">
+                <input type="text" name="search" value="{{state.searchForm.fields.search}}" placeholder="Поиск" data-input="{{searchDataset}}">
             </form>
         </div>
         <ul id="{{chatsId}}" class="{{styles.chats}}">
@@ -46,9 +46,9 @@
                 messages=(lookup @root.state.messages)
             }}
         {{else}}
-            <div class="{{styles.placeholder}}">
+            <main class="{{styles.placeholder}}">
                 Выберете чат, чтобы отправить сообщение
-            </div>
+            </main>
         {{/if}}
     </div>
 </div>

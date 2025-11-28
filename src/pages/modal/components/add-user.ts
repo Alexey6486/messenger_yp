@@ -9,6 +9,7 @@ Field
     error=state.form.errors.login
     value=state.form.fields.login
     dataset="login"
+    name="login"
 }}
 </div>
 `;

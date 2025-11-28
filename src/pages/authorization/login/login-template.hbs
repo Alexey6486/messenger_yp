@@ -1,45 +1,48 @@
 <div class="{{styles.container}}">
-    <div class="{{styles.block}}">
+    <main class="{{styles.block}}">
         <div class="{{styles.title}}">
             <h3>Вход</h3>
         </div>
-        <div>
-            <form id="{{formId}}">
+        <form id="{{formId}}" class="{{styles.form}}">
+            <div class="{{styles.fields-group}}">
                 {{>
-                    Field
-                        id="login"
-                        placeholder="Логин"
-                        type="text"
-                        label="Логин"
-                        error=state.errors.login
-                        value=state.fields.login
-                        dataset="login"
+                Field
+                    id="login"
+                    placeholder="Логин"
+                    type="text"
+                    label="Логин"
+                    error=state.errors.login
+                    value=state.fields.login
+                    dataset="login"
+                    name="login"
                 }}
                 {{>
-                    Field
-                        id="password"
-                        placeholder="Пароль"
-                        type="password"
-                        label="Пароль"
-                        error=state.errors.password
-                        value=state.fields.password
-                        dataset="password"
+                Field
+                    id="password"
+                    placeholder="Пароль"
+                    type="password"
+                    label="Пароль"
+                    error=state.errors.password
+                    value=state.fields.password
+                    dataset="password"
+                    name="password"
                 }}
-            </form>
-        </div>
+            </div>
+            {{>
+            Button
+                text="Войти"
+                class=styles.button
+                dataset=btn_type_auth
+                type="submit"
+            }}
+        </form>
         <div class="{{styles.buttons}}" id="{{buttonsId}}">
             {{>
-                Button
-                    text="Войти"
-                    class=styles.button
-                    type=btn_type_auth
-            }}
-            {{>
-                Button
-                    text="Зарегистрироваться"
-                    class=styles.button
-                    type=btn_type_reg
+            Button
+                text="Зарегистрироваться"
+                class=styles.button
+                dataset=btn_type_reg
             }}
         </div>
-    </div>
+    </main>
 </div>

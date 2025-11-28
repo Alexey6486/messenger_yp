@@ -1,7 +1,7 @@
 import * as Handlebars from 'handlebars';
 import template from './error-template.hbs?raw';
-import type { IErrorPageState } from '@/types';
 import { DATASET, IDS } from '@/constants';
+import type { IErrorPageState } from '@/types';
 import styles from './styles.module.pcss';
 
 export const GetErrorPage = (state: IErrorPageState) => {
@@ -9,7 +9,7 @@ export const GetErrorPage = (state: IErrorPageState) => {
     return content({
         styles,
         state,
-        buttonsId: IDS.ERROR_RETURN_ID,
+        buttonsId: IDS.ERR,
         dataset: DATASET.PAGE_LINK,
     });
 };

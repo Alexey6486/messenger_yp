@@ -7,10 +7,10 @@
 }
 
 .block {
-    padding: 32px 16px 64px;
+    padding: 32px 16px 20px;
     box-shadow: 0 0 5px 2px var(--color-bp);
     min-width: 300px;
-    min-height: 270px;
+    min-height: 350px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -24,9 +24,20 @@
     margin-bottom: 16px;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.fields-group {
+    margin-bottom: 20px;
+}
+
 .buttons {
     position: absolute;
-    bottom: -150px;
+    bottom: -60px;
     left: 0;
     display: flex;
     flex-direction: column;
