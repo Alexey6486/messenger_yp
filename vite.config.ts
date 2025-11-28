@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import * as path from 'path';
 import postcssPresetEnv from 'postcss-preset-env';
 import handlebars from 'vite-plugin-handlebars';
 
@@ -10,7 +11,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': '/src',
+            '@': path.resolve(__dirname, './src'),
         },
     },
     css: {
