@@ -198,7 +198,7 @@ export default class App {
     setFocusAndCursor() {
         if (this.state.focusElement) {
             const input: HTMLInputElement | null = document.querySelector(`[data-input=${this.state.focusElement}]`);
-            if (input) {
+            if (input && input instanceof HTMLInputElement) {
                 (input as HTMLInputElement).focus();
                 (input as HTMLInputElement).setSelectionRange(input.value.length, input.value.length);
             }
@@ -266,16 +266,18 @@ export default class App {
         const fields: NodeListOf<HTMLInputElement> | undefined = document.querySelectorAll('[data-input]');
         if (fields) {
             fields.forEach((el) => {
-                el.addEventListener('input', (e) => {
-                    const targetElement = e?.target as HTMLInputElement | undefined;
-                    const targetValue = targetElement?.value;
-                    const targetInput: keyof Partial<TFormsFields> | undefined = targetElement?.dataset?.input as keyof Partial<TFormsFields> | undefined;
-                    if (targetValue !== undefined && targetInput !== undefined) {
-                        state[targetInput] = targetValue;
-                        this.state.focusElement = targetInput;
-                        this.render();
-                    }
-                })
+                if (el instanceof HTMLInputElement) {
+                    el.addEventListener('input', (e) => {
+                        const targetElement = e?.target as HTMLInputElement | undefined;
+                        const targetValue = targetElement?.value;
+                        const targetInput: keyof Partial<TFormsFields> | undefined = targetElement?.dataset?.input as keyof Partial<TFormsFields> | undefined;
+                        if (targetValue !== undefined && targetInput !== undefined) {
+                            state[targetInput] = targetValue;
+                            this.state.focusElement = targetInput;
+                            this.render();
+                        }
+                    })
+                }
             })
         }
     }
@@ -286,7 +288,7 @@ export default class App {
             targetBlock.addEventListener('click', (e) => {
                 e.stopImmediatePropagation()
                 const targetElement = e?.target as HTMLElement | undefined;
-                if (targetElement) {
+                if (targetElement && targetElement instanceof HTMLElement) {
                     const chatId = searchDataset(targetElement, DATASET.CHAT, IDS.CHL);
                     if (chatId) {
                         this.state.pages.main.currentChatId = chatId;
@@ -304,7 +306,7 @@ export default class App {
             modal.addEventListener('click', function(e) {
                 e.stopImmediatePropagation();
                 const targetElement = e?.target as HTMLInputElement | undefined;
-                if (targetElement && targetElement.dataset[DATASET.CLOSE] === DATASET.CLOSE) {
+                if (targetElement && targetElement?.dataset[DATASET.CLOSE] === DATASET.CLOSE) {
                     if (modal.remove) {
                         modal.remove();
                     }
@@ -320,7 +322,7 @@ export default class App {
         const dropdowns: NodeListOf<Element> | undefined = document.querySelectorAll(`[data-dd=${dataset}]`);
 
         if (dropdowns) {
-            dropdowns.forEach(dropdown => {
+            dropdowns.forEach((dropdown) => {
                 const toggleBtn: Element | null = dropdown.querySelector(`.${CLASSES.DDB}`);
                 const options: Element | null = dropdown.querySelector(`.${CLASSES.DDO}`);
 
@@ -391,7 +393,7 @@ export default class App {
     setToPageListener(dataset: string, targetPage: TPages) {
         const links: NodeListOf<Element> | undefined = document.querySelectorAll(dataset);
         if (links) {
-            links.forEach(link => {
+            links.forEach((link) => {
                 link.addEventListener('click', (e) => {
                     e.stopImmediatePropagation();
                     this.changePage(targetPage);
