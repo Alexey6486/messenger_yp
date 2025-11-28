@@ -10,15 +10,16 @@
     </aside>
     <main class="{{styles.right}}">
         <div class="{{styles.content}}">
-            <div class="{{styles.avatar}}">
-                <div class="{{styles.image}}">
-                    <div class="{{styles.mask}}">
-                        Поменять аватар
-                    </div>
-                </div>
-                <div class="{{styles.name}}">{{state.user.first_name}}</div>
-            </div>
             <form id="{{ids.formId}}" class="{{styles.form}}">
+                <div class="{{styles.avatar}}">
+                    <div class="{{styles.image}}">
+                        <input type="file" name="avatar" class="{{styles.image-input}}">
+                        <div class="{{styles.mask}}">
+                            Поменять аватар
+                        </div>
+                    </div>
+                    <div class="{{styles.name}}">{{state.user.first_name}}</div>
+                </div>
                 <div class="{{styles.fields-group}}">
                     {{#if state.isPasswordEdit}}
                         <div class="{{styles.block}}">
