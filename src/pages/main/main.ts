@@ -11,7 +11,8 @@ export const GetMainPage = (state: IMainPageHbsState) => {
         styles,
         state,
         fnc: formatContentLength,
-        chatsId: IDS.CHATS_LIST_ID,
+        searchFormId: IDS.FSR,
+        chatsId: IDS.CHL,
         chatsDataset: DATASET.CHAT,
         messageDataset: DATASET.MESSAGE,
         profileBtnDataset: DATASET.PAGE_LINK,
@@ -19,11 +20,12 @@ export const GetMainPage = (state: IMainPageHbsState) => {
         searchDataset: DATASET.SEARCH,
         submit: {
             id: 'send-message',
-            type: 'send-message',
+            dataset: 'send-message',
             icon: {
                 partialName: ICONS.IconArrowRight,
                 partialType: PARTIALS_TYPES.ICON,
             },
+            formId: IDS.FMS,
         },
         ddNav: {
             id: 'ddNav',

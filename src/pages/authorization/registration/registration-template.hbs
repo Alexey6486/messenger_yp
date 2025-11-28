@@ -1,95 +1,103 @@
 <div class="{{styles.container}}">
-    <div class="{{styles.block}}">
+    <main class="{{styles.block}}">
         <div class="{{styles.title}}">
             <h3>Регистрация</h3>
         </div>
-        <div>
-            <form id="{{formId}}">
+        <form id="{{formId}}">
+            <div class="{{styles.fields-group}}">
                 {{>
                 Field
-                        id="email"
-                        placeholder="Почта"
-                        type="text"
-                        label="Почта"
-                        error=state.errors.email
-                        value=state.fields.email
-                        dataset="email"
+                    id="email"
+                    placeholder="Почта"
+                    type="text"
+                    label="Почта"
+                    error=state.errors.email
+                    value=state.fields.email
+                    dataset="email"
+                    name="email"
                 }}
                 {{>
                 Field
-                        id="login"
-                        placeholder="Логин"
-                        type="text"
-                        label="Логин"
-                        error=state.errors.login
-                        value=state.fields.login
-                        dataset="login"
+                    id="login"
+                    placeholder="Логин"
+                    type="text"
+                    label="Логин"
+                    error=state.errors.login
+                    value=state.fields.login
+                    dataset="login"
+                    name="login"
                 }}
                 {{>
                 Field
-                        id="first_name"
-                        placeholder="Имя"
-                        type="text"
-                        label="Имя"
-                        error=state.errors.first_name
-                        value=state.fields.first_name
-                        dataset="first_name"
+                    id="first_name"
+                    placeholder="Имя"
+                    type="text"
+                    label="Имя"
+                    error=state.errors.first_name
+                    value=state.fields.first_name
+                    dataset="first_name"
+                    name="first_name"
                 }}
                 {{>
                 Field
-                        id="second_name"
-                        placeholder="Фамилия"
-                        type="text"
-                        label="Фамилия"
-                        error=state.errors.second_name
-                        value=state.fields.second_name
-                        dataset="second_name"
+                    id="second_name"
+                    placeholder="Фамилия"
+                    type="text"
+                    label="Фамилия"
+                    error=state.errors.second_name
+                    value=state.fields.second_name
+                    dataset="second_name"
+                    name="second_name"
                 }}
                 {{>
                 Field
-                        id="phone"
-                        placeholder="Телефон"
-                        type="text"
-                        label="Телефон"
-                        error=state.errors.phone
-                        value=state.fields.phone
-                        dataset="phone"
+                    id="phone"
+                    placeholder="Телефон"
+                    type="text"
+                    label="Телефон"
+                    error=state.errors.phone
+                    value=state.fields.phone
+                    dataset="phone"
+                    name="phone"
                 }}
                 {{>
                 Field
-                        id="password"
-                        placeholder="Пароль"
-                        type="text"
-                        label="Пароль"
-                        error=state.errors.password
-                        value=state.fields.password
-                        dataset="password"
+                    id="password"
+                    placeholder="Пароль"
+                    type="text"
+                    label="Пароль"
+                    error=state.errors.password
+                    value=state.fields.password
+                    dataset="password"
+                    name="password"
                 }}
                 {{>
                 Field
-                        id="confirmPassword"
-                        placeholder="Пароль (еще раз)"
-                        type="text"
-                        label="Пароль (еще раз)"
-                        error=state.errors.confirmPassword
-                        value=state.fields.confirmPassword
-                        dataset="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Пароль (еще раз)"
+                    type="text"
+                    label="Пароль (еще раз)"
+                    error=state.errors.confirmPassword
+                    value=state.fields.confirmPassword
+                    dataset="confirmPassword"
+                    name="confirmPassword"
                 }}
-            </form>
-        </div>
+            </div>
+            {{>
+            Button
+                text="Зарегистрироваться"
+                class=styles.button
+                dataset=btn_type_reg
+                type="submit"
+            }}
+        </form>
         <div class="{{styles.buttons}}" id="{{buttonsId}}">
             {{>
-                Button
-                    text="Зарегистрироваться"
-                    class=styles.button
-                    type=btn_type_reg
-            }}
-            {{>
-                Button
-                    text="Назад"
-                    class=styles.button
-                    type=btn_type_auth
+            Button
+                text="Назад"
+                class=styles.button
+                dataset=btn_type_auth
             }}
         </div>
-    </div>
+    </main>
 </div>

@@ -1,10 +1,10 @@
 export default `
 <div class="{{class.messages}}">
 {{>
-    MessagesHeader
-        class=(lookup @root.styles)
-        profileBtnDataset=(lookup @root.profileBtnDataset)
-        profileLink=(lookup @root.profileLink)
+MessagesHeader
+    class=(lookup @root.styles)
+    profileBtnDataset=(lookup @root.profileBtnDataset)
+    profileLink=(lookup @root.profileLink)
 }}
 <main class="{{class.main}}">
 {{#if messages}}
@@ -28,10 +28,11 @@ Message
 {{/if}}
 </main>
 {{>
-    MessagesFooter
-        class=(lookup @root.styles)
-        submit=(lookup @root.submit)
-        message=(lookup @root.state.message)
+MessagesFooter
+    class=(lookup @root.styles)
+    submit=(lookup @root.submit)
+    message=(lookup @root.state.message)
+    formId=(lookup @root.submit.formId)
 }}
 </div>
 `;

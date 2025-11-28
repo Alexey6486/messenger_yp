@@ -18,6 +18,7 @@ export const GetProfilePage = (state: IProfilePageHbsState) => {
             saveData: IDS.ASD,
             savePassword: IDS.ASP,
             cancel: IDS.ACL,
+            formId: IDS.FAC,
         },
         datasets: {
             account: DATASET.BTN,

@@ -9,8 +9,8 @@ export const GetRegistrationPage = (state: IFormState<IRegistrationFormUi>) => {
     return content({
         styles,
         state,
-        buttonsId: IDS.FORM_BUTTONS_ID,
-        formId: IDS.FORM_REGISTRATION_ID,
+        buttonsId: IDS.FBT,
+        formId: IDS.FRG,
         btn_type_auth: PAGES.AUTHORIZATION,
         btn_type_reg: PAGES.REGISTRATION,
     });

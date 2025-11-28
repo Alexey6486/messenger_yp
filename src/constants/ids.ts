@@ -1,9 +1,9 @@
 export const IDS: Record<string, string> = {
-    FORM_BUTTONS_ID: 'form-buttons',
-    FORM_LOGIN_ID: 'form-login',
-    FORM_REGISTRATION_ID: 'form-registration',
-    ERROR_RETURN_ID: 'error-return-btn',
-    CHATS_LIST_ID: 'chats-list',
+    FBT: 'form-buttons',
+    FLG: 'form-login',
+    FRG: 'form-registration',
+    ERR: 'error-return-btn',
+    CHL: 'chats-list',
     ACD: 'account-change-data',
     ACP: 'account-change-password',
     ALG: 'account-logout',
@@ -11,4 +11,7 @@ export const IDS: Record<string, string> = {
     ASD: 'account-save-data',
     ASP: 'account-save-password',
     ACL: 'account-cancel',
+    FAC: 'account-form',
+    FSR: 'search-form',
+    FMS: 'message-form',
 };

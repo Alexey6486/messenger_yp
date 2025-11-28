@@ -187,7 +187,7 @@ export default class App {
                 break;
             }
             case PAGES.PROFILE: {
-                this.state.pages.registration.form = JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE));
+                this.state.pages.profile = JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE));
                 break;
             }
             default:
@@ -207,18 +207,16 @@ export default class App {
     }
 
     setChangePageListener(buttonsBlockId: string) {
-        const targetBlock = document.getElementById(buttonsBlockId);
+        const targetBlock: HTMLElement | null = document.getElementById(buttonsBlockId);
         if (targetBlock) {
             targetBlock.addEventListener('click', (e) => {
+                e.preventDefault();
                 const targetElement = e?.target as HTMLElement | undefined;
                 const targetDataSet = targetElement?.dataset?.btn as TPages | undefined;
                 if (targetDataSet) {
                     switch (targetDataSet) {
                         case PAGES.AUTHORIZATION: {
-                            if (this.state.currentPage === PAGES.AUTHORIZATION) {
-                                this.changePage(PAGES.MAIN, true);
-                            }
-                            else if (this.state.currentPage === PAGES.REGISTRATION) {
+                            if (this.state.currentPage === PAGES.REGISTRATION) {
                                 this.changePage(targetDataSet, true);
                             }
                             break;
@@ -226,9 +224,6 @@ export default class App {
                         case PAGES.REGISTRATION: {
                             if (this.state.currentPage === PAGES.AUTHORIZATION) {
                                 this.changePage(targetDataSet, true);
-                            }
-                            else if (this.state.currentPage === PAGES.REGISTRATION) {
-                                this.changePage(PAGES.MAIN, true);
                             }
                             break;
                         }
@@ -244,30 +239,55 @@ export default class App {
         }
     }
 
-    setInputListener(state: Partial<TFormsFields>) {
-        const fields = document.querySelectorAll('[data-input]');
-        fields.forEach((el) => {
-            el.addEventListener('input', (e) => {
-                const targetElement = e?.target as HTMLInputElement | undefined;
-                const targetValue = targetElement?.value;
-                const targetInput: keyof Partial<TFormsFields> | undefined = targetElement?.dataset?.input as keyof Partial<TFormsFields> | undefined;
-                if (targetValue !== undefined && targetInput !== undefined) {
-                    state[targetInput] = targetValue;
-                    this.state.focusElement = targetInput;
-                    this.render();
-                }
-            })
+    setFormSubmitListener(formIdList: string[]) {
+        formIdList.forEach((targetId) => {
+            const targetForm: HTMLElement | null = document.getElementById(targetId);
+            if (targetForm) {
+                targetForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (this.state.currentPage === PAGES.AUTHORIZATION) {
+                        this.changePage(PAGES.MAIN, true);
+                    }
+                    else if (this.state.currentPage === PAGES.REGISTRATION) {
+                        this.changePage(PAGES.MAIN, true);
+                    }
+                    else if (this.state.currentPage === PAGES.PROFILE) {
+                        this.changePage(PAGES.PROFILE, true);
+                    }
+                    else if (this.state.currentPage === PAGES.MAIN) {
+                        return;
+                    }
+                })
+            }
         })
     }
 
+    setInputListener(state: Partial<TFormsFields>) {
+        const fields: NodeListOf<HTMLInputElement> | undefined = document.querySelectorAll('[data-input]');
+        if (fields) {
+            fields.forEach((el) => {
+                el.addEventListener('input', (e) => {
+                    const targetElement = e?.target as HTMLInputElement | undefined;
+                    const targetValue = targetElement?.value;
+                    const targetInput: keyof Partial<TFormsFields> | undefined = targetElement?.dataset?.input as keyof Partial<TFormsFields> | undefined;
+                    if (targetValue !== undefined && targetInput !== undefined) {
+                        state[targetInput] = targetValue;
+                        this.state.focusElement = targetInput;
+                        this.render();
+                    }
+                })
+            })
+        }
+    }
+
     setChatSwitchListener(chatsId: string) {
-        const targetBlock = document.getElementById(chatsId);
+        const targetBlock: HTMLElement | null = document.getElementById(chatsId);
         if (targetBlock) {
             targetBlock.addEventListener('click', (e) => {
                 e.stopImmediatePropagation()
                 const targetElement = e?.target as HTMLElement | undefined;
                 if (targetElement) {
-                    const chatId = searchDataset(targetElement, DATASET.CHAT, IDS.CHATS_LIST_ID);
+                    const chatId = searchDataset(targetElement, DATASET.CHAT, IDS.CHL);
                     if (chatId) {
                         this.state.pages.main.currentChatId = chatId;
                         this.render();
@@ -278,7 +298,7 @@ export default class App {
     }
 
     setModalListener() {
-        const modal = document.querySelector(`[data-modal=${DATASET.MODAL}]`);
+        const modal: Element | null = document.querySelector(`[data-modal=${DATASET.MODAL}]`);
 
         if (modal) {
             modal.addEventListener('click', function(e) {
@@ -297,77 +317,79 @@ export default class App {
     }
 
     setDropDownListener(dataset: string) {
-        const dropdowns = document.querySelectorAll(`[data-dd=${dataset}]`);
+        const dropdowns: NodeListOf<Element> | undefined = document.querySelectorAll(`[data-dd=${dataset}]`);
 
-        dropdowns.forEach(dropdown => {
+        if (dropdowns) {
+            dropdowns.forEach(dropdown => {
+                const toggleBtn: Element | null = dropdown.querySelector(`.${CLASSES.DDB}`);
+                const options: Element | null = dropdown.querySelector(`.${CLASSES.DDO}`);
 
-            const toggleBtn = dropdown.querySelector(`.${CLASSES.DDB}`);
-            const options = dropdown.querySelector(`.${CLASSES.DDO}`);
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (dropdown.classList.contains(CLASSES.ACT)) {
-                        dropdown.classList.remove(CLASSES.ACT);
-                    } else {
-                        dropdown.classList.add(CLASSES.ACT);
-                    }
-                });
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (dropdown.classList.contains(CLASSES.ACT)) {
+                            dropdown.classList.remove(CLASSES.ACT);
+                        } else {
+                            dropdown.classList.add(CLASSES.ACT);
+                        }
+                    });
 
-                document.addEventListener('click', function(e) {
-                    const target = e.target as Node | null;
-                    if (!dropdown.contains(target)) {
-                        dropdown.classList.remove(CLASSES.ACT);
-                    }
-                });
-            }
+                    document.addEventListener('click', function(e) {
+                        const target = e.target as Node | null;
+                        if (!dropdown.contains(target)) {
+                            dropdown.classList.remove(CLASSES.ACT);
+                        }
+                    });
+                }
 
-            if (options) {
-                options.addEventListener('click', (e) => {
-                    e.stopImmediatePropagation()
-                    const targetElement = e?.target as HTMLElement | undefined;
-                    if (targetElement) {
-                        const optionId = searchDataset(targetElement, DATASET.OPTION, undefined, CLASSES.DDO);
-                        if (optionId) {
-                            switch (optionId) {
-                                case PAGES.AUTHORIZATION: {
-                                    this.changePage(PAGES.AUTHORIZATION);
-                                    break
-                                }
-                                case PAGES.REGISTRATION: {
-                                    this.changePage(PAGES.REGISTRATION);
-                                    break
-                                }
-                                case PAGES.ERROR: {
-                                    this.changePage(PAGES.ERROR);
-                                    break
-                                }
-                                case DD_ACTIONS.ADD_USER_MODAL: {
-                                    if (!(this.appElement && "innerHTML" in this.appElement)) {
+                if (options) {
+                    options.addEventListener('click', (e) => {
+                        e.stopImmediatePropagation()
+                        const targetElement = e?.target as HTMLElement | undefined;
+                        if (targetElement) {
+                            const optionId = searchDataset(targetElement, DATASET.OPTION, undefined, CLASSES.DDO);
+                            if (optionId) {
+                                switch (optionId) {
+                                    case PAGES.AUTHORIZATION: {
+                                        this.changePage(PAGES.AUTHORIZATION);
+                                        break
+                                    }
+                                    case PAGES.REGISTRATION: {
+                                        this.changePage(PAGES.REGISTRATION);
+                                        break
+                                    }
+                                    case PAGES.ERROR: {
+                                        this.changePage(PAGES.ERROR);
+                                        break
+                                    }
+                                    case DD_ACTIONS.ADD_USER_MODAL: {
+                                        if (!(this.appElement && "innerHTML" in this.appElement)) {
+                                            break;
+                                        }
+                                        this.appElement.insertAdjacentHTML(
+                                            'afterend',
+                                            Pages.GetModal(INIT_ADD_USER_MODAL_STATE, MODALS.AddUserModal),
+                                        );
+                                        if (dropdown.classList.contains(CLASSES.ACT)) {
+                                            dropdown.classList.remove(CLASSES.ACT);
+                                        }
+                                        this.setModalListener();
+                                        break
+                                    }
+                                    default: {
                                         break;
                                     }
-                                    this.appElement.insertAdjacentHTML(
-                                        'afterend',
-                                        Pages.GetModal(INIT_ADD_USER_MODAL_STATE, MODALS.AddUserModal),
-                                    );
-                                    if (dropdown.classList.contains(CLASSES.ACT)) {
-                                        dropdown.classList.remove(CLASSES.ACT);
-                                    }
-                                    this.setModalListener();
-                                    break
-                                }
-                                default: {
-                                    break;
                                 }
                             }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 
     setToPageListener(dataset: string, targetPage: TPages) {
-        const links = document.querySelectorAll(dataset);
+        const links: NodeListOf<Element> | undefined = document.querySelectorAll(dataset);
         if (links) {
             links.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -379,7 +401,7 @@ export default class App {
     }
 
     setDataChangeButtonsListener(dataset: string) {
-        const links = document.querySelectorAll(dataset);
+        const links: NodeListOf<Element> | undefined = document.querySelectorAll(dataset);
         if (links) {
             links.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -402,16 +424,6 @@ export default class App {
                                 this.changePage(PAGES.AUTHORIZATION, true);
                                 break;
                             }
-                            case IDS.ASD: {
-                                this.state.pages.profile.isDataEdit = false;
-                                this.render();
-                                break;
-                            }
-                            case IDS.ASP: {
-                                this.state.pages.profile.isPasswordEdit = false;
-                                this.render();
-                                break;
-                            }
                             case IDS.ACL: {
                                 this.state.pages.profile.isPasswordEdit = false;
                                 this.state.pages.profile.isDataEdit = false;
@@ -431,28 +443,32 @@ export default class App {
     attachEventListener() {
         this.setFocusAndCursor();
         if (this.state.currentPage === PAGES.AUTHORIZATION) {
-            this.setChangePageListener(IDS.FORM_BUTTONS_ID);
+            this.setChangePageListener(IDS.FBT);
             this.setInputListener(this.state.pages.authorization.form.fields);
+            this.setFormSubmitListener([IDS.FLG]);
         }
         else if (this.state.currentPage === PAGES.REGISTRATION) {
-            this.setChangePageListener(IDS.FORM_BUTTONS_ID);
+            this.setChangePageListener(IDS.FBT);
             this.setInputListener(this.state.pages.registration.form.fields);
+            this.setFormSubmitListener([IDS.FRG]);
         }
         else if (this.state.currentPage === PAGES.ERROR) {
-            this.setChangePageListener(IDS.ERROR_RETURN_ID);
+            this.setChangePageListener(IDS.ERR);
             this.setToPageListener(`[data-error=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
         }
         else if (this.state.currentPage === PAGES.MAIN) {
-            this.setChatSwitchListener(IDS.CHATS_LIST_ID);
+            this.setChatSwitchListener(IDS.CHL);
             this.setDropDownListener(DATASET.DD);
             this.setToPageListener(`[data-profile-btn=${DATASET.PAGE_LINK}]`, PAGES.PROFILE);
             this.setInputListener(this.state.pages.main.searchForm.fields);
+            this.setFormSubmitListener([IDS.FSR, IDS.FMS]);
         }
         else if (this.state.currentPage === PAGES.PROFILE) {
             this.setToPageListener(`[data-btn=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
             this.setDataChangeButtonsListener(`[data-btn=${DATASET.BTN}]`);
             this.setInputListener(this.state.pages.profile.passwordForm.fields);
             this.setInputListener(this.state.pages.profile.userForm.fields);
+            this.setFormSubmitListener([IDS.FAC]);
         }
     };
 
