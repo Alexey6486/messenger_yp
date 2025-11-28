@@ -22,6 +22,23 @@ export interface IRegistrationFormUi extends IRegistrationFormDto {
     confirmPassword: string
 }
 
+export interface IUserDataForm {
+    id: string
+    first_name: string
+    second_name: string
+    display_name: string
+    avatar: string
+    login: string
+    email: string
+    phone: string
+}
+
+export interface IUserPasswordForm {
+    oldPassword: string
+    newPassword: string
+    confirmPassword: string
+}
+
 export interface IFormState<T> {
     fields: T
     errors: T
@@ -68,13 +85,35 @@ export interface IChat {
     last_message: IChatLastMessage
 }
 
+export interface IModalState<T> {
+    title: string
+    button: {
+        save: {
+            text: string,
+            id: string,
+            dataset: string,
+        },
+    }
+    form: IFormState<T>
+    error: string
+}
+
+export interface IAddUserModalState {
+    login: string
+}
+
+export type TModalFields = IAddUserModalState;
+
 export interface IMainPageState {
-    user: IUserResponse | null
     currentChatId: string | null
     searchForm: IFormState<ISearchForm>
     message: string
     chats: IChat[]
     messages: IChat[] | null
+}
+
+export interface IMainPageHbsState extends IMainPageState {
+    user: IUserResponse,
 }
 
 export interface IErrorPageState {
@@ -85,22 +124,23 @@ export interface IErrorPageState {
 export interface IProfilePageState {
     isDataEdit: boolean
     isPasswordEdit: boolean
-    password: {
-        oldPassword: string,
-        newPassword: string,
-        repeatPassword: string,
-    },
-    user: IUserResponse
+    passwordForm: IFormState<IUserPasswordForm>,
+    userForm: IFormState<IUserDataForm>,
+}
+
+export interface IProfilePageHbsState extends IProfilePageState {
+    user: IUserResponse,
 }
 
 export interface IState {
     currentPage: TPages
     focusElement: string | null
-    error: IErrorPageState
-    profile: IProfilePageState
+    user: IUserResponse,
     pages: {
         authorization: IPageState<ILoginForm>
         registration: IPageState<IRegistrationFormUi>
         main: IMainPageState
+        profile: IProfilePageState
+        error: IErrorPageState
     }
 }

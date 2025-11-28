@@ -1,11 +1,11 @@
 import * as Handlebars from 'handlebars';
 import template from './main-template.hbs?raw';
-import type { IMainPageState } from '@/types';
+import type { IMainPageHbsState } from '@/types';
 import { formatContentLength } from '@/pages/main/utils/utils';
 import { DATASET, ICONS, IDS, PAGES, CLASSES, DD_ACTIONS, PARTIALS_TYPES } from '@/constants';
 import styles from './styles.module.pcss';
 
-export const GetMainPage = (state: IMainPageState) => {
+export const GetMainPage = (state: IMainPageHbsState) => {
     const content = Handlebars.compile(template);
     return content({
         styles,

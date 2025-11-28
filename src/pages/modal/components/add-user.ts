@@ -1,6 +1,14 @@
 export default `
-<div>
-Add user
-Data: {{ state.name }}
+<div class="">
+{{>
+Field
+    id="add-user"
+    placeholder="Логин"
+    type="text"
+    label="Логин"
+    error=state.form.errors.login
+    value=state.form.fields.login
+    dataset="login"
+}}
 </div>
 `;

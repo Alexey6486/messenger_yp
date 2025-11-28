@@ -287,8 +287,11 @@ input {
         min-width: 400px;
         min-height: 300px;
         position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
 
-        & > .modal-container-close {
+        & > .modal-close {
             position: absolute;
             right: 15px;
             top: 15px;
@@ -320,6 +323,39 @@ input {
                     background-color: var(--color-hv);
                 }
             }
+        }
+
+        & > .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        & > .modal-content {
+            margin-bottom: 20px;
+        }
+
+        & > .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & > .modal-button {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                &:not(:last-child) {
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
+        & > .modal-error {
+            display: flex;
+            align-items: center;
+            color: var(--color-er);
         }
     }
 }

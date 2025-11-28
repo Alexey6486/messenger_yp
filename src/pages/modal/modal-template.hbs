@@ -1,6 +1,22 @@
 <div id="modal" class="modal" data-modal="modal" data-close="close">
 <div class="modal-container">
-<div class="modal-container-close" data-close="close"></div>
+<div class="modal-close" data-close="close"></div>
+<div class="modal-header"><h3>{{state.title}}</h3></div>
+<div class="modal-content">
 {{> (getPartialComponent partialName partialType) }}
+</div>
+<div class="modal-footer">
+<div class="modal-button">
+{{>
+Button
+    id=state.button.save.id
+    type=state.button.save.dataset
+    text=state.button.save.text
+}}
+</div>
+{{#if state.error.length}}
+<div class="modal-error">{{state.error}}</div>
+{{/if}}
+</div>
 </div>
 </div>

@@ -13,6 +13,9 @@ import {
     MODALS,
     DD_ACTIONS,
     VARIOUS,
+    INIT_USER_DATA,
+    INIT_ERROR_STATE,
+    INIT_ADD_USER_MODAL_STATE,
 } from './constants';
 import type {
     IState,
@@ -136,15 +139,13 @@ export default class App {
         this.state = {
             currentPage: PAGES.MAIN,
             focusElement: null,
-            profile: JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE)),
-            error: {
-                code: '404',
-                text: 'Страница не найдена',
-            },
+            user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
             pages: {
                 authorization: { form: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
                 registration: { form: JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE)) },
                 main: JSON.parse(JSON.stringify(INIT_MAIN_PAGE_STATE)),
+                profile: JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE)),
+                error: INIT_ERROR_STATE,
             }
         }
     }
@@ -161,13 +162,15 @@ export default class App {
             this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
         }
         else if (this.state.currentPage === PAGES.MAIN) {
-            this.appElement.innerHTML = Pages.GetMainPage(this.state.pages.main);
+            const state = { ...this.state.pages.main, user: this.state.user };
+            this.appElement.innerHTML = Pages.GetMainPage(state);
         }
         else if (this.state.currentPage === PAGES.ERROR) {
-            this.appElement.innerHTML = Pages.GetErrorPage(this.state.error);
+            this.appElement.innerHTML = Pages.GetErrorPage(this.state.pages.error);
         }
         else if (this.state.currentPage === PAGES.PROFILE) {
-            this.appElement.innerHTML = Pages.GetProfilePage(this.state.profile);
+            const state = { ...this.state.pages.profile, user: this.state.user };
+            this.appElement.innerHTML = Pages.GetProfilePage(state);
         }
 
         this.attachEventListener();
@@ -344,7 +347,7 @@ export default class App {
                                     }
                                     this.appElement.insertAdjacentHTML(
                                         'afterend',
-                                        Pages.GetModal({ name: 'test' }, MODALS.AddUserModal),
+                                        Pages.GetModal(INIT_ADD_USER_MODAL_STATE, MODALS.AddUserModal),
                                     );
                                     if (dropdown.classList.contains(CLASSES.ACT)) {
                                         dropdown.classList.remove(CLASSES.ACT);
@@ -386,12 +389,12 @@ export default class App {
                         const elementId = searchDataset(targetElement, DATASET.BTN, IDS.ABS);
                         switch (elementId) {
                             case IDS.ACD: {
-                                this.state.profile.isDataEdit = true;
+                                this.state.pages.profile.isDataEdit = true;
                                 this.render();
                                 break;
                             }
                             case IDS.ACP: {
-                                this.state.profile.isPasswordEdit = true;
+                                this.state.pages.profile.isPasswordEdit = true;
                                 this.render();
                                 break;
                             }
@@ -400,18 +403,18 @@ export default class App {
                                 break;
                             }
                             case IDS.ASD: {
-                                this.state.profile.isDataEdit = false;
+                                this.state.pages.profile.isDataEdit = false;
                                 this.render();
                                 break;
                             }
                             case IDS.ASP: {
-                                this.state.profile.isPasswordEdit = false;
+                                this.state.pages.profile.isPasswordEdit = false;
                                 this.render();
                                 break;
                             }
                             case IDS.ACL: {
-                                this.state.profile.isPasswordEdit = false;
-                                this.state.profile.isDataEdit = false;
+                                this.state.pages.profile.isPasswordEdit = false;
+                                this.state.pages.profile.isDataEdit = false;
                                 this.render();
                                 break;
                             }
@@ -448,6 +451,8 @@ export default class App {
         else if (this.state.currentPage === PAGES.PROFILE) {
             this.setToPageListener(`[data-btn=${DATASET.PAGE_LINK}]`, PAGES.MAIN);
             this.setDataChangeButtonsListener(`[data-btn=${DATASET.BTN}]`);
+            this.setInputListener(this.state.pages.profile.passwordForm.fields);
+            this.setInputListener(this.state.pages.profile.userForm.fields);
         }
     };
 

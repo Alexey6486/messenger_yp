@@ -1,5 +1,5 @@
 <div class="{{styles.container}}">
-    <aside class="{{styles.left}}">
+    <aside class="{{styles.left}} {{#unless state.currentChatId}}{{styles.left-shadow}}{{/unless}}">
         <div class="{{styles.profile}}">
             {{>
             DropDown
@@ -9,16 +9,16 @@
                     direction=(lookup @root.ddNav 'direction')
                     icon=(lookup @root.ddNav 'icon')
             }}
-            <div class="{{styles.link}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
+            <a class="{{styles.link}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
                 Профиль
-            </div>
+            </a>
         </div>
         <div class="{{styles.search}} {{#if state.searchForm.fields.search.length}}{{styles.filled}}{{/if}}">
             <form>
                 <input type="text" value="{{state.searchForm.fields.search}}" placeholder="Поиск" data-input="{{searchDataset}}">
             </form>
         </div>
-        <div id="{{chatsId}}" class="{{styles.chats}}">
+        <ul id="{{chatsId}}" class="{{styles.chats}}">
             {{#map state.chats fnc}}
                 {{#each this}}
                     {{>
@@ -35,7 +35,7 @@
                     }}
                 {{/each}}
             {{/map}}
-        </div>
+        </ul>
     </aside>
     <div class="{{styles.right}}">
         {{#if state.currentChatId}}

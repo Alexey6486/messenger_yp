@@ -25,27 +25,30 @@
                             {{>
                             ProfileField
                                 class=styles
-                                id="password"
+                                id="oldPassword"
                                 fieldName="Старый пароль"
-                                value=state.password.oldPassword
+                                value=state.passwordForm.fields.oldPassword
+                                dataset="oldPassword"
                             }}
                         </div>
                         <div class="{{styles.block}}">
                             {{>
                             ProfileField
                                 class=styles
-                                id="new"
+                                id="newPassword"
                                 fieldName="Новый пароль"
-                                value=state.password.newPassword
+                                value=state.passwordForm.fields.newPassword
+                                dataset="newPassword"
                             }}
                         </div>
                         <div class="{{styles.block}}">
                             {{>
                             ProfileField
                                 class=styles
-                                id="repeat"
+                                id="confirmPassword"
                                 fieldName="Повторите новый пароль"
-                                value=state.password.repeatPassword
+                                value=state.passwordForm.fields.confirmPassword
+                                dataset="confirmPassword"
                             }}
                         </div>
                     {{else}}
@@ -55,8 +58,9 @@
                                 class=styles
                                 id="email"
                                 fieldName="Почта"
-                                value=state.user.email
+                                value=state.userForm.fields.email
                                 isDisabled=isEditDisabled
+                                dataset="email"
                             }}
                         </div>
                         <div class="{{styles.block}}">
@@ -65,8 +69,9 @@
                                 class=styles
                                 id="login"
                                 fieldName="Логин"
-                                value=state.user.login
+                                value=state.userForm.fields.login
                                 isDisabled=isEditDisabled
+                                dataset="login"
                             }}
                         </div>
                         <div class="{{styles.block}}">
@@ -75,8 +80,9 @@
                                 class=styles
                                 id="first_name"
                                 fieldName="Имя"
-                                value=state.user.first_name
+                                value=state.userForm.fields.first_name
                                 isDisabled=isEditDisabled
+                                dataset="first_name"
                             }}
                         </div>
                         <div class="{{styles.block}}">
@@ -85,8 +91,9 @@
                                 class=styles
                                 id="second_name"
                                 fieldName="Фамилия"
-                                value=state.user.second_name
+                                value=state.userForm.fields.second_name
                                 isDisabled=isEditDisabled
+                                dataset="second_name"
                             }}
                         </div>
                         <div class="{{styles.block}}">
@@ -95,8 +102,9 @@
                                 class=styles
                                 id="display_name"
                                 fieldName="Имя в чате"
-                                value=state.user.display_name
+                                value=state.userForm.fields.display_name
                                 isDisabled=isEditDisabled
+                                dataset="display_name"
                             }}
                         </div>
                         <div class="{{styles.block}}">
@@ -105,8 +113,9 @@
                                 class=styles
                                 id="phone"
                                 fieldName="Телефон"
-                                value=state.user.phone
+                                value=state.userForm.fields.phone
                                 isDisabled=isEditDisabled
+                                dataset="phone"
                             }}
                         </div>
                     {{/if}}

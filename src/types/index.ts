@@ -14,4 +14,13 @@ export type {
     IChatUserResponse,
     IErrorPageState,
     IProfilePageState,
+    ISearchForm,
+    IUserPasswordForm,
+    IUserDataForm,
+    IUserResponse,
+    IMainPageHbsState,
+    IProfilePageHbsState,
+    IAddUserModalState,
+    TModalFields,
+    IModalState,
 } from './state';

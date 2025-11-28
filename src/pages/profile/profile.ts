@@ -1,10 +1,10 @@
 import * as Handlebars from 'handlebars';
 import template from './profile-template.hbs?raw';
-import type { IProfilePageState } from '@/types';
+import type { IProfilePageHbsState } from '@/types';
 import { DATASET, ICONS, IDS, PARTIALS_TYPES } from '@/constants';
 import styles from './styles.module.pcss';
 
-export const GetProfilePage = (state: IProfilePageState | null) => {
+export const GetProfilePage = (state: IProfilePageHbsState) => {
     const content = Handlebars.compile(template);
     return content({
         styles,
