@@ -1,0 +1,1 @@
+export { GetErrorPage } from './error';

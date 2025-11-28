@@ -1,2 +1,26 @@
 export type { TPages } from './pages';
-export type { ILoginState, IRegistrationState } from './state';
+export type {
+    IState,
+    IFormState,
+    ILoginForm,
+    IRegistrationFormUi,
+    TFormsFields,
+    IPageState,
+    IMainPageState,
+    IChat,
+    IUserBase,
+    IChatLastMessage,
+    TUserRole,
+    IChatUserResponse,
+    IErrorPageState,
+    IProfilePageState,
+    ISearchForm,
+    IUserPasswordForm,
+    IUserDataForm,
+    IUserResponse,
+    IMainPageHbsState,
+    IProfilePageHbsState,
+    IAddUserModalState,
+    TModalFields,
+    IModalState,
+} from './state';

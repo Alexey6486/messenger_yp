@@ -1,0 +1,45 @@
+<div class="{{styles.container}}">
+    <div class="{{styles.block}}">
+        <div class="{{styles.title}}">
+            <h3>Вход</h3>
+        </div>
+        <div>
+            <form id="{{formId}}">
+                {{>
+                    Field
+                        id="login"
+                        placeholder="Логин"
+                        type="text"
+                        label="Логин"
+                        error=state.errors.login
+                        value=state.fields.login
+                        dataset="login"
+                }}
+                {{>
+                    Field
+                        id="password"
+                        placeholder="Пароль"
+                        type="password"
+                        label="Пароль"
+                        error=state.errors.password
+                        value=state.fields.password
+                        dataset="password"
+                }}
+            </form>
+        </div>
+        <div class="{{styles.buttons}}" id="{{buttonsId}}">
+            {{>
+                Button
+                    text="Войти"
+                    class=styles.button
+                    type=btn_type_auth
+            }}
+            {{>
+                Button
+                    text="Зарегистрироваться"
+                    class=styles.button
+                    type=btn_type_reg
+            }}
+        </div>
+    </div>
+</div>

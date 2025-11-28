@@ -1,0 +1,1 @@
+export { GetModal } from './modal';

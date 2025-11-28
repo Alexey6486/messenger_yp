@@ -1,0 +1,1 @@
+export { GetMainPage } from './main';
