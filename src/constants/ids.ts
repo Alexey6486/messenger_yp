@@ -1,0 +1,17 @@
+export const IDS: Record<string, string> = {
+    FBT: 'form-buttons',
+    FLG: 'form-login',
+    FRG: 'form-registration',
+    ERR: 'error-return-btn',
+    CHL: 'chats-list',
+    ACD: 'account-change-data',
+    ACP: 'account-change-password',
+    ALG: 'account-logout',
+    ABS: 'account-buttons',
+    ASD: 'account-save-data',
+    ASP: 'account-save-password',
+    ACL: 'account-cancel',
+    FAC: 'account-form',
+    FSR: 'search-form',
+    FMS: 'message-form',
+};
