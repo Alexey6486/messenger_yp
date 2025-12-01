@@ -1,30 +1,39 @@
 {
-  "name": "messenger-yp",
-  "private": false,
-  "version": "0.0.0",
-  "type": "module",
-  "engines": {
-    "node": ">=16"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "start": "tsc && vite build && node server.cjs",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@types/express": "^5.0.5",
-    "@types/handlebars": "^4.1.0",
-    "@types/node": "^24.10.1",
-    "@types/postcss-preset-env": "^7.7.0",
-    "postcss": "^8.5.6",
-    "postcss-preset-env": "^10.4.0",
-    "typescript": "^5.9.3",
-    "vite": "^6.4.1",
-    "vite-plugin-handlebars": "^2.0.0"
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "handlebars": "^4.7.8"
-  }
+	"name": "messenger-yp",
+	"private": false,
+	"version": "0.0.0",
+	"type": "module",
+	"engines": {
+		"node": ">=16"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"start": "tsc && vite build && node server.cjs",
+		"preview": "vite preview",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --ext .ts --fix",
+		"lint:style": "stylelint \"**/*.pcss\"",
+		"lint:style:fix": "stylelint \"**/*.pcss\" --fix"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.5",
+		"@types/handlebars": "^4.1.0",
+		"@types/node": "^24.10.1",
+		"@types/postcss-preset-env": "^7.7.0",
+		"@typescript-eslint/eslint-plugin": "^8.48.0",
+		"@typescript-eslint/parser": "^8.48.0",
+		"eslint": "^8.57.1",
+		"postcss": "^8.5.6",
+		"postcss-preset-env": "^10.4.0",
+		"stylelint": "^16.26.1",
+		"stylelint-config-standard": "^39.0.1",
+		"typescript": "^5.9.3",
+		"vite": "^6.4.1",
+		"vite-plugin-handlebars": "^2.0.0"
+	},
+	"dependencies": {
+		"express": "^5.1.0",
+		"handlebars": "^4.7.8"
+	}
 }

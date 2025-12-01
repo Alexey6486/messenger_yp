@@ -472,7 +472,7 @@ export default class App {
             this.setInputListener(this.state.pages.profile.userForm.fields);
             this.setFormSubmitListener([IDS.FAC]);
         }
-    };
+    }
 
     changePage(targetPage: TPages, isFormReset?: boolean) {
         if (isFormReset) {
