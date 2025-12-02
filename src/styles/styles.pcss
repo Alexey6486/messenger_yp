@@ -1,5 +1,5 @@
 :root {
-	--color-lg: #BBB;
+	--color-lg: #BBBBBB;
 	--color-gr: #AFAFAF;
 	--color-g: #DEDEDE;
 	--color-slg: #FBFBFB;
@@ -143,31 +143,6 @@ input {
 .drop-down {
 	position: relative;
 
-	&.active {
-		& > .drop-down-options {
-			display: block;
-			z-index: 100;
-		}
-
-		& > .drop-down-button {
-			& > .button-round {
-				box-shadow: var(--shadow-btn);
-
-				& > .icon > svg {
-					& > line,
-					& > circle {
-						stroke: var(--color-hv);
-					}
-
-					& > rect,
-					& > path {
-						fill: var(--color-hv);
-					}
-				}
-			}
-		}
-	}
-
 	& > .drop-down-options {
 		list-style: none;
 		margin: 0;
@@ -231,6 +206,31 @@ input {
 
 		&.right {
 			left: 0;
+		}
+	}
+
+	&.active {
+		& > .drop-down-options {
+			display: block;
+			z-index: 100;
+		}
+
+		& > .drop-down-button {
+			& > .button-round {
+				box-shadow: var(--shadow-btn);
+
+				& > .icon > svg {
+					& > line,
+					& > circle {
+						stroke: var(--color-hv);
+					}
+
+					& > rect,
+					& > path {
+						fill: var(--color-hv);
+					}
+				}
+			}
 		}
 	}
 }
