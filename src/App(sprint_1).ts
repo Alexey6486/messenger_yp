@@ -130,7 +130,7 @@ Handlebars.registerHelper('not', function (value) {
 	return !value;
 });
 
-export default class App {
+export default class AppS1 {
 	private appElement: HTMLElement | null;
 	private state: IState;
 
@@ -157,19 +157,25 @@ export default class App {
 
 		if (this.state.currentPage === PAGES.AUTHORIZATION) {
 			// this.appElement.innerHTML = Pages.GetLoginPage(this.state.pages.authorization.form);
-			const loginPage = new Pages.Login(this.state.pages.authorization.form);
-			if (this.appElement) {
-				const content = loginPage.getContent();
-				console.log('app render: ', { loginPage, c: content });
-				if (content) {
-					this.appElement.appendChild(content);
-					loginPage.dispatchComponentDidMount();
-				}
-			}
+		} else if (this.state.currentPage === PAGES.REGISTRATION) {
+			this.appElement.innerHTML = Pages.GetRegistrationPage(this.state.pages.registration.form);
+		} else if (this.state.currentPage === PAGES.MAIN) {
+			const state = {
+				...this.state.pages.main,
+				user: this.state.user,
+			};
+			this.appElement.innerHTML = Pages.GetMainPage(state);
+		} else if (this.state.currentPage === PAGES.ERROR) {
+			this.appElement.innerHTML = Pages.GetErrorPage(this.state.pages.error);
+		} else if (this.state.currentPage === PAGES.PROFILE) {
+			const state = {
+				...this.state.pages.profile,
+				user: this.state.user,
+			};
+			this.appElement.innerHTML = Pages.GetProfilePage(state);
 		}
 
-		return '';
-		// this.attachEventListener();
+		this.attachEventListener();
 	}
 
 	resetForm(targetPageState: TPages) {

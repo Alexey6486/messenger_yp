@@ -1,7 +1,5 @@
 module.exports = {
-	customSyntax: "postcss-syntax",
-	extends: ['stylelint-config-standard', 'stylelint-config-css-modules'],
-	plugins: ['stylelint-order'],
+	extends: ['stylelint-config-standard'],
 	rules: {
 		'color-hex-length': 'long',
 		"no-descending-specificity": null,

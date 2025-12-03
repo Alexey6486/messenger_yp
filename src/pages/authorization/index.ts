@@ -1,2 +1,2 @@
-export { GetLoginPage } from './login/login';
+export { Login } from './login/login';
 export { GetRegistrationPage } from './registration/registration';
