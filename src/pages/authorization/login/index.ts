@@ -1,1 +1,1 @@
-export { Login } from './login';
+export { LoginBlock } from './login-block';

@@ -1,5 +1,5 @@
 export {
-	Login,
+	LoginBlock,
 	GetRegistrationPage,
 } from './authorization';
 export { GetMainPage } from './main';

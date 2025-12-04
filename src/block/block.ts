@@ -24,7 +24,7 @@ export class Block {
 	 *
 	 * @returns {void}
 	 */
-	constructor(tagName = 'div', props = {}) {
+	constructor(tagName = 'template', props = {}) {
 
 		const eventBus = new EventBus();
 
@@ -44,17 +44,20 @@ export class Block {
 
 		eventBus.emit(Block.EVENTS.INIT);
 
-		console.log('constructor: ', { props });
+		console.log('constructor: ', { props, children });
 	}
 
 	private _getChildren(props) {
 		const children: Record<string, Block> = {};
-
-		Object.entries(props).forEach(([key, value]) => {
-			if (value instanceof Block) {
-				children[key] = value;
-			}
-		});
+		console.log('_getChildren: ', { props });
+		if (props?.children) {
+			Object.entries(props.children).forEach(([key, value]) => {
+				console.log({ key, value });
+				if (value.instance && value.instance instanceof Block) {
+					children[key] = value.instance;
+				}
+			});
+		}
 
 		return { children };
 	}
@@ -137,19 +140,44 @@ export class Block {
 
 	private _render() {
 		const block = this.render();
-		console.log('_render: ', { block, e: this._element });
+		console.log('_render: ', {
+			block,
+			e: this._element,
+			c: this._element instanceof HTMLTemplateElement,
+			ch: this.children,
+			p: this.props,
+		});
 		this._removeEvents();
 		// Это небезопасный метод для упрощения логики
 		// Используйте шаблонизатор из npm или напишите свой безопасный
 		// Нужно компилировать не в строку (или делать это правильно),
 		// либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
-		this._element = block;
+
+		if (this._element instanceof HTMLTemplateElement) {
+			this._element.innerHTML = block;
+
+			Object.entries(this.children).forEach(([childName, instance]) => {
+				const target = this._element.content.getElementById(instance.props.id);
+				console.log({ childName, instance, target });
+				if (target) {
+					target.replaceWith(instance.getContent());
+				}
+			});
+
+			this._element = this._element.content.firstElementChild;
+		} else {
+			this._element.insertAdjacentHTML(
+				'afterend',
+				block,
+			);
+		}
+
 		this._addEvents();
 	}
 
 	// Переопределяется пользователем. Необходимо вернуть разметку
-	render() {
-
+	render(): string {
+		return '';
 	}
 
 	getContent() {

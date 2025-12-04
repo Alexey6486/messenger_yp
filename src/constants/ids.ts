@@ -1,17 +1,31 @@
-export const IDS: Record<string, string> = {
-    FBT: 'form-buttons',
-    FLG: 'form-login',
-    FRG: 'form-registration',
-    ERR: 'error-return-btn',
-    CHL: 'chats-list',
-    ACD: 'account-change-data',
-    ACP: 'account-change-password',
-    ALG: 'account-logout',
-    ABS: 'account-buttons',
-    ASD: 'account-save-data',
-    ASP: 'account-save-password',
-    ACL: 'account-cancel',
-    FAC: 'account-form',
-    FSR: 'search-form',
-    FMS: 'message-form',
+export const IDS: Record<string, Record<string, string>> = {
+	MAIN: {
+		LIST: 'main-chats-list',
+		SEARCH: 'main-search-form',
+		MESSAGE: 'main-message-form',
+	},
+	PROFILE: {
+		ACD: 'profile-change-data',
+		ACP: 'profile-change-password',
+		ALG: 'profile-logout',
+		ABS: 'profile-buttons',
+		ASD: 'profile-save-data',
+		ASP: 'profile-save-password',
+		ACL: 'profile-cancel',
+		FAC: 'profile-form',
+	},
+	AUTHORIZATION: {
+		LOGIN: 'authorization-login',
+		PASSWORD: 'authorization-password',
+		FORM: 'authorization-form',
+		SUBMIT: 'authorization-submit',
+	},
+	REGISTRATION: {
+		FORM: 'registration-form',
+		SUBMIT: 'registration-submit',
+	},
+	ERROR: {
+		RETURN: 'error-return',
+	},
+	MODAL: {},
 };

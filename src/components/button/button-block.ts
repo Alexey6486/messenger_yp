@@ -4,10 +4,11 @@ import template from './button-template';
 
 export class Button extends Block {
 	constructor(props) {
-		super('button', props);
+		super(undefined, props);
 	}
 
 	override render(): string {
+		console.log('Button props: ', this.props);
 		return compile(template, this.props);
 	}
 }
