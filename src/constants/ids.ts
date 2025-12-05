@@ -19,6 +19,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		PASSWORD: 'authorization-password',
 		FORM: 'authorization-form',
 		SUBMIT: 'authorization-submit',
+		SIGNUP: 'authorization-signup',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',

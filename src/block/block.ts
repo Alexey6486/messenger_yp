@@ -32,39 +32,55 @@ export class Block {
 			tagName,
 			props,
 		};
-
-		this.props = this._makePropsProxy(props);
+		const { children, props2 } = this._getChildren(props);
+		// this.props = this._makePropsProxy({ ...props2 });
+		this.props = this._makePropsProxy({ ...props2 });
 
 		this.eventBus = () => eventBus;
 
 		this._registerEvents(eventBus);
 
-		const { children } = this._getChildren(props);
+
 		this.children = children;
 
 		eventBus.emit(Block.EVENTS.INIT);
 
-		console.log('constructor: ', { props, children });
+		console.log('constructor: ', { props: this.props, children });
 	}
 
 	private _getChildren(props) {
 		const children: Record<string, Block> = {};
-		console.log('_getChildren: ', { props });
-		if (props?.children) {
-			Object.entries(props.children).forEach(([key, value]) => {
-				console.log({ key, value });
-				if (value.instance && value.instance instanceof Block) {
-					children[key] = value.instance;
-				}
-			});
-		}
+		const props2: BlockProps = {};
+		console.log('_getChildren: ', { props, props2 });
 
-		return { children };
+		Object.entries(props).forEach(([key, value]) => {
+			console.log('_getChildren forEach: ', { key, value });
+			if (key === 'children') {
+				Object.entries(value).forEach(([key2, value2]) => {
+					if (value2.instance && value2.instance instanceof Block) {
+						children[key2] = value2.instance;
+					}
+				});
+			} else {
+				props2[key] = value;
+			}
+		});
+
+		// if (props?.children) {
+		// 	Object.entries(props.children).forEach(([key, value]) => {
+		// 		console.log('_getChildren forEach: ', { key, value });
+		// 		if (value.instance && value.instance instanceof Block) {
+		// 			children[key] = value.instance;
+		// 		}
+		// 	});
+		// }
+		console.log('!!!', { children, props2 });
+		return { children, props2 };
 	}
 
 	private _addEvents() {
 		const { events = {} } = this.props;
-
+		console.log('_addEvents: ', this.props, this._element);
 		Object.keys(events).forEach(eventName => {
 			this._element.addEventListener(eventName, events[eventName]);
 		});
@@ -88,6 +104,7 @@ export class Block {
 	private _createResources() {
 		const { tagName } = this._meta;
 		console.log('_createResources: ', { tagName });
+
 		this._element = this._createDocumentElement(tagName);
 	}
 
@@ -98,6 +115,7 @@ export class Block {
 	}
 
 	private _componentDidMount(): void {
+		console.log('_componentDidMount');
 		this.componentDidMount();
 		Object.values(this.children).forEach(child => {
 			child.dispatchComponentDidMount();
@@ -105,34 +123,28 @@ export class Block {
 	}
 
 	protected componentDidMount(): void {
+		console.log('componentDidMount');
 	}
 
 	dispatchComponentDidMount() {
-		// this._eventBus().emit(Block.EVENTS.FLOW_CDM);
+		console.log('dispatchComponentDidMount');
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 
 	private _componentDidUpdate(oldProps, newProps) {
+		console.log('_componentDidUpdate: ', { oldProps, newProps });
 		const response = this.componentDidUpdate(oldProps, newProps);
 		if (!response) {
 			return;
 		}
+
 		this._render();
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
 		console.log('componentDidUpdate: ', { oldProps, newProps });
 		return true;
 	}
-
-	setProps = nextProps => {
-		if (!nextProps) {
-			return;
-		}
-
-		Object.assign(this.props, nextProps);
-	};
 
 	get element() {
 		return this._element;
@@ -147,35 +159,45 @@ export class Block {
 			ch: this.children,
 			p: this.props,
 		});
+
 		this._removeEvents();
-		// Это небезопасный метод для упрощения логики
-		// Используйте шаблонизатор из npm или напишите свой безопасный
-		// Нужно компилировать не в строку (или делать это правильно),
-		// либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
 
 		if (this._element instanceof HTMLTemplateElement) {
+			console.log('_render if: ', this._element);
 			this._element.innerHTML = block;
 
 			Object.entries(this.children).forEach(([childName, instance]) => {
 				const target = this._element.content.getElementById(instance.props.id);
-				console.log({ childName, instance, target });
+				console.log('_render forEach 1: ', { childName, instance, target, ID: instance.props.id });
 				if (target) {
 					target.replaceWith(instance.getContent());
 				}
 			});
 
 			this._element = this._element.content.firstElementChild;
-		} else {
-			this._element.insertAdjacentHTML(
-				'afterend',
-				block,
-			);
-		}
+		} else if (this._element instanceof HTMLElement) {
+			console.log('_render else if: ', this._element);
+			const template = this._createDocumentElement('template');
+			template.innerHTML = block;
 
+			Object.entries(this.children).forEach(([childName, instance]) => {
+				const target = template.content.getElementById(instance.props.id);
+				console.log('_render forEach 2: ', { childName, instance, target });
+				if (target) {
+					target.replaceWith(instance.getContent());
+				}
+			});
+			console.log('res 1: ', this._element);
+			// console.log('_render else if template: ', template.content.firstElementChild);
+			this._element.replaceWith(template.content.firstElementChild);
+			// console.log('res 2: ', this._element);
+			this._element = template.content.firstElementChild;
+			// console.log('res 3: ', this._element);
+		}
+		console.log('res 4: ', this._element);
 		this._addEvents();
 	}
 
-	// Переопределяется пользователем. Необходимо вернуть разметку
 	render(): string {
 		return '';
 	}
@@ -188,30 +210,42 @@ export class Block {
 		return this.element;
 	}
 
+	setProps = (nextProps) => {
+		console.log('setProps: ', { tp: this.props, nextProps });
+		if (!nextProps) {
+			return;
+		}
+
+		Object.assign(this.props, nextProps);
+	};
+
 	private _makePropsProxy(props) {
-		// Ещё один способ передачи this, но он больше не применяется с приходом ES6+
 		const self = this;
 
-		// Здесь вам предстоит реализовать метод
-		return props;
-		// // eslint-disable-next-line @typescript-eslint/no-this-alias
-		// const self = this;
-		//
-		// return new Proxy(props, {
-		// 	get(target: any, prop: string) {
-		// 		const value = target[prop];
-		// 		return typeof value === 'function' ? value.bind(target) : value;
-		// 	},
-		// 	set(target: any, prop: string, value: any) {
-		// 		const oldTarget = { ...target };
-		// 		target[prop] = value;
-		// 		self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
-		// 		return true;
-		// 	},
-		// 	deleteProperty() {
-		// 		throw new Error('No access');
-		// 	},
-		// });
+		return new Proxy<BlockProps>(props, {
+			get(target, p) {
+				console.log('proxy get: ', { target, p });
+				const value = target[p];
+				return typeof value === 'function' ? value.bind(target) : value;
+			},
+			set(target, p, newValue) {
+				console.log('proxy set: ', { target, p, newValue });
+				const oldTarget = { ...target };
+				if (p === 'fields') {
+					target[p] = { ...target[p], ...newValue };
+				} else {
+					target[p] = newValue;
+				}
+
+				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+				return true;
+			},
+			deleteProperty() {
+				console.log('proxy delete');
+				// throw new Error('No access');
+				return false;
+			},
+		});
 	}
 
 	private _createDocumentElement(tagName) {

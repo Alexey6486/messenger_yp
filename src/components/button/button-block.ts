@@ -4,7 +4,14 @@ import template from './button-template';
 
 export class Button extends Block {
 	constructor(props) {
-		super(undefined, props);
+		super(undefined, {
+			...props,
+			events: {
+				click: (e: Event) => {
+					props.onClick(e);
+				},
+			},
+		});
 	}
 
 	override render(): string {

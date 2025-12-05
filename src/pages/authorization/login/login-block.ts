@@ -17,8 +17,11 @@ export class LoginBlock extends Block {
 			ids: {
 				form: IDS.AUTHORIZATION.FORM,
 			},
+			markup: {
+				[IDS.AUTHORIZATION.LOGIN]: `<div id="${IDS.AUTHORIZATION.LOGIN}"></div>`,
+			},
 			children: {
-				login: {
+				[IDS.AUTHORIZATION.LOGIN]: {
 					instance: new Field({
 						id: IDS.AUTHORIZATION.LOGIN,
 						placeholder: 'Логин',
@@ -28,10 +31,16 @@ export class LoginBlock extends Block {
 						value: props.fields.login,
 						dataset: 'login',
 						name: 'login',
-						onClick: (event: Event) => {
-							console.log('CLICK login');
+						onInput: (event: Event, sourceThis) => {
+							console.log('input login: ', { t: this, event, sourceThis });
 							event.preventDefault();
 							event.stopPropagation();
+							if (event.target && event.target instanceof HTMLInputElement) {
+								// sourceThis.setProps({
+								// 	value: event.target.value,
+								// });
+								this.setProps({ fields: { login: event.target.value } });
+							}
 						},
 					}),
 					markup: `<div id="${IDS.AUTHORIZATION.LOGIN}"></div>`,
@@ -46,10 +55,13 @@ export class LoginBlock extends Block {
 						value: props.fields.password,
 						dataset: 'password',
 						name: 'password',
-						onClick: (event: Event) => {
-							console.log('CLICK password');
+						onInput: (event: Event) => {
+							console.log('input password: ', { t: this, event });
 							event.preventDefault();
-							event.stopPropagation();
+							event.stopImmediatePropagation();
+							if (event.target && event.target instanceof HTMLInputElement) {
+								this.setProps({ fields: { password: event.target.value } });
+							}
 						},
 					}),
 					markup: `<div id="${IDS.AUTHORIZATION.PASSWORD}"></div>`,
@@ -58,23 +70,37 @@ export class LoginBlock extends Block {
 					instance: new Button({
 						id: IDS.AUTHORIZATION.SUBMIT,
 						type: 'submit',
-						class: styles,
 						dataset: PAGES.AUTHORIZATION,
 						text: 'Войти',
 						onClick: (event: Event) => {
-							console.log('CLICK submit');
+							console.log('click submit: ', this);
 							event.preventDefault();
 							event.stopPropagation();
 						},
 					}),
 					markup: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
 				},
+				signup: {
+					instance: new Button({
+						id: IDS.AUTHORIZATION.SIGNUP,
+						type: 'button',
+						dataset: PAGES.AUTHORIZATION,
+						text: 'Зарегистрироваться',
+						onClick: (event: Event) => {
+							console.log('click signup');
+							event.preventDefault();
+							event.stopPropagation();
+						},
+					}),
+					markup: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
+				},
 			},
 		});
+
 	}
 
 	override render(): string {
-		console.log('LoginBlock props: ', this.props);
+		console.log('LoginBlock props: ', this.props, this);
 		return compile(template, this.props);
 	}
 }

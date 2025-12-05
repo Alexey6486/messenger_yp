@@ -5,12 +5,13 @@
 		</div>
 		<form id="{{ids.form}}" class="{{styles.form}}">
 			<div class="{{styles.fields-group}}">
-				{{{ children.login.markup }}}
+				{{{ markup.authorization-login }}}
 				{{{ children.password.markup }}}
 			</div>
+			{{{ children.submit.markup }}}
 		</form>
 		<div class="{{styles.buttons}}">
-			{{{ children.submit.markup }}}
+			{{{ children.signup.markup }}}
 		</div>
 	</main>
 </div>
