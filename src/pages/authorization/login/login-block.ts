@@ -35,8 +35,10 @@ export class LoginBlock extends Block {
 					name: 'login',
 					onInput: (event: Event, sourceThis) => {
 						console.log('input login: ', { t: this, event, sourceThis });
+
 						event.preventDefault();
 						event.stopPropagation();
+
 						if (event.target && event.target instanceof HTMLInputElement) {
 							this.setProps({ fields: { login: event.target.value } });
 						}
@@ -53,8 +55,10 @@ export class LoginBlock extends Block {
 					name: 'password',
 					onInput: (event: Event) => {
 						console.log('input password: ', { t: this, event });
+
 						event.preventDefault();
 						event.stopImmediatePropagation();
+
 						if (event.target && event.target instanceof HTMLInputElement) {
 							this.setProps({ fields: { password: event.target.value } });
 						}
@@ -67,6 +71,7 @@ export class LoginBlock extends Block {
 					text: 'Войти',
 					onClick: (event: Event) => {
 						console.log('click submit: ', this);
+
 						event.preventDefault();
 						event.stopPropagation();
 					},
@@ -78,6 +83,7 @@ export class LoginBlock extends Block {
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
 						console.log('click signup');
+
 						event.preventDefault();
 						event.stopPropagation();
 					},
