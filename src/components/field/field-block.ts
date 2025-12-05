@@ -9,11 +9,13 @@ export class Field extends Block {
 			events: {
 				input: (e: Event) => {
 					console.log('Field input event:', { t: this });
+
 					if (e.target && e.target instanceof HTMLInputElement) {
 						this.setProps({
 							value: e?.target?.value,
 						});
 					}
+
 					props.onInput(e, this);
 				},
 			},

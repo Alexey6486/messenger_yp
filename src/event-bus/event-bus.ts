@@ -7,6 +7,10 @@ interface IEbEvents {
 	'user:login': ILoginForm;
 	'user:logout': null;
 	'user:registration': IRegistrationFormDto;
+	'init': 'init',
+	'flow:component-did-mount': 'flow:component-did-mount',
+	'flow:component-did-update': 'flow:component-did-update',
+	'flow:render': 'flow:render',
 }
 
 type TEbCallback<K extends keyof IEbEvents> = (...args: any[]) => void;
@@ -23,6 +27,7 @@ export class EventBus {
 
 	on<K extends keyof IEbEvents>(event: K, callback: TEbCallback<K>): void {
 		console.log('on: ', { event, callback });
+
 		if (!Array.isArray(this.listeners[event])) {
 			this.listeners[event] = [];
 		}
@@ -42,6 +47,7 @@ export class EventBus {
 
 	emit<K extends keyof IEbEvents>(event: K, ...args): void {
 		console.log('emit: ', { event, args });
+
 		if (!Array.isArray(this.listeners[event])) {
 			throw new Error(`Нет события: ${ event }`);
 		} else {
