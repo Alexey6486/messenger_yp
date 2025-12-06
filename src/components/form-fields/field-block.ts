@@ -1,21 +1,16 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
-import template from './button-template';
+import template from './field-template';
 
-export class Button extends Block {
+export class FieldBlock extends Block {
 	constructor(props) {
 		super(undefined, {
 			...props,
-			events: {
-				click: (e: Event) => {
-					props.onClick(e);
-				},
-			},
 		});
 	}
 
 	override render(): string {
-		console.log('Button props: ', this);
+		console.log('FieldBlock props: ', this);
 
 		return compile(template, this.props);
 	}

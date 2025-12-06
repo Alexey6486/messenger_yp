@@ -1,12 +1,7 @@
 import * as Handlebars from 'handlebars';
 import * as Pages from './pages';
 import {
-	CLASSES,
-	DATASET,
-	DD_ACTIONS,
 	ICONS,
-	IDS,
-	INIT_ADD_USER_MODAL_STATE,
 	INIT_ERROR_STATE,
 	INIT_LOGIN_STATE,
 	INIT_MAIN_PAGE_STATE,
@@ -20,14 +15,12 @@ import {
 } from './constants';
 import type {
 	IState,
-	TFormsFields,
 	TPages,
 } from './types';
-import { searchDataset } from './utils';
 
 import Button from './components/button/button-template';
 import ButtonRound from './components/button-round';
-import Field from './components/field/field-template';
+import Field from './components/form-fields/field-template';
 import DropDownOption from './components/drop-down-option';
 import DropDown from './components/drop-down';
 import Chat from './pages/main/components/chat';

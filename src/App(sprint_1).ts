@@ -27,7 +27,7 @@ import { searchDataset } from './utils';
 
 import Button from './components/button/button-template';
 import ButtonRound from './components/button-round';
-import Field from './components/field/field-template';
+import Field from './components/form-fields/field-template';
 import DropDownOption from './components/drop-down-option';
 import DropDown from './components/drop-down';
 import Chat from './pages/main/components/chat';

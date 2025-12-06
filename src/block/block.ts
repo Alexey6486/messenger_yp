@@ -1,4 +1,8 @@
 import { EventBus } from '@/event-bus';
+import type {
+	IChildren,
+	IInputData,
+} from '@/types';
 
 interface BlockProps {
 	[key: string]: any;
@@ -16,7 +20,7 @@ export class Block {
 	_meta = null;
 	protected eventBus: () => EventBus;
 	protected props: BlockProps;
-	protected children: Record<string, Block>;
+	protected children: IChildren<Block>;
 
 	/** JSDoc
 	 * @param {string} tagName
@@ -55,9 +59,9 @@ export class Block {
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
-				Object.entries(value as string).forEach(([component_name, instance]) => {
-					if (instance instanceof Block) {
-						children_part[component_name] = instance;
+				Object.entries(value as Record<string, Block>).forEach((el) => {
+					if (el.length === 2 && el[1] instanceof Block) {
+						children_part[el[1].props.id] = el[1];
 					}
 				});
 			} else {
@@ -156,10 +160,12 @@ export class Block {
 		const temp = this._createDocumentElement('template');
 		temp.innerHTML = this.render();
 
-		Object.entries(this.children).forEach(([childName, instance]) => {
-			const stub = temp.content.getElementById(childName);
-			if (stub) {
-				stub.replaceWith(instance.getContent());
+		Object.entries(this.children).forEach((el) => {
+			if (el.length === 2) {
+				const stub = temp.content.getElementById(el[1].props.id);
+				if (stub) {
+					stub.replaceWith(el[1].getContent());
+				}
 			}
 		});
 
@@ -189,8 +195,56 @@ export class Block {
 		return this.element;
 	}
 
+	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
+	 * @param {IChildren<Block>} children
+	 * @param {string[]} idsList
+	 * @param {IChildren<Block>} childrenBlocks
+	 *
+	 * @returns {IChildren<Block>}
+	 */
+	getChildrenToUpdate = (
+		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
+	): IChildren<Block> => {
+		const targetChildren: IChildren<Block> = childrenBlocks || {};
+		Object.entries(children).forEach(([id, instance]) => {
+			if (idsList.includes(id)) {
+				targetChildren[id] = instance;
+
+				if (instance.children) {
+					return this.getChildrenToUpdate(instance.children, idsList, targetChildren);
+				}
+			}
+		});
+
+		return targetChildren;
+	};
+
+	/** changePropsDrill функция по id дочерних компонент (по отношению к компоненте текущей страницы)
+	 * вызывает обновление пропсов setProps у целевых компонент, для обновления их данных.
+	 * Последний вызов this.setProps, вызов обновления данных самой родительсткой компоненты.
+	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
+	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
+	 * @param {string[]} childrenIdList
+	 * @param {IInputData} data
+	 * @param {string} fieldName
+	 *
+	 * @returns {void}
+	 */
+	changePropsDrill = (childrenIdList: string[], data: IInputData, fieldName: string): void => {
+		const targetChildren = this.getChildrenToUpdate(this.children, childrenIdList);
+
+		childrenIdList.forEach((childId) => {
+			targetChildren[childId].setProps(data);
+		});
+
+		this.setProps({
+			fields: { [fieldName]: data.value },
+			errors: { [fieldName]: data.error },
+		});
+	};
+
 	setProps = (nextProps) => {
-		console.log('setProps: ', { tp: this.props, nextProps });
+		console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
 
 		if (!nextProps) {
 			return;
@@ -209,7 +263,7 @@ export class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target, p, newValue) {
-				console.log('proxy set: ', { target, p, newValue });
+				console.log('proxy set: ', { self, target, p, newValue });
 
 				const oldTarget = { ...target };
 				if (p === 'fields') {

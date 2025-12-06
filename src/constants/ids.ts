@@ -20,6 +20,8 @@ export const IDS: Record<string, Record<string, string>> = {
 		FORM: 'authorization-form',
 		SUBMIT: 'authorization-submit',
 		SIGNUP: 'authorization-signup',
+		LOGIN_INPUT: 'authorization-login-input',
+		PSW_INPUT: 'authorization-psw-input',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',
@@ -29,4 +31,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		RETURN: 'error-return',
 	},
 	MODAL: {},
+	COMMON: {
+		INPUT: 'input',
+	},
 };

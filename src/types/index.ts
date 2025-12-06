@@ -1,5 +1,5 @@
 export type {
-	TPages
+	TPages,
 }
 	from './pages';
 export type {
@@ -27,5 +27,6 @@ export type {
 	IAddUserModalState,
 	TModalFields,
 	IModalState,
-}
-	from './state';
+	IInputData,
+	IChildren,
+} from './state';
