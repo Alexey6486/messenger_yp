@@ -18,7 +18,6 @@ export class LoginBlock extends Block {
 			ids: {
 				form: IDS.AUTHORIZATION.FORM,
 			},
-			currentFocus: null,
 			markup: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
 				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,

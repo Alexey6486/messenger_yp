@@ -22,6 +22,7 @@ export class Block {
 	protected eventBus: () => EventBus;
 	protected props: BlockProps;
 	protected children: IChildren<Block>;
+	currentFocus = null;
 
 	/** JSDoc
 	 * @param {string} tagName
@@ -148,12 +149,7 @@ export class Block {
 	}
 
 	private _render() {
-		console.log('_render: ', {
-			e: this._element,
-			c: this._element instanceof HTMLTemplateElement,
-			ch: this.children,
-			p: this.props,
-		});
+		console.log('_render: ', this);
 
 		this._removeEvents();
 
@@ -177,6 +173,14 @@ export class Block {
 		this._element = newElement;
 
 		this._addEvents();
+
+		if (this.props.currentFocus?.element) {
+			console.log('!!!', this);
+			setTimeout(() => {
+				this._element.focus();
+				this._element.setSelectionRange(this.props.currentFocus?.selectionStart, this.props.currentFocus?.selectionStart);
+			}, 100);
+		}
 	}
 
 	render(): string {
@@ -184,7 +188,7 @@ export class Block {
 	}
 
 	getContent() {
-		console.log('getContent: ', { e: this._element, m: this._meta, p: this.props });
+		// console.log('getContent: ', { e: this._element, m: this._meta, p: this.props });
 
 		if (!this.element) {
 			throw new Error('Element is not created');
@@ -231,22 +235,36 @@ export class Block {
 	 */
 	onFormInputChange = (childrenIdList: string[], params: IInputChangeParams, fieldName: string): void => {
 		const { data, info } = params;
+		const { event, element, selectionStart } = info;
+
 		const targetChildren = this.getChildrenToUpdate(this.children, childrenIdList);
 
 		childrenIdList.forEach((childId) => {
-			targetChildren[childId].setProps(data);
+			targetChildren[childId].setProps({
+				...((event === 'input' && (targetChildren[childId].props.value !== data.value)) && {
+					value: data.value,
+					...(childId.includes('input') && {
+						currentFocus: { element, selectionStart },
+					}),
+				}),
+				...((event === 'blur' && (targetChildren[childId].props.error !== data.error)) && {
+					error: data.error,
+				}),
+			});
 		});
 
-		const { element, selectionStart } = info;
 		this.setProps({
-			fields: { [fieldName]: data.value },
-			errors: { [fieldName]: data.error },
-			currentFocus: { element, selectionStart },
+			...((event === 'input' && (this.props.fields[fieldName] !== data.value)) && {
+				fields: { [fieldName]: data.value },
+			}),
+			...((event === 'blur' && (this.props.errors[fieldName] !== data.error)) && {
+				errors: { [fieldName]: data.error },
+			}),
 		});
 	};
 
 	setProps = (nextProps) => {
-		console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
+		// console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
 
 		if (!nextProps) {
 			return;
@@ -268,7 +286,7 @@ export class Block {
 				console.log('proxy set: ', { self, target, p, newValue });
 
 				const oldTarget = { ...target };
-				if (p === 'fields') {
+				if (p === 'fields' || p === 'errors' || p === 'currentFocus') {
 					target[p] = { ...target[p], ...newValue };
 				} else {
 					target[p] = newValue;

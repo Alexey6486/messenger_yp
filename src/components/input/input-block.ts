@@ -11,45 +11,48 @@ export class InputBlock extends Block {
 			...props,
 			events: {
 				input: (e: Event) => {
-					console.log('InputBlock input event:', { e, t: this });
+					console.log('!InputBlock input event:', { e, t: this });
 
 					e.preventDefault();
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						const { isValid, message } = validate(e?.target?.value, this.props.validation);
-						console.log('input validationResult: ', { isValid, message });
+						// const { isValid, message } = validate(e?.target?.value, this.props.validation);
+						// console.log('input validationResult: ', { isValid, message });
 
 						props.onChange({
 							data: {
 								value: e.target.value,
-								error: message,
 							},
 							info: {
 								event: 'input',
 								selectionStart: e.target.selectionStart,
-								element: e.target,
+								element: this,
 							},
 						});
 					}
 				},
 				blur: (e: Event) => {
-					console.log('InputBlock blur event: ', { e, t: this });
+					console.log('!InputBlock blur event: ', { e, t: this });
+					if (e.target && e.target instanceof HTMLInputElement) {
+						const { isValid, message } = validate(e?.target?.value, this.props.validation);
+						console.log('InputBlock blur validationResult: ', {
+							isValid,
+							ne: message,
+							ce: this.props.error,
+							cv: this.props.value,
+							nw: e.target.value,
+						});
 
-					const { isValid, message } = validate(this.props.value, this.props.validation);
-					console.log('blur validationResult: ', { isValid, message });
-
-					props.onChange({
-						data: {
-							value: this.props.value,
-							error: message,
-						},
-						info: {
-							event: 'blur',
-							selectionStart: null,
-							element: null,
-						},
-					});
+						props.onChange({
+							data: {
+								error: message,
+							},
+							info: {
+								event: 'blur',
+							},
+						});
+					}
 				},
 			},
 		});
