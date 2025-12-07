@@ -2,6 +2,7 @@ import { EventBus } from '@/event-bus';
 import type {
 	IChildren,
 	IInputData,
+	IInputChangeParams,
 } from '@/types';
 
 interface BlockProps {
@@ -44,7 +45,6 @@ export class Block {
 		this.eventBus = () => eventBus;
 
 		this._registerEvents(eventBus);
-
 
 		this.children = children_part;
 
@@ -175,9 +175,6 @@ export class Block {
 		}
 
 		this._element = newElement;
-		this._addEvents();
-
-		console.log('res 4: ', this._element);
 
 		this._addEvents();
 	}
@@ -206,6 +203,7 @@ export class Block {
 		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
 	): IChildren<Block> => {
 		const targetChildren: IChildren<Block> = childrenBlocks || {};
+
 		Object.entries(children).forEach(([id, instance]) => {
 			if (idsList.includes(id)) {
 				targetChildren[id] = instance;
@@ -219,27 +217,31 @@ export class Block {
 		return targetChildren;
 	};
 
-	/** changePropsDrill функция по id дочерних компонент (по отношению к компоненте текущей страницы)
-	 * вызывает обновление пропсов setProps у целевых компонент, для обновления их данных.
-	 * Последний вызов this.setProps, вызов обновления данных самой родительсткой компоненты.
+	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
+	 * к компоненте текущей страницы) вызывает обновление пропсов setProps у целевых компонент,
+	 * для обновления их данных.
+	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
 	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
 	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
 	 * @param {string[]} childrenIdList
-	 * @param {IInputData} data
+	 * @param {IInputChangeParams} params
 	 * @param {string} fieldName
 	 *
 	 * @returns {void}
 	 */
-	changePropsDrill = (childrenIdList: string[], data: IInputData, fieldName: string): void => {
+	onFormInputChange = (childrenIdList: string[], params: IInputChangeParams, fieldName: string): void => {
+		const { data, info } = params;
 		const targetChildren = this.getChildrenToUpdate(this.children, childrenIdList);
 
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps(data);
 		});
 
+		const { element, selectionStart } = info;
 		this.setProps({
 			fields: { [fieldName]: data.value },
 			errors: { [fieldName]: data.error },
+			currentFocus: { element, selectionStart },
 		});
 	};
 

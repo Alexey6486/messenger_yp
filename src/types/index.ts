@@ -29,4 +29,5 @@ export type {
 	IModalState,
 	IInputData,
 	IChildren,
+	IInputChangeParams,
 } from './state';

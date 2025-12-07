@@ -15,13 +15,13 @@ export const IDS: Record<string, Record<string, string>> = {
 		FAC: 'profile-form',
 	},
 	AUTHORIZATION: {
-		LOGIN: 'authorization-login',
-		PASSWORD: 'authorization-password',
+		LOGIN_FIELD: 'authorization-login-field',
+		LOGIN_INPUT: 'authorization-login-input',
+		PSW_FIELD: 'authorization-psw-field',
+		PSW_INPUT: 'authorization-psw-input',
 		FORM: 'authorization-form',
 		SUBMIT: 'authorization-submit',
 		SIGNUP: 'authorization-signup',
-		LOGIN_INPUT: 'authorization-login-input',
-		PSW_INPUT: 'authorization-psw-input',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',

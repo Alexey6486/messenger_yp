@@ -1,10 +1,5 @@
 import type { TPages } from '@/types';
 
-export interface IInputData {
-	value: string;
-	error: string;
-}
-
 export interface ISearchForm {
 	search: string;
 }
@@ -76,9 +71,9 @@ export interface IUserResponse extends IUserBase {
 }
 
 export interface IChatLastMessage {
-	user: IUserResponse,
-	time: string
-	content: string
+	user: IUserResponse;
+	time: string;
+	content: string;
 }
 
 export interface IChat {
@@ -94,10 +89,10 @@ export interface IModalState<T> {
 	title: string;
 	button: {
 		save: {
-			text: string,
-			id: string,
-			dataset: string,
-		},
+			text: string
+			id: string
+			dataset: string
+		}
 	};
 	form: IFormState<T>;
 	error: string;
@@ -118,7 +113,7 @@ export interface IMainPageState {
 }
 
 export interface IMainPageHbsState extends IMainPageState {
-	user: IUserResponse,
+	user: IUserResponse;
 }
 
 export interface IErrorPageState {
@@ -151,3 +146,19 @@ export interface IState {
 }
 
 export type IChildren<T> = Record<string, T>;
+
+export interface IInputData {
+	value: string;
+	error: string;
+}
+
+export interface IInputInfo {
+	event: 'input';
+	selectionStart: number | null;
+	element: HTMLInputElement;
+}
+
+export interface IInputChangeParams {
+	data: IInputData;
+	info: IInputInfo;
+}

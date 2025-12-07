@@ -1,7 +1,10 @@
 import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
-import type { IInputData } from '@/types';
+import type {
+	IInputData,
+	IInputChangeParams,
+} from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './login-template.hbs?raw';
@@ -15,15 +18,16 @@ export class LoginBlock extends Block {
 			ids: {
 				form: IDS.AUTHORIZATION.FORM,
 			},
+			currentFocus: null,
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN]: `<div id="${ IDS.AUTHORIZATION.LOGIN }"></div>`,
-				[IDS.AUTHORIZATION.PASSWORD]: `<div id="${ IDS.AUTHORIZATION.PASSWORD }"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
 				// [IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
 				// [IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 			},
 			children: {
-				[IDS.AUTHORIZATION.LOGIN]: new FieldBlock({
-					id: IDS.AUTHORIZATION.LOGIN,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
+					id: IDS.AUTHORIZATION.LOGIN_FIELD,
 					id_label: IDS.AUTHORIZATION.LOGIN_INPUT,
 					value: props.fields.login,
 					error: props.errors.login,
@@ -38,21 +42,12 @@ export class LoginBlock extends Block {
 							name: 'login',
 							placeholder: 'Логин',
 							type: 'text',
-							onInput: (data: IInputData) => {
-								console.log('onInput login: ', { data, currentThis: this });
+							onChange: (params: IInputChangeParams) => {
+								console.log('onChange login: ', { params, currentThis: this });
 
-								this.changePropsDrill(
-									[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN],
-									data,
-									'login',
-								);
-							},
-							onBlur: (data: IInputData) => {
-								console.log('onBlur login: ', { data, currentThis: this });
-
-								this.changePropsDrill(
-									[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN],
-									data,
+								this.onFormInputChange(
+									[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN_FIELD],
+									params,
 									'login',
 								);
 							},
@@ -69,11 +64,11 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
 					},
 				}),
-				[IDS.AUTHORIZATION.PASSWORD]: new FieldBlock({
-					id: IDS.AUTHORIZATION.PASSWORD,
+				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
+					id: IDS.AUTHORIZATION.PSW_FIELD,
 					id_label: IDS.AUTHORIZATION.PSW_INPUT,
 					value: props.fields.password,
 					error: props.errors.password,
@@ -88,38 +83,22 @@ export class LoginBlock extends Block {
 							name: 'password',
 							placeholder: 'Пароль',
 							type: 'password',
-							onInput: (data: IInputData) => {
-								console.log('onInput password: ', { data, currentThis: this });
+							onChange: (params: IInputChangeParams) => {
+								console.log('onChange password: ', { params, currentThis: this });
 
-								this.changePropsDrill(
-									[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PASSWORD],
-									data,
-									'password',
-								);
-							},
-							onBlur: (data: IInputData) => {
-								console.log('onBlur password: ', { data, currentThis: this });
-
-								this.changePropsDrill(
-									[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PASSWORD],
-									data,
+								this.onFormInputChange(
+									[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PSW_FIELD],
+									params,
 									'password',
 								);
 							},
 							validation: {
-								// от 3 до 20 символов,
-								// латиница,
-								// может содержать цифры, но не состоять из них,
-								// без пробелов,
-								// допустимы спецсимволы дефис и нижнее подчёркивание
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
 					},
 				}),
 				// [IDS.AUTHORIZATION.SUBMIT]: new Button({
