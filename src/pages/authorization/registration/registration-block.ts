@@ -5,7 +5,7 @@ import {
 } from '@/constants';
 import { compile } from '@/utils';
 import type { IInputChangeParams } from '@/types';
-import { Button } from '@/components/button/button-block';
+import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
@@ -13,22 +13,22 @@ import styles from '../styles.module.pcss';
 
 export class RegistrationBlock extends Block {
 	constructor(props) {
-		super(undefined, {
+		super({
 			...props,
 			styles,
 			ids: {
 				form: IDS.REGISTRATION.FORM,
 			},
 			markup: {
-				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
-				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
-				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${IDS.REGISTRATION.F_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${IDS.REGISTRATION.S_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${IDS.REGISTRATION.PHONE_FIELD}"></div>`,
-				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${IDS.REGISTRATION.PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${IDS.REGISTRATION.C_PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.SUBMIT]: `<div id="${IDS.REGISTRATION.SUBMIT}"></div>`,
-				[IDS.REGISTRATION.SIGNIN]: `<div id="${IDS.REGISTRATION.SIGNIN}"></div>`,
+				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${ IDS.REGISTRATION.EMAIL_FIELD }"></div>`,
+				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${ IDS.REGISTRATION.LOGIN_FIELD }"></div>`,
+				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.F_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.S_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${ IDS.REGISTRATION.PHONE_FIELD }"></div>`,
+				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${ IDS.REGISTRATION.PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${ IDS.REGISTRATION.C_PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.SUBMIT]: `<div id="${ IDS.REGISTRATION.SUBMIT }"></div>`,
+				[IDS.REGISTRATION.SIGNIN]: `<div id="${ IDS.REGISTRATION.SIGNIN }"></div>`,
 			},
 			children: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: new FieldBlock({
@@ -64,13 +64,11 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.EMAIL_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.EMAIL_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.LOGIN_FIELD]: new FieldBlock({
@@ -105,11 +103,6 @@ export class RegistrationBlock extends Block {
 								);
 							},
 							validation: {
-								// от 3 до 20 символов,
-								// латиница,
-								// может содержать цифры, но не состоять из них,
-								// без пробелов,
-								// допустимы спецсимволы дефис и нижнее подчёркивание
 								isRequired: true,
 								regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
 								message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
@@ -117,7 +110,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.F_NAME_FIELD]: new FieldBlock({
@@ -153,13 +146,11 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.F_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.F_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.S_NAME_FIELD]: new FieldBlock({
@@ -195,13 +186,11 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.S_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.S_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PHONE_FIELD]: new FieldBlock({
@@ -237,13 +226,11 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PHONE_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PHONE_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PSW_FIELD]: new FieldBlock({
@@ -279,13 +266,11 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.C_PSW_FIELD]: new FieldBlock({
@@ -321,16 +306,14 @@ export class RegistrationBlock extends Block {
 							},
 							validation: {
 								isRequired: true,
-								// regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.C_PSW_INPUT }"></div>`,
 					},
 				}),
-				[IDS.REGISTRATION.SUBMIT]: new Button({
+				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
 					id: IDS.REGISTRATION.SUBMIT,
 					type: 'submit',
 					dataset: PAGES.REGISTRATION,
@@ -344,7 +327,7 @@ export class RegistrationBlock extends Block {
 						console.log('Registration data: ', this.props.form.fields);
 					},
 				}),
-				[IDS.REGISTRATION.SIGNIN]: new Button({
+				[IDS.REGISTRATION.SIGNIN]: new ButtonBlock({
 					id: IDS.REGISTRATION.SIGNIN,
 					type: 'button',
 					dataset: PAGES.REGISTRATION,
@@ -363,7 +346,7 @@ export class RegistrationBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('RegistrationBlock props: ', this);
+		console.log('Render block RegistrationBlock: ', this);
 
 		return compile(template, this.props);
 	}

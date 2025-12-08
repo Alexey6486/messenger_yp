@@ -4,13 +4,11 @@ import template from './field-template';
 
 export class FieldBlock extends Block {
 	constructor(props) {
-		super(undefined, {
-			...props,
-		});
+		super(props);
 	}
 
 	override render(): string {
-		console.log('FieldBlock props: ', this);
+		console.log('Render block FieldBlock: ', this);
 
 		return compile(template, this.props);
 	}

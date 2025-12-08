@@ -4,7 +4,6 @@ import type {
 	IInputChangeParams,
 	TPages,
 } from '@/types';
-import { PAGES } from '@/constants';
 
 interface BlockProps {
 	[key: string]: any;
@@ -19,53 +18,40 @@ export class Block {
 		FLOW_RENDER: 'flow:render',
 	};
 
-	_element = null;
-	_meta = null;
-	currentFocus = null;
-	protected eventBus: () => EventBus;
+	protected _element;
 	protected props: BlockProps;
 	protected children: IChildren<Block>;
+	protected eventBus: () => EventBus;
 
 	/** JSDoc
-	 * @param {string} tagName
-	 * @param {Object} props
+	 * @param {BlockProps} props
 	 *
 	 * @returns {void}
 	 */
-	constructor(tagName = 'template', props = {}) {
-
-		const eventBus = new EventBus();
-
-		this._meta = {
-			tagName,
-			props,
-		};
-
-		const { children_part, props_part } = this._getChildren(props);
+	constructor(props = {}) {
+		const { children_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
-
-		this.eventBus = () => eventBus;
-
-		this._registerEvents(eventBus);
-
 		this.children = children_part;
 
+		const eventBus = new EventBus();
+		this.eventBus = () => eventBus;
+		this._registerEvents(eventBus);
 		eventBus.emit(Block.EVENTS.INIT);
-
-		console.log('constructor: ', { props: this.props, children_part });
 	}
 
-	private _getChildren(props) {
+	get element() {
+		return this._element;
+	}
+
+	private _getPropsParts(props) {
 		const children_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
-				Object.entries(value as Record<string, Block>).forEach((el) => {
-					if (el.length === 2 && el[1] instanceof Block) {
-						children_part[el[1].props.id] = el[1];
-					}
+				Object.values(value as Record<string, Block>).forEach((instance) => {
+					children_part[instance.props.id] = instance;
 				});
 			} else {
 				props_part[props_name] = value;
@@ -98,14 +84,14 @@ export class Block {
 	}
 
 	private _registerEvents(eventBus) {
-		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+		eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
 	}
 
-	protected init() {
+	private _init() {
 		console.log('init');
 
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -120,7 +106,7 @@ export class Block {
 		});
 	}
 
-	protected componentDidMount(): void {
+	componentDidMount(): void {
 		console.log('componentDidMount');
 	}
 
@@ -141,22 +127,19 @@ export class Block {
 		this._render();
 	}
 
-	protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+	componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
 		console.log('componentDidUpdate: ', { oldProps, newProps });
 
 		return true;
 	}
 
 	private _componentWillUnmount(page?: TPages) {
+		this._removeEvents();
 		this._element.parentNode.removeChild(this._element);
 
 		if (page) {
 			this.props.changePage(page);
 		}
-	}
-
-	get element() {
-		return this._element;
 	}
 
 	private _render() {
@@ -167,26 +150,23 @@ export class Block {
 		const temp = this._createDocumentElement('template');
 		temp.innerHTML = this.render();
 
-		Object.entries(this.children).forEach((el) => {
-			if (el.length === 2) {
-				const stub = temp.content.getElementById(el[1].props.id);
-				if (stub) {
-					stub.replaceWith(el[1].getContent());
-				}
+		Object.values(this.children).forEach((instance) => {
+			const element = temp.content.getElementById(instance.props.id);
+			if (element) {
+				element.replaceWith(instance.getContent());
 			}
 		});
 
 		const newElement = temp.content.firstElementChild as HTMLElement;
 		if (this._element && newElement) {
-			this._element.replaceWith(newElement);
+			(this._element as Element).replaceWith(newElement);
 		}
 
 		this._element = newElement;
 
 		this._addEvents();
 
-		if (this.props?.input_data?.currentFocus?.element && this._element.setSelectionRange) {
-			console.log('!!!', this);
+		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
 				this._element.focus();
 				this._element.setSelectionRange(
@@ -202,76 +182,13 @@ export class Block {
 	}
 
 	getContent() {
-		// console.log('getContent: ', { e: this._element, m: this._meta, p: this.props });
-
 		if (!this.element) {
-			throw new Error('Element is not created');
+			throw new Error('Элемент не создан');
 		}
 		return this.element;
 	}
 
-	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
-	 * @param {IChildren<Block>} children
-	 * @param {string[]} idsList
-	 * @param {IChildren<Block>} childrenBlocks
-	 *
-	 * @returns {IChildren<Block>}
-	 */
-	getChildrenToUpdate = (
-		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
-	): IChildren<Block> => {
-		const targetChildren: IChildren<Block> = childrenBlocks || {};
-
-		Object.entries(children).forEach(([id, instance]) => {
-			if (idsList.includes(id)) {
-				targetChildren[id] = instance;
-
-				if (instance.children) {
-					return this.getChildrenToUpdate(instance.children, idsList, targetChildren);
-				}
-			}
-		});
-
-		return targetChildren;
-	};
-
-	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
-	 * к компоненте текущей страницы) вызывает обновление пропсов setProps у целевых компонент,
-	 * для обновления их данных.
-	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
-	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
-	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
-	 * @param {string[]} childrenIdList
-	 * @param {IInputChangeParams} params
-	 * @param {string} fieldName
-	 *
-	 * @returns {void}
-	 */
-	onFormInputChange = (params: IInputChangeParams<Block>, childrenIdList: string[], fieldName: string): void => {
-		const { data, info } = params;
-		const { element, selectionStart } = info;
-
-		const targetChildren = this.getChildrenToUpdate(this.children, childrenIdList);
-
-		childrenIdList.forEach((childId) => {
-			targetChildren[childId].setProps({
-				input_data: {
-					value: data.value,
-					error: data.error,
-					currentFocus: { element, selectionStart },
-				},
-			});
-		});
-
-		this.setProps({
-			form: {
-				fields: { [fieldName]: data.value },
-				errors: { [fieldName]: data.error },
-			},
-		});
-	};
-
-	setProps = (nextProps) => {
+	setProps(nextProps) {
 		// console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
 
 		if (!nextProps) {
@@ -286,7 +203,6 @@ export class Block {
 
 		return new Proxy<BlockProps>(props, {
 			get(target, p) {
-				// console.log('proxy get: ', { target, p });
 				const value = target[p];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
@@ -333,4 +249,65 @@ export class Block {
 	hide() {
 		this.getContent().style.display = 'none';
 	}
+
+	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
+	 * @param {IChildren<Block>} children
+	 * @param {string[]} idsList
+	 * @param {IChildren<Block>} childrenBlocks
+	 *
+	 * @returns {IChildren<Block>}
+	 */
+	private _getChildrenToUpdate(
+		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
+	): IChildren<Block> {
+		const targetChildren: IChildren<Block> = childrenBlocks || {};
+
+		Object.entries(children).forEach(([id, instance]) => {
+			if (idsList.includes(id)) {
+				targetChildren[id] = instance;
+
+				if (instance.children) {
+					return this._getChildrenToUpdate(instance.children, idsList, targetChildren);
+				}
+			}
+		});
+
+		return targetChildren;
+	};
+
+	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
+	 * к компоненте текущей страницы) вызывает обновление пропсов setProps у целевых компонент,
+	 * для обновления их данных.
+	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
+	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
+	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
+	 * @param {string[]} childrenIdList
+	 * @param {IInputChangeParams} params
+	 * @param {string} fieldName
+	 *
+	 * @returns {void}
+	 */
+	onFormInputChange(params: IInputChangeParams<Block>, childrenIdList: string[], fieldName: string): void {
+		const { data, info } = params;
+		const { element, selectionStart } = info;
+
+		const targetChildren = this._getChildrenToUpdate(this.children, childrenIdList);
+
+		childrenIdList.forEach((childId) => {
+			targetChildren[childId].setProps({
+				input_data: {
+					value: data.value,
+					error: data.error,
+					currentFocus: { element, selectionStart },
+				},
+			});
+		});
+
+		this.setProps({
+			form: {
+				fields: { [fieldName]: data.value },
+				errors: { [fieldName]: data.error },
+			},
+		});
+	};
 }

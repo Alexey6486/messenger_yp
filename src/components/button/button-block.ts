@@ -2,9 +2,9 @@ import { Block } from '@/block';
 import { compile } from '@/utils';
 import template from './button-template';
 
-export class Button extends Block {
+export class ButtonBlock extends Block {
 	constructor(props) {
-		super(undefined, {
+		super({
 			...props,
 			events: {
 				click: (e: Event) => {
@@ -15,7 +15,7 @@ export class Button extends Block {
 	}
 
 	override render(): string {
-		console.log('Button props: ', this);
+		console.log('Render block Button: ', this);
 
 		return compile(template, this.props);
 	}

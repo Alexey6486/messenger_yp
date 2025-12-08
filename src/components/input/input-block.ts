@@ -7,18 +7,17 @@ import template from './input-template';
 
 export class InputBlock extends Block {
 	constructor(props) {
-		super(undefined, {
+		super({
 			...props,
 			events: {
 				input: (e: Event) => {
-					console.log('!InputBlock input event:', { e, t: this });
-
 					e.preventDefault();
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						const { isValid, message } = validate(e?.target?.value, this.props.validation);
-						console.log('input validationResult: ', { isValid, message });
+						const { message } = validate(e?.target?.value, this.props.validation);
+
+						console.log('InputBlock input: ', { message, e, t: this });
 
 						props.onChange({
 							data: {
@@ -57,7 +56,7 @@ export class InputBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('InputBlock props: ', this);
+		console.log('Render block InputBlock: ', this);
 
 		return compile(template, this.props);
 	}

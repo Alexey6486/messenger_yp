@@ -5,25 +5,25 @@ import {
 } from '@/constants';
 import { compile } from '@/utils';
 import type { IInputChangeParams } from '@/types';
+import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
-import { Button } from '@/components/button/button-block';
 import template from './login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
 export class LoginBlock extends Block {
 	constructor(props) {
-		super(undefined, {
+		super({
 			...props,
 			styles,
 			ids: {
 				form: IDS.AUTHORIZATION.FORM,
 			},
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -58,19 +58,12 @@ export class LoginBlock extends Block {
 								);
 							},
 							validation: {
-								// от 3 до 20 символов,
-								// латиница,
-								// может содержать цифры, но не состоять из них,
-								// без пробелов,
-								// допустимы спецсимволы дефис и нижнее подчёркивание
 								isRequired: true,
-								regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								// message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
@@ -104,10 +97,10 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
 					},
 				}),
-				[IDS.AUTHORIZATION.SUBMIT]: new Button({
+				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.SUBMIT,
 					type: 'submit',
 					dataset: PAGES.AUTHORIZATION,
@@ -121,7 +114,7 @@ export class LoginBlock extends Block {
 						console.log('Login data: ', this.props.form.fields);
 					},
 				}),
-				[IDS.AUTHORIZATION.SIGNUP]: new Button({
+				[IDS.AUTHORIZATION.SIGNUP]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.SIGNUP,
 					type: 'button',
 					dataset: PAGES.AUTHORIZATION,
@@ -140,7 +133,7 @@ export class LoginBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('LoginBlock props: ', this);
+		console.log('Render block LoginBlock: ', this);
 
 		return compile(template, this.props);
 	}
