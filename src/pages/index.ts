@@ -1,6 +1,6 @@
 export {
 	LoginBlock,
-	GetRegistrationPage,
+	RegistrationBlock,
 } from './authorization';
 export { GetMainPage } from './main';
 export { GetErrorPage } from './error';

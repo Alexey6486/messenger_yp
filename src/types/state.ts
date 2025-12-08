@@ -148,17 +148,17 @@ export interface IState {
 export type IChildren<T> = Record<string, T>;
 
 export interface IInputData {
-	value: string;
-	error: string;
+	value?: string;
+	error?: string;
 }
 
-export interface IInputInfo {
-	event: 'input';
-	selectionStart: number | null;
-	element: HTMLInputElement;
+export interface IInputInfo<T> {
+	event: string;
+	element: T;
+	selectionStart?: number | null;
 }
 
-export interface IInputChangeParams {
+export interface IInputChangeParams<T> {
 	data: IInputData;
-	info: IInputInfo;
+	info: IInputInfo<T>;
 }

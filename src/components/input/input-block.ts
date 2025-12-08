@@ -17,12 +17,13 @@ export class InputBlock extends Block {
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						// const { isValid, message } = validate(e?.target?.value, this.props.validation);
-						// console.log('input validationResult: ', { isValid, message });
+						const { isValid, message } = validate(e?.target?.value, this.props.validation);
+						console.log('input validationResult: ', { isValid, message });
 
 						props.onChange({
 							data: {
 								value: e.target.value,
+								error: message,
 							},
 							info: {
 								event: 'input',
@@ -33,23 +34,20 @@ export class InputBlock extends Block {
 					}
 				},
 				blur: (e: Event) => {
-					console.log('!InputBlock blur event: ', { e, t: this });
 					if (e.target && e.target instanceof HTMLInputElement) {
-						const { isValid, message } = validate(e?.target?.value, this.props.validation);
-						console.log('InputBlock blur validationResult: ', {
-							isValid,
-							ne: message,
-							ce: this.props.error,
-							cv: this.props.value,
-							nw: e.target.value,
-						});
+						const { message } = validate(e?.target?.value, this.props.validation);
+
+						console.log('InputBlock blur: ', { validation: message, e, t: this });
 
 						props.onChange({
 							data: {
+								value: e.target.value,
 								error: message,
 							},
 							info: {
 								event: 'blur',
+								element: null,
+								selectionStart: null,
 							},
 						});
 					}

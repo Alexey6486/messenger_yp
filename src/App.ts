@@ -54,6 +54,7 @@ import CenterSvg from './icons-svg/center';
 import DotsSvg from './icons-svg/dots';
 import ArrowRightSvg from './icons-svg/arrow-right';
 import ArrowLeftSvg from './icons-svg/arrow-left';
+import { RegistrationBlock } from '@/pages/authorization/registration';
 
 Handlebars.registerPartial(ICONS.IconDots, IconDots);
 Handlebars.registerPartial(ICONS.IconPaperclip, IconPaperclip);
@@ -130,7 +131,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.AUTHORIZATION,
+			currentPage: PAGES.REGISTRATION,
 			focusElement: null,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
@@ -149,7 +150,10 @@ export default class App {
 		}
 
 		if (this.state.currentPage === PAGES.AUTHORIZATION) {
-			const loginPage = new Pages.LoginBlock(this.state.pages.authorization.form);
+			const loginPage = new Pages.LoginBlock({
+				...this.state.pages.authorization,
+				changePage: (page: TPages) => this.changePage(page),
+			});
 
 			if (this.appElement) {
 				const content = loginPage.getContent();
@@ -158,6 +162,21 @@ export default class App {
 				if (content) {
 					this.appElement.appendChild(content);
 					loginPage.dispatchComponentDidMount();
+				}
+			}
+		} else if (this.state.currentPage === PAGES.REGISTRATION) {
+			const registrationPage = new Pages.RegistrationBlock({
+				...this.state.pages.registration,
+				changePage: (page: TPages) => this.changePage(page),
+			});
+
+			if (this.appElement) {
+				const content = registrationPage.getContent();
+				console.log('app render: ', { registrationPage, c: content });
+
+				if (content) {
+					this.appElement.appendChild(content);
+					registrationPage.dispatchComponentDidMount();
 				}
 			}
 		}
@@ -457,9 +476,9 @@ export default class App {
 	// }
 
 	changePage(targetPage: TPages, isFormReset?: boolean) {
-		if (isFormReset) {
-			this.resetForm(this.state.currentPage);
-		}
+		// if (isFormReset) {
+		// 	this.resetForm(this.state.currentPage);
+		// }
 		this.state.currentPage = targetPage;
 		this.render();
 	}
