@@ -355,7 +355,7 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.props.changePage(PAGES.AUTHORIZATION);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.AUTHORIZATION);
 					},
 				}),
 			},

@@ -132,7 +132,7 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.props.changePage(PAGES.REGISTRATION);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.REGISTRATION);
 					},
 				}),
 			},

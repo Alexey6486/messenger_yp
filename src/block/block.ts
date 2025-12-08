@@ -2,7 +2,9 @@ import { EventBus } from '@/event-bus';
 import type {
 	IChildren,
 	IInputChangeParams,
+	TPages,
 } from '@/types';
+import { PAGES } from '@/constants';
 
 interface BlockProps {
 	[key: string]: any;
@@ -13,6 +15,7 @@ export class Block {
 		INIT: 'init',
 		FLOW_CDM: 'flow:component-did-mount',
 		FLOW_CDU: 'flow:component-did-update',
+		FLOW_CWU: 'flow:component-will-unmount',
 		FLOW_RENDER: 'flow:render',
 	};
 
@@ -98,6 +101,7 @@ export class Block {
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
 	}
 
@@ -141,6 +145,14 @@ export class Block {
 		console.log('componentDidUpdate: ', { oldProps, newProps });
 
 		return true;
+	}
+
+	private _componentWillUnmount(page?: TPages) {
+		this._element.parentNode.removeChild(this._element);
+
+		if (page) {
+			this.props.changePage(page);
+		}
 	}
 
 	get element() {

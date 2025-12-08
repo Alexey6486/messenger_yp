@@ -10,6 +10,7 @@ interface IEbEvents {
 	'init': 'init',
 	'flow:component-did-mount': 'flow:component-did-mount',
 	'flow:component-did-update': 'flow:component-did-update',
+	'flow:component-will-unmount': 'flow:component-will-unmount',
 	'flow:render': 'flow:render',
 }
 
@@ -37,7 +38,7 @@ export class EventBus {
 
 	off<K extends keyof IEbEvents>(event: K, callback: TEbCallback<K>) {
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${ event }`);
+			throw new Error(`Нет события: ${event}`);
 		} else {
 			this.listeners[event] = this.listeners[event].filter(
 				listener => listener !== callback,
@@ -49,7 +50,7 @@ export class EventBus {
 		console.log('emit: ', { event, args });
 
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${ event }`);
+			throw new Error(`Нет события: ${event}`);
 		} else {
 			(this.listeners[event] as []).forEach(listener => {
 				listener(...args);
