@@ -25,7 +25,7 @@
 		"noUnusedParameters": true,
 		"sourceMap": true,
 		"strictNullChecks": true,
-		"erasableSyntaxOnly": true,
+		"erasableSyntaxOnly": false,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
 		"esModuleInterop": true,

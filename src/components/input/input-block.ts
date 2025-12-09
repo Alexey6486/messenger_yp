@@ -1,9 +1,10 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
+import type { BlockProps } from '@/types';
 import template from './input-template';
 
 export class InputBlock extends Block {
-	constructor(props) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {

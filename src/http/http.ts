@@ -1,7 +1,5 @@
-import type {
-	IRequestOptions,
-	METHODS as requestMethod,
-} from './types';
+import type { IRequestOptions } from './types';
+import { ERequestMethods } from './types';
 
 
 function queryStringify(data: Document | XMLHttpRequestBodyInit | null) {
@@ -27,22 +25,22 @@ function queryStringify(data: Document | XMLHttpRequestBodyInit | null) {
 
 export class HTTPTransport {
 	get = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: requestMethod.GET }, options.timeout as number);
+		return this.request(url, { ...options, method: ERequestMethods.GET }, options.timeout as number);
 	};
 
 	post = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: requestMethod.POST }, options.timeout as number);
+		return this.request(url, { ...options, method: ERequestMethods.POST }, options.timeout as number);
 	};
 
 	put = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: requestMethod.PUT }, options.timeout as number);
+		return this.request(url, { ...options, method: ERequestMethods.PUT }, options.timeout as number);
 	};
 
 	delete = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: requestMethod.DELETE }, options.timeout as number);
+		return this.request(url, { ...options, method: ERequestMethods.DELETE }, options.timeout as number);
 	};
 
-	request = (url, options: IRequestOptions = {} as IRequestOptions, timeout = 5000) => {
+	request = (url: string, options: IRequestOptions = {} as IRequestOptions, timeout = 5000) => {
 		const { headers = {}, method, data } = options;
 
 		return new Promise(function (resolve, reject) {
@@ -52,7 +50,7 @@ export class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
-			const isGet = method === requestMethod.GET;
+			const isGet = method === ERequestMethods.GET;
 
 			xhr.open(
 				method,

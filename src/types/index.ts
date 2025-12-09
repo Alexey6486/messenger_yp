@@ -29,3 +29,11 @@ export type {
 	IInputChangeParams,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
+export type { BlockProps } from './block';
+export type {
+	TEbCallback,
+	TEbListener,
+} from './event-bus';
+export {
+	IEbEvents,
+} from './event-bus';

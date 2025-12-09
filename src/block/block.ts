@@ -1,22 +1,22 @@
 import { EventBus } from '@/event-bus';
 import type {
+	BlockProps,
 	IChildren,
 	IInputChangeParams,
 	TPages,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-
-interface BlockProps {
-	[key: string]: any;
-}
+import {
+	E_FORM_FIELDS_NAME,
+	IEbEvents,
+} from '@/types';
 
 export class Block {
-	static EVENTS = {
-		INIT: 'init',
-		FLOW_CDM: 'flow:component-did-mount',
-		FLOW_CDU: 'flow:component-did-update',
-		FLOW_CWU: 'flow:component-will-unmount',
-		FLOW_RENDER: 'flow:render',
+	static EVENTS: Record<string, string> = {
+		INIT: IEbEvents.INIT,
+		FLOW_CDM: IEbEvents.FLOW_CDM,
+		FLOW_CDU: IEbEvents.FLOW_CDU,
+		FLOW_CWU: IEbEvents.FLOW_CWU,
+		FLOW_RENDER: IEbEvents.FLOW_RENDER,
 	};
 
 	_element;
@@ -29,7 +29,7 @@ export class Block {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props = {}) {
+	constructor(props: BlockProps = {}) {
 		const { children_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
@@ -45,7 +45,7 @@ export class Block {
 		return this._element;
 	}
 
-	private _getPropsParts(props) {
+	private _getPropsParts(props: BlockProps) {
 		const children_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
 
@@ -84,7 +84,7 @@ export class Block {
 		}
 	}
 
-	private _registerEvents(eventBus) {
+	private _registerEvents(eventBus: EventBus) {
 		eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -117,7 +117,7 @@ export class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 
-	private _componentDidUpdate(oldProps, newProps) {
+	private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
 		console.log('_componentDidUpdate: ', { oldProps, newProps });
 
 		const response = this.componentDidUpdate(oldProps, newProps);
@@ -148,7 +148,7 @@ export class Block {
 
 		this._removeEvents();
 
-		const temp = this._createDocumentElement('template');
+		const temp = this._createDocumentElement('template') as HTMLTemplateElement;
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
@@ -189,7 +189,7 @@ export class Block {
 		return this.element;
 	}
 
-	setProps(nextProps) {
+	setProps(nextProps: BlockProps) {
 		// console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
 
 		if (!nextProps) {
@@ -199,15 +199,15 @@ export class Block {
 		Object.assign(this.props, nextProps);
 	};
 
-	private _makePropsProxy(props) {
+	private _makePropsProxy(props: BlockProps) {
 		const self = this;
 
 		return new Proxy<BlockProps>(props, {
-			get(target, p) {
+			get(target: BlockProps, p: string) {
 				const value = target[p];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target, p, newValue) {
+			set(target: BlockProps, p: string, newValue) {
 				console.log('proxy set: ', { self, target, p, newValue });
 
 				const oldTarget = { ...target };
@@ -244,7 +244,7 @@ export class Block {
 		});
 	}
 
-	private _createDocumentElement(tagName) {
+	private _createDocumentElement(tagName: string) {
 		console.log('_createDocumentElement: ', { tagName });
 
 		// Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков

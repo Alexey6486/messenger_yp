@@ -35,7 +35,7 @@ export class Validator {
 		return this;
 	}
 
-	isValueEqualTo(valueToCompare: string, errorMessage?: string) {
+	isValueEqualTo(valueToCompare: string | undefined, errorMessage?: string) {
 		if (this.isValid && this.value !== valueToCompare) {
 			this.message = errorMessage || 'Значения не совпадают';
 			this.isValid = false;

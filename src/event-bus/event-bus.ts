@@ -1,15 +1,7 @@
-interface IEbEvents {
-	'init': 'init',
-	'flow:component-did-mount': 'flow:component-did-mount',
-	'flow:component-did-update': 'flow:component-did-update',
-	'flow:component-will-unmount': 'flow:component-will-unmount',
-	'flow:render': 'flow:render',
-}
-
-type TEbCallback<K extends keyof IEbEvents> = (...args: any[]) => void;
-type TEbListener =
-	{ [K in keyof IEbEvents]: TEbCallback<K>[] }
-	| {};
+import type {
+	TEbCallback,
+	TEbListener,
+} from '@/types';
 
 export class EventBus {
 	private listeners: TEbListener = {};
@@ -18,17 +10,17 @@ export class EventBus {
 		this.listeners = {};
 	}
 
-	on<K extends keyof IEbEvents>(event: K, callback: TEbCallback<K>): void {
+	on(event: string, callback: TEbCallback): void {
 		console.log('on: ', { event, callback });
 
-		if (!Array.isArray(this.listeners[event])) {
+		if (this.listeners[event] && !Array.isArray(this.listeners[event])) {
 			this.listeners[event] = [];
 		}
 
 		this.listeners[event] = [...this.listeners[event], callback];
 	}
 
-	off<K extends keyof IEbEvents>(event: K, callback: TEbCallback<K>) {
+	off(event: string, callback: TEbCallback) {
 		if (!Array.isArray(this.listeners[event])) {
 			throw new Error(`Нет события: ${ event }`);
 		} else {
@@ -38,13 +30,13 @@ export class EventBus {
 		}
 	}
 
-	emit<K extends keyof IEbEvents>(event: K, ...args): void {
+	emit(event: string, ...args: unknown[]): void {
 		console.log('emit: ', { event, args });
 
 		if (!Array.isArray(this.listeners[event])) {
 			throw new Error(`Нет события: ${ event }`);
 		} else {
-			(this.listeners[event] as []).forEach(listener => {
+			this.listeners[event].forEach((listener: TEbCallback) => {
 				listener(...args);
 			});
 		}

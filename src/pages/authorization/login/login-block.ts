@@ -7,7 +7,10 @@ import {
 	compile,
 	fieldsValidator,
 } from '@/utils';
-import type { IInputChangeParams } from '@/types';
+import type {
+	BlockProps,
+	IInputChangeParams,
+} from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
@@ -16,7 +19,7 @@ import template from './login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
 export class LoginBlock extends Block {
-	constructor(props) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -24,10 +27,10 @@ export class LoginBlock extends Block {
 				form: IDS.AUTHORIZATION.FORM,
 			},
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -78,7 +81,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
@@ -128,7 +131,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({

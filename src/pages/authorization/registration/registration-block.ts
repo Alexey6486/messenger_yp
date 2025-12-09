@@ -8,6 +8,7 @@ import {
 	fieldsValidator,
 } from '@/utils';
 import type {
+	BlockProps,
 	IInputChangeParams,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
@@ -18,7 +19,7 @@ import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
 export class RegistrationBlock extends Block {
-	constructor(props) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -26,15 +27,15 @@ export class RegistrationBlock extends Block {
 				form: IDS.REGISTRATION.FORM,
 			},
 			markup: {
-				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
-				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
-				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${IDS.REGISTRATION.F_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${IDS.REGISTRATION.S_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${IDS.REGISTRATION.PHONE_FIELD}"></div>`,
-				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${IDS.REGISTRATION.PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${IDS.REGISTRATION.C_PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.SUBMIT]: `<div id="${IDS.REGISTRATION.SUBMIT}"></div>`,
-				[IDS.REGISTRATION.SIGNIN]: `<div id="${IDS.REGISTRATION.SIGNIN}"></div>`,
+				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${ IDS.REGISTRATION.EMAIL_FIELD }"></div>`,
+				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${ IDS.REGISTRATION.LOGIN_FIELD }"></div>`,
+				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.F_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.S_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${ IDS.REGISTRATION.PHONE_FIELD }"></div>`,
+				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${ IDS.REGISTRATION.PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${ IDS.REGISTRATION.C_PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.SUBMIT]: `<div id="${ IDS.REGISTRATION.SUBMIT }"></div>`,
+				[IDS.REGISTRATION.SIGNIN]: `<div id="${ IDS.REGISTRATION.SIGNIN }"></div>`,
 			},
 			children: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: new FieldBlock({
@@ -83,7 +84,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.EMAIL_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.EMAIL_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.LOGIN_FIELD]: new FieldBlock({
@@ -132,7 +133,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.F_NAME_FIELD]: new FieldBlock({
@@ -181,7 +182,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.F_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.F_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.S_NAME_FIELD]: new FieldBlock({
@@ -230,7 +231,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.S_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.S_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PHONE_FIELD]: new FieldBlock({
@@ -279,7 +280,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PHONE_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PHONE_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PSW_FIELD]: new FieldBlock({
@@ -328,7 +329,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.C_PSW_FIELD]: new FieldBlock({
@@ -378,7 +379,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.C_PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
