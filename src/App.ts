@@ -21,7 +21,6 @@ export default class App {
 		this.appElement = document.getElementById('app');
 		this.state = {
 			currentPage: PAGES.AUTHORIZATION,
-			focusElement: null,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { form: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },

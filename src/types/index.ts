@@ -1,7 +1,4 @@
-export type {
-	TPages,
-}
-	from './pages';
+export type { TPages } from './pages';
 export type {
 	IState,
 	IFormState,
@@ -31,3 +28,4 @@ export type {
 	IChildren,
 	IInputChangeParams,
 } from './state';
+export { E_FORM_FIELDS_NAME } from './state';

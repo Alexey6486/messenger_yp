@@ -3,8 +3,14 @@ import {
 	IDS,
 	PAGES,
 } from '@/constants';
-import { compile } from '@/utils';
-import type { IInputChangeParams } from '@/types';
+import {
+	compile,
+	fieldsValidator,
+} from '@/utils';
+import type {
+	IInputChangeParams,
+} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -20,15 +26,15 @@ export class RegistrationBlock extends Block {
 				form: IDS.REGISTRATION.FORM,
 			},
 			markup: {
-				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${ IDS.REGISTRATION.EMAIL_FIELD }"></div>`,
-				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${ IDS.REGISTRATION.LOGIN_FIELD }"></div>`,
-				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.F_NAME_FIELD }"></div>`,
-				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.S_NAME_FIELD }"></div>`,
-				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${ IDS.REGISTRATION.PHONE_FIELD }"></div>`,
-				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${ IDS.REGISTRATION.PSW_FIELD }"></div>`,
-				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${ IDS.REGISTRATION.C_PSW_FIELD }"></div>`,
-				[IDS.REGISTRATION.SUBMIT]: `<div id="${ IDS.REGISTRATION.SUBMIT }"></div>`,
-				[IDS.REGISTRATION.SIGNIN]: `<div id="${ IDS.REGISTRATION.SIGNIN }"></div>`,
+				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
+				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
+				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${IDS.REGISTRATION.F_NAME_FIELD}"></div>`,
+				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${IDS.REGISTRATION.S_NAME_FIELD}"></div>`,
+				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${IDS.REGISTRATION.PHONE_FIELD}"></div>`,
+				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${IDS.REGISTRATION.PSW_FIELD}"></div>`,
+				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${IDS.REGISTRATION.C_PSW_FIELD}"></div>`,
+				[IDS.REGISTRATION.SUBMIT]: `<div id="${IDS.REGISTRATION.SUBMIT}"></div>`,
+				[IDS.REGISTRATION.SIGNIN]: `<div id="${IDS.REGISTRATION.SIGNIN}"></div>`,
 			},
 			children: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: new FieldBlock({
@@ -40,6 +46,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Почта',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.EMAIL_INPUT]: new InputBlock({
@@ -49,26 +56,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.email,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'email',
-							name: 'email',
-							placeholder: 'Почта',
+							dataset: E_FORM_FIELDS_NAME.email,
+							name: E_FORM_FIELDS_NAME.email,
+							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange email: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.email,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.EMAIL_INPUT, IDS.REGISTRATION.EMAIL_FIELD],
-									'email',
+									E_FORM_FIELDS_NAME.email,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.EMAIL_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.EMAIL_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.LOGIN_FIELD]: new FieldBlock({
@@ -80,6 +95,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
@@ -89,28 +105,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.login,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'login',
-							name: 'login',
-							placeholder: 'Логин',
+							dataset: E_FORM_FIELDS_NAME.login,
+							name: E_FORM_FIELDS_NAME.login,
+							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange login: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.login,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.LOGIN_INPUT, IDS.REGISTRATION.LOGIN_FIELD],
-									'login',
+									E_FORM_FIELDS_NAME.login,
 								);
-							},
-							validation: {
-								isRequired: true,
-								regex: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
-								message: 'От 3 до 20 символов: -, _, латиница, 0-9 (только цифры запрещено)',
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.LOGIN_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.LOGIN_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.F_NAME_FIELD]: new FieldBlock({
@@ -122,6 +144,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Имя',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
@@ -131,26 +154,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.first_name,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'first_name',
-							name: 'first_name',
-							placeholder: 'Имя',
+							dataset: E_FORM_FIELDS_NAME.first_name,
+							name: E_FORM_FIELDS_NAME.first_name,
+							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange first_name: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.first_name,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.F_NAME_INPUT, IDS.REGISTRATION.F_NAME_FIELD],
-									'first_name',
+									E_FORM_FIELDS_NAME.first_name,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.F_NAME_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.F_NAME_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.S_NAME_FIELD]: new FieldBlock({
@@ -162,6 +193,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Фамилия',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.S_NAME_INPUT]: new InputBlock({
@@ -171,26 +203,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.second_name,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'second_name',
-							name: 'second_name',
-							placeholder: 'Фамилия',
+							dataset: E_FORM_FIELDS_NAME.second_name,
+							name: E_FORM_FIELDS_NAME.second_name,
+							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange second_name: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.second_name,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.S_NAME_INPUT, IDS.REGISTRATION.S_NAME_FIELD],
-									'second_name',
+									E_FORM_FIELDS_NAME.second_name,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.S_NAME_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.S_NAME_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PHONE_FIELD]: new FieldBlock({
@@ -202,6 +242,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Телефон',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.PHONE_INPUT]: new InputBlock({
@@ -211,26 +252,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.phone,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'phone',
-							name: 'phone',
-							placeholder: 'Телефон',
+							dataset: E_FORM_FIELDS_NAME.phone,
+							name: E_FORM_FIELDS_NAME.phone,
+							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange phone: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.phone,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.PHONE_INPUT, IDS.REGISTRATION.PHONE_FIELD],
-									'phone',
+									E_FORM_FIELDS_NAME.phone,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PHONE_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PHONE_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PSW_FIELD]: new FieldBlock({
@@ -242,6 +291,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.PSW_INPUT]: new InputBlock({
@@ -251,26 +301,34 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.password,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'password',
-							name: 'password',
-							placeholder: 'Пароль',
+							dataset: E_FORM_FIELDS_NAME.password,
+							name: E_FORM_FIELDS_NAME.password,
+							placeholder: '',
 							type: 'password',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange password: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.password,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.PSW_INPUT, IDS.REGISTRATION.PSW_FIELD],
-									'password',
+									E_FORM_FIELDS_NAME.password,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PSW_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PSW_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.C_PSW_FIELD]: new FieldBlock({
@@ -282,6 +340,7 @@ export class RegistrationBlock extends Block {
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль (еще раз)',
+					isRequired: true,
 
 					children: {
 						[IDS.REGISTRATION.C_PSW_INPUT]: new InputBlock({
@@ -291,26 +350,35 @@ export class RegistrationBlock extends Block {
 								error: props.form.errors.confirmPassword,
 								currentFocus: props.currentFocus,
 							},
-							dataset: 'confirmPassword',
-							name: 'confirmPassword',
-							placeholder: 'Пароль (еще раз)',
+							dataset: E_FORM_FIELDS_NAME.confirmPassword,
+							name: E_FORM_FIELDS_NAME.confirmPassword,
+							placeholder: '',
 							type: 'password',
 							onChange: (params: IInputChangeParams<Block>) => {
 								console.log('onChange confirmPassword: ', { params, currentThis: this });
 
 								this.onFormInputChange(
-									params,
+									{
+										...params,
+										...(params.info.event === 'blur' && {
+											data: {
+												...params.data,
+												error: fieldsValidator({
+													valueToValidate: params.data.value,
+													fieldName: E_FORM_FIELDS_NAME.confirmPassword,
+													valueToCompare: this.props.form.fields.password,
+												}),
+											},
+										}),
+									},
 									[IDS.REGISTRATION.C_PSW_INPUT, IDS.REGISTRATION.C_PSW_FIELD],
-									'confirmPassword',
+									E_FORM_FIELDS_NAME.confirmPassword,
 								);
-							},
-							validation: {
-								isRequired: true,
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.C_PSW_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
@@ -324,7 +392,52 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						let validationResult = '';
+						let pageProps = { form: { ...this.props.form } };
+
+						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
+							if (fieldId.includes('field')) {
+								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
+									if (inputId.includes('input') && !inputInstance.props.input_data.error.length) {
+										validationResult = fieldsValidator({
+											valueToValidate: inputInstance.props.input_data.value,
+											fieldName: inputInstance.props.name,
+											...(inputInstance.props.name === E_FORM_FIELDS_NAME.confirmPassword && {
+												valueToCompare: this.props.form.fields.password,
+											}),
+										});
+
+										if (validationResult.length) {
+											const data = {
+												input_data: {
+													value: inputInstance.props.input_data.value,
+													error: validationResult,
+													currentFocus: { element: null, selectionStart: null },
+												},
+											};
+											inputInstance.setProps(data);
+											fieldInstance.setProps(data);
+
+											pageProps = {
+												form: {
+													...pageProps.form,
+													errors: {
+														...pageProps.form.errors,
+														[inputInstance.props.name]: validationResult,
+													},
+												},
+											};
+										}
+									}
+								});
+							}
+						});
+
 						console.log('Registration data: ', this.props.form.fields);
+
+						if (validationResult.length) {
+							this.setProps(pageProps);
+						}
 					},
 				}),
 				[IDS.REGISTRATION.SIGNIN]: new ButtonBlock({

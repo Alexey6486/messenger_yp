@@ -4,39 +4,53 @@ export interface ISearchForm {
 	search: string;
 }
 
+export enum E_FORM_FIELDS_NAME {
+	first_name = 'first_name',
+	second_name = 'second_name',
+	display_name = 'display_name',
+	login = 'login',
+	password = 'password',
+	oldPassword = 'oldPassword',
+	newPassword = 'newPassword',
+	confirmPassword = 'confirmPassword',
+	email = 'email',
+	phone = 'phone',
+	avatar = 'avatar',
+}
+
 export interface ILoginForm {
-	login: string;
-	password: string;
+	[E_FORM_FIELDS_NAME.login]: string;
+	[E_FORM_FIELDS_NAME.password]: string;
 }
 
 export interface IRegistrationFormDto {
-	first_name: string;
-	second_name: string;
-	login: string;
-	email: string;
-	password: string;
-	phone: string;
+	[E_FORM_FIELDS_NAME.first_name]: string;
+	[E_FORM_FIELDS_NAME.second_name]: string;
+	[E_FORM_FIELDS_NAME.login]: string;
+	[E_FORM_FIELDS_NAME.email]: string;
+	[E_FORM_FIELDS_NAME.password]: string;
+	[E_FORM_FIELDS_NAME.phone]: string;
 }
 
 export interface IRegistrationFormUi extends IRegistrationFormDto {
-	confirmPassword: string;
+	[E_FORM_FIELDS_NAME.confirmPassword]: string;
 }
 
 export interface IUserDataForm {
 	id: string;
-	first_name: string;
-	second_name: string;
-	display_name: string;
-	avatar: string;
-	login: string;
-	email: string;
-	phone: string;
+	[E_FORM_FIELDS_NAME.first_name]: string;
+	[E_FORM_FIELDS_NAME.second_name]: string;
+	[E_FORM_FIELDS_NAME.display_name]: string;
+	[E_FORM_FIELDS_NAME.avatar]: string;
+	[E_FORM_FIELDS_NAME.login]: string;
+	[E_FORM_FIELDS_NAME.email]: string;
+	[E_FORM_FIELDS_NAME.phone]: string;
 }
 
 export interface IUserPasswordForm {
-	oldPassword: string;
-	newPassword: string;
-	confirmPassword: string;
+	[E_FORM_FIELDS_NAME.oldPassword]: string;
+	[E_FORM_FIELDS_NAME.newPassword]: string;
+	[E_FORM_FIELDS_NAME.confirmPassword]: string;
 }
 
 export interface IFormState<T> {
@@ -52,11 +66,11 @@ export type TFormsFields = ILoginForm & IRegistrationFormUi & ISearchForm;
 
 export interface IUserBase {
 	id: string;
-	first_name: string;
-	second_name: string;
-	display_name: string;
-	avatar: string;
-	login: string;
+	[E_FORM_FIELDS_NAME.first_name]: string;
+	[E_FORM_FIELDS_NAME.second_name]: string;
+	[E_FORM_FIELDS_NAME.display_name]: string;
+	[E_FORM_FIELDS_NAME.avatar]: string;
+	[E_FORM_FIELDS_NAME.login]: string;
 }
 
 export type TUserRole = 'admin' | 'regular';
@@ -66,8 +80,8 @@ export interface IChatUserResponse extends IUserBase {
 }
 
 export interface IUserResponse extends IUserBase {
-	email: string;
-	phone: string;
+	[E_FORM_FIELDS_NAME.email]: string;
+	[E_FORM_FIELDS_NAME.phone]: string;
 }
 
 export interface IChatLastMessage {
@@ -134,7 +148,6 @@ export interface IProfilePageHbsState extends IProfilePageState {
 
 export interface IState {
 	currentPage: TPages
-	focusElement: string | null
 	user: IUserResponse,
 	pages: {
 		authorization: IPageState<ILoginForm>

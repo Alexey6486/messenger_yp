@@ -1,8 +1,5 @@
 import { Block } from '@/block';
-import {
-	compile,
-	validate,
-} from '@/utils';
+import { compile } from '@/utils';
 import template from './input-template';
 
 export class InputBlock extends Block {
@@ -15,14 +12,11 @@ export class InputBlock extends Block {
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						const { message } = validate(e?.target?.value, this.props.validation);
-
-						console.log('InputBlock input: ', { message, e, t: this });
+						console.log('InputBlock input: ', { e, t: this });
 
 						props.onChange({
 							data: {
 								value: e.target.value,
-								error: message,
 							},
 							info: {
 								event: 'input',
@@ -34,14 +28,11 @@ export class InputBlock extends Block {
 				},
 				blur: (e: Event) => {
 					if (e.target && e.target instanceof HTMLInputElement) {
-						const { message } = validate(e?.target?.value, this.props.validation);
-
-						console.log('InputBlock blur: ', { validation: message, e, t: this });
+						console.log('InputBlock blur: ', { e, t: this });
 
 						props.onChange({
 							data: {
 								value: e.target.value,
-								error: message,
 							},
 							info: {
 								event: 'blur',

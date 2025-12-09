@@ -4,6 +4,7 @@ import type {
 	IInputChangeParams,
 	TPages,
 } from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 
 interface BlockProps {
 	[key: string]: any;
@@ -18,9 +19,9 @@ export class Block {
 		FLOW_RENDER: 'flow:render',
 	};
 
-	protected _element;
-	protected props: BlockProps;
-	protected children: IChildren<Block>;
+	_element;
+	props: BlockProps;
+	children: IChildren<Block>;
 	protected eventBus: () => EventBus;
 
 	/** JSDoc
@@ -211,9 +212,17 @@ export class Block {
 
 				const oldTarget = { ...target };
 				if (p === 'input_data') {
-					target[p] = { ...target[p], ...newValue };
+					const { value, error, currentFocus } = newValue;
+
+					target[p] = {
+						...target[p],
+						value,
+						error,
+						currentFocus,
+					};
 				} else if (p === 'form') {
 					const { fields, errors } = newValue;
+
 					target[p] = {
 						...target[p],
 						fields: { ...target[p].fields, ...fields },
@@ -276,18 +285,18 @@ export class Block {
 	};
 
 	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
-	 * к компоненте текущей страницы) вызывает обновление пропсов setProps у целевых компонент,
-	 * для обновления их данных.
+	 * к общей компоненте страницы) вызывает обновление пропсов setProps у целевых компонент,
+	 * зависящих/использующих эти данные (childrenIdList).
 	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
 	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
 	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
-	 * @param {string[]} childrenIdList
-	 * @param {IInputChangeParams} params
-	 * @param {string} fieldName
+	 * @param {string[]} childrenIdList список id компонент, которые используют данные input
+	 * @param {IInputChangeParams} params данные от компоненты input
+	 * @param {string} fieldName имя поля формы
 	 *
 	 * @returns {void}
 	 */
-	onFormInputChange(params: IInputChangeParams<Block>, childrenIdList: string[], fieldName: string): void {
+	onFormInputChange(params: IInputChangeParams<Block>, childrenIdList: string[], fieldName: E_FORM_FIELDS_NAME): void {
 		const { data, info } = params;
 		const { element, selectionStart } = info;
 
