@@ -31,6 +31,9 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
 				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
 				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
+
+				// Временные кнопки для перехода на другие страницы
+				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -203,6 +206,22 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.REGISTRATION);
+					},
+				}),
+
+				// Временные кнопки для перехода на другие страницы
+				[IDS.AUTHORIZATION.TEMP_ERROR]: new ButtonBlock({
+					id: IDS.AUTHORIZATION.TEMP_ERROR,
+					type: 'button',
+					dataset: PAGES.ERROR,
+					text: 'Страница ошибки',
+					onClick: (event: Event) => {
+						console.log('click change page: ', this);
+
+						event.preventDefault();
+						event.stopPropagation();
+
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.ERROR);
 					},
 				}),
 			},

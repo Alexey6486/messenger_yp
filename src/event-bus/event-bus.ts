@@ -13,7 +13,7 @@ export class EventBus {
 	on(event: string, callback: TEbCallback): void {
 		console.log('on: ', { event, callback });
 
-		if (this.listeners[event] && !Array.isArray(this.listeners[event])) {
+		if (!Array.isArray(this.listeners[event])) {
 			this.listeners[event] = [];
 		}
 

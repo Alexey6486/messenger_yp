@@ -67,6 +67,21 @@ export default class App {
 					registrationPage.dispatchComponentDidMount();
 				}
 			}
+		} else if (this.state.currentPage === PAGES.ERROR) {
+			const errorPage = new Pages.ErrorBlock({
+				...this.state.pages.error,
+				changePage: (page: TPages) => this.changePage(page),
+			});
+
+			if (this.appElement) {
+				const content = errorPage.getContent();
+				console.log('app render: ', { errorPage, c: content });
+
+				if (content) {
+					this.appElement.appendChild(content);
+					errorPage.dispatchComponentDidMount();
+				}
+			}
 		}
 
 		return '';

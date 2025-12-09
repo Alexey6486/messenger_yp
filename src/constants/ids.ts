@@ -22,6 +22,9 @@ export const IDS: Record<string, Record<string, string>> = {
 		LOGIN_INPUT: 'authorization-login-input',
 		PSW_FIELD: 'authorization-psw-field',
 		PSW_INPUT: 'authorization-psw-input',
+
+		// Временные кнопки для перехода на другие страницы
+		TEMP_ERROR: 'authorization-temp-error',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',
@@ -44,6 +47,7 @@ export const IDS: Record<string, Record<string, string>> = {
 	},
 	ERROR: {
 		RETURN: 'error-return',
+		BUTTON: 'error-button',
 	},
 	MODAL: {},
 	COMMON: {
