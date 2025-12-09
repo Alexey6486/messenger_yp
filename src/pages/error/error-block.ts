@@ -33,7 +33,7 @@ export class ErrorBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.AUTHORIZATION);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
 					},
 				}),
 			},

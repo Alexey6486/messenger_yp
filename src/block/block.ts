@@ -3,7 +3,6 @@ import type {
 	BlockProps,
 	IChildren,
 	IInputChangeParams,
-	TPages,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -19,7 +18,7 @@ export class Block {
 		FLOW_RENDER: IEbEvents.FLOW_RENDER,
 	};
 
-	_element;
+	_element: Element | HTMLElement | HTMLInputElement | null = null;
 	props: BlockProps;
 	children: IChildren<Block>;
 	protected eventBus: () => EventBus;
@@ -68,7 +67,7 @@ export class Block {
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
-				this._element.addEventListener(eventName, events[eventName]);
+				(this._element as Element).addEventListener(eventName, events[eventName]);
 			});
 		}
 	}
@@ -79,7 +78,7 @@ export class Block {
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
-				this._element.removeEventListener(eventName, events[eventName]);
+				(this._element as Element).removeEventListener(eventName, events[eventName]);
 			});
 		}
 	}
@@ -134,12 +133,15 @@ export class Block {
 		return true;
 	}
 
-	private _componentWillUnmount(page?: TPages) {
+	private _componentWillUnmount(props: BlockProps) {
 		this._removeEvents();
-		this._element.parentNode.removeChild(this._element);
+		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
+			this._element.parentNode.removeChild(this._element);
 
-		if (page) {
-			this.props.changePage(page);
+		}
+
+		if (props.page) {
+			this.props.changePage(props.page);
 		}
 	}
 
@@ -169,11 +171,13 @@ export class Block {
 
 		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
-				this._element.focus();
-				this._element.setSelectionRange(
-					this.props.input_data.currentFocus.selectionStart,
-					this.props.input_data.currentFocus.selectionStart,
-				);
+				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
+					this._element.focus();
+					this._element.setSelectionRange(
+						this.props.input_data.currentFocus.selectionStart,
+						this.props.input_data.currentFocus.selectionStart,
+					);
+				}
 			}, 0);
 		}
 	}
@@ -197,7 +201,7 @@ export class Block {
 		}
 
 		Object.assign(this.props, nextProps);
-	};
+	}
 
 	private _makePropsProxy(props: BlockProps) {
 		const self = this;
@@ -252,11 +256,9 @@ export class Block {
 	}
 
 	show() {
-		this.getContent().style.display = 'block';
 	}
 
 	hide() {
-		this.getContent().style.display = 'none';
 	}
 
 	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
@@ -282,7 +284,7 @@ export class Block {
 		});
 
 		return targetChildren;
-	};
+	}
 
 	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
 	 * к общей компоненте страницы) вызывает обновление пропсов setProps у целевых компонент,
@@ -318,5 +320,5 @@ export class Block {
 				errors: { [fieldName]: data.error },
 			},
 		});
-	};
+	}
 }

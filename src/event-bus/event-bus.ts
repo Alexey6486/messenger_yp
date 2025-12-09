@@ -1,4 +1,5 @@
 import type {
+	BlockProps,
 	TEbCallback,
 	TEbListener,
 } from '@/types';
@@ -30,7 +31,7 @@ export class EventBus {
 		}
 	}
 
-	emit(event: string, ...args: unknown[]): void {
+	emit(event: string, ...args: BlockProps[]): void {
 		console.log('emit: ', { event, args });
 
 		if (!Array.isArray(this.listeners[event])) {

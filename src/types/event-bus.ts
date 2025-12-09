@@ -1,3 +1,5 @@
+import type { BlockProps } from '@/types/block';
+
 export const IEbEvents: Record<string, string> = {
 	INIT: 'init',
 	FLOW_CDM: 'flow:component-did-mount',
@@ -6,5 +8,5 @@ export const IEbEvents: Record<string, string> = {
 	FLOW_RENDER: 'flow:render',
 } as const;
 
-export type TEbCallback = (...args: unknown[]) => void;
+export type TEbCallback = (...args: BlockProps[]) => void;
 export type TEbListener = Record<string, TEbCallback[]>;

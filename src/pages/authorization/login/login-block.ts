@@ -205,7 +205,7 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.REGISTRATION);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
 					},
 				}),
 
@@ -221,7 +221,7 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.ERROR);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
 					},
 				}),
 			},

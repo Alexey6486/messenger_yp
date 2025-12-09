@@ -386,7 +386,7 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.SUBMIT,
 					type: 'submit',
 					dataset: PAGES.REGISTRATION,
-					text: 'Войти',
+					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
 						console.log('click submit: ', this);
 
@@ -452,7 +452,7 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.AUTHORIZATION);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
 					},
 				}),
 			},
