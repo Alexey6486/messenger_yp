@@ -1,7 +1,9 @@
 import { EventBus } from '@/event-bus';
+import * as Pages from '@/pages';
 import type {
 	BlockProps,
 	IChildren,
+	IFormState,
 	IInputChangeParams,
 } from '@/types';
 import {
@@ -448,6 +450,25 @@ export class Block {
 					);
 				}
 			}, 0);
+		}
+	}
+
+	protected createModal<T>(contentId: string, contentForms: Record<string, IFormState<T>>, title: string) {
+		const modal = new Pages.ModalBlock({
+			contentId,
+			contentForms,
+			title,
+			error: '',
+		});
+
+		if (this.props.appElement) {
+			const content = modal.getContent();
+			console.log('app render modal: ', { modal, c: content });
+
+			if (content) {
+				this.props.appElement.parentNode.appendChild(content);
+				modal.dispatchComponentDidMount();
+			}
 		}
 	}
 }

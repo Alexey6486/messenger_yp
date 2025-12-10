@@ -1,5 +1,4 @@
 import { Block } from '@/block';
-import * as Pages from '@/pages';
 import {
 	IDS,
 	PAGES,
@@ -266,27 +265,16 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						const modal = new Pages.ModalBlock({
-							contentId: IDS.FORMS.MODAL_ADD_USER_FORM,
-							contentForms: {
+						this.createModal(
+							IDS.FORMS.MODAL_ADD_USER_FORM,
+							{
 								[IDS.FORMS.MODAL_ADD_USER_FORM]: {
 									fields: { login: '' },
 									errors: { login: '' },
 								},
 							},
-							title: 'Добавить пользователя',
-							error: '',
-						});
-
-						if (props.appElement) {
-							const content = modal.getContent();
-							console.log('app render modal: ', { modal, c: content });
-
-							if (content) {
-								props.appElement.parentNode.appendChild(content);
-								modal.dispatchComponentDidMount();
-							}
-						}
+							'Добавить пользователя',
+						);
 					},
 				}),
 			},
