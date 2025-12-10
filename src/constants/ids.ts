@@ -50,6 +50,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		TEMP_ERROR: 'authorization-temp-error',
 		TEMP_PROFILE: 'authorization-temp-profile',
 		TEMP_MAIN: 'authorization-temp-main',
+		TEMP_MODAL: 'authorization-temp-modal',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',
@@ -74,7 +75,13 @@ export const IDS: Record<string, Record<string, string>> = {
 		RETURN: 'error-return',
 		BUTTON: 'error-button',
 	},
-	MODAL: {},
+	MODAL: {
+		CONTENT: 'modal-content',
+		SUBMIT: 'modal-submit',
+		CLOSE: 'modal-close',
+		ADD_USER_FIELD: 'modal-add-user-field',
+		ADD_USER_INPUT: 'modal-add-user-input',
+	},
 	COMMON: {
 		INPUT: 'input',
 	},
@@ -83,5 +90,6 @@ export const IDS: Record<string, Record<string, string>> = {
 		REGISTRATION_FORM: 'registrationForm',
 		PROFILE_USER_DATA_FORM: 'userForm',
 		PROFILE_USER_PSW_FORM: 'passwordForm',
+		MODAL_ADD_USER_FORM: 'modalAddUserForm',
 	},
 };

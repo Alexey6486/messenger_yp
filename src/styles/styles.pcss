@@ -320,34 +320,13 @@ input {
 
 		& > .modal-close {
 			position: absolute;
-			right: 15px;
-			top: 15px;
+			right: 5px;
+			top: 5px;
 			cursor: pointer;
-			width: 15px;
-			height: 15px;
 
-			&::before,
-			&::after {
-				content: "";
-				position: absolute;
-				top: 7px;
-				width: 15px;
-				height: 1px;
-				background-color: var(--color-bl);
-			}
-
-			&::before {
-				rotate: 45deg;
-			}
-
-			&::after {
-				rotate: -45deg;
-			}
-
-			&:hover {
-				&::before,
-				&::after {
-					background-color: var(--color-hv);
+			& button {
+				&:hover {
+					box-shadow: none;
 				}
 			}
 		}

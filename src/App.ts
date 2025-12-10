@@ -20,7 +20,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.PROFILE,
+			currentPage: PAGES.AUTHORIZATION,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
@@ -40,6 +40,7 @@ export default class App {
 		if (this.state.currentPage === PAGES.AUTHORIZATION) {
 			const loginPage = new Pages.LoginBlock({
 				...this.state.pages.authorization,
+				appElement: this.appElement,
 				changePage: (page: TPages) => this.changePage(page),
 			});
 

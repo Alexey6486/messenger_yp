@@ -1,4 +1,5 @@
 import { Block } from '@/block';
+import * as Pages from '@/pages';
 import {
 	IDS,
 	PAGES,
@@ -27,15 +28,16 @@ export class LoginBlock extends Block {
 				form: IDS.AUTHORIZATION.FORM,
 			},
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 
 				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${IDS.AUTHORIZATION.TEMP_ERROR}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${IDS.AUTHORIZATION.TEMP_PROFILE}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${IDS.AUTHORIZATION.TEMP_MAIN}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${ IDS.AUTHORIZATION.TEMP_PROFILE }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${ IDS.AUTHORIZATION.TEMP_MAIN }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${ IDS.AUTHORIZATION.TEMP_MODAL }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -48,7 +50,6 @@ export class LoginBlock extends Block {
 					},
 					label: 'Логин',
 					isRequired: true,
-
 					children: {
 						[IDS.AUTHORIZATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.LOGIN_INPUT,
@@ -82,12 +83,11 @@ export class LoginBlock extends Block {
 									E_FORM_FIELDS_NAME.login,
 									IDS.FORMS.AUTHORIZATION_FORM,
 								);
-
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
@@ -100,7 +100,6 @@ export class LoginBlock extends Block {
 					},
 					label: 'Пароль',
 					isRequired: true,
-
 					children: {
 						[IDS.AUTHORIZATION.PSW_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.PSW_INPUT,
@@ -138,7 +137,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
@@ -254,6 +253,40 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.MAIN });
+					},
+				}),
+				[IDS.AUTHORIZATION.TEMP_MODAL]: new ButtonBlock({
+					id: IDS.AUTHORIZATION.TEMP_MODAL,
+					type: 'button',
+					dataset: IDS.AUTHORIZATION.TEMP_MODAL,
+					text: 'Модальное окно',
+					onClick: (event: Event) => {
+						console.log('click show modal: ', this);
+
+						event.preventDefault();
+						event.stopPropagation();
+
+						const modal = new Pages.ModalBlock({
+							contentId: IDS.FORMS.MODAL_ADD_USER_FORM,
+							contentForms: {
+								[IDS.FORMS.MODAL_ADD_USER_FORM]: {
+									fields: { login: '' },
+									errors: { login: '' },
+								},
+							},
+							title: 'Добавить пользователя',
+							error: '',
+						});
+
+						if (props.appElement) {
+							const content = modal.getContent();
+							console.log('app render modal: ', { modal, c: content });
+
+							if (content) {
+								props.appElement.parentNode.appendChild(content);
+								modal.dispatchComponentDidMount();
+							}
+						}
 					},
 				}),
 			},

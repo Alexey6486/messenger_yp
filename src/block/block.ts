@@ -116,6 +116,12 @@ export class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 
+	dispatchComponentWillUnmount() {
+		console.log('dispatchComponentWillUnmount');
+
+		this.eventBus().emit(Block.EVENTS.FLOW_CWU);
+	}
+
 	private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
 		console.log('_componentDidUpdate: ', { oldProps, newProps });
 
@@ -137,10 +143,20 @@ export class Block {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
-
+			this._element = null;
 		}
 
-		if (props.page) {
+		if (this.children) {
+			const childrenInstancesList = Object.values(this.children);
+
+			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
+				Object.values(this.children).forEach(child => {
+					child.dispatchComponentWillUnmount();
+				});
+			}
+		}
+
+		if (props?.page) {
 			this.props.changePage(props.page);
 		}
 	}
@@ -169,18 +185,7 @@ export class Block {
 
 		this._addEvents();
 		this._addAttributes();
-
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
-			setTimeout(() => {
-				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
-					this._element.focus();
-					this._element.setSelectionRange(
-						this.props.input_data.currentFocus.selectionStart,
-						this.props.input_data.currentFocus.selectionStart,
-					);
-				}
-			}, 0);
-		}
+		this._setFocus();
 	}
 
 	render(): string {
@@ -429,6 +434,20 @@ export class Block {
 
 		if (shouldBeUpdated) {
 			this.setProps(pageProps);
+		}
+	}
+
+	private _setFocus() {
+		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
+			setTimeout(() => {
+				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
+					this._element.focus();
+					this._element.setSelectionRange(
+						this.props.input_data.currentFocus.selectionStart,
+						this.props.input_data.currentFocus.selectionStart,
+					);
+				}
+			}, 0);
 		}
 	}
 }
