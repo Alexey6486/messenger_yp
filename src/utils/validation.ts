@@ -70,6 +70,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 				break;
 			}
 			case E_FORM_FIELDS_NAME.first_name:
+			case E_FORM_FIELDS_NAME.display_name:
 			case E_FORM_FIELDS_NAME.second_name: {
 				validationResult = validator.isRequired().regexTest(REGEX.name, VALIDATION_MSG.name).result;
 				break;
@@ -78,6 +79,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 				validationResult = validator.isRequired().regexTest(REGEX.phone, VALIDATION_MSG.phone).result;
 				break;
 			}
+			case E_FORM_FIELDS_NAME.newPassword:
 			case E_FORM_FIELDS_NAME.password: {
 				validationResult = validator.isRequired().regexTest(REGEX.psw, VALIDATION_MSG.psw).result;
 				break;

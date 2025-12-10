@@ -168,6 +168,7 @@ export class Block {
 		this._element = newElement;
 
 		this._addEvents();
+		this._addAttributes();
 
 		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
@@ -255,10 +256,47 @@ export class Block {
 		return document.createElement(tagName);
 	}
 
+	private _addAttributes(): void {
+		const { attr = {} } = this.props;
+		console.log('_addAttributes: ', this.props, this._element);
+
+		if (this._element && attr) {
+			Object.entries(attr).forEach(([key, value]) => {
+				(this._element as Element).setAttribute(key, value as string);
+			});
+		}
+	}
+
+	setAttributes(attr: Record<string, string | boolean>): void {
+		console.log('setAttributes: ', this.props, this._element);
+
+		Object.entries(attr).forEach(([key, value]) => {
+			if (this._element) {
+				this._element.setAttribute(key, value as string);
+			}
+		});
+	}
+
+	removeAttributes(attrName: string): void {
+		console.log('removeAttributes: ', attrName, this._element);
+
+		if (this._element && attrName) {
+			this._element.removeAttribute(attrName);
+		}
+	}
+
 	show() {
+		const content = this.getContent();
+		if (content && 'style' in content) {
+			content.style.display = 'block';
+		}
 	}
 
 	hide() {
+		const content = this.getContent();
+		if (content && 'style' in content) {
+			content.style.display = 'none';
+		}
 	}
 
 	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
@@ -309,12 +347,12 @@ export class Block {
 		const { element, selectionStart } = info;
 
 		const targetChildren = this._getChildrenToUpdate(this.children, childrenIdList);
-
+		console.log('!!!!', { data });
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps({
 				input_data: {
 					value: data.value,
-					error: data.error,
+					error: data.error ?? '',
 					currentFocus: { element, selectionStart },
 				},
 			});
@@ -323,8 +361,22 @@ export class Block {
 		this.setProps({
 			[formName]: {
 				fields: { [fieldName]: data.value },
-				errors: { [fieldName]: data.error },
+				errors: { [fieldName]: data.error ?? '' },
 			},
+		});
+	}
+
+	protected toggleInputsDisable() {
+		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
+			if (fieldId.includes('field')) {
+				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
+					if (inputId.includes('input')) {
+						inputInstance.setProps({
+							isDisabled: !inputInstance.props.isDisabled,
+						});
+					}
+				});
+			}
 		});
 	}
 }
