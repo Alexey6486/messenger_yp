@@ -8,7 +8,6 @@ import {
 	E_FORM_FIELDS_NAME,
 	IEbEvents,
 } from '@/types';
-import { fieldsValidator } from '@/utils';
 
 export class Block {
 	static EVENTS: Record<string, string> = {
