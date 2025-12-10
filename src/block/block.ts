@@ -8,6 +8,7 @@ import {
 	E_FORM_FIELDS_NAME,
 	IEbEvents,
 } from '@/types';
+import { fieldsValidator } from '@/utils';
 
 export class Block {
 	static EVENTS: Record<string, string> = {
@@ -347,7 +348,7 @@ export class Block {
 		const { element, selectionStart } = info;
 
 		const targetChildren = this._getChildrenToUpdate(this.children, childrenIdList);
-		console.log('!!!!', { data });
+
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps({
 				input_data: {
@@ -378,5 +379,57 @@ export class Block {
 				});
 			}
 		});
+	}
+
+	protected resetTargetForm(formName: string, originData?: Record<string, string>) {
+		let pageProps = { [formName]: { ...this.props[formName] } };
+		let shouldBeUpdated = false;
+
+		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
+			if (fieldId.includes('field') && formName === fieldInstance.props.parentFormId) {
+				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
+					if (inputId.includes('input')) {
+						if (
+							(originData
+								&& originData?.[inputInstance.props.name] !== inputInstance.props.input_data.value)
+							|| (!originData && inputInstance.props.input_data.value !== '')
+						) {
+							if (!shouldBeUpdated) {
+								shouldBeUpdated = true;
+							}
+
+							const childProps = {
+								input_data: {
+									value: originData?.[inputInstance.props.name] ?? '',
+									error: '',
+									currentFocus: { element: null, selectionStart: null },
+								},
+							};
+
+							inputInstance.setProps(childProps);
+							fieldInstance.setProps(childProps);
+
+							pageProps = {
+								[formName]: {
+									...pageProps[formName],
+									fields: {
+										...pageProps[formName].fields,
+										[inputInstance.props.name]: originData?.[inputInstance.props.name] ?? '',
+									},
+									errors: {
+										...pageProps[formName].errors,
+										[inputInstance.props.name]: '',
+									},
+								},
+							};
+						}
+					}
+				});
+			}
+		});
+
+		if (shouldBeUpdated) {
+			this.setProps(pageProps);
+		}
 	}
 }

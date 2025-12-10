@@ -85,7 +85,7 @@ export default class App {
 		} else if (this.state.currentPage === PAGES.PROFILE) {
 			const profilePage = new Pages.ProfileBlock({
 				...this.state.pages.profile,
-				...this.state.user,
+				userData: { ...this.state.user },
 				changePage: (page: TPages) => this.changePage(page),
 			});
 
