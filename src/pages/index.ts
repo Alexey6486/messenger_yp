@@ -3,6 +3,6 @@ export {
 	RegistrationBlock,
 } from './authorization';
 export { ErrorBlock } from './error';
+export { ProfileBlock } from './profile';
 export { GetMainPage } from './main';
-export { GetProfilePage } from './profile';
 export { GetModal } from './modal';

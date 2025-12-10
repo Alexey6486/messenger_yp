@@ -224,7 +224,7 @@ export class Block {
 						error,
 						currentFocus,
 					};
-				} else if (p === 'form') {
+				} else if (p.toLowerCase().includes('form')) {
 					const { fields, errors } = newValue;
 
 					target[p] = {
@@ -295,10 +295,16 @@ export class Block {
 	 * @param {string[]} childrenIdList список id компонент, которые используют данные input
 	 * @param {IInputChangeParams} params данные от компоненты input
 	 * @param {string} fieldName имя поля формы
+	 * @param {string} formName имя формы
 	 *
 	 * @returns {void}
 	 */
-	onFormInputChange(params: IInputChangeParams<Block>, childrenIdList: string[], fieldName: E_FORM_FIELDS_NAME): void {
+	onFormInputChange(
+		params: IInputChangeParams<Block>,
+		childrenIdList: string[],
+		fieldName: E_FORM_FIELDS_NAME,
+		formName: string,
+	): void {
 		const { data, info } = params;
 		const { element, selectionStart } = info;
 
@@ -315,7 +321,7 @@ export class Block {
 		});
 
 		this.setProps({
-			form: {
+			[formName]: {
 				fields: { [fieldName]: data.value },
 				errors: { [fieldName]: data.error },
 			},

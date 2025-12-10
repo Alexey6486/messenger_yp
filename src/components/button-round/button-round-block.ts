@@ -1,15 +1,15 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './button-template';
+import template from './button-round-template';
 
-export class ButtonBlock extends Block {
+export class ButtonRoundBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ButtonBlock click', { e, t: this });
+					console.log('ButtonRoundBlock click', { e, t: this });
 					props.onClick(e);
 				},
 			},
@@ -17,7 +17,7 @@ export class ButtonBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ButtonBlock: ', this);
+		console.log('Render block ButtonRoundBlock: ', this);
 
 		return compile(template, this.props);
 	}

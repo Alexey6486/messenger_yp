@@ -27,21 +27,23 @@ export class LoginBlock extends Block {
 				form: IDS.AUTHORIZATION.FORM,
 			},
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
 
 				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${IDS.AUTHORIZATION.TEMP_ERROR}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${IDS.AUTHORIZATION.TEMP_PROFILE}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${IDS.AUTHORIZATION.TEMP_MAIN}"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
 					id: IDS.AUTHORIZATION.LOGIN_FIELD,
 					id_label: IDS.AUTHORIZATION.LOGIN_INPUT,
 					input_data: {
-						value: props.form.fields.login,
-						error: props.form.errors.login,
+						value: props.authorizationForm.fields.login,
+						error: props.authorizationForm.errors.login,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -51,8 +53,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.LOGIN_INPUT,
 							input_data: {
-								value: props.form.fields.login,
-								error: props.form.errors.login,
+								value: props.authorizationForm.fields.login,
+								error: props.authorizationForm.errors.login,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -78,21 +80,22 @@ export class LoginBlock extends Block {
 									},
 									[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN_FIELD],
 									E_FORM_FIELDS_NAME.login,
+									IDS.FORMS.AUTHORIZATION_FORM,
 								);
 
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
 					id: IDS.AUTHORIZATION.PSW_FIELD,
 					id_label: IDS.AUTHORIZATION.PSW_INPUT,
 					input_data: {
-						value: props.form.fields.password,
-						error: props.form.errors.password,
+						value: props.authorizationForm.fields.password,
+						error: props.authorizationForm.errors.password,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
@@ -102,8 +105,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.PSW_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.PSW_INPUT,
 							input_data: {
-								value: props.form.fields.password,
-								error: props.form.errors.password,
+								value: props.authorizationForm.fields.password,
+								error: props.authorizationForm.errors.password,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
@@ -129,12 +132,13 @@ export class LoginBlock extends Block {
 									},
 									[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PSW_FIELD],
 									E_FORM_FIELDS_NAME.password,
+									IDS.FORMS.AUTHORIZATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
@@ -149,7 +153,7 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { form: { ...this.props.form } };
+						let pageProps = { authorizationForm: { ...this.props.authorizationForm } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
@@ -173,10 +177,10 @@ export class LoginBlock extends Block {
 											fieldInstance.setProps(childProps);
 
 											pageProps = {
-												form: {
-													...pageProps.form,
+												authorizationForm: {
+													...pageProps.authorizationForm,
 													errors: {
-														...pageProps.form.errors,
+														...pageProps.authorizationForm.errors,
 														[inputInstance.props.name]: validationResult,
 													},
 												},
@@ -187,7 +191,7 @@ export class LoginBlock extends Block {
 							}
 						});
 
-						console.log('Login data: ', this.props.form.fields);
+						console.log('Login data: ', this.props.authorizationForm.fields);
 
 						if (validationResult.length) {
 							this.setProps(pageProps);
@@ -222,6 +226,34 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
+					},
+				}),
+				[IDS.AUTHORIZATION.TEMP_PROFILE]: new ButtonBlock({
+					id: IDS.AUTHORIZATION.TEMP_PROFILE,
+					type: 'button',
+					dataset: PAGES.PROFILE,
+					text: 'Профиль',
+					onClick: (event: Event) => {
+						console.log('click change page: ', this);
+
+						event.preventDefault();
+						event.stopPropagation();
+
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
+					},
+				}),
+				[IDS.AUTHORIZATION.TEMP_MAIN]: new ButtonBlock({
+					id: IDS.AUTHORIZATION.TEMP_MAIN,
+					type: 'button',
+					dataset: PAGES.MAIN,
+					text: 'Главная',
+					onClick: (event: Event) => {
+						console.log('click change page: ', this);
+
+						event.preventDefault();
+						event.stopPropagation();
+
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.MAIN });
 					},
 				}),
 			},

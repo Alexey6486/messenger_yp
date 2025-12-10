@@ -150,8 +150,8 @@ export interface IState {
 	currentPage: TPages
 	user: IUserResponse,
 	pages: {
-		authorization: IPageState<ILoginForm>
-		registration: IPageState<IRegistrationFormUi>
+		authorization: { authorizationForm: IFormState<ILoginForm> }
+		registration: { registrationForm: IFormState<IRegistrationFormUi> }
 		main: IMainPageState
 		profile: IProfilePageState
 		error: IErrorPageState

@@ -20,11 +20,11 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.AUTHORIZATION,
+			currentPage: PAGES.PROFILE,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
-				authorization: { form: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
-				registration: { form: JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE)) },
+				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
+				registration: { registrationForm: JSON.parse(JSON.stringify(INIT_REGISTRATION_STATE)) },
 				main: JSON.parse(JSON.stringify(INIT_MAIN_PAGE_STATE)),
 				profile: JSON.parse(JSON.stringify(INIT_PROFILE_PAGE_STATE)),
 				error: INIT_ERROR_STATE,
@@ -80,6 +80,22 @@ export default class App {
 				if (content) {
 					this.appElement.appendChild(content);
 					errorPage.dispatchComponentDidMount();
+				}
+			}
+		} else if (this.state.currentPage === PAGES.PROFILE) {
+			const profilePage = new Pages.ProfileBlock({
+				...this.state.pages.profile,
+				...this.state.user,
+				changePage: (page: TPages) => this.changePage(page),
+			});
+
+			if (this.appElement) {
+				const content = profilePage.getContent();
+				console.log('app render: ', { profilePage, c: content });
+
+				if (content) {
+					this.appElement.appendChild(content);
+					profilePage.dispatchComponentDidMount();
 				}
 			}
 		}

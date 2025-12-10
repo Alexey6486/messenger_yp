@@ -45,7 +45,7 @@
 					overflow: hidden;
 					margin-bottom: 20px;
 
-					& > .image-input {
+					& > input {
 						position: relative;
 						z-index: 3;
 						opacity: 0;
@@ -111,30 +111,32 @@
 	}
 }
 
-.button-link {
-	cursor: pointer;
-	color: var(--color-hv);
-
-	&.red {
-		color: var(--color-er);
-	}
-}
-
 .profile-field {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
 
 	& > .field-name {
 		font-weight: 600;
 	}
 
 	& > .field-data {
-		& > .field-input {
+		& > input {
 			text-align: end;
 			color: var(--color-gr);
 			background-color: transparent;
 		}
+	}
+
+	& > .error-data {
+		position: absolute;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		left: 0;
+		top: calc(100% + 15px);
+		color: var(--color-er)
 	}
 }

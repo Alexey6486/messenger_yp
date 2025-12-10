@@ -59,6 +59,24 @@ h1, h2, h3, h4, h5, h6 {
 	&:hover {
 		box-shadow: var(--shadow-btn);
 	}
+
+	&.plain {
+		padding: 0;
+		height: auto;
+		width: auto;
+
+		&:hover {
+			box-shadow: unset;
+		}
+	}
+
+	&.blue {
+		color: var(--color-hv);
+	}
+
+	&.red {
+		color: var(--color-er);
+	}
 }
 
 .button-round {

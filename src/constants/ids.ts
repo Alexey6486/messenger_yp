@@ -5,14 +5,16 @@ export const IDS: Record<string, Record<string, string>> = {
 		MESSAGE: 'main-message-form',
 	},
 	PROFILE: {
-		ACD: 'profile-change-data',
-		ACP: 'profile-change-password',
-		ALG: 'profile-logout',
-		ABS: 'profile-buttons',
-		ASD: 'profile-save-data',
-		ASP: 'profile-save-password',
-		ACL: 'profile-cancel',
-		FAC: 'profile-form',
+		FORM: 'profile-form',
+		AVATAR: 'profile-avatar',
+		EMAIL_INPUT: 'profile-email-input',
+		EMAIL_FIELD: 'profile-email-field',
+		O_PSW_INPUT: 'profile-old-password-input',
+		O_PSW_FIELD: 'profile-old-password-field',
+		ASIDE_BTN: 'profile-aside-button',
+		CHANGE_DATA_BTN: 'profile-change-data-button',
+		CHANGE_PSW_BTN: 'profile-change-psw-button',
+		LOGOUT_BTN: 'profile-logout-button',
 	},
 	AUTHORIZATION: {
 		FORM: 'authorization-form',
@@ -25,6 +27,8 @@ export const IDS: Record<string, Record<string, string>> = {
 
 		// Временные кнопки для перехода на другие страницы
 		TEMP_ERROR: 'authorization-temp-error',
+		TEMP_PROFILE: 'authorization-temp-profile',
+		TEMP_MAIN: 'authorization-temp-main',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',
@@ -52,5 +56,11 @@ export const IDS: Record<string, Record<string, string>> = {
 	MODAL: {},
 	COMMON: {
 		INPUT: 'input',
+	},
+	FORMS: {
+		AUTHORIZATION_FORM: 'authorizationForm',
+		REGISTRATION_FORM: 'registrationForm',
+		PROFILE_USER_DATA_FORM: 'userForm',
+		PROFILE_USER_PSW_FORM: 'passwordForm',
 	},
 };

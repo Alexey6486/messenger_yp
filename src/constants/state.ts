@@ -89,7 +89,7 @@ export const INIT_PROFILE_USER_DATA_STATE: IFormState<IUserDataForm> = {
 		avatar: '',
 		login: '',
 		email: '',
-		phone: 'Формат телефона укзана не верно',
+		phone: '',
 	},
 };
 
