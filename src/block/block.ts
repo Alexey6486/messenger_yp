@@ -161,11 +161,11 @@ export class Block {
 			this._element = null;
 		}
 
-		if (this.children) {
-			const childrenInstancesList = Object.values(this.children);
+		if (this.allInstances) {
+			const childrenInstancesList = Object.values(this.allInstances);
 
 			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
-				Object.values(this.children).forEach(child => {
+				childrenInstancesList.forEach(child => {
 					child.dispatchComponentWillUnmount();
 				});
 			}
@@ -310,6 +310,26 @@ export class Block {
 				this._element.setAttribute(key, value as string);
 			}
 		});
+	}
+
+	toggleClassList(className: string, elementId?: string): void {
+		let target = this._element;
+
+		if (elementId) {
+			Object.entries(this.allInstances).forEach(([id, instance]) => {
+				if (elementId == id) {
+					instance.toggleClassList(className);
+				}
+			});
+		} else {
+			if (target) {
+				if (target.classList.contains(className)) {
+					target.classList.remove(className);
+				} else {
+					target.classList.add(className);
+				}
+			}
+		}
 	}
 
 	removeAttributes(attrName: string): void {

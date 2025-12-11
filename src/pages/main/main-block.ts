@@ -1,5 +1,9 @@
 import { Block } from '@/block';
-import { IDS } from '@/constants';
+import {
+	CLASSES,
+	IDS,
+	PAGES,
+} from '@/constants';
 import { compile } from '@/utils';
 import type {
 	BlockProps,
@@ -12,6 +16,8 @@ import {
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
+import { DropDownBlock } from '@/components/drop-down/drop-down';
+import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
@@ -21,6 +27,16 @@ export class MainBlock extends Block {
 		super({
 			...props,
 			styles,
+			events: {
+				click: (event: Event) => {
+					console.log('click MainBlock: ', this);
+
+					event.preventDefault();
+					event.stopPropagation();
+
+					// this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
+				},
+			},
 			markup: {
 				[IDS.MAIN.SEARCH_FORM]: `<div id="${IDS.MAIN.SEARCH_FORM}"></div>`,
 				[IDS.MAIN.CHAT_LIST]: `<div id="${IDS.MAIN.CHAT_LIST}"></div>`,
@@ -71,9 +87,6 @@ export class MainBlock extends Block {
 							onClick: (event: Event) => {
 								console.log('click chat: ', this);
 
-								event.preventDefault();
-								event.stopPropagation();
-
 								Object.entries(this.allInstances).forEach(([id, instance]) => {
 									if (id.includes(IDS.MAIN.CHAT_LIST)) {
 										Object.entries(instance.allInstances).forEach(([chatId, chatInstance]) => {
@@ -90,6 +103,57 @@ export class MainBlock extends Block {
 							},
 						});
 					}),
+				}),
+				[IDS.MAIN.TEMP_NAV]: new DropDownBlock({
+					id: IDS.MAIN.TEMP_NAV,
+					direction: 'bottom right',
+					childrenList: [
+						new DropDownOptionBlock({
+							id: PAGES.AUTHORIZATION,
+							icon: '',
+							text: 'Авторизация',
+							onClick: (event: Event) => {
+								console.log('click option PAGES.AUTHORIZATION: ', this);
+
+								event.preventDefault();
+								event.stopPropagation();
+
+								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
+
+								// this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+							},
+						}),
+						new DropDownOptionBlock({
+							id: PAGES.REGISTRATION,
+							icon: '',
+							text: 'Регистрация',
+							onClick: (event: Event) => {
+								console.log('click option PAGES.REGISTRATION: ', this);
+
+								event.preventDefault();
+								event.stopPropagation();
+
+								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
+
+								this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
+							},
+						}),
+						new DropDownOptionBlock({
+							id: PAGES.ERROR,
+							icon: '',
+							text: 'Страница ошибки',
+							onClick: (event: Event) => {
+								console.log('click option PAGES.ERROR: ', this);
+
+								event.preventDefault();
+								event.stopPropagation();
+
+								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
+
+								this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
+							},
+						}),
+					],
 				}),
 			},
 		});

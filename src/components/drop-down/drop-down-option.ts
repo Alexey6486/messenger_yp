@@ -1,15 +1,14 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
-import template from './chat-template';
+import template from './drop-down-option-template';
 
-export class ChatBlock extends Block {
-	constructor(props: BlockProps) {
+export class DropDownOptionBlock extends Block {
+	constructor(props) {
 		super({
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ChatBlock click', { e });
+					console.log('DropDownOptionBlock click', { e });
 
 					props.onClick(e);
 				},
@@ -18,7 +17,7 @@ export class ChatBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ChatBlock: ', this);
+		console.log('Render block DropDownOptionBlock: ', this);
 
 		return compile(template, this.props);
 	}

@@ -87,6 +87,7 @@ export const IDS: Record<string, Record<string, string>> = {
 	COMMON: {
 		INPUT: 'input',
 		COMPONENTS_LIST: 'components-list',
+		DROP_DOWN_BTN: 'drop-down-button',
 	},
 	FORMS: {
 		AUTHORIZATION_FORM: 'authorizationForm',
