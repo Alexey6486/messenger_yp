@@ -8,12 +8,10 @@ import { compile } from '@/utils';
 import { formatContentLength } from '@/pages/main/utils';
 import type {
 	BlockProps,
-	IInputChangeParams,
 	IChat,
+	IInputChangeParams,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
@@ -21,6 +19,7 @@ import { DropDownBlock } from '@/components/drop-down/drop-down';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
+import { LinkBlock } from '@/components/link/link-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 
@@ -30,14 +29,18 @@ export class MainBlock extends Block {
 			...props,
 			styles,
 			markup: {
-				[IDS.MAIN.SEARCH_FORM]: `<div id="${IDS.MAIN.SEARCH_FORM}"></div>`,
-				[IDS.MAIN.CHAT_LIST]: `<div id="${IDS.MAIN.CHAT_LIST}"></div>`,
-				[IDS.MAIN.MESSAGING]: `<div id="${IDS.MAIN.MESSAGING}"></div>`,
-				[IDS.MAIN.TEMP_NAV]: `<div id="${IDS.MAIN.TEMP_NAV}"></div>`,
+				[IDS.MAIN.SEARCH_FORM]: `<div id="${ IDS.MAIN.SEARCH_FORM }"></div>`,
+				[IDS.MAIN.CHAT_LIST]: `<div id="${ IDS.MAIN.CHAT_LIST }"></div>`,
+				[IDS.MAIN.MESSAGING]: `<div id="${ IDS.MAIN.MESSAGING }"></div>`,
+				[IDS.MAIN.PROFILE_LINK]: `<div id="${ IDS.MAIN.PROFILE_LINK }"></div>`,
+				[IDS.MAIN.TEMP_NAV]: `<div id="${ IDS.MAIN.TEMP_NAV }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.SEARCH_FORM]: new FormBlock({
 					id: IDS.MAIN.SEARCH_FORM,
+					onSubmit: (e: Event) => {
+						console.log('on submit search: ', { e, t: this });
+					},
 					childrenList: [
 						new InputBlock({
 							id: IDS.MAIN.SEARCH_INPUT,
@@ -150,9 +153,26 @@ export class MainBlock extends Block {
 				[IDS.MAIN.MESSAGING]: new MessagingBlock({
 					id: IDS.MAIN.MESSAGING,
 					messages: props.messages,
-					message: props.message,
+					newMessageForm: props.newMessageForm,
 					userData: props.userData,
 					class: styles,
+					onChangePage: () => {
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
+					},
+				}),
+				[IDS.MAIN.PROFILE_LINK]: new LinkBlock({
+					id: IDS.MAIN.PROFILE_LINK,
+					class: styles.link,
+					href: '#',
+					ariaLabel: 'profile link',
+					tooltip: 'profile link',
+					target: '_self',
+					text: 'Профиль',
+					onClick: () => {
+						console.log('onClick link to profile: ', this);
+
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
+					},
 				}),
 			},
 		});

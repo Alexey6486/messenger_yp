@@ -1,14 +1,14 @@
 import type {
+	IErrorPageState,
 	IFormState,
 	ILoginForm,
 	IMainPageState,
-	IRegistrationFormUi,
 	IProfilePageState,
+	IRegistrationFormUi,
 	ISearchForm,
-	IUserPasswordForm,
 	IUserDataForm,
+	IUserPasswordForm,
 	IUserResponse,
-	IErrorPageState,
 } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
@@ -101,7 +101,10 @@ export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
 	currentChatId: '',
 	chatsSearchForm: INIT_SEARCH_STATE,
-	message: '',
+	newMessageForm: {
+		fields: { message: '' },
+		errors: { message: '' },
+	},
 	chats: [
 		{
 			id: 'chat_id_1',

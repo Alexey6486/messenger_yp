@@ -1,15 +1,15 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './button-template';
+import template from './link-template';
 
-export class ButtonBlock extends Block {
+export class LinkBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ButtonBlock click', { e, t: this });
+					console.log('click link', { e, t: this });
 
 					e.preventDefault();
 					e.stopPropagation();
@@ -21,7 +21,7 @@ export class ButtonBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ButtonBlock: ', this);
+		console.log('Render block LinkBlock: ', this);
 
 		return compile(template, this.props);
 	}

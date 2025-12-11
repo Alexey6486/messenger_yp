@@ -9,9 +9,12 @@ export class DropDownOptionBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('DropDownOptionBlock click', { e });
+					console.log('DropDownOptionBlock click', { e, t: this });
 
-					props.onClick(e);
+					e.preventDefault();
+					e.stopPropagation();
+
+					props?.onClick?.(e);
 				},
 			},
 		});

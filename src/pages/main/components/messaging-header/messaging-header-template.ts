@@ -1,10 +1,9 @@
 export default `
 <header class="{{class.header}}">
-<a class="{{class.user}}">
-<div class="{{class.user-icon}}">
+<div class="{{class.user}}">
+<div class="{{class.user-icon}}"></div>
+{{{ markup.messaging-header-profile-link }}}
 </div>
-<div class="{{class.user-name}}">{{first_name}}</div>
-</a>
 {{{ markup.messaging-header-drop-down }}}
 </header>
 `;

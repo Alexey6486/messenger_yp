@@ -10,7 +10,11 @@ export class ButtonRoundBlock extends Block {
 			events: {
 				click: (e: Event) => {
 					console.log('ButtonRoundBlock click', { e, t: this });
-					props.onClick(e);
+
+					e.preventDefault();
+					e.stopPropagation();
+
+					props?.onClick?.(e);
 				},
 			},
 		});

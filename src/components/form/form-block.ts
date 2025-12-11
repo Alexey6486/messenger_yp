@@ -11,12 +11,15 @@ export class FormBlock extends Block {
 			events: {
 				submit: (e: Event) => {
 					console.log('FormBlock submit: ', this);
+
 					e.preventDefault();
 					e.stopPropagation();
+
+					props?.onSubmit?.(e);
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 		});
 	}

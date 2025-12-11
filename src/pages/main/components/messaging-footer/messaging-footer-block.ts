@@ -3,8 +3,15 @@ import {
 	CLASSES,
 	IDS,
 } from '@/constants';
-import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
+import {
+	compile,
+	fieldsValidator,
+} from '@/utils';
+import type {
+	BlockProps,
+	IInputChangeParams,
+} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
 import {
@@ -15,6 +22,7 @@ import {
 } from '@/components/icons';
 import template from './messaging-footer-template';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
+import { InputBlock } from '@/components/input/input-block';
 
 export class MessagingFooterBlock extends Block {
 	constructor(props: BlockProps) {
@@ -24,8 +32,9 @@ export class MessagingFooterBlock extends Block {
 				form: IDS.MAIN.MAIN_NEW_MESSAGE_FORM,
 			},
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${IDS.MAIN.MESSAGING_DD_FOOTER}"></div>`,
-				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${IDS.MAIN.SEND_MESSAGE_BTN}"></div>`,
+				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_DD_FOOTER }"></div>`,
+				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${ IDS.MAIN.SEND_MESSAGE_BTN }"></div>`,
+				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${ IDS.MAIN.NEW_MESSAGE_INPUT }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_FOOTER]: new DropDownBlock({
@@ -83,6 +92,44 @@ export class MessagingFooterBlock extends Block {
 
 						event.preventDefault();
 						event.stopPropagation();
+
+						if (this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message.trim().length) {
+							console.log('submit message', this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields);
+						}
+					},
+				}),
+				[IDS.MAIN.NEW_MESSAGE_INPUT]: new InputBlock({
+					id: IDS.MAIN.NEW_MESSAGE_INPUT,
+					input_data: {
+						value: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message,
+						error: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].errors.message,
+						currentFocus: props.currentFocus,
+					},
+					dataset: E_FORM_FIELDS_NAME.message,
+					name: E_FORM_FIELDS_NAME.message,
+					placeholder: 'Сообщение',
+					type: 'text',
+					class: props.class['message-input'],
+					onChange: (params: IInputChangeParams<Block>) => {
+						console.log('on change new message: ', { params, currentThis: this });
+
+						this.onFormInputChange(
+							{
+								...params,
+								...(params.info.event === 'blur' && {
+									data: {
+										...params.data,
+										error: fieldsValidator({
+											valueToValidate: params.data.value,
+											fieldName: E_FORM_FIELDS_NAME.message,
+										}),
+									},
+								}),
+							},
+							[IDS.MAIN.NEW_MESSAGE_INPUT],
+							E_FORM_FIELDS_NAME.message,
+							IDS.FORMS.MAIN_NEW_MESSAGE_FORM,
+						);
 					},
 				}),
 			},

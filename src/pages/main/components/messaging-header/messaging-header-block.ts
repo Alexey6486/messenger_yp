@@ -12,13 +12,15 @@ import {
 	SvgPlus,
 } from '@/components/icons';
 import template from './messaging-header-template';
+import { LinkBlock } from '@/components/link/link-block';
 
 export class MessagingHeaderBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${IDS.MAIN.MESSAGING_DD_HEADER}"></div>`,
+				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_DD_HEADER }"></div>`,
+				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${ IDS.MAIN.HEADER_PROFILE_LINK }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_HEADER]: new DropDownBlock({
@@ -52,6 +54,20 @@ export class MessagingHeaderBlock extends Block {
 							},
 						}),
 					],
+				}),
+				[IDS.MAIN.HEADER_PROFILE_LINK]: new LinkBlock({
+					id: IDS.MAIN.HEADER_PROFILE_LINK,
+					class: props.class['user-name'],
+					href: '#',
+					ariaLabel: 'profile link',
+					tooltip: 'profile link',
+					target: '_self',
+					text: props.first_name,
+					onClick: () => {
+						console.log('onClick link to profile: ', this);
+
+						props.onChangePage();
+					},
 				}),
 			},
 		});

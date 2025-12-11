@@ -15,20 +15,21 @@ export class MessagingBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
-				[IDS.MAIN.MESSAGING_HEADER]: `<div id="${IDS.MAIN.MESSAGING_HEADER}"></div>`,
-				[IDS.MAIN.MESSAGING_FOOTER]: `<div id="${IDS.MAIN.MESSAGING_FOOTER}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
+				[IDS.MAIN.MESSAGING_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_HEADER }"></div>`,
+				[IDS.MAIN.MESSAGING_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_FOOTER }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_HEADER]: new MessagingHeaderBlock({
 					id: IDS.MAIN.MESSAGING_HEADER,
 					first_name: props.userData.first_name,
 					class: props.class,
+					onChangePage: props.onChangePage,
 				}),
 				[IDS.MAIN.MESSAGING_FOOTER]: new MessagingFooterBlock({
 					id: IDS.MAIN.MESSAGING_FOOTER,
 					class: props.class,
-					message: props.message,
+					newMessageForm: props.newMessageForm,
 				}),
 			},
 			childrenList: props.messages.map(({ id, last_message }: IChat) => {

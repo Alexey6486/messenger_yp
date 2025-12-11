@@ -13,10 +13,15 @@ export enum E_FORM_FIELDS_NAME {
 	phone = 'phone',
 	avatar = 'avatar',
 	title = 'title',
+	message = 'message',
 }
 
 export interface ISearchForm {
 	[E_FORM_FIELDS_NAME.title]: string;
+}
+
+export interface IMessageForm {
+	[E_FORM_FIELDS_NAME.message]: string;
 }
 
 export interface ILoginForm {
@@ -99,7 +104,7 @@ export interface IChat {
 export interface IMainPageState {
 	currentChatId: string | null;
 	chatsSearchForm: IFormState<ISearchForm>;
-	message: string;
+	newMessageForm: IFormState<IMessageForm>;
 	chats: IChat[];
 	messages: IChat[] | null;
 }

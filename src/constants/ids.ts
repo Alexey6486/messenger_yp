@@ -15,6 +15,9 @@ export const IDS: Record<string, Record<string, string>> = {
 		MAIN_ADD_FILE_OPTION: 'main-add-file-option',
 		MAIN_ADD_LOCATION_OPTION: 'main-add-location-option',
 		SEND_MESSAGE_BTN: 'main-send-message-button',
+		PROFILE_LINK: 'main-profile-link',
+		HEADER_PROFILE_LINK: 'messaging-header-profile-link',
+		NEW_MESSAGE_INPUT: 'main-new-message-input',
 	},
 	PROFILE: {
 		FORM: 'profile-form',
