@@ -4,12 +4,13 @@ import {
 	CLASSES,
 	IDS,
 } from '@/constants';
+import type { BlockProps } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgDots } from '@/components/icons';
 import template from './drop-down-template';
 
 export class DropDownBlock extends Block {
-	constructor(props) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {

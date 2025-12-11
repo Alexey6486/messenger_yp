@@ -7,4 +7,4 @@ export { default as SvgFile } from './icon-file';
 export { default as SvgPaperclip } from './icon-paperclip';
 export { default as SvgPhoto } from './icon-photo';
 export { default as SvgPlaceholder } from './icon-placeholder';
-export { default as SvgPls } from './icon-plus';
+export { default as SvgPlus } from './icon-plus';

@@ -7,14 +7,6 @@ export {
 	INIT_USER_DATA,
 	INIT_ERROR_STATE,
 } from './state';
-export {
-	ICONS,
-	MODALS,
-	VARIOUS,
-	PARTIALS_TYPES,
-} from './partials';
 export { IDS } from './ids';
-export { DATASET } from './datasets';
 export { CLASSES } from './classes';
-export { DD_ACTIONS } from './dd-actions';
 export * from './validation';

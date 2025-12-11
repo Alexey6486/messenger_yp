@@ -1,5 +1,5 @@
 export default `
-<div class="{{class.message}} {{#if isMe}}{{class.right-side}}{{/if}}" data-message="{{dataset}}">
+<div id="{{id}}" class="{{class.message}} {{#if isMe}}{{class.right-side}}{{/if}}">
 {{#unless isMe}}
 <div class="{{class.author}}">{{author}}</div>
 {{/unless}}

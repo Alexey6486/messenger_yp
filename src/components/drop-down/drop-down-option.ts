@@ -1,9 +1,10 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
+import type { BlockProps } from '@/types';
 import template from './drop-down-option-template';
 
 export class DropDownOptionBlock extends Block {
-	constructor(props) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {

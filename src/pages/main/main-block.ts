@@ -5,6 +5,7 @@ import {
 	PAGES,
 } from '@/constants';
 import { compile } from '@/utils';
+import { formatContentLength } from '@/pages/main/utils';
 import type {
 	BlockProps,
 	IInputChangeParams,
@@ -19,6 +20,7 @@ import { UlBlock } from '@/components/ul/ul-block';
 import { DropDownBlock } from '@/components/drop-down/drop-down';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
+import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 
@@ -27,16 +29,6 @@ export class MainBlock extends Block {
 		super({
 			...props,
 			styles,
-			events: {
-				click: (event: Event) => {
-					console.log('click MainBlock: ', this);
-
-					event.preventDefault();
-					event.stopPropagation();
-
-					// this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
-				},
-			},
 			markup: {
 				[IDS.MAIN.SEARCH_FORM]: `<div id="${IDS.MAIN.SEARCH_FORM}"></div>`,
 				[IDS.MAIN.CHAT_LIST]: `<div id="${IDS.MAIN.CHAT_LIST}"></div>`,
@@ -74,31 +66,31 @@ export class MainBlock extends Block {
 				[IDS.MAIN.CHAT_LIST]: new UlBlock({
 					id: IDS.MAIN.CHAT_LIST,
 					class: styles.chats,
-					childrenList: props.chats.map((chat: IChat) => {
+					childrenList: props.chats.map(({ id, avatar, title, unread_count, last_message }: IChat) => {
 						return new ChatBlock({
-							id: chat.id,
+							id: id,
 							class: styles,
-							avatar: chat.avatar,
-							title: chat.title,
-							data: chat.last_message.time,
-							text: chat.last_message.content,
-							counter: chat.unread_count,
-							isActive: props.currentChatId === chat.id,
-							onClick: (event: Event) => {
+							avatar: avatar,
+							title: title,
+							data: last_message.time,
+							text: formatContentLength(last_message.content),
+							counter: unread_count,
+							isActive: props.currentChatId === id,
+							onClick: () => {
 								console.log('click chat: ', this);
 
-								Object.entries(this.allInstances).forEach(([id, instance]) => {
-									if (id.includes(IDS.MAIN.CHAT_LIST)) {
+								Object.entries(this.allInstances).forEach(([instanceId, instance]) => {
+									if (instanceId === IDS.MAIN.CHAT_LIST) {
 										Object.entries(instance.allInstances).forEach(([chatId, chatInstance]) => {
 											chatInstance.setProps({
-												isActive: chatId === chat.id,
+												isActive: chatId === id,
 											});
 										});
 									}
 								});
 
 								this.setProps({
-									currentChatId: chat.id,
+									currentChatId: id,
 								});
 							},
 						});
@@ -154,6 +146,13 @@ export class MainBlock extends Block {
 							},
 						}),
 					],
+				}),
+				[IDS.MAIN.MESSAGING]: new MessagingBlock({
+					id: IDS.MAIN.MESSAGING,
+					messages: props.messages,
+					message: props.message,
+					userData: props.userData,
+					class: styles,
 				}),
 			},
 		});
