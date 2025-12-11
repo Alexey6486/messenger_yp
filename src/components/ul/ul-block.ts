@@ -1,24 +1,21 @@
 import { Block } from '@/block';
+import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './button-template';
+import template from './ul-template';
 
-export class ButtonBlock extends Block {
+export class UlBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
-			events: {
-				click: (e: Event) => {
-					console.log('ButtonBlock click', { e, t: this });
-
-					props.onClick(e);
-				},
+			markup: {
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
 			},
 		});
 	}
 
 	override render(): string {
-		console.log('Render block ButtonBlock: ', this);
+		console.log('Render block UlBlock: ', this);
 
 		return compile(template, this.props);
 	}

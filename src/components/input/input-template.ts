@@ -6,7 +6,6 @@ type="{{type}}"
 placeholder="{{placeholder}}"
 value="{{input_data.value}}"
 data-input="{{dataset}}"
-data-test="{{id_temp}}"
 {{#if isDisabled}}disabled{{/if}}
 >
 `;

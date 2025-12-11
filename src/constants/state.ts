@@ -9,8 +9,6 @@ import type {
 	IUserDataForm,
 	IUserResponse,
 	IErrorPageState,
-	IAddUserModalState,
-	IModalState,
 } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
@@ -46,8 +44,8 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
 };
 
 export const INIT_SEARCH_STATE: IFormState<ISearchForm> = {
-	fields: { search: '' },
-	errors: { search: '' },
+	fields: { title: '' },
+	errors: { title: '' },
 };
 
 export const INIT_ERROR_STATE: IErrorPageState = {
@@ -102,7 +100,7 @@ export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
 
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
 	currentChatId: '',
-	searchForm: INIT_SEARCH_STATE,
+	chatsSearchForm: INIT_SEARCH_STATE,
 	message: '',
 	chats: [
 		{
@@ -192,20 +190,4 @@ export const INIT_MAIN_PAGE_STATE: IMainPageState = {
 			},
 		},
 	],
-};
-
-export const INIT_ADD_USER_MODAL_STATE: IModalState<IAddUserModalState> = {
-	title: 'Добавить пользователя',
-	button: {
-		save: {
-			text: 'Добавить',
-			id: 'Добавить',
-			dataset: 'add-user',
-		},
-	},
-	form: {
-		fields: { login: '' },
-		errors: { login: '' },
-	},
-	error: '',
 };

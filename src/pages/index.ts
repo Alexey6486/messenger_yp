@@ -5,4 +5,4 @@ export {
 export { ErrorBlock } from './error';
 export { ProfileBlock } from './profile';
 export { ModalBlock } from './modal';
-export { GetMainPage } from './main';
+export { MainBlock } from './main';

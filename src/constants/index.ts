@@ -6,7 +6,6 @@ export {
 	INIT_PROFILE_PAGE_STATE,
 	INIT_USER_DATA,
 	INIT_ERROR_STATE,
-	INIT_ADD_USER_MODAL_STATE,
 } from './state';
 export {
 	ICONS,

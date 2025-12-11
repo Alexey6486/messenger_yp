@@ -1,24 +1,24 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './button-template';
+import template from './chat-template';
 
-export class ButtonBlock extends Block {
+export class ChatBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ButtonBlock click', { e, t: this });
+					console.log('ChatBlock click', { e, t: this });
 
-					props.onClick(e);
+					props.onClick(e, this);
 				},
 			},
 		});
 	}
 
 	override render(): string {
-		console.log('Render block ButtonBlock: ', this);
+		console.log('Render block ChatBlock: ', this);
 
 		return compile(template, this.props);
 	}

@@ -1,9 +1,5 @@
 import type { TPages } from '@/types';
 
-export interface ISearchForm {
-	search: string;
-}
-
 export enum E_FORM_FIELDS_NAME {
 	first_name = 'first_name',
 	second_name = 'second_name',
@@ -16,6 +12,11 @@ export enum E_FORM_FIELDS_NAME {
 	email = 'email',
 	phone = 'phone',
 	avatar = 'avatar',
+	title = 'title',
+}
+
+export interface ISearchForm {
+	[E_FORM_FIELDS_NAME.title]: string;
 }
 
 export interface ILoginForm {
@@ -58,10 +59,6 @@ export interface IFormState<T> {
 	errors: T;
 }
 
-export interface IPageState<T> {
-	form: IFormState<T>;
-}
-
 export type TFormsFields = ILoginForm & IRegistrationFormUi & ISearchForm;
 
 export interface IUserBase {
@@ -99,28 +96,9 @@ export interface IChat {
 	last_message: IChatLastMessage;
 }
 
-export interface IModalState<T> {
-	title: string;
-	button: {
-		save: {
-			text: string
-			id: string
-			dataset: string
-		}
-	};
-	form: IFormState<T>;
-	error: string;
-}
-
-export interface IAddUserModalState {
-	login: string;
-}
-
-export type TModalFields = IAddUserModalState;
-
 export interface IMainPageState {
 	currentChatId: string | null;
-	searchForm: IFormState<ISearchForm>;
+	chatsSearchForm: IFormState<ISearchForm>;
 	message: string;
 	chats: IChat[];
 	messages: IChat[] | null;

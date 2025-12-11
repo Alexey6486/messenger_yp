@@ -1,8 +1,10 @@
 export const IDS: Record<string, Record<string, string>> = {
 	MAIN: {
-		LIST: 'main-chats-list',
-		SEARCH: 'main-search-form',
-		MESSAGE: 'main-message-form',
+		SEARCH_FORM: 'main-search-form',
+		SEARCH_INPUT: 'main-search-input',
+		CHAT_LIST: 'main-chat-list',
+		MESSAGING: 'main-messaging',
+		TEMP_NAV: 'main-dropdown-temp-nav',
 	},
 	PROFILE: {
 		FORM: 'profile-form',
@@ -84,6 +86,7 @@ export const IDS: Record<string, Record<string, string>> = {
 	},
 	COMMON: {
 		INPUT: 'input',
+		COMPONENTS_LIST: 'components-list',
 	},
 	FORMS: {
 		AUTHORIZATION_FORM: 'authorizationForm',
@@ -91,5 +94,6 @@ export const IDS: Record<string, Record<string, string>> = {
 		PROFILE_USER_DATA_FORM: 'userForm',
 		PROFILE_USER_PSW_FORM: 'passwordForm',
 		MODAL_ADD_USER_FORM: 'modalAddUserForm',
+		MAIN_CHAT_SEARCH_FORM: 'chatsSearchForm',
 	},
 };

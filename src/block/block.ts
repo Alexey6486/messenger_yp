@@ -10,6 +10,7 @@ import {
 	E_FORM_FIELDS_NAME,
 	IEbEvents,
 } from '@/types';
+import { IDS } from '@/constants';
 
 export class Block {
 	static EVENTS: Record<string, string> = {
@@ -23,6 +24,8 @@ export class Block {
 	_element: Element | HTMLElement | HTMLInputElement | null = null;
 	props: BlockProps;
 	children: IChildren<Block>;
+	childrenList: IChildren<Block>;
+	allInstances: IChildren<Block>;
 	protected eventBus: () => EventBus;
 
 	/** JSDoc
@@ -31,10 +34,12 @@ export class Block {
 	 * @returns {void}
 	 */
 	constructor(props: BlockProps = {}) {
-		const { children_part, props_part } = this._getPropsParts(props);
+		const { children_part, childrenList_part, allInstances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
 		this.children = children_part;
+		this.childrenList = childrenList_part;
+		this.allInstances = allInstances_part;
 
 		const eventBus = new EventBus();
 		this.eventBus = () => eventBus;
@@ -48,19 +53,27 @@ export class Block {
 
 	private _getPropsParts(props: BlockProps) {
 		const children_part: Record<string, Block> = {};
+		const childrenList_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
+		const allInstances_part: Record<string, Block> = {};
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
 				Object.values(value as Record<string, Block>).forEach((instance) => {
 					children_part[instance.props.id] = instance;
+					allInstances_part[instance.props.id] = instance;
+				});
+			} else if (props_name === 'childrenList' && Array.isArray(value)) {
+				value.forEach((instance) => {
+					childrenList_part[instance.props.id] = instance;
+					allInstances_part[instance.props.id] = instance;
 				});
 			} else {
 				props_part[props_name] = value;
 			}
 		});
 
-		return { children_part, props_part };
+		return { children_part, childrenList_part, allInstances_part, props_part };
 	}
 
 	private _addEvents() {
@@ -173,10 +186,25 @@ export class Block {
 
 		Object.values(this.children).forEach((instance) => {
 			const element = temp.content.getElementById(instance.props.id);
+
 			if (element) {
 				element.replaceWith(instance.getContent());
 			}
 		});
+
+		if (this.childrenList) {
+			const element = temp.content.getElementById(IDS.COMMON.COMPONENTS_LIST);
+
+			if (element) {
+				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
+
+				Object.values(this.childrenList).forEach((instance) => {
+					children = [...children, instance.getContent()];
+				});
+
+				element.replaceWith(...children);
+			}
+		}
 
 		const newElement = temp.content.firstElementChild as HTMLElement;
 		if (this._element && newElement) {
@@ -322,8 +350,8 @@ export class Block {
 			if (idsList.includes(id)) {
 				targetChildren[id] = instance;
 
-				if (instance.children) {
-					return this._getChildrenToUpdate(instance.children, idsList, targetChildren);
+				if (instance.allInstances) {
+					return this._getChildrenToUpdate(instance.allInstances, idsList, targetChildren);
 				}
 			}
 		});
@@ -353,7 +381,10 @@ export class Block {
 		const { data, info } = params;
 		const { element, selectionStart } = info;
 
-		const targetChildren = this._getChildrenToUpdate(this.children, childrenIdList);
+		const targetChildren = this._getChildrenToUpdate(
+			this.allInstances,
+			childrenIdList,
+		);
 
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps({

@@ -20,7 +20,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.AUTHORIZATION,
+			currentPage: PAGES.MAIN,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
@@ -97,6 +97,22 @@ export default class App {
 				if (content) {
 					this.appElement.appendChild(content);
 					profilePage.dispatchComponentDidMount();
+				}
+			}
+		} else if (this.state.currentPage === PAGES.MAIN) {
+			const mainPage = new Pages.MainBlock({
+				...this.state.pages.main,
+				userData: { ...this.state.user },
+				changePage: (page: TPages) => this.changePage(page),
+			});
+
+			if (this.appElement) {
+				const content = mainPage.getContent();
+				console.log('app render: ', { mainPage, c: content });
+
+				if (content) {
+					this.appElement.appendChild(content);
+					mainPage.dispatchComponentDidMount();
 				}
 			}
 		}
