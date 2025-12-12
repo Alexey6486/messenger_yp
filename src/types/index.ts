@@ -26,9 +26,11 @@ export type {
 	IInputChangeParams,
 	IInputState,
 	ICurrentFocus,
+	IAddUserModalForm,
+	IMessageForm,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
-export type { BlockProps } from './block';
+export type * from './block';
 export type {
 	TEbCallback,
 	TEbListener,

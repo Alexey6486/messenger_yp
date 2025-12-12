@@ -1,5 +1,5 @@
 export default `
-<div class="{{class.date-plate}}">
+<div class="{{styles.date-plate}}">
 {{date}}
 </div>
 `;

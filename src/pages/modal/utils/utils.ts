@@ -1,16 +1,29 @@
-import type { BlockProps } from '@/types';
 import { IDS } from '@/constants';
+import type {
+	IAddUserModalForm,
+	IFormState,
+} from '@/types';
 import { AddUserBlock } from '@/pages/modal/components';
+import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
 
-export const getModalContentBlock = (contentId: string, contentForms: BlockProps) => {
+export const getModalContentBlock = <T>(
+	contentId: string,
+	contentForms: Record<string, IFormState<T>>,
+): AddUserBlock | PlaceholderBlock => {
 	switch (contentId) {
 		case IDS.FORMS.MODAL_ADD_USER_FORM: {
-			return new AddUserBlock({
-				...contentForms,
-			});
+			if ('modalAddUserForm' in contentForms) {
+				const modalAddUserForm = contentForms.modalAddUserForm as IFormState<IAddUserModalForm>;
+				return new AddUserBlock({
+					id: '',
+					children: {},
+					modalAddUserForm,
+				});
+			}
+			return new PlaceholderBlock({});
 		}
 		default: {
-			return '';
+			return new PlaceholderBlock({});
 		}
 	}
 };

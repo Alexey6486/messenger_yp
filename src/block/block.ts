@@ -475,12 +475,17 @@ export class Block {
 		}
 	}
 
-	protected createModal<T>(contentId: string, contentForms: Record<string, IFormState<T>>, title: string) {
-		const modal = new Pages.ModalBlock({
+	protected createModal<T>(
+		contentId: string,
+		contentForms: Record<string, IFormState<T>>,
+		title: string,
+	) {
+		const modal = new Pages.ModalBlock<T>({
 			contentId,
 			contentForms,
 			title,
 			error: '',
+			children: {},
 		});
 
 		if (this.props.appElement) {

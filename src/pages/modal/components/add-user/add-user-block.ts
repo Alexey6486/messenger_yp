@@ -7,14 +7,24 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IAddUserModalForm,
+	IFormState,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import template from './add-user-template';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
+import template from './add-user-template';
+
+export interface IAddUserBlock extends BlockProps {
+	id: string;
+	children: Record<string, FieldBlock>;
+	modalAddUserForm: IFormState<IAddUserModalForm>;
+}
 
 export class AddUserBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IAddUserBlock) {
 		super({
 			...props,
 			id: IDS.MODAL.CONTENT,
@@ -32,7 +42,6 @@ export class AddUserBlock extends Block {
 					},
 					label: 'Логин',
 					isRequired: true,
-
 					children: {
 						[IDS.MODAL.ADD_USER_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_USER_INPUT,

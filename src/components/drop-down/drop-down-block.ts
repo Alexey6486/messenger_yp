@@ -5,12 +5,19 @@ import {
 	IDS,
 } from '@/constants';
 import type { BlockProps } from '@/types';
+import type { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgDots } from '@/components/icons';
 import template from './drop-down-template';
 
+interface IDropDownBlock extends BlockProps {
+	id: string;
+	direction: string;
+	childrenList: DropDownOptionBlock[];
+}
+
 export class DropDownBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IDropDownBlock) {
 		super({
 			...props,
 			markup: {
@@ -21,7 +28,6 @@ export class DropDownBlock extends Block {
 				[IDS.COMMON.DROP_DOWN_BTN]: new ButtonRoundBlock({
 					id: IDS.COMMON.DROP_DOWN_BTN,
 					type: 'button',
-					dataset: '',
 					icon: SvgDots,
 					onClick: (event: Event) => {
 						event.preventDefault();

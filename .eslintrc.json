@@ -41,6 +41,6 @@
 			}
 		],
 		"@typescript-eslint/consistent-type-imports": "error",
-		"no-console": "warn"
+		"no-console": "off"
 	}
 }

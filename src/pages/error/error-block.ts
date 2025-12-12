@@ -4,13 +4,21 @@ import {
 	PAGES,
 } from '@/constants';
 import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
+import type {
+	BlockProps,
+	IErrorPageState,
+	TPages,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import template from './error-template.hbs?raw';
 import styles from './styles.module.pcss';
 
+interface IErrorBlock extends IErrorPageState, BlockProps {
+	changePage: (page: TPages) => void,
+}
+
 export class ErrorBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IErrorBlock) {
 		super({
 			...props,
 			styles,
@@ -21,7 +29,6 @@ export class ErrorBlock extends Block {
 				[IDS.ERROR.BUTTON]: new ButtonBlock({
 					id: IDS.ERROR.BUTTON,
 					type: 'button',
-					dataset: PAGES.AUTHORIZATION,
 					text: 'Назад',
 					onClick: (event: Event) => {
 						event.preventDefault();

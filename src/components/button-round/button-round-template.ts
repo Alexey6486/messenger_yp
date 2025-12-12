@@ -1,4 +1,4 @@
 export default `
-<button id="{{id}}" class="button-round" data-btn="{{dataset}}" type="{{type}}">
+<button id="{{id}}" type="{{type}}" class="button-round{{#if class}} {{class}}{{/if}}" data-btn="{{dataset}}">
 {{{ icon }}}
 </button>`;

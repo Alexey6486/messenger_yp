@@ -10,22 +10,30 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IFormState,
+	IRegistrationFormUi,
+	TPages,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
+interface IRegistrationBlock extends BlockProps {
+	registrationForm: IFormState<IRegistrationFormUi>;
+	changePage: (page: TPages) => void;
+	children: Record<string, FieldBlock | ButtonBlock>;
+}
+
 export class RegistrationBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IRegistrationBlock) {
 		super({
 			...props,
 			styles,
-			ids: {
-				form: IDS.REGISTRATION.FORM,
-			},
 			markup: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
 				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
@@ -48,7 +56,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Почта',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.EMAIL_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.EMAIL_INPUT,
@@ -96,7 +103,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Логин',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.LOGIN_INPUT,
@@ -144,7 +150,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Имя',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.F_NAME_INPUT,
@@ -192,7 +197,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Фамилия',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.S_NAME_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.S_NAME_INPUT,
@@ -240,7 +244,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Телефон',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.PHONE_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PHONE_INPUT,
@@ -288,7 +291,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Пароль',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PSW_INPUT,
@@ -336,7 +338,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Пароль (еще раз)',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.C_PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.C_PSW_INPUT,
@@ -375,10 +376,10 @@ export class RegistrationBlock extends Block {
 						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
 					},
 				}),
+
 				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
 					id: IDS.REGISTRATION.SUBMIT,
 					type: 'submit',
-					dataset: PAGES.REGISTRATION,
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -435,7 +436,6 @@ export class RegistrationBlock extends Block {
 				[IDS.REGISTRATION.SIGNIN]: new ButtonBlock({
 					id: IDS.REGISTRATION.SIGNIN,
 					type: 'button',
-					dataset: PAGES.REGISTRATION,
 					text: 'Назад',
 					onClick: (event: Event) => {
 						event.preventDefault();
