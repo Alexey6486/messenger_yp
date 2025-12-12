@@ -24,8 +24,6 @@ export class DropDownBlock extends Block {
 					dataset: '',
 					icon: SvgDots,
 					onClick: (event: Event) => {
-						console.log('click drop-down nav: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -37,8 +35,6 @@ export class DropDownBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block DropDownBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

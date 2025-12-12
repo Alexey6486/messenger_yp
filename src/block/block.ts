@@ -1,16 +1,17 @@
 import { EventBus } from '@/event-bus';
 import * as Pages from '@/pages';
+import { IDS } from '@/constants';
 import type {
 	BlockProps,
 	IChildren,
 	IFormState,
 	IInputChangeParams,
+	E_FORM_FIELDS_NAME,
+	Nullable,
 } from '@/types';
 import {
-	E_FORM_FIELDS_NAME,
 	IEbEvents,
 } from '@/types';
-import { IDS } from '@/constants';
 
 export class Block {
 	static EVENTS: Record<string, string> = {
@@ -21,7 +22,7 @@ export class Block {
 		FLOW_RENDER: IEbEvents.FLOW_RENDER,
 	};
 
-	_element: Element | HTMLElement | HTMLInputElement | null = null;
+	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
 	props: BlockProps;
 	children: IChildren<Block>;
 	childrenList: IChildren<Block>;
@@ -34,12 +35,12 @@ export class Block {
 	 * @returns {void}
 	 */
 	constructor(props: BlockProps = {}) {
-		const { children_part, childrenList_part, allInstances_part, props_part } = this._getPropsParts(props);
+		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
 		this.children = children_part;
-		this.childrenList = childrenList_part;
-		this.allInstances = allInstances_part;
+		this.childrenList = children_list_part;
+		this.allInstances = all_instances_part;
 
 		const eventBus = new EventBus();
 		this.eventBus = () => eventBus;
@@ -53,32 +54,31 @@ export class Block {
 
 	private _getPropsParts(props: BlockProps) {
 		const children_part: Record<string, Block> = {};
-		const childrenList_part: Record<string, Block> = {};
+		const children_list_part: Record<string, Block> = {};
+		const all_instances_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
-		const allInstances_part: Record<string, Block> = {};
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
 				Object.values(value as Record<string, Block>).forEach((instance) => {
 					children_part[instance.props.id] = instance;
-					allInstances_part[instance.props.id] = instance;
+					all_instances_part[instance.props.id] = instance;
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
 				value.forEach((instance) => {
-					childrenList_part[instance.props.id] = instance;
-					allInstances_part[instance.props.id] = instance;
+					children_list_part[instance.props.id] = instance;
+					all_instances_part[instance.props.id] = instance;
 				});
 			} else {
 				props_part[props_name] = value;
 			}
 		});
 
-		return { children_part, childrenList_part, allInstances_part, props_part };
+		return { children_part, children_list_part, all_instances_part, props_part };
 	}
 
 	private _addEvents() {
 		const { events = null } = this.props;
-		console.log('_addEvents: ', this.props, this._element);
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
@@ -89,7 +89,6 @@ export class Block {
 
 	private _removeEvents() {
 		const { events = null } = this.props;
-		console.log('_removeEvents: ', this.props, this._element);
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
@@ -107,14 +106,10 @@ export class Block {
 	}
 
 	private _init() {
-		console.log('init');
-
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
 	private _componentDidMount(): void {
-		console.log('_componentDidMount');
-
 		this.componentDidMount();
 		Object.values(this.children).forEach(child => {
 			child.dispatchComponentDidMount();
@@ -122,25 +117,18 @@ export class Block {
 	}
 
 	componentDidMount(): void {
-		console.log('componentDidMount');
 	}
 
 	dispatchComponentDidMount() {
-		console.log('dispatchComponentDidMount');
-
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 
 	dispatchComponentWillUnmount() {
-		console.log('dispatchComponentWillUnmount');
-
 		this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 	}
 
-	private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
-		console.log('_componentDidUpdate: ', { oldProps, newProps });
-
-		const response = this.componentDidUpdate(oldProps, newProps);
+	private _componentDidUpdate() {
+		const response = this.componentDidUpdate();
 		if (!response) {
 			return;
 		}
@@ -148,9 +136,7 @@ export class Block {
 		this._render();
 	}
 
-	componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-		console.log('componentDidUpdate: ', { oldProps, newProps });
-
+	componentDidUpdate(): boolean {
 		return true;
 	}
 
@@ -177,8 +163,6 @@ export class Block {
 	}
 
 	private _render() {
-		console.log('_render: ', this);
-
 		this._removeEvents();
 
 		const temp = this._createDocumentElement('template') as HTMLTemplateElement;
@@ -230,8 +214,6 @@ export class Block {
 	}
 
 	setProps(nextProps: BlockProps) {
-		// console.log('setProps: ', { tp: this.props, nextProps, ch: this.children });
-
 		if (!nextProps) {
 			return;
 		}
@@ -248,8 +230,6 @@ export class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target: BlockProps, p: string, newValue) {
-				console.log('proxy set: ', { self, target, p, newValue });
-
 				const oldTarget = { ...target };
 				if (p === 'input_data') {
 					const { value, error, currentFocus } = newValue;
@@ -276,8 +256,6 @@ export class Block {
 				return true;
 			},
 			deleteProperty() {
-				console.log('proxy delete');
-
 				// throw new Error('No access');
 				return false;
 			},
@@ -285,15 +263,12 @@ export class Block {
 	}
 
 	private _createDocumentElement(tagName: string) {
-		console.log('_createDocumentElement: ', { tagName });
-
 		// Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
 		return document.createElement(tagName);
 	}
 
 	private _addAttributes(): void {
 		const { attr = {} } = this.props;
-		console.log('_addAttributes: ', this.props, this._element);
 
 		if (this._element && attr) {
 			Object.entries(attr).forEach(([key, value]) => {
@@ -303,8 +278,6 @@ export class Block {
 	}
 
 	setAttributes(attr: Record<string, string | boolean>): void {
-		console.log('setAttributes: ', this.props, this._element);
-
 		Object.entries(attr).forEach(([key, value]) => {
 			if (this._element) {
 				this._element.setAttribute(key, value as string);
@@ -313,7 +286,7 @@ export class Block {
 	}
 
 	toggleClassList(className: string, elementId?: string): void {
-		let target = this._element;
+		const target = this._element;
 
 		if (elementId) {
 			Object.entries(this.allInstances).forEach(([id, instance]) => {
@@ -333,8 +306,6 @@ export class Block {
 	}
 
 	removeAttributes(attrName: string): void {
-		console.log('removeAttributes: ', attrName, this._element);
-
 		if (this._element && attrName) {
 			this._element.removeAttribute(attrName);
 		}
@@ -514,7 +485,6 @@ export class Block {
 
 		if (this.props.appElement) {
 			const content = modal.getContent();
-			console.log('app render modal: ', { modal, c: content });
 
 			if (content) {
 				this.props.appElement.parentNode.appendChild(content);

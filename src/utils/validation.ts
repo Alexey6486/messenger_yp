@@ -1,4 +1,9 @@
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
+import type {
+	Nullable,
+} from '@/types';
 import {
 	REGEX,
 	VALIDATION_MSG,
@@ -54,7 +59,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 	requiredOnly?: boolean,
 	valueToCompare?: string,
 }): string => {
-	let validator: Validator | null = new Validator(valueToValidate);
+	let validator: Nullable<Validator> = new Validator(valueToValidate);
 	let validationResult: string;
 
 	if (requiredOnly) {

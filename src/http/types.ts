@@ -1,3 +1,5 @@
+import type { Nullable } from '@/types';
+
 export enum ERequestMethods {
 	GET = 'GET',
 	POST = 'POST',
@@ -7,7 +9,7 @@ export enum ERequestMethods {
 
 export interface IRequestOptions {
 	method: ERequestMethods;
-	data?: Document | XMLHttpRequestBodyInit | null;
+	data?: Nullable<Document | XMLHttpRequestBodyInit>;
 	timeout?: number;
 	headers?: Record<string, string>;
 }

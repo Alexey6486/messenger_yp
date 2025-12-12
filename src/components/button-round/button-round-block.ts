@@ -9,8 +9,6 @@ export class ButtonRoundBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ButtonRoundBlock click', { e, t: this });
-
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -21,8 +19,6 @@ export class ButtonRoundBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ButtonRoundBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

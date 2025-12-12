@@ -9,8 +9,6 @@ export class ButtonBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ButtonBlock click', { e, t: this });
-
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -21,8 +19,6 @@ export class ButtonBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ButtonBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

@@ -9,8 +9,6 @@ export class ProfileFieldBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ProfileFieldBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

@@ -5,8 +5,8 @@ import {
 } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import { DropDownBlock } from '@/components/drop-down/drop-down';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
+import { DropDownBlock } from '@/components/drop-down/drop-down-block';
+import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import {
 	SvgCross,
 	SvgPlus,
@@ -19,8 +19,8 @@ export class MessagingHeaderBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_DD_HEADER }"></div>`,
-				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${ IDS.MAIN.HEADER_PROFILE_LINK }"></div>`,
+				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${IDS.MAIN.MESSAGING_DD_HEADER}"></div>`,
+				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${IDS.MAIN.HEADER_PROFILE_LINK}"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_HEADER]: new DropDownBlock({
@@ -32,8 +32,6 @@ export class MessagingHeaderBlock extends Block {
 							icon: SvgPlus,
 							text: 'Добавить пользователя',
 							onClick: (event: Event) => {
-								console.log('click option add user: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
@@ -45,8 +43,6 @@ export class MessagingHeaderBlock extends Block {
 							icon: SvgCross,
 							text: 'Удалить пользователя',
 							onClick: (event: Event) => {
-								console.log('click option remove user: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
@@ -57,15 +53,13 @@ export class MessagingHeaderBlock extends Block {
 				}),
 				[IDS.MAIN.HEADER_PROFILE_LINK]: new LinkBlock({
 					id: IDS.MAIN.HEADER_PROFILE_LINK,
-					class: props.class['user-name'],
+					class: props.styles['user-name'],
 					href: '#',
 					ariaLabel: 'profile link',
 					tooltip: 'profile link',
 					target: '_self',
-					text: props.first_name,
+					text: props.userData.first_name,
 					onClick: () => {
-						console.log('onClick link to profile: ', this);
-
 						props.onChangePage();
 					},
 				}),
@@ -74,8 +68,6 @@ export class MessagingHeaderBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block MessagingHeaderBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

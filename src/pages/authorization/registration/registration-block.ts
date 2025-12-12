@@ -42,8 +42,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.EMAIL_FIELD,
 					id_label: IDS.REGISTRATION.EMAIL_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.email,
-						error: props.registrationForm.errors.email,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.email,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.email,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Почта',
@@ -53,8 +53,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.EMAIL_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.EMAIL_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.email,
-								error: props.registrationForm.errors.email,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.email,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.email,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
@@ -62,8 +62,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange email: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -92,8 +90,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.LOGIN_FIELD,
 					id_label: IDS.REGISTRATION.LOGIN_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.login,
-						error: props.registrationForm.errors.login,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.login,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.login,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -103,8 +101,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.LOGIN_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.login,
-								error: props.registrationForm.errors.login,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.login,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.login,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -112,8 +110,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange login: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -142,8 +138,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.F_NAME_FIELD,
 					id_label: IDS.REGISTRATION.F_NAME_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.first_name,
-						error: props.registrationForm.errors.first_name,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.first_name,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.first_name,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Имя',
@@ -153,8 +149,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.F_NAME_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.first_name,
-								error: props.registrationForm.errors.first_name,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.first_name,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.first_name,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
@@ -162,8 +158,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange first_name: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -192,8 +186,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.S_NAME_FIELD,
 					id_label: IDS.REGISTRATION.S_NAME_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.second_name,
-						error: props.registrationForm.errors.second_name,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.second_name,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.second_name,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Фамилия',
@@ -203,8 +197,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.S_NAME_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.S_NAME_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.second_name,
-								error: props.registrationForm.errors.second_name,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.second_name,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.second_name,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
@@ -212,8 +206,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange second_name: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -242,8 +234,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.PHONE_FIELD,
 					id_label: IDS.REGISTRATION.PHONE_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.phone,
-						error: props.registrationForm.errors.phone,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.phone,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.phone,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Телефон',
@@ -253,8 +245,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.PHONE_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PHONE_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.phone,
-								error: props.registrationForm.errors.phone,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.phone,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.phone,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
@@ -262,8 +254,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange phone: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -292,8 +282,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.PSW_FIELD,
 					id_label: IDS.REGISTRATION.PSW_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.password,
-						error: props.registrationForm.errors.password,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.password,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.password,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
@@ -303,8 +293,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PSW_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.password,
-								error: props.registrationForm.errors.password,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.password,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.password,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
@@ -312,8 +302,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange password: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -342,8 +330,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.C_PSW_FIELD,
 					id_label: IDS.REGISTRATION.C_PSW_INPUT,
 					input_data: {
-						value: props.registrationForm.fields.confirmPassword,
-						error: props.registrationForm.errors.confirmPassword,
+						value: props[IDS.FORMS.REGISTRATION_FORM].fields.confirmPassword,
+						error: props[IDS.FORMS.REGISTRATION_FORM].errors.confirmPassword,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль (еще раз)',
@@ -353,8 +341,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.C_PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.C_PSW_INPUT,
 							input_data: {
-								value: props.registrationForm.fields.confirmPassword,
-								error: props.registrationForm.errors.confirmPassword,
+								value: props[IDS.FORMS.REGISTRATION_FORM].fields.confirmPassword,
+								error: props[IDS.FORMS.REGISTRATION_FORM].errors.confirmPassword,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
@@ -362,8 +350,6 @@ export class RegistrationBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange confirmPassword: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -373,7 +359,7 @@ export class RegistrationBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.confirmPassword,
-													valueToCompare: this.props.registrationForm.fields.password,
+													valueToCompare: this.props[IDS.FORMS.REGISTRATION_FORM].fields.password,
 												}),
 											},
 										}),
@@ -395,13 +381,11 @@ export class RegistrationBlock extends Block {
 					dataset: PAGES.REGISTRATION,
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
-						console.log('click submit: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { registrationForm: { ...this.props.registrationForm } };
+						let pageProps = { [IDS.FORMS.REGISTRATION_FORM]: { ...this.props[IDS.FORMS.REGISTRATION_FORM] } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
@@ -411,7 +395,7 @@ export class RegistrationBlock extends Block {
 											valueToValidate: inputInstance.props.input_data.value,
 											fieldName: inputInstance.props.name,
 											...(inputInstance.props.name === E_FORM_FIELDS_NAME.confirmPassword && {
-												valueToCompare: this.props.registrationForm.fields.password,
+												valueToCompare: this.props[IDS.FORMS.REGISTRATION_FORM].fields.password,
 											}),
 										});
 
@@ -427,10 +411,10 @@ export class RegistrationBlock extends Block {
 											fieldInstance.setProps(data);
 
 											pageProps = {
-												registrationForm: {
-													...pageProps.registrationForm,
+												[IDS.FORMS.REGISTRATION_FORM]: {
+													...pageProps[IDS.FORMS.REGISTRATION_FORM],
 													errors: {
-														...pageProps.registrationForm.errors,
+														...pageProps[IDS.FORMS.REGISTRATION_FORM].errors,
 														[inputInstance.props.name]: validationResult,
 													},
 												},
@@ -441,7 +425,7 @@ export class RegistrationBlock extends Block {
 							}
 						});
 
-						console.log('Registration data: ', this.props.registrationForm.fields);
+						console.log('Registration data submit: ', this.props[IDS.FORMS.REGISTRATION_FORM].fields);
 
 						if (validationResult.length) {
 							this.setProps(pageProps);
@@ -454,8 +438,6 @@ export class RegistrationBlock extends Block {
 					dataset: PAGES.REGISTRATION,
 					text: 'Назад',
 					onClick: (event: Event) => {
-						console.log('click signin: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -467,8 +449,6 @@ export class RegistrationBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block RegistrationBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

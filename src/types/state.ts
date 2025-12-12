@@ -1,4 +1,7 @@
-import type { TPages } from '@/types';
+import type {
+	Nullable,
+	TPages,
+} from '@/types';
 
 export enum E_FORM_FIELDS_NAME {
 	first_name = 'first_name',
@@ -102,11 +105,11 @@ export interface IChat {
 }
 
 export interface IMainPageState {
-	currentChatId: string | null;
+	currentChatId: Nullable<string>;
 	chatsSearchForm: IFormState<ISearchForm>;
 	newMessageForm: IFormState<IMessageForm>;
 	chats: IChat[];
-	messages: IChat[] | null;
+	messages: Nullable<IChat[]>;
 }
 
 export interface IMainPageHbsState extends IMainPageState {
@@ -151,10 +154,21 @@ export interface IInputData {
 export interface IInputInfo<T> {
 	event: string;
 	element: T;
-	selectionStart?: number | null;
+	selectionStart?: Nullable<number>;
 }
 
 export interface IInputChangeParams<T> {
 	data: IInputData;
 	info: IInputInfo<T>;
+}
+
+export interface ICurrentFocus {
+	element: Nullable<HTMLInputElement>;
+	selectionStart: Nullable<number>;
+}
+
+export interface IInputState {
+	value: string;
+	error: string;
+	currentFocus: ICurrentFocus;
 }

@@ -1,4 +1,5 @@
 export type { TPages } from './pages';
+export type { Nullable } from './general';
 export type {
 	IState,
 	IFormState,
@@ -23,6 +24,8 @@ export type {
 	IInputData,
 	IChildren,
 	IInputChangeParams,
+	IInputState,
+	ICurrentFocus,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type { BlockProps } from './block';

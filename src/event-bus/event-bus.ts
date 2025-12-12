@@ -12,8 +12,6 @@ export class EventBus {
 	}
 
 	on(event: string, callback: TEbCallback): void {
-		console.log('on: ', { event, callback });
-
 		if (!Array.isArray(this.listeners[event])) {
 			this.listeners[event] = [];
 		}
@@ -23,7 +21,7 @@ export class EventBus {
 
 	off(event: string, callback: TEbCallback) {
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${ event }`);
+			throw new Error(`Нет события: ${event}`);
 		} else {
 			this.listeners[event] = this.listeners[event].filter(
 				listener => listener !== callback,
@@ -32,10 +30,8 @@ export class EventBus {
 	}
 
 	emit(event: string, ...args: BlockProps[]): void {
-		console.log('emit: ', { event, args });
-
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${ event }`);
+			throw new Error(`Нет события: ${event}`);
 		} else {
 			this.listeners[event].forEach((listener: TEbCallback) => {
 				listener(...args);

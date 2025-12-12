@@ -9,8 +9,6 @@ export class ChatBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('ChatBlock click', { e, t: this });
-
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -21,8 +19,6 @@ export class ChatBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block ChatBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

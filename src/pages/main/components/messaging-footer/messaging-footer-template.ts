@@ -1,7 +1,7 @@
 export default `
-<footer class="{{class.footer}}">
+<footer class="{{styles.footer}}">
 {{{ markup.messaging-footer-drop-down }}}
-<form id="{{ids.form}}" class="{{class.message-form}}">
+<form class="{{styles.message-form}}">
 {{{ markup.main-new-message-input }}}
 {{{ markup.main-send-message-button }}}
 </form>

@@ -19,7 +19,7 @@ export class AddUserBlock extends Block {
 			...props,
 			id: IDS.MODAL.CONTENT,
 			markup: {
-				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${ IDS.MODAL.ADD_USER_FIELD }"></div>`,
+				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${IDS.MODAL.ADD_USER_FIELD}"></div>`,
 			},
 			children: {
 				[IDS.MODAL.ADD_USER_FIELD]: new FieldBlock({
@@ -28,7 +28,7 @@ export class AddUserBlock extends Block {
 					input_data: {
 						value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
 						error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
-						currentFocus: 'props.currentFocus',
+						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -39,15 +39,13 @@ export class AddUserBlock extends Block {
 							input_data: {
 								value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
 								error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
-								currentFocus: 'props.currentFocus',
+								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'login',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange modal login: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -70,7 +68,7 @@ export class AddUserBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.MODAL.ADD_USER_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.MODAL.ADD_USER_INPUT}"></div>`,
 					},
 				}),
 			},
@@ -78,8 +76,6 @@ export class AddUserBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block AddUserBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

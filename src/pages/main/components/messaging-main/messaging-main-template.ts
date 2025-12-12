@@ -1,9 +1,9 @@
 export default `
-<div id="{{id}}" class="{{class.message}} {{#if isMe}}{{class.right-side}}{{/if}}">
+<div id="{{id}}" class="{{styles.message}} {{#if isMe}}{{styles.right-side}}{{/if}}">
 {{#unless isMe}}
-<div class="{{class.author}}">{{author}}</div>
+<div class="{{styles.author}}">{{author}}</div>
 {{/unless}}
-<div class="{{class.text}}">{{text}}</div>
-<div class="{{class.date}}">{{date}}</div>
+<div class="{{styles.text}}">{{text}}</div>
+<div class="{{styles.date}}">{{date}}</div>
 </div>
 `;

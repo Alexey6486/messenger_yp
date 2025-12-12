@@ -15,8 +15,8 @@ import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
-import { DropDownBlock } from '@/components/drop-down/drop-down';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
+import { DropDownBlock } from '@/components/drop-down/drop-down-block';
+import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
 import { LinkBlock } from '@/components/link/link-block';
@@ -28,18 +28,19 @@ export class MainBlock extends Block {
 		super({
 			...props,
 			styles,
+			isFilled: props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].fields.title.length,
 			markup: {
-				[IDS.MAIN.SEARCH_FORM]: `<div id="${ IDS.MAIN.SEARCH_FORM }"></div>`,
-				[IDS.MAIN.CHAT_LIST]: `<div id="${ IDS.MAIN.CHAT_LIST }"></div>`,
-				[IDS.MAIN.MESSAGING]: `<div id="${ IDS.MAIN.MESSAGING }"></div>`,
-				[IDS.MAIN.PROFILE_LINK]: `<div id="${ IDS.MAIN.PROFILE_LINK }"></div>`,
-				[IDS.MAIN.TEMP_NAV]: `<div id="${ IDS.MAIN.TEMP_NAV }"></div>`,
+				[IDS.MAIN.SEARCH_FORM]: `<div id="${IDS.MAIN.SEARCH_FORM}"></div>`,
+				[IDS.MAIN.CHAT_LIST]: `<div id="${IDS.MAIN.CHAT_LIST}"></div>`,
+				[IDS.MAIN.MESSAGING]: `<div id="${IDS.MAIN.MESSAGING}"></div>`,
+				[IDS.MAIN.PROFILE_LINK]: `<div id="${IDS.MAIN.PROFILE_LINK}"></div>`,
+				[IDS.MAIN.TEMP_NAV]: `<div id="${IDS.MAIN.TEMP_NAV}"></div>`,
 			},
 			children: {
 				[IDS.MAIN.SEARCH_FORM]: new FormBlock({
 					id: IDS.MAIN.SEARCH_FORM,
-					onSubmit: (e: Event) => {
-						console.log('on submit search: ', { e, t: this });
+					onSubmit: () => {
+						console.log('Search submit: ', { title: this.props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].fields.title });
 					},
 					childrenList: [
 						new InputBlock({
@@ -54,8 +55,6 @@ export class MainBlock extends Block {
 							placeholder: 'Поиск',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange search chat: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									params,
 									[IDS.MAIN.SEARCH_INPUT, IDS.MAIN.SEARCH_FORM],
@@ -72,16 +71,14 @@ export class MainBlock extends Block {
 					childrenList: props.chats.map(({ id, avatar, title, unread_count, last_message }: IChat) => {
 						return new ChatBlock({
 							id: id,
-							class: styles,
+							styles,
 							avatar: avatar,
 							title: title,
-							data: last_message.time,
+							date: last_message.time,
 							text: formatContentLength(last_message.content),
 							counter: unread_count,
 							isActive: props.currentChatId === id,
 							onClick: () => {
-								console.log('click chat: ', this);
-
 								Object.entries(this.allInstances).forEach(([instanceId, instance]) => {
 									if (instanceId === IDS.MAIN.CHAT_LIST) {
 										Object.entries(instance.allInstances).forEach(([chatId, chatInstance]) => {
@@ -108,14 +105,11 @@ export class MainBlock extends Block {
 							icon: '',
 							text: 'Авторизация',
 							onClick: (event: Event) => {
-								console.log('click option PAGES.AUTHORIZATION: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
-
-								// this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+								this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
 							},
 						}),
 						new DropDownOptionBlock({
@@ -123,13 +117,10 @@ export class MainBlock extends Block {
 							icon: '',
 							text: 'Регистрация',
 							onClick: (event: Event) => {
-								console.log('click option PAGES.REGISTRATION: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
-
 								this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
 							},
 						}),
@@ -138,13 +129,10 @@ export class MainBlock extends Block {
 							icon: '',
 							text: 'Страница ошибки',
 							onClick: (event: Event) => {
-								console.log('click option PAGES.ERROR: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.TEMP_NAV);
-
 								this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
 							},
 						}),
@@ -152,10 +140,10 @@ export class MainBlock extends Block {
 				}),
 				[IDS.MAIN.MESSAGING]: new MessagingBlock({
 					id: IDS.MAIN.MESSAGING,
+					styles,
 					messages: props.messages,
-					newMessageForm: props.newMessageForm,
+					[IDS.FORMS.MAIN_NEW_MESSAGE_FORM]: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM],
 					userData: props.userData,
-					class: styles,
 					onChangePage: () => {
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
 					},
@@ -169,8 +157,6 @@ export class MainBlock extends Block {
 					target: '_self',
 					text: 'Профиль',
 					onClick: () => {
-						console.log('onClick link to profile: ', this);
-
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
 					},
 				}),
@@ -179,8 +165,6 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block MainBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

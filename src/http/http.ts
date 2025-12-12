@@ -1,8 +1,11 @@
 import type { IRequestOptions } from './types';
 import { ERequestMethods } from './types';
+import type {
+	Nullable,
+} from '@/types';
 
 
-function queryStringify(data: Document | XMLHttpRequestBodyInit | null) {
+function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
 
 	if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
@@ -12,9 +15,9 @@ function queryStringify(data: Document | XMLHttpRequestBodyInit | null) {
 				const key = el[0];
 				const value = Array.isArray(el[1]) ? (el[1] as Array<string>).join(',') : el[1];
 				if (idx === 0) {
-					result += `?${ key }=${ value }`;
+					result += `?${key}=${value}`;
 				} else {
-					result += `&${ key }=${ value }`;
+					result += `&${key}=${value}`;
 				}
 			});
 		}
@@ -55,7 +58,7 @@ export class HTTPTransport {
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${ url }${ queryStringify(data) }`
+					? `${url}${queryStringify(data)}`
 					: url,
 			);
 

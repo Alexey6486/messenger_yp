@@ -10,11 +10,12 @@ import {
 } from './constants';
 import type {
 	IState,
+	Nullable,
 	TPages,
 } from './types';
 
 export default class App {
-	private appElement: HTMLElement | null;
+	private appElement: Nullable<HTMLElement>;
 	private state: IState;
 
 	constructor() {
@@ -46,7 +47,6 @@ export default class App {
 
 			if (this.appElement) {
 				const content = loginPage.getContent();
-				console.log('app render: ', { loginPage, c: content });
 
 				if (content) {
 					this.appElement.appendChild(content);
@@ -61,7 +61,6 @@ export default class App {
 
 			if (this.appElement) {
 				const content = registrationPage.getContent();
-				console.log('app render: ', { registrationPage, c: content });
 
 				if (content) {
 					this.appElement.appendChild(content);
@@ -76,7 +75,6 @@ export default class App {
 
 			if (this.appElement) {
 				const content = errorPage.getContent();
-				console.log('app render: ', { errorPage, c: content });
 
 				if (content) {
 					this.appElement.appendChild(content);
@@ -92,7 +90,6 @@ export default class App {
 
 			if (this.appElement) {
 				const content = profilePage.getContent();
-				console.log('app render: ', { profilePage, c: content });
 
 				if (content) {
 					this.appElement.appendChild(content);
@@ -108,7 +105,6 @@ export default class App {
 
 			if (this.appElement) {
 				const content = mainPage.getContent();
-				console.log('app render: ', { mainPage, c: content });
 
 				if (content) {
 					this.appElement.appendChild(content);

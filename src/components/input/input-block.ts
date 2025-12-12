@@ -13,8 +13,6 @@ export class InputBlock extends Block {
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						console.log('InputBlock input: ', { e, t: this });
-
 						props.onChange({
 							data: {
 								value: e.target.value,
@@ -29,8 +27,6 @@ export class InputBlock extends Block {
 				},
 				blur: (e: Event) => {
 					if (e.target && e.target instanceof HTMLInputElement) {
-						console.log('InputBlock blur: ', { e, t: this });
-
 						props.onChange({
 							data: {
 								value: e.target.value,
@@ -48,8 +44,6 @@ export class InputBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block InputBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

@@ -23,28 +23,25 @@ export class LoginBlock extends Block {
 		super({
 			...props,
 			styles,
-			ids: {
-				form: IDS.AUTHORIZATION.FORM,
-			},
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
 
 				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${ IDS.AUTHORIZATION.TEMP_PROFILE }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${ IDS.AUTHORIZATION.TEMP_MAIN }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${ IDS.AUTHORIZATION.TEMP_MODAL }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${IDS.AUTHORIZATION.TEMP_ERROR}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${IDS.AUTHORIZATION.TEMP_PROFILE}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${IDS.AUTHORIZATION.TEMP_MAIN}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${IDS.AUTHORIZATION.TEMP_MODAL}"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
 					id: IDS.AUTHORIZATION.LOGIN_FIELD,
 					id_label: IDS.AUTHORIZATION.LOGIN_INPUT,
 					input_data: {
-						value: props.authorizationForm.fields.login,
-						error: props.authorizationForm.errors.login,
+						value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.login,
+						error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.login,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -53,8 +50,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.LOGIN_INPUT,
 							input_data: {
-								value: props.authorizationForm.fields.login,
-								error: props.authorizationForm.errors.login,
+								value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.login,
+								error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.login,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -62,8 +59,6 @@ export class LoginBlock extends Block {
 							placeholder: '',
 							type: 'text',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange login: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -86,15 +81,15 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
 					id: IDS.AUTHORIZATION.PSW_FIELD,
 					id_label: IDS.AUTHORIZATION.PSW_INPUT,
 					input_data: {
-						value: props.authorizationForm.fields.password,
-						error: props.authorizationForm.errors.password,
+						value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.password,
+						error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.password,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
@@ -103,8 +98,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.PSW_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.PSW_INPUT,
 							input_data: {
-								value: props.authorizationForm.fields.password,
-								error: props.authorizationForm.errors.password,
+								value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.password,
+								error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.password,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
@@ -112,8 +107,6 @@ export class LoginBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							onChange: (params: IInputChangeParams<Block>) => {
-								console.log('onChange password: ', { params, currentThis: this });
-
 								this.onFormInputChange(
 									{
 										...params,
@@ -136,7 +129,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
@@ -145,13 +138,11 @@ export class LoginBlock extends Block {
 					dataset: PAGES.AUTHORIZATION,
 					text: 'Войти',
 					onClick: (event: Event) => {
-						console.log('click submit: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { authorizationForm: { ...this.props.authorizationForm } };
+						let pageProps = { [IDS.FORMS.AUTHORIZATION_FORM]: { ...this.props[IDS.FORMS.AUTHORIZATION_FORM] } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
@@ -175,10 +166,10 @@ export class LoginBlock extends Block {
 											fieldInstance.setProps(childProps);
 
 											pageProps = {
-												authorizationForm: {
-													...pageProps.authorizationForm,
+												[IDS.FORMS.AUTHORIZATION_FORM]: {
+													...pageProps[IDS.FORMS.AUTHORIZATION_FORM],
 													errors: {
-														...pageProps.authorizationForm.errors,
+														...pageProps[IDS.FORMS.AUTHORIZATION_FORM].errors,
 														[inputInstance.props.name]: validationResult,
 													},
 												},
@@ -189,7 +180,7 @@ export class LoginBlock extends Block {
 							}
 						});
 
-						console.log('Login data: ', this.props.authorizationForm.fields);
+						console.log('Login data submit: ', this.props[IDS.FORMS.AUTHORIZATION_FORM].fields);
 
 						if (validationResult.length) {
 							this.setProps(pageProps);
@@ -202,8 +193,6 @@ export class LoginBlock extends Block {
 					dataset: PAGES.AUTHORIZATION,
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
-						console.log('click signup: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -218,8 +207,6 @@ export class LoginBlock extends Block {
 					dataset: PAGES.ERROR,
 					text: 'Страница ошибки',
 					onClick: (event: Event) => {
-						console.log('click change page: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -232,8 +219,6 @@ export class LoginBlock extends Block {
 					dataset: PAGES.PROFILE,
 					text: 'Профиль',
 					onClick: (event: Event) => {
-						console.log('click change page: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -246,8 +231,6 @@ export class LoginBlock extends Block {
 					dataset: PAGES.MAIN,
 					text: 'Главная',
 					onClick: (event: Event) => {
-						console.log('click change page: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -260,8 +243,6 @@ export class LoginBlock extends Block {
 					dataset: IDS.AUTHORIZATION.TEMP_MODAL,
 					text: 'Модальное окно',
 					onClick: (event: Event) => {
-						console.log('click show modal: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
@@ -282,8 +263,6 @@ export class LoginBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block LoginBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

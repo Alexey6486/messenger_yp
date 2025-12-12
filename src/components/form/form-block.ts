@@ -10,8 +10,6 @@ export class FormBlock extends Block {
 			...props,
 			events: {
 				submit: (e: Event) => {
-					console.log('FormBlock submit: ', this);
-
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -19,14 +17,12 @@ export class FormBlock extends Block {
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
 			},
 		});
 	}
 
 	override render(): string {
-		console.log('Render block FormBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

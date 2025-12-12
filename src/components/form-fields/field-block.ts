@@ -9,8 +9,6 @@ export class FieldBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block FieldBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

@@ -9,8 +9,6 @@ export class LinkBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('click link', { e, t: this });
-
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -21,8 +19,6 @@ export class LinkBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block LinkBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

@@ -1,7 +1,7 @@
 export default `
-<div class="{{class.messages}}">
+<div class="{{styles.messages}}">
 {{{ markup.main-messaging-header }}}
-<main class="{{class.main}}">
+<main class="{{styles.main}}">
 {{#if messages.length}}
 {{{ markup.components-list }}}
 {{else}}

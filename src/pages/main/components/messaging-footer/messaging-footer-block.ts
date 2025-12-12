@@ -12,8 +12,8 @@ import type {
 	IInputChangeParams,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
-import { DropDownBlock } from '@/components/drop-down/drop-down';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option';
+import { DropDownBlock } from '@/components/drop-down/drop-down-block';
+import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import {
 	SvgArrowRight,
 	SvgCenter,
@@ -28,13 +28,10 @@ export class MessagingFooterBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
-			ids: {
-				form: IDS.MAIN.MAIN_NEW_MESSAGE_FORM,
-			},
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_DD_FOOTER }"></div>`,
-				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${ IDS.MAIN.SEND_MESSAGE_BTN }"></div>`,
-				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${ IDS.MAIN.NEW_MESSAGE_INPUT }"></div>`,
+				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${IDS.MAIN.MESSAGING_DD_FOOTER}"></div>`,
+				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${IDS.MAIN.SEND_MESSAGE_BTN}"></div>`,
+				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${IDS.MAIN.NEW_MESSAGE_INPUT}"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_FOOTER]: new DropDownBlock({
@@ -46,8 +43,6 @@ export class MessagingFooterBlock extends Block {
 							icon: SvgPhoto,
 							text: 'Фото или видео',
 							onClick: (event: Event) => {
-								console.log('click add photo: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
@@ -59,8 +54,6 @@ export class MessagingFooterBlock extends Block {
 							icon: SvgFile,
 							text: 'Файл',
 							onClick: (event: Event) => {
-								console.log('click add file: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
@@ -72,8 +65,6 @@ export class MessagingFooterBlock extends Block {
 							icon: SvgCenter,
 							text: 'Локация',
 							onClick: (event: Event) => {
-								console.log('click add location: ', this);
-
 								event.preventDefault();
 								event.stopPropagation();
 
@@ -88,13 +79,11 @@ export class MessagingFooterBlock extends Block {
 					dataset: '',
 					icon: SvgArrowRight,
 					onClick: (event: Event) => {
-						console.log('click send message: ', this);
-
 						event.preventDefault();
 						event.stopPropagation();
 
 						if (this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message.trim().length) {
-							console.log('submit message', this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields);
+							console.log('New message submit', this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields);
 						}
 					},
 				}),
@@ -109,10 +98,8 @@ export class MessagingFooterBlock extends Block {
 					name: E_FORM_FIELDS_NAME.message,
 					placeholder: 'Сообщение',
 					type: 'text',
-					class: props.class['message-input'],
+					class: props.styles['message-input'],
 					onChange: (params: IInputChangeParams<Block>) => {
-						console.log('on change new message: ', { params, currentThis: this });
-
 						this.onFormInputChange(
 							{
 								...params,
@@ -137,8 +124,6 @@ export class MessagingFooterBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block MessagingFooterBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }

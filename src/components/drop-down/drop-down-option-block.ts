@@ -9,7 +9,6 @@ export class DropDownOptionBlock extends Block {
 			...props,
 			events: {
 				click: (e: Event) => {
-					console.log('DropDownOptionBlock click', { e, t: this });
 
 					e.preventDefault();
 					e.stopPropagation();
@@ -21,8 +20,6 @@ export class DropDownOptionBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render block DropDownOptionBlock: ', this);
-
 		return compile(template, this.props);
 	}
 }
