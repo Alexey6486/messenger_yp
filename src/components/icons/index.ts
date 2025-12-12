@@ -1,0 +1,10 @@
+export { default as SvgArrowLeft } from './icon-arrow-left';
+export { default as SvgArrowRight } from './icon-arrow-right';
+export { default as SvgCenter } from './icon-center';
+export { default as SvgCross } from './icon-cross';
+export { default as SvgDots } from './icon-dots';
+export { default as SvgFile } from './icon-file';
+export { default as SvgPaperclip } from './icon-paperclip';
+export { default as SvgPhoto } from './icon-photo';
+export { default as SvgPlaceholder } from './icon-placeholder';
+export { default as SvgPlus } from './icon-plus';

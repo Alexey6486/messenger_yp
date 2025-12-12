@@ -1,5 +1,8 @@
-export { GetLoginPage, GetRegistrationPage } from './authorization';
-export { GetMainPage } from './main';
-export { GetErrorPage } from './error';
-export { GetProfilePage } from './profile';
-export { GetModal } from './modal';
+export {
+	LoginBlock,
+	RegistrationBlock,
+} from './authorization';
+export { ErrorBlock } from './error';
+export { ProfileBlock } from './profile';
+export { ModalBlock } from './modal';
+export { MainBlock } from './main';
