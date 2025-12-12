@@ -11,6 +11,10 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 	IAddUserModalForm,
+	IFormState,
+	ILoginForm,
+	Nullable,
+	TPages,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -21,8 +25,15 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
+interface ILoginBlock extends BlockProps {
+	authorizationForm: IFormState<ILoginForm>;
+	appElement: Nullable<HTMLElement>;
+	changePage: (page: TPages) => void;
+	children: Record<string, FieldBlock | ButtonBlock>;
+}
+
 export class LoginBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: ILoginBlock) {
 		super({
 			...props,
 			styles,
@@ -135,6 +146,7 @@ export class LoginBlock extends Block {
 						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
 					},
 				}),
+
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.SUBMIT,
 					type: 'submit',

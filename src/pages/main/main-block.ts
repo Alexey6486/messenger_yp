@@ -10,8 +10,12 @@ import type {
 	BlockProps,
 	IChat,
 	IInputChangeParams,
+	IMainPageState,
+	TPages,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
@@ -23,12 +27,16 @@ import { LinkBlock } from '@/components/link/link-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 
+interface IMainBlock extends IMainPageState, BlockProps {
+	userData: Record<string, string>,
+	changePage: (page: TPages) => void,
+}
+
 export class MainBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IMainBlock) {
 		super({
 			...props,
 			styles,
-			isFilled: props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].fields.title.length,
 			markup: {
 				[IDS.MAIN.SEARCH_FORM]: `<div id="${IDS.MAIN.SEARCH_FORM}"></div>`,
 				[IDS.MAIN.CHAT_LIST]: `<div id="${IDS.MAIN.CHAT_LIST}"></div>`,
@@ -165,6 +173,7 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
+		console.log(this);
 		return compile(template, this.props);
 	}
 }

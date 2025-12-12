@@ -7,15 +7,19 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down-block';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
+import { LinkBlock } from '@/components/link/link-block';
 import {
 	SvgCross,
 	SvgPlus,
 } from '@/components/icons';
 import template from './messaging-header-template';
-import { LinkBlock } from '@/components/link/link-block';
+
+interface IMessagingHeaderBlock extends BlockProps {
+	id: string;
+}
 
 export class MessagingHeaderBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IMessagingHeaderBlock) {
 		super({
 			...props,
 			markup: {
@@ -53,7 +57,7 @@ export class MessagingHeaderBlock extends Block {
 				}),
 				[IDS.MAIN.HEADER_PROFILE_LINK]: new LinkBlock({
 					id: IDS.MAIN.HEADER_PROFILE_LINK,
-					class: props.styles['user-name'],
+					class: props?.styles?.['user-name'] ?? '',
 					href: '#',
 					ariaLabel: 'profile link',
 					tooltip: 'profile link',

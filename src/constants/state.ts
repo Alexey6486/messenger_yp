@@ -9,6 +9,7 @@ import type {
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
+	IMessageForm,
 } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
@@ -46,6 +47,11 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
 export const INIT_SEARCH_STATE: IFormState<ISearchForm> = {
 	fields: { title: '' },
 	errors: { title: '' },
+};
+
+export const INIT_MESSAGE_STATE: IFormState<IMessageForm> = {
+	fields: { message: '' },
+	errors: { message: '' },
 };
 
 export const INIT_ERROR_STATE: IErrorPageState = {
@@ -101,10 +107,7 @@ export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {
 	currentChatId: '',
 	chatsSearchForm: INIT_SEARCH_STATE,
-	newMessageForm: {
-		fields: { message: '' },
-		errors: { message: '' },
-	},
+	newMessageForm: INIT_MESSAGE_STATE,
 	chats: [
 		{
 			id: 'chat_id_1',

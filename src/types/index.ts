@@ -27,6 +27,7 @@ export type {
 	IInputState,
 	ICurrentFocus,
 	IAddUserModalForm,
+	IMessageForm,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';

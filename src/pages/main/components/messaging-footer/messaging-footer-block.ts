@@ -11,9 +11,13 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down-block';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
+import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
+import { InputBlock } from '@/components/input/input-block';
 import {
 	SvgArrowRight,
 	SvgCenter,
@@ -21,11 +25,13 @@ import {
 	SvgPhoto,
 } from '@/components/icons';
 import template from './messaging-footer-template';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { InputBlock } from '@/components/input/input-block';
+
+interface IMessagingFooterBlock extends BlockProps {
+	id: string;
+}
 
 export class MessagingFooterBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IMessagingFooterBlock) {
 		super({
 			...props,
 			markup: {
@@ -97,7 +103,7 @@ export class MessagingFooterBlock extends Block {
 					name: E_FORM_FIELDS_NAME.message,
 					placeholder: 'Сообщение',
 					type: 'text',
-					class: props.styles['message-input'],
+					class: props?.styles?.['message-input'] ?? '',
 					onChange: (params: IInputChangeParams<Block>) => {
 						this.onFormInputChange(
 							{

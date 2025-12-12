@@ -20,7 +20,7 @@ import template from './add-user-template';
 export interface IAddUserBlock extends BlockProps {
 	id: string;
 	children: Record<string, FieldBlock>;
-	forms: Record<string, IFormState<IAddUserModalForm>>;
+	modalAddUserForm: IFormState<IAddUserModalForm>;
 }
 
 export class AddUserBlock extends Block {
@@ -36,8 +36,8 @@ export class AddUserBlock extends Block {
 					id: IDS.MODAL.ADD_USER_FIELD,
 					id_label: IDS.MODAL.ADD_USER_INPUT,
 					input_data: {
-						value: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-						error: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+						value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
+						error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -46,8 +46,8 @@ export class AddUserBlock extends Block {
 						[IDS.MODAL.ADD_USER_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_USER_INPUT,
 							input_data: {
-								value: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-								error: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+								value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
+								error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,

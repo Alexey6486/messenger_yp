@@ -10,22 +10,30 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IFormState,
+	IRegistrationFormUi,
+	TPages,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
+interface IRegistrationBlock extends BlockProps {
+	registrationForm: IFormState<IRegistrationFormUi>;
+	changePage: (page: TPages) => void;
+	children: Record<string, FieldBlock | ButtonBlock>;
+}
+
 export class RegistrationBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IRegistrationBlock) {
 		super({
 			...props,
 			styles,
-			ids: {
-				form: IDS.REGISTRATION.FORM,
-			},
 			markup: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
 				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
@@ -368,6 +376,7 @@ export class RegistrationBlock extends Block {
 						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
 					},
 				}),
+
 				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
 					id: IDS.REGISTRATION.SUBMIT,
 					type: 'submit',

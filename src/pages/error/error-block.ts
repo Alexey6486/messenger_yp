@@ -5,11 +5,17 @@ import {
 } from '@/constants';
 import { compile } from '@/utils';
 import type {
-	IErrorBlock,
+	BlockProps,
+	IErrorPageState,
+	TPages,
 } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import template from './error-template.hbs?raw';
 import styles from './styles.module.pcss';
+
+interface IErrorBlock extends IErrorPageState, BlockProps {
+	changePage: (page: TPages) => void,
+}
 
 export class ErrorBlock extends Block {
 	constructor(props: IErrorBlock) {

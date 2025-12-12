@@ -13,6 +13,8 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	TPages,
+	IProfilePageState,
 } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
@@ -22,8 +24,14 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
 
+interface IProfileBlock extends IProfilePageState, BlockProps {
+	userData: Record<string, string>,
+	children: Record<string, ProfileFieldBlock | InputBlock | ButtonBlock | ButtonRoundBlock>
+	changePage: (page: TPages) => void,
+}
+
 export class ProfileBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IProfileBlock) {
 		super({
 			...props,
 			styles,

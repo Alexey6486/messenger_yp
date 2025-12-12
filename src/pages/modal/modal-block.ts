@@ -31,7 +31,7 @@ export class ModalBlock<T> extends Block {
 				[IDS.MODAL.CLOSE]: `<div id="${IDS.MODAL.CLOSE}"></div>`,
 			},
 			children: {
-				[IDS.MODAL.CONTENT]: getModalContentBlock(props.contentId, props.contentForms),
+				[IDS.MODAL.CONTENT]: getModalContentBlock<T>(props.contentId, props.contentForms),
 				[IDS.MODAL.CLOSE]: new ButtonRoundBlock({
 					id: IDS.MODAL.CLOSE,
 					type: 'button',
@@ -51,7 +51,7 @@ export class ModalBlock<T> extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Modal form submit: ', this.children[IDS.MODAL.CONTENT].props.forms[props.contentId].fields);
+						console.log('Modal form submit: ', this.children[IDS.MODAL.CONTENT].props[props.contentId].fields);
 					},
 				}),
 			},
