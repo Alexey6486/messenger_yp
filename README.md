@@ -9,9 +9,9 @@
 ## Деплой
 
 Кредит для бесплатного использования netlify израсходован, в связи с чем, проект развернут на github
-![Netlify](https://radiant-chimera-91049a.netlify.app/)
+https://radiant-chimera-91049a.netlify.app/
 
-![Github Pages](https://alexey6486.github.io/messenger_yp/)
+https://alexey6486.github.io/messenger_yp/
 
 ## Установка
 
