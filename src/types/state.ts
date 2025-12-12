@@ -27,6 +27,10 @@ export interface IMessageForm {
 	[E_FORM_FIELDS_NAME.message]: string;
 }
 
+export interface IAddUserModalForm {
+	[E_FORM_FIELDS_NAME.login]: string;
+}
+
 export interface ILoginForm {
 	[E_FORM_FIELDS_NAME.login]: string;
 	[E_FORM_FIELDS_NAME.password]: string;
@@ -153,7 +157,7 @@ export interface IInputData {
 
 export interface IInputInfo<T> {
 	event: string;
-	element: T;
+	element: Nullable<T>;
 	selectionStart?: Nullable<number>;
 }
 

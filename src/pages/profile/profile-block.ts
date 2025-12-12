@@ -506,13 +506,13 @@ export class ProfileBlock extends Block {
 					name: E_FORM_FIELDS_NAME.avatar,
 					placeholder: '',
 					type: 'file',
+					input_data: null,
 					onChange: () => {
 					},
 				}),
 				[IDS.PROFILE.ASIDE_BTN]: new ButtonRoundBlock({
 					id: IDS.PROFILE.ASIDE_BTN,
 					type: 'button',
-					dataset: PAGES.AUTHORIZATION,
 					icon: SvgArrowLeft,
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -524,7 +524,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.CHANGE_DATA_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.CHANGE_DATA_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.CHANGE_DATA_BTN,
 					text: 'Изменить данные',
 					class: 'plain blue',
 					onClick: (event: Event) => {
@@ -541,7 +540,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.CHANGE_PSW_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.CHANGE_PSW_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.CHANGE_PSW_BTN,
 					text: 'Изменить пароль',
 					class: 'plain blue',
 					onClick: (event: Event) => {
@@ -556,7 +554,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.LOGOUT_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.LOGOUT_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.LOGOUT_BTN,
 					text: 'Выйти из аккаунта',
 					class: 'plain red',
 					onClick: (event: Event) => {
@@ -569,7 +566,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.SAVE_PSW_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.SAVE_PSW_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.SAVE_PSW_BTN,
 					text: 'Обновить пароль',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -581,7 +577,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.SAVE_DATA_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.SAVE_DATA_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.SAVE_DATA_BTN,
 					text: 'Обновить данные',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -593,7 +588,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.CANCEL_PSW_EDIT_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.CANCEL_PSW_EDIT_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.CANCEL_PSW_EDIT_BTN,
 					text: 'Назад',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -609,7 +603,6 @@ export class ProfileBlock extends Block {
 				[IDS.PROFILE.CANCEL_DATA_EDIT_BTN]: new ButtonBlock({
 					id: IDS.PROFILE.CANCEL_DATA_EDIT_BTN,
 					type: 'button',
-					dataset: IDS.PROFILE.CANCEL_DATA_EDIT_BTN,
 					text: 'Назад',
 					onClick: (event: Event) => {
 						event.preventDefault();

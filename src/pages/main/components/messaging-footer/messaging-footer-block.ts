@@ -76,7 +76,6 @@ export class MessagingFooterBlock extends Block {
 				[IDS.MAIN.SEND_MESSAGE_BTN]: new ButtonRoundBlock({
 					id: IDS.MAIN.SEND_MESSAGE_BTN,
 					type: 'submit',
-					dataset: '',
 					icon: SvgArrowRight,
 					onClick: (event: Event) => {
 						event.preventDefault();

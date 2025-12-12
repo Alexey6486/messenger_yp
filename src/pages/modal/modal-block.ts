@@ -2,14 +2,27 @@ import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import { getModalContentBlock } from '@/pages/modal/utils';
-import type { BlockProps } from '@/types';
+import type {
+	BlockProps,
+	IFormState,
+} from '@/types';
+import type { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
+import type { AddUserBlock } from '@/pages/modal/components';
 import { ButtonBlock } from '@/components/button/button-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgCross } from '@/components/icons';
 import template from './modal-template.hbs?raw';
 
-export class ModalBlock extends Block {
-	constructor(props: BlockProps) {
+interface IModalBlock<T> extends BlockProps {
+	contentId: string;
+	contentForms: Record<string, IFormState<T>>;
+	title: string;
+	error: string;
+	children: Record<string, ButtonBlock | ButtonRoundBlock | AddUserBlock | PlaceholderBlock>;
+}
+
+export class ModalBlock<T> extends Block {
+	constructor(props: IModalBlock<T>) {
 		super({
 			...props,
 			markup: {
@@ -22,7 +35,6 @@ export class ModalBlock extends Block {
 				[IDS.MODAL.CLOSE]: new ButtonRoundBlock({
 					id: IDS.MODAL.CLOSE,
 					type: 'button',
-					dataset: IDS.MODAL.CLOSE,
 					icon: SvgCross,
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -34,13 +46,12 @@ export class ModalBlock extends Block {
 				[IDS.MODAL.SUBMIT]: new ButtonBlock({
 					id: IDS.MODAL.SUBMIT,
 					type: 'button',
-					dataset: IDS.MODAL.SUBMIT,
 					text: props.buttonText ?? 'Сохранить',
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Modal form submit: ', this.children[IDS.MODAL.CONTENT].props[props.contentId].fields);
+						console.log('Modal form submit: ', this.children[IDS.MODAL.CONTENT].props.forms[props.contentId].fields);
 					},
 				}),
 			},

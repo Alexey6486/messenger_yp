@@ -48,7 +48,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Почта',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.EMAIL_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.EMAIL_INPUT,
@@ -96,7 +95,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Логин',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.LOGIN_INPUT,
@@ -144,7 +142,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Имя',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.F_NAME_INPUT,
@@ -192,7 +189,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Фамилия',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.S_NAME_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.S_NAME_INPUT,
@@ -240,7 +236,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Телефон',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.PHONE_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PHONE_INPUT,
@@ -288,7 +283,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Пароль',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PSW_INPUT,
@@ -336,7 +330,6 @@ export class RegistrationBlock extends Block {
 					},
 					label: 'Пароль (еще раз)',
 					isRequired: true,
-
 					children: {
 						[IDS.REGISTRATION.C_PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.C_PSW_INPUT,
@@ -378,7 +371,6 @@ export class RegistrationBlock extends Block {
 				[IDS.REGISTRATION.SUBMIT]: new ButtonBlock({
 					id: IDS.REGISTRATION.SUBMIT,
 					type: 'submit',
-					dataset: PAGES.REGISTRATION,
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -435,7 +427,6 @@ export class RegistrationBlock extends Block {
 				[IDS.REGISTRATION.SIGNIN]: new ButtonBlock({
 					id: IDS.REGISTRATION.SIGNIN,
 					type: 'button',
-					dataset: PAGES.REGISTRATION,
 					text: 'Назад',
 					onClick: (event: Event) => {
 						event.preventDefault();

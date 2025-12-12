@@ -10,8 +10,11 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IAddUserModalForm,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -135,7 +138,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.SUBMIT]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.SUBMIT,
 					type: 'submit',
-					dataset: PAGES.AUTHORIZATION,
 					text: 'Войти',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -190,7 +192,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.SIGNUP]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.SIGNUP,
 					type: 'button',
-					dataset: PAGES.AUTHORIZATION,
 					text: 'Зарегистрироваться',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -204,7 +205,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.TEMP_ERROR]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.TEMP_ERROR,
 					type: 'button',
-					dataset: PAGES.ERROR,
 					text: 'Страница ошибки',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -216,7 +216,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.TEMP_PROFILE]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.TEMP_PROFILE,
 					type: 'button',
-					dataset: PAGES.PROFILE,
 					text: 'Профиль',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -228,7 +227,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.TEMP_MAIN]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.TEMP_MAIN,
 					type: 'button',
-					dataset: PAGES.MAIN,
 					text: 'Главная',
 					onClick: (event: Event) => {
 						event.preventDefault();
@@ -240,13 +238,12 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.TEMP_MODAL]: new ButtonBlock({
 					id: IDS.AUTHORIZATION.TEMP_MODAL,
 					type: 'button',
-					dataset: IDS.AUTHORIZATION.TEMP_MODAL,
 					text: 'Модальное окно',
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.createModal(
+						this.createModal<IAddUserModalForm>(
 							IDS.FORMS.MODAL_ADD_USER_FORM,
 							{
 								[IDS.FORMS.MODAL_ADD_USER_FORM]: {

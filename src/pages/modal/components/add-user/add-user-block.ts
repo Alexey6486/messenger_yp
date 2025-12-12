@@ -7,14 +7,24 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IAddUserModalForm,
+	IFormState,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import template from './add-user-template';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
+import template from './add-user-template';
+
+export interface IAddUserBlock extends BlockProps {
+	id: string;
+	children: Record<string, FieldBlock>;
+	forms: Record<string, IFormState<IAddUserModalForm>>;
+}
 
 export class AddUserBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IAddUserBlock) {
 		super({
 			...props,
 			id: IDS.MODAL.CONTENT,
@@ -26,19 +36,18 @@ export class AddUserBlock extends Block {
 					id: IDS.MODAL.ADD_USER_FIELD,
 					id_label: IDS.MODAL.ADD_USER_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-						error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+						value: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
+						error: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
 					isRequired: true,
-
 					children: {
 						[IDS.MODAL.ADD_USER_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_USER_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-								error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+								value: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
+								error: props.forms[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
