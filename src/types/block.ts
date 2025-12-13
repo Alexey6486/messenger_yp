@@ -1,6 +1,5 @@
 import { IChildren } from '@/types/state';
 import { EventBus } from '@/event-bus';
-import { Block } from '@/block';
 
 export interface IBaseBlockProps {
 	markup?: Record<string, string>;

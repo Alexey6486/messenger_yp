@@ -1,5 +1,4 @@
 import { EventBus } from '@/event-bus';
-import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import { isFunction } from '@/utils';
 import type {
@@ -8,13 +7,19 @@ import type {
 	IInputChangeParams,
 	Nullable,
 	BlockProps,
+	TPages,
+	IBaseBlockProps,
 } from '@/types';
 import {
 	E_EB_EVENTS,
 	E_FORM_FIELDS_NAME,
 } from '@/types';
 
-export abstract class Block<Props = BlockProps<Block<undefined>>> {
+type TDefaultCallbacksState = Record<string, (...args: unknown[]) => unknown>;
+type TDefaultDataState = Record<string, unknown>;
+type TDefaultBlockType = BlockProps<Block<undefined>, TDefaultDataState, TDefaultCallbacksState>;
+
+export abstract class Block<Props = TDefaultBlockType> {
 	static EVENTS = {
 		INIT: E_EB_EVENTS.INIT,
 		FLOW_CDM: E_EB_EVENTS.FLOW_CDM,
@@ -25,7 +30,7 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
 	data;
-	base;
+	base: IBaseBlockProps;
 	callbacks;
 	children;
 	childrenList;
@@ -37,12 +42,13 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props) {
+	constructor(props: Props) {
+		const { markup, events, styles } = props;
 		const {
-			children_part, children_list_part, all_instances_part, data_part, callbacks_part, base_part,
+			children_part, children_list_part, all_instances_part, data_part, callbacks_part,
 		} = this._getPropsParts(props);
 
-		this.base = this._makePropsProxy({ ...base_part });
+		this.base = { markup, events, styles };
 		this.data = this._makePropsProxy({ ...data_part });
 		this.callbacks = callbacks_part;
 		this.children = children_part;
@@ -65,15 +71,14 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 		const all_instances_part = {};
 		const data_part = {};
 		const callbacks_part = {};
-		const base_part = {};
 
 		Object.entries(props).forEach(([props_key, props_value]) => {
 			if (props_key === 'children') {
-				Object.values(props_value).forEach((instance) => {
-					const instanceId: string | undefined = instance?.data?.id;
-					if (instanceId) {
-						children_part[instanceId] = instance;
-						all_instances_part[instanceId] = instance;
+				Object.values(props_value as Record<string, Block>).forEach((instance) => {
+					const { id } = instance?.data;
+					if (id) {
+						children_part[id] = instance;
+						all_instances_part[id] = instance;
 					}
 
 				});
@@ -86,19 +91,17 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 					}
 				});
 			} else if (props_key === 'data') {
-				Object.entries(props_value).forEach(([data_name, data_value]) => {
+				Object.entries(props_value as Record<string, unknown>).forEach(([data_name, data_value]) => {
 					data_part[data_name] = data_value;
 				});
 			} else if (props_key === 'callbacks') {
-				Object.entries(props_value).forEach(([cb_name, cb]) => {
+				Object.entries(props_value as Record<string, (...args: unknown[]) => unknown>).forEach(([cb_name, cb]) => {
 					callbacks_part[cb_name] = cb;
 				});
-			} else {
-				base_part[props_key] = props_value;
 			}
 		});
 
-		return { children_part, children_list_part, all_instances_part, data_part, callbacks_part, base_part };
+		return { children_part, children_list_part, all_instances_part, data_part, callbacks_part };
 	}
 
 	private _addEvents() {
@@ -164,7 +167,7 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 		return true;
 	}
 
-	private _componentWillUnmount(props: Props) {
+	private _componentWillUnmount(props?: { page: TPages }) {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -181,8 +184,11 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 			}
 		}
 
-		if (props?.page && isFunction(this.callbacks.changePage)) {
-			this.callbacks.changePage(props.page);
+		if (props?.page) {
+			const { changePage } = this.callbacks;
+			if (isFunction(changePage)) {
+				changePage(props.page);
+			}
 		}
 	}
 
@@ -240,7 +246,7 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 		return this.element;
 	}
 
-	setProps(nextProps: Props) {
+	setProps(nextProps: TDefaultDataState) {
 		if (!nextProps) {
 			return;
 		}
@@ -273,10 +279,12 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 				} else if (p.toLowerCase().includes('form')) {
 					const { fields, errors } = newValue;
 
-					target.data[p] = {
-						...target.data[p],
-						fields: { ...target.data[p].fields, ...fields },
-						errors: { ...target.data[p].errors, ...errors },
+					target.data.forms = {
+						...target.data.forms,
+						[p]: {
+							fields: { ...target.data.forms[p].fields, ...fields },
+							errors: { ...target.data.forms[p].errors, ...errors },
+						},
 					};
 				} else {
 					target.data[p] = newValue;
@@ -510,21 +518,21 @@ export abstract class Block<Props = BlockProps<Block<undefined>>> {
 		contentForms: Record<string, IFormState<T>>,
 		title: string,
 	) {
-		const modal = new Pages.ModalBlock<T>({
-			contentId,
-			contentForms,
-			title,
-			error: '',
-			children: {},
-		});
-
-		if (this.data.appElement) {
-			const content = modal.getContent();
-
-			if (content) {
-				this.data.appElement.parentNode.appendChild(content);
-				modal.dispatchComponentDidMount();
-			}
-		}
+		// const modal = new Pages.ModalBlock<T>({
+		// 	contentId,
+		// 	contentForms,
+		// 	title,
+		// 	error: '',
+		// 	children: {},
+		// });
+		//
+		// if (this.data.appElement) {
+		// 	const content = modal.getContent();
+		//
+		// 	if (content) {
+		// 		this.data.appElement.parentNode.appendChild(content);
+		// 		modal.dispatchComponentDidMount();
+		// 	}
+		// }
 	}
 }
