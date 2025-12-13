@@ -12,13 +12,11 @@
 			"vite/client"
 		],
 		"skipLibCheck": true,
-		/* Bundler mode */
 		"moduleResolution": "node",
 		"allowImportingTsExtensions": true,
 		"verbatimModuleSyntax": true,
 		"moduleDetection": "force",
 		"noEmit": true,
-		/* Linting */
 		"strict": true,
 		"noImplicitAny": true,
 		"noUnusedLocals": true,

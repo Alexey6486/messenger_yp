@@ -10,6 +10,5 @@ export enum ERequestMethods {
 export interface IRequestOptions {
 	method: ERequestMethods;
 	data?: Nullable<Document | XMLHttpRequestBodyInit>;
-	timeout?: number;
 	headers?: Record<string, string>;
 }
