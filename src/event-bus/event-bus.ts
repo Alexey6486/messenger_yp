@@ -1,39 +1,41 @@
+import { E_EB_EVENTS } from '@/types';
 import type {
-	BlockProps,
+	TEbEventMap,
 	TEbCallback,
-	TEbListener,
 } from '@/types';
 
 export class EventBus {
-	private listeners: TEbListener = {};
+	private listeners: Partial<{ [K in keyof TEbEventMap]: TEbCallback[] }> = {};
 
 	constructor() {
 		this.listeners = {};
 	}
 
-	on(event: string, callback: TEbCallback): void {
-		if (!Array.isArray(this.listeners[event])) {
-			this.listeners[event] = [];
+	on(event: E_EB_EVENTS, callback: (...args: TEbEventMap[E_EB_EVENTS]) => void) {
+		let eventArray: TEbCallback[] | undefined = this.listeners[event];
+		if (!Array.isArray(eventArray)) {
+			eventArray = [];
 		}
-
-		this.listeners[event] = [...this.listeners[event], callback];
+		eventArray.push(callback);
 	}
 
-	off(event: string, callback: TEbCallback) {
-		if (!Array.isArray(this.listeners[event])) {
+	off(event: E_EB_EVENTS, callback: TEbCallback) {
+		let eventArray: TEbCallback[] | undefined = this.listeners[event];
+		if (!Array.isArray(eventArray)) {
 			throw new Error(`Нет события: ${event}`);
 		} else {
-			this.listeners[event] = this.listeners[event].filter(
+			this.listeners[event] = eventArray.filter(
 				listener => listener !== callback,
 			);
 		}
 	}
 
-	emit(event: string, ...args: BlockProps[]): void {
-		if (!Array.isArray(this.listeners[event])) {
+	emit(event: E_EB_EVENTS, ...args: TEbEventMap[E_EB_EVENTS]) {
+		let eventArray: TEbCallback[] | undefined = this.listeners[event];
+		if (!Array.isArray(eventArray)) {
 			throw new Error(`Нет события: ${event}`);
 		} else {
-			this.listeners[event].forEach((listener: TEbCallback) => {
+			eventArray.forEach((listener) => {
 				listener(...args);
 			});
 		}

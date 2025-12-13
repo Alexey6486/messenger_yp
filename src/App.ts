@@ -21,7 +21,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.AUTHORIZATION,
+			currentPage: PAGES.ERROR,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
@@ -71,8 +71,12 @@ export default class App {
 			}
 		} else if (this.state.currentPage === PAGES.ERROR) {
 			const errorPage = new Pages.ErrorBlock({
-				...this.state.pages.error,
-				changePage: (page: TPages) => this.changePage(page),
+				data: {
+					...this.state.pages.error,
+				},
+				callbacks: {
+					changePage: (page: TPages) => this.changePage(page),
+				},
 			});
 
 			if (this.appElement) {

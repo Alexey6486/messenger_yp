@@ -1,19 +1,24 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
 import template from './button-template';
+import { BlockProps } from '@/types';
 
-interface IButtonBlock extends BlockProps {
+interface IProps {
 	id: string;
 	type: string;
 	text: string;
 	class?: string;
 	dataset?: string;
+}
+
+interface IFunctions {
 	onClick: (event: Event) => void;
 }
 
-export class ButtonBlock extends Block {
-	constructor(props: IButtonBlock) {
+type Props = BlockProps<undefined, IProps, IFunctions>;
+
+export class ButtonBlock extends Block<Props> {
+	constructor(props: Props) {
 		super({
 			...props,
 			events: {
@@ -21,13 +26,13 @@ export class ButtonBlock extends Block {
 					e.preventDefault();
 					e.stopPropagation();
 
-					props?.onClick?.(e);
+					props?.callbacks?.onClick?.(e);
 				},
 			},
 		});
 	}
 
 	override render(): string {
-		return compile(template, this.props);
+		return compile(template, this.data);
 	}
 }

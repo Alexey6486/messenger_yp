@@ -1,43 +1,50 @@
 import { EventBus } from '@/event-bus';
 import * as Pages from '@/pages';
 import { IDS } from '@/constants';
+import { isFunction } from '@/utils';
 import type {
-	BlockProps,
 	IChildren,
 	IFormState,
 	IInputChangeParams,
-	E_FORM_FIELDS_NAME,
 	Nullable,
+	BlockProps,
 } from '@/types';
 import {
-	IEbEvents,
+	E_EB_EVENTS,
+	E_FORM_FIELDS_NAME,
 } from '@/types';
 
-export class Block {
-	static EVENTS: Record<string, string> = {
-		INIT: IEbEvents.INIT,
-		FLOW_CDM: IEbEvents.FLOW_CDM,
-		FLOW_CDU: IEbEvents.FLOW_CDU,
-		FLOW_CWU: IEbEvents.FLOW_CWU,
-		FLOW_RENDER: IEbEvents.FLOW_RENDER,
-	};
+export abstract class Block<Props = BlockProps<Block<undefined>>> {
+	static EVENTS = {
+		INIT: E_EB_EVENTS.INIT,
+		FLOW_CDM: E_EB_EVENTS.FLOW_CDM,
+		FLOW_CDU: E_EB_EVENTS.FLOW_CDU,
+		FLOW_CWU: E_EB_EVENTS.FLOW_CWU,
+		FLOW_RENDER: E_EB_EVENTS.FLOW_RENDER,
+	} as const;
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
-	props: BlockProps;
-	children: IChildren<Block>;
-	childrenList: IChildren<Block>;
-	allInstances: IChildren<Block>;
-	protected eventBus: () => EventBus;
+	data;
+	base;
+	callbacks;
+	children;
+	childrenList;
+	allInstances;
+	protected eventBus;
 
 	/** JSDoc
-	 * @param {BlockProps} props
+	 * @param {Props} props
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: BlockProps = {}) {
-		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
+	constructor(props) {
+		const {
+			children_part, children_list_part, all_instances_part, data_part, callbacks_part, base_part,
+		} = this._getPropsParts(props);
 
-		this.props = this._makePropsProxy({ ...props_part });
+		this.base = this._makePropsProxy({ ...base_part });
+		this.data = this._makePropsProxy({ ...data_part });
+		this.callbacks = callbacks_part;
 		this.children = children_part;
 		this.childrenList = children_list_part;
 		this.allInstances = all_instances_part;
@@ -52,33 +59,50 @@ export class Block {
 		return this._element;
 	}
 
-	private _getPropsParts(props: BlockProps) {
-		const children_part: Record<string, Block> = {};
-		const children_list_part: Record<string, Block> = {};
-		const all_instances_part: Record<string, Block> = {};
-		const props_part: BlockProps = {};
+	private _getPropsParts(props: Props) {
+		const children_part = {};
+		const children_list_part = {};
+		const all_instances_part = {};
+		const data_part = {};
+		const callbacks_part = {};
+		const base_part = {};
 
-		Object.entries(props).forEach(([props_name, value]) => {
-			if (props_name === 'children') {
-				Object.values(value as Record<string, Block>).forEach((instance) => {
-					children_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+		Object.entries(props).forEach(([props_key, props_value]) => {
+			if (props_key === 'children') {
+				Object.values(props_value).forEach((instance) => {
+					const instanceId: string | undefined = instance?.data?.id;
+					if (instanceId) {
+						children_part[instanceId] = instance;
+						all_instances_part[instanceId] = instance;
+					}
+
 				});
-			} else if (props_name === 'childrenList' && Array.isArray(value)) {
-				value.forEach((instance) => {
-					children_list_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+			} else if (props_key === 'childrenList' && Array.isArray(props_value)) {
+				props_value.forEach((instance) => {
+					const instanceId: string | undefined = instance?.data?.id;
+					if (instanceId) {
+						children_list_part[instanceId] = instance;
+						all_instances_part[instanceId] = instance;
+					}
+				});
+			} else if (props_key === 'data') {
+				Object.entries(props_value).forEach(([data_name, data_value]) => {
+					data_part[data_name] = data_value;
+				});
+			} else if (props_key === 'callbacks') {
+				Object.entries(props_value).forEach(([cb_name, cb]) => {
+					callbacks_part[cb_name] = cb;
 				});
 			} else {
-				props_part[props_name] = value;
+				base_part[props_key] = props_value;
 			}
 		});
 
-		return { children_part, children_list_part, all_instances_part, props_part };
+		return { children_part, children_list_part, all_instances_part, data_part, callbacks_part, base_part };
 	}
 
 	private _addEvents() {
-		const { events = null } = this.props;
+		const { events = null } = this.base;
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
@@ -88,7 +112,7 @@ export class Block {
 	}
 
 	private _removeEvents() {
-		const { events = null } = this.props;
+		const { events = null } = this.base;
 
 		if (this._element && events) {
 			Object.keys(events).forEach(eventName => {
@@ -140,7 +164,7 @@ export class Block {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	private _componentWillUnmount(props: Props) {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -157,8 +181,8 @@ export class Block {
 			}
 		}
 
-		if (props?.page) {
-			this.props.changePage(props.page);
+		if (props?.page && isFunction(this.callbacks.changePage)) {
+			this.callbacks.changePage(props.page);
 		}
 	}
 
@@ -169,10 +193,13 @@ export class Block {
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
-			const element = temp.content.getElementById(instance.props.id);
+			const instanceId: string | undefined = instance?.props?.id;
+			if (instanceId) {
+				const element = temp.content.getElementById(instanceId);
 
-			if (element) {
-				element.replaceWith(instance.getContent());
+				if (element) {
+					element.replaceWith(instance.getContent());
+				}
 			}
 		});
 
@@ -213,29 +240,32 @@ export class Block {
 		return this.element;
 	}
 
-	setProps(nextProps: BlockProps) {
+	setProps(nextProps: Props) {
 		if (!nextProps) {
 			return;
 		}
 
-		Object.assign(this.props, nextProps);
+		Object.assign(this.data, nextProps);
 	}
 
-	private _makePropsProxy(props: BlockProps) {
+	private _makePropsProxy(props: Props): Props {
 		const self = this;
 
-		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: string) {
+		return new Proxy<Props>(props, {
+			get(target: Props, p: string) {
 				const value = target[p];
-				return typeof value === 'function' ? value.bind(target) : value;
+				if (isFunction(value)) {
+					return value.bind(target);
+				}
+				return value;
 			},
-			set(target: BlockProps, p: string, newValue) {
+			set(target: Props, p: string, newValue) {
 				const oldTarget = { ...target };
 				if (p === 'input_data') {
 					const { value, error, currentFocus } = newValue;
 
-					target[p] = {
-						...target[p],
+					target.data[p] = {
+						...target.data[p],
 						value,
 						error,
 						currentFocus,
@@ -243,13 +273,13 @@ export class Block {
 				} else if (p.toLowerCase().includes('form')) {
 					const { fields, errors } = newValue;
 
-					target[p] = {
-						...target[p],
-						fields: { ...target[p].fields, ...fields },
-						errors: { ...target[p].errors, ...errors },
+					target.data[p] = {
+						...target.data[p],
+						fields: { ...target.data[p].fields, ...fields },
+						errors: { ...target.data[p].errors, ...errors },
 					};
 				} else {
-					target[p] = newValue;
+					target.data[p] = newValue;
 				}
 
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
@@ -268,7 +298,7 @@ export class Block {
 	}
 
 	private _addAttributes(): void {
-		const { attr = {} } = this.props;
+		const { attr = {} } = this.data;
 
 		if (this._element && attr) {
 			Object.entries(attr).forEach(([key, value]) => {
@@ -410,17 +440,17 @@ export class Block {
 	}
 
 	protected resetTargetForm(formName: string, originData?: Record<string, string>) {
-		let pageProps = { [formName]: { ...this.props[formName] } };
+		let pageProps = { [formName]: { ...this.data[formName] } };
 		let shouldBeUpdated = false;
 
 		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field') && formName === fieldInstance.props.parentFormId) {
+			if (fieldId.includes('field') && formName === fieldInstance.data.parentFormId) {
 				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
 					if (inputId.includes('input')) {
 						if (
 							(originData
-								&& originData?.[inputInstance.props.name] !== inputInstance.props.input_data.value)
-							|| (!originData && inputInstance.props.input_data.value !== '')
+								&& originData?.[inputInstance.data.name] !== inputInstance.data.input_data.value)
+							|| (!originData && inputInstance.data.input_data.value !== '')
 						) {
 							if (!shouldBeUpdated) {
 								shouldBeUpdated = true;
@@ -428,7 +458,7 @@ export class Block {
 
 							const childProps = {
 								input_data: {
-									value: originData?.[inputInstance.props.name] ?? '',
+									value: originData?.[inputInstance.data.name] ?? '',
 									error: '',
 									currentFocus: { element: null, selectionStart: null },
 								},
@@ -442,11 +472,11 @@ export class Block {
 									...pageProps[formName],
 									fields: {
 										...pageProps[formName].fields,
-										[inputInstance.props.name]: originData?.[inputInstance.props.name] ?? '',
+										[inputInstance.data.name]: originData?.[inputInstance.data.name] ?? '',
 									},
 									errors: {
 										...pageProps[formName].errors,
-										[inputInstance.props.name]: '',
+										[inputInstance.data.name]: '',
 									},
 								},
 							};
@@ -462,13 +492,13 @@ export class Block {
 	}
 
 	private _setFocus() {
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
+		if (this.data?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
 				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
 					this._element.focus();
 					this._element.setSelectionRange(
-						this.props.input_data.currentFocus.selectionStart,
-						this.props.input_data.currentFocus.selectionStart,
+						this.data.input_data.currentFocus.selectionStart,
+						this.data.input_data.currentFocus.selectionStart,
 					);
 				}
 			}, 0);
@@ -488,11 +518,11 @@ export class Block {
 			children: {},
 		});
 
-		if (this.props.appElement) {
+		if (this.data.appElement) {
 			const content = modal.getContent();
 
 			if (content) {
-				this.props.appElement.parentNode.appendChild(content);
+				this.data.appElement.parentNode.appendChild(content);
 				modal.dispatchComponentDidMount();
 			}
 		}

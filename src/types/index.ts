@@ -32,9 +32,7 @@ export type {
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';
 export type {
+	TEbEventMap,
 	TEbCallback,
-	TEbListener,
 } from './event-bus';
-export {
-	IEbEvents,
-} from './event-bus';
+export { E_EB_EVENTS } from './event-bus';

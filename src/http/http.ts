@@ -13,11 +13,11 @@ function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 		if (Array.isArray(dataList) && dataList.length) {
 			dataList.forEach((el, idx) => {
 				const key = el[0];
-				const value = Array.isArray(el[1]) ? (el[1] as Array<string>).join(',') : el[1];
+				const value = Array.isArray(el[1]) ? el[1].join(',') : el[1];
 				if (idx === 0) {
-					result += `?${key}=${value}`;
+					result += `?${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
 				} else {
-					result += `&${key}=${value}`;
+					result += `&${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
 				}
 			});
 		}
