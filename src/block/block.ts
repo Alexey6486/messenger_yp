@@ -12,7 +12,7 @@ import type {
 } from '@/types';
 import { IEbEvents } from '@/types';
 
-export abstract class Block {
+export abstract class Block<Props extends Record<string, unknown> | unknown = unknown> {
 	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,
@@ -22,10 +22,10 @@ export abstract class Block {
 	} as const;
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
-	props: BlockProps;
-	children: IChildren<Block>;
-	childrenList: IChildren<Block>;
-	allInstances: IChildren<Block>;
+	props: Props;
+	children: Props;
+	childrenList: Props;
+	allInstances: Props;
 	protected eventBus: () => EventBus;
 
 	/** JSDoc
@@ -33,7 +33,7 @@ export abstract class Block {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: BlockProps = {}) {
+	constructor(props: Props) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
@@ -51,11 +51,11 @@ export abstract class Block {
 		return this._element;
 	}
 
-	private _getPropsParts(props: BlockProps) {
-		const children_part: Record<string, Block> = {};
-		const children_list_part: Record<string, Block> = {};
-		const all_instances_part: Record<string, Block> = {};
-		const props_part: BlockProps = {};
+	private _getPropsParts(props: Props) {
+		let children_part: Props;
+		let children_list_part: Props;
+		let all_instances_part: Props;
+		let props_part: Props;
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
@@ -216,7 +216,7 @@ export abstract class Block {
 		return this.element;
 	}
 
-	setProps(nextProps: BlockProps) {
+	setProps(nextProps: Props) {
 		if (!nextProps) {
 			return;
 		}
@@ -224,15 +224,15 @@ export abstract class Block {
 		Object.assign(this.props, nextProps);
 	}
 
-	private _makePropsProxy(props: BlockProps) {
+	private _makePropsProxy(props: Props) {
 		const self = this;
 
-		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: string) {
+		return new Proxy<Props>(props, {
+			get(target: Props, p: string) {
 				const value = target[p];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: BlockProps, p: string, newValue) {
+			set(target: Props, p: string, newValue) {
 				const oldTarget = { ...target };
 				if (p === 'input_data') {
 					const { value, error, currentFocus } = newValue;
