@@ -5,7 +5,6 @@ import {
 } from '@/constants';
 import { compile } from '@/utils';
 import type {
-	BlockProps,
 	IErrorPageState,
 	TPages,
 } from '@/types';
@@ -13,17 +12,18 @@ import { ButtonBlock } from '@/components/button/button-block';
 import template from './error-template.hbs?raw';
 import styles from './styles.module.pcss';
 
-interface IErrorBlock extends IErrorPageState, BlockProps {
+interface IErrorBlock extends IErrorPageState {
 	changePage: (page: TPages) => void,
 }
 
-export class ErrorBlock extends Block {
-	constructor(props: IErrorBlock) {
+export class ErrorBlock extends Block<IErrorBlock> {
+	constructor(props) {
 		super({
 			...props,
 			styles,
+			parent: null,
 			markup: {
-				[IDS.ERROR.BUTTON]: `<div id="${IDS.ERROR.BUTTON}"></div>`,
+				[IDS.ERROR.BUTTON]: `<div id="${ IDS.ERROR.BUTTON }"></div>`,
 			},
 			children: {
 				[IDS.ERROR.BUTTON]: new ButtonBlock({
@@ -34,7 +34,7 @@ export class ErrorBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU, PAGES.AUTHORIZATIO);
 					},
 				}),
 			},
@@ -42,6 +42,6 @@ export class ErrorBlock extends Block {
 	}
 
 	override render(): string {
-		return compile(template, this.props);
+		return compile<IErrorPageState>(template, this.data);
 	}
 }

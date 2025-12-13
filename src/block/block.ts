@@ -4,10 +4,10 @@ import { IDS } from '@/constants';
 import { isFunction } from '@/utils/is-function';
 import type {
 	IComponent,
+	IComponentProps,
 	IEventBus,
 	IFormState,
 	IInputChangeParams,
-	TComponentProps,
 	TNullable,
 	TPages,
 } from '@/types';
@@ -16,7 +16,7 @@ import {
 	EB_EVENTS,
 } from '@/types';
 
-export abstract class Block<Props extends TComponentProps = TComponentProps> implements IComponent {
+export abstract class Block<T, P extends IComponentProps<T> = IComponentProps<T>> implements IComponent<T> {
 	static EVENTS = {
 		INIT: EB_EVENTS.INIT,
 		FLOW_CDM: EB_EVENTS.FLOW_CDM,
@@ -25,25 +25,27 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		FLOW_RENDER: EB_EVENTS.FLOW_RENDER,
 	} as const;
 
-	public _id: string;
-	protected _element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
-	protected parent: TNullable<Element | HTMLElement> = null;
-	protected props: Props = {} as Props;
-	protected children: Props = {} as Props;
-	protected childrenList: Props = {} as Props;
-	protected allInstances: Props = {} as Props;
-	protected eventBus: () => IEventBus;
+	_id: string;
+	_element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
+	parent: TNullable<Element | HTMLElement> = null;
+	data: T;
+	children;
+	childrenList;
+	allInstances;
+	events: Record<string, (e: Event) => void> | undefined = undefined;
+	attr: Record<string, string> | undefined = undefined;
+	eventBus: () => IEventBus;
 
 	/** JSDoc
-	 * @param {TComponentProps} props
+	 * @param {IComponentProps} props
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: Props = {} as Props) {
+	constructor(props: P) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this._id = this.generateId();
-		this.props = this._makePropsProxy({ ...props_part });
+		this.data = this._makePropsProxy({ ...props_part });
 		this.children = children_part;
 		this.childrenList = children_list_part;
 		this.allInstances = all_instances_part;
@@ -62,44 +64,51 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		return this._element;
 	}
 
-	// function setValue<T, K extends keyof T>(
-	// 	props: Props<T>,
-	// 	key: K,
-	// 	value: T[K]
-
-
-	private _getPropsParts(props: Props): {
-		props_part: Props; children_list_part: Props; all_instances_part: Props; children_part: Props,
-	} {
-		let children_part = {} as Props;
-		let children_list_part = {} as Props;
-		let all_instances_part = {} as Props;
-		let props_part = {} as Props;
-
-		function getValue<Props, Key extends keyof Props>(obj: Props, key: Key) {
+	private getPropsValue<O, K extends keyof O>(obj: O, key: K) {
+		if (key in obj) {
 			return obj[key];
 		}
+		return undefined;
+	}
 
-		const children = getValue(props, 'children');
+	private _getPropsParts(props: IComponentProps<T>): {
+		props_part: T;
+		children_list_part: Record<string, IComponent<T>>;
+		all_instances_part: Record<string, IComponent<T>>;
+		children_part: Record<string, IComponent<T>>,
+	} {
+		let children_part = {} as Record<string, IComponent<T>>;
+		let children_list_part = {} as Record<string, IComponent<T>>;
+		let all_instances_part = {} as Record<string, IComponent<T>>;
+		let props_part = {} as T;
+
+		const children = this.getPropsValue(props, 'children');
 		if (children) {
-			Object.values(children).forEach((instance: Block) => {
-				if (typeof instance.props.id === 'string') {
-					children_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+			Object.values(children).forEach((instance: Block<T>) => {
+				if (typeof instance.data.id === 'string') {
+					children_part[instance.data.id] = instance;
+					all_instances_part[instance.data.id] = instance;
 				}
 			});
 		}
 
-		const childrenList = getValue(props, 'childrenList');
+		const childrenList = this.getPropsValue(props, 'childrenList');
 		if (childrenList && Array.isArray(childrenList)) {
-			childrenList.forEach((instance: Block) => {
-				children_list_part[instance.props.id] = instance;
-				all_instances_part[instance.props.id] = instance;
+			childrenList.forEach((instance: Block<T>) => {
+				children_list_part[instance.data.id] = instance;
+				all_instances_part[instance.data.id] = instance;
 			});
 		}
 
 		Object.entries(props).forEach(([props_name, value]) => {
-			if (props_name !== 'children' && props_name !== 'childrenList') {
+			if (
+				props_name !== 'children'
+				&& props_name !== 'childrenList'
+				&& props_name !== 'parent'
+				&& props_name !== 'markup'
+				&& props_name !== 'events'
+				&& props_name !== 'attr'
+			) {
 				props_part[props_name] = value;
 			}
 		});
@@ -108,21 +117,21 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	}
 
 	private _addEvents() {
-		const { events = null } = this.props;
-
-		if (this._element && events) {
-			Object.keys(events).forEach(eventName => {
-				(this._element as Element).addEventListener(eventName, events[eventName]);
+		if (this._element && this.events) {
+			Object.keys(this.events).forEach(eventName => {
+				if (this.events) {
+					(this._element as Element).addEventListener(eventName, this.events[eventName]);
+				}
 			});
 		}
 	}
 
 	private _removeEvents() {
-		const { events = null } = this.props;
-
-		if (this._element && events) {
-			Object.keys(events).forEach(eventName => {
-				(this._element as Element).removeEventListener(eventName, events[eventName]);
+		if (this._element && this.events) {
+			Object.keys(this.events).forEach(eventName => {
+				if (this.events) {
+					(this._element as Element).removeEventListener(eventName, this.events[eventName]);
+				}
 			});
 		}
 	}
@@ -157,7 +166,7 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 	}
 
-	private _componentDidUpdate(props: { old: Props, new: Props }) {
+	private _componentDidUpdate(props: { old: T, new: T }) {
 		const response = this.componentDidUpdate();
 		if (!response) {
 			return;
@@ -187,8 +196,8 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 			}
 		}
 
-		if (page) {
-			this.props.changePage(page);
+		if (page && isFunction(this.data.changePage)) {
+			this.data.changePage(page);
 		}
 	}
 
@@ -199,8 +208,10 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
-			if (typeof instance.props.id === 'string') {
-				const element = temp.content.getElementById(instance.props.id);
+			const id = this.getPropsValue(instance.data, 'id');
+
+			if (id) {
+				const element = temp.content.getElementById(id);
 
 				if (element) {
 					element.replaceWith(instance.getContent());
@@ -245,26 +256,26 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		return this.element;
 	}
 
-	setProps(nextProps: Props) {
+	setProps(nextProps: T) {
 		if (!nextProps) {
 			return;
 		}
 
-		Object.assign(this.props, nextProps);
+		Object.assign(this.data, nextProps);
 	}
 
-	private _makePropsProxy(props: Props) {
+	private _makePropsProxy(props: T) {
 		const self = this;
 
-		return new Proxy<Props>(props, {
-			get(target: Props, p: string) {
+		return new Proxy<T>(props, {
+			get(target: T, p: string) {
 				const value = target[p];
 				if (isFunction(value)) {
 					return value.bind(target);
 				}
 				return value;
 			},
-			set(target: Props, p: string, newValue) {
+			set(target: T, p: string, newValue) {
 				const oldTarget = { ...target };
 				if (p === 'input_data') {
 					const { value, error, currentFocus } = newValue;
@@ -287,7 +298,7 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 					target[p] = newValue;
 				}
 
-				self.eventBus().emit<{ old: Props, new: Props }>(Block.EVENTS.FLOW_CDU, {
+				self.eventBus().emit<{ old: T, new: T }>(Block.EVENTS.FLOW_CDU, {
 					old: oldTarget,
 					new: target,
 				});
@@ -306,10 +317,8 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	}
 
 	private _addAttributes(): void {
-		const { attr = {} } = this.props;
-
-		if (this._element && attr) {
-			Object.entries(attr).forEach(([key, value]) => {
+		if (this._element && this.attr) {
+			Object.entries(this.attr).forEach(([key, value]) => {
 				(this._element as Element).setAttribute(key, value as string);
 			});
 		}
@@ -321,6 +330,12 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 				this._element.setAttribute(key, value as string);
 			}
 		});
+	}
+
+	removeAttributes(attrName: string): void {
+		if (this._element && attrName) {
+			this._element.removeAttribute(attrName);
+		}
 	}
 
 	toggleClassList(className: string, elementId?: string): void {
@@ -343,12 +358,6 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 		}
 	}
 
-	removeAttributes(attrName: string): void {
-		if (this._element && attrName) {
-			this._element.removeAttribute(attrName);
-		}
-	}
-
 	show() {
 		const content = this.getContent();
 		if (content && 'style' in content) {
@@ -364,16 +373,16 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	}
 
 	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
-	 * @param {Props} children
+	 * @param {Record<string, IComponent>} children
 	 * @param {string[]} idsList
-	 * @param {Props} childrenBlocks
+	 * @param {Record<string, IComponent>} childrenBlocks
 	 *
 	 * @returns {IChildren<Block>}
 	 */
 	private _getChildrenToUpdate(
-		children: Props, idsList: string[], childrenBlocks?: Props,
-	): Props | undefined {
-		const targetChildren: Props | undefined = childrenBlocks;
+		children: Record<string, IComponent<T>>, idsList: string[], childrenBlocks?: Record<string, IComponent<T>>,
+	): Record<string, IComponent<T>> | undefined {
+		const targetChildren: Record<string, IComponent<T>> | undefined = childrenBlocks;
 
 		Object.entries(children).forEach(([id, instance]) => {
 			if (targetChildren && idsList.includes(id)) {
@@ -402,7 +411,7 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	 * @returns {void}
 	 */
 	onFormInputChange(
-		params: IInputChangeParams<Block>,
+		params: IInputChangeParams<Element | HTMLElement | HTMLInputElement>,
 		childrenIdList: string[],
 		fieldName: E_FORM_FIELDS_NAME,
 		formName: string,
@@ -450,11 +459,13 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	}
 
 	protected resetTargetForm(formName: string, originData?: Record<string, string>) {
-		let pageProps = { [formName]: { ...this.props[formName] } };
+		let pageProps = { [formName]: { ...this.data[formName] } };
 		let shouldBeUpdated = false;
 
 		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field') && formName === fieldInstance.props.parentFormId) {
+			const parentFormId = this.getPropsValue(fieldInstance.data, 'parentFormId');
+
+			if (fieldId.includes('field') && formName === parentFormId) {
 				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
 					if (inputId.includes('input')) {
 						if (
@@ -502,13 +513,13 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 	}
 
 	private _setFocus() {
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
+		if (this.data?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
 				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
 					this._element.focus();
 					this._element.setSelectionRange(
-						this.props.input_data.currentFocus.selectionStart,
-						this.props.input_data.currentFocus.selectionStart,
+						this.data.input_data.currentFocus.selectionStart,
+						this.data.input_data.currentFocus.selectionStart,
 					);
 				}
 			}, 0);
@@ -528,13 +539,13 @@ export abstract class Block<Props extends TComponentProps = TComponentProps> imp
 			children: {},
 		});
 
-		if (this.props.appElement) {
-			const content = modal.getContent();
-
-			if (content) {
-				this.props.appElement.parentNode.appendChild(content);
-				modal.dispatchComponentDidMount();
-			}
-		}
+		// if (this.data.appElement) {
+		// 	const content = modal.getContent();
+		//
+		// 	if (content) {
+		// 		this.data.appElement.parentNode.appendChild(content);
+		// 		modal.dispatchComponentDidMount();
+		// 	}
+		// }
 	}
 }

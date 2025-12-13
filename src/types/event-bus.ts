@@ -6,10 +6,6 @@ export const EB_EVENTS = {
 	FLOW_RENDER: 'flow:render',
 } as const;
 
-// export type TEbCallback = (...args: unknown[]) => void;
-// export type TEbCallback<T extends unknown[] = unknown[]> = (...args: T) => void;
-// export type TEbListener = Record<string, TEbCallback[]>;
-
 export type TEbCallback<T = unknown> = (data: T) => void;
 export type TEbListener = Record<string, TEbCallback[]>;
 

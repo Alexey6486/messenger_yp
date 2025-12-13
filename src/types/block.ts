@@ -1,3 +1,6 @@
+import type { TNullable } from '@/types/general';
+import type { IEventBus } from '@/types/event-bus';
+
 export interface BlockProps {
 	markup?: Record<string, string>;
 	events?: Record<string, (e: Event) => void>;
@@ -8,10 +11,37 @@ export interface BlockProps {
 	[key: string]: unknown;
 }
 
-export interface IComponent {
+export interface IComponent<T> {
 	_id: string;
+	_element: TNullable<Element | HTMLElement | HTMLInputElement>;
+	data?: T;
+	attr?: Record<string, string>;
+	children?: Record<string, IComponent<T>>;
+	childrenList?: Record<string, IComponent<T>>;
+	allInstances?: Record<string, IComponent<T>>;
+	events?: Record<string, (e: Event) => void>;
+	eventBus: () => IEventBus;
+
+	setProps(nextProps: T): void;
+
+	getContent(): Element | HTMLElement | HTMLInputElement;
+
+	dispatchComponentDidMount(): void;
+
+	dispatchComponentWillUnmount(): void;
 
 	render(): string;
+
+	toggleClassList(className: string, elementId?: string): void;
 }
 
-export type TComponentProps = Record<string, unknown>;
+export interface IComponentProps<T> {
+	parent: TNullable<Element | HTMLElement>;
+	markup?: Record<string, string>;
+	children?: Record<string, IComponent<T>>;
+	childrenList?: Record<string, IComponent<T>>;
+	allInstances?: Record<string, IComponent<T>>;
+	events?: Record<string, (e: Event) => void>;
+	attr?: Record<string, string>;
+	data?: T;
+}

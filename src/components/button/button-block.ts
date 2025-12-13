@@ -12,10 +12,11 @@ interface IButtonBlock extends BlockProps {
 	onClick: (event: Event) => void;
 }
 
-export class ButtonBlock extends Block {
+export class ButtonBlock extends Block<IButtonBlock> {
 	constructor(props: IButtonBlock) {
 		super({
 			...props,
+			parent: null,
 			events: {
 				click: (e: Event) => {
 					e.preventDefault();
@@ -28,6 +29,6 @@ export class ButtonBlock extends Block {
 	}
 
 	override render(): string {
-		return compile(template, this.props);
+		return compile(template, this.data);
 	}
 }
