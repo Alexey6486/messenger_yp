@@ -3,24 +3,22 @@ import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
+	E_FORM_FIELDS_NAME,
 	IChildren,
 	IFormState,
 	IInputChangeParams,
-	E_FORM_FIELDS_NAME,
 	Nullable,
 } from '@/types';
-import {
-	IEbEvents,
-} from '@/types';
+import { IEbEvents } from '@/types';
 
-export class Block {
-	static EVENTS: Record<string, string> = {
+export abstract class Block {
+	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,
 		FLOW_CDU: IEbEvents.FLOW_CDU,
 		FLOW_CWU: IEbEvents.FLOW_CWU,
 		FLOW_RENDER: IEbEvents.FLOW_RENDER,
-	};
+	} as const;
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
 	props: BlockProps;
