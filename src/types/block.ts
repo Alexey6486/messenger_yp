@@ -5,5 +5,5 @@ export interface BlockProps {
 	styles?: { [key: string]: string };
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[key: string]: any;
+	[key: string]: unknown;
 }

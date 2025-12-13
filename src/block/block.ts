@@ -8,6 +8,7 @@ import type {
 	IFormState,
 	IInputChangeParams,
 	Nullable,
+	TPages,
 } from '@/types';
 import { IEbEvents } from '@/types';
 
@@ -59,8 +60,10 @@ export abstract class Block {
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
 				Object.values(value as Record<string, Block>).forEach((instance) => {
-					children_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+					if (typeof instance.props.id === 'string') {
+						children_part[instance.props.id] = instance;
+						all_instances_part[instance.props.id] = instance;
+					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
 				value.forEach((instance) => {
@@ -138,7 +141,7 @@ export abstract class Block {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	private _componentWillUnmount(page: TPages) {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -155,8 +158,8 @@ export abstract class Block {
 			}
 		}
 
-		if (props?.page) {
-			this.props.changePage(props.page);
+		if (page) {
+			this.props.changePage(page);
 		}
 	}
 
@@ -167,10 +170,12 @@ export abstract class Block {
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
-			const element = temp.content.getElementById(instance.props.id);
+			if (typeof instance.props.id === 'string') {
+				const element = temp.content.getElementById(instance.props.id);
 
-			if (element) {
-				element.replaceWith(instance.getContent());
+				if (element) {
+					element.replaceWith(instance.getContent());
+				}
 			}
 		});
 
