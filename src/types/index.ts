@@ -1,5 +1,5 @@
 export type { TPages } from './pages';
-export type { Nullable } from './general';
+export type { TNullable } from './general';
 export type {
 	IState,
 	IFormState,
@@ -31,10 +31,7 @@ export type {
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';
-export type {
-	TEbCallback,
-	TEbListener,
-} from './event-bus';
+export type * from './event-bus';
 export {
-	IEbEvents,
+	EB_EVENTS,
 } from './event-bus';

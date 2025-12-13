@@ -9,16 +9,14 @@ import {
 } from '@/utils';
 import type {
 	BlockProps,
-	IInputChangeParams,
 	IAddUserModalForm,
 	IFormState,
+	IInputChangeParams,
 	ILoginForm,
-	Nullable,
+	TNullable,
 	TPages,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -27,7 +25,7 @@ import styles from '../styles.module.pcss';
 
 interface ILoginBlock extends BlockProps {
 	authorizationForm: IFormState<ILoginForm>;
-	appElement: Nullable<HTMLElement>;
+	appElement: TNullable<HTMLElement>;
 	changePage: (page: TPages) => void;
 	children: Record<string, FieldBlock | ButtonBlock>;
 }
@@ -38,16 +36,16 @@ export class LoginBlock extends Block {
 			...props,
 			styles,
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 
 				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${IDS.AUTHORIZATION.TEMP_ERROR}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${IDS.AUTHORIZATION.TEMP_PROFILE}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${IDS.AUTHORIZATION.TEMP_MAIN}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${IDS.AUTHORIZATION.TEMP_MODAL}"></div>`,
+				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${ IDS.AUTHORIZATION.TEMP_PROFILE }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${ IDS.AUTHORIZATION.TEMP_MAIN }"></div>`,
+				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${ IDS.AUTHORIZATION.TEMP_MODAL }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -95,7 +93,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
@@ -143,7 +141,7 @@ export class LoginBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
 					},
 				}),
 

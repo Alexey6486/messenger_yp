@@ -4,3 +4,4 @@ export {
 	Validator,
 	fieldsValidator,
 } from './validation';
+export { isFunction } from './is-function';

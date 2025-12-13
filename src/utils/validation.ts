@@ -1,9 +1,5 @@
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
-import type {
-	Nullable,
-} from '@/types';
+import type { TNullable } from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import {
 	REGEX,
 	VALIDATION_MSG,
@@ -59,7 +55,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 	requiredOnly?: boolean,
 	valueToCompare?: string,
 }): string => {
-	let validator: Nullable<Validator> = new Validator(valueToValidate);
+	let validator: TNullable<Validator> = new Validator(valueToValidate);
 	let validationResult: string;
 
 	if (requiredOnly) {

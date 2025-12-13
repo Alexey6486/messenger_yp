@@ -1,8 +1,8 @@
-import type { Nullable } from '@/types';
+import type { TNullable } from '@/types';
 
 export const searchDataset = (
 	element: HTMLElement, dataset: string, parentId?: string, parentClass?: string,
-): Nullable<string> => {
+): TNullable<string> => {
 	if (
 		element
 		&& (

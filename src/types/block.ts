@@ -7,3 +7,11 @@ export interface BlockProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[key: string]: unknown;
 }
+
+export interface IComponent {
+	_id: string;
+
+	render(): string;
+}
+
+export type TComponentProps = Record<string, unknown>;

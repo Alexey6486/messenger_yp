@@ -10,12 +10,12 @@ import {
 } from './constants';
 import type {
 	IState,
-	Nullable,
+	TNullable,
 	TPages,
 } from './types';
 
 export default class App {
-	private appElement: Nullable<HTMLElement>;
+	private appElement: TNullable<HTMLElement>;
 	private state: IState;
 
 	constructor() {

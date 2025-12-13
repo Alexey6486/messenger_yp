@@ -4,13 +4,13 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 	IInputState,
-	Nullable,
+	TNullable,
 } from '@/types';
 import template from './input-template';
 
 interface IInputBlock extends BlockProps {
 	id: string;
-	input_data: Nullable<IInputState>;
+	input_data: TNullable<IInputState>;
 	dataset: string;
 	name: string;
 	placeholder: string;

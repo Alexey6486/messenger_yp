@@ -1,16 +1,17 @@
 import type {
+	IEventBus,
 	TEbCallback,
 	TEbListener,
 } from '@/types';
 
-export class EventBus {
+export class EventBus implements IEventBus {
 	private listeners: TEbListener = {};
 
 	constructor() {
 		this.listeners = {};
 	}
 
-	on(event: string, callback: TEbCallback): void {
+	on<T = unknown>(event: string, callback: TEbCallback<T>): void {
 		if (!Array.isArray(this.listeners[event])) {
 			this.listeners[event] = [];
 		}
@@ -18,7 +19,7 @@ export class EventBus {
 		this.listeners[event] = [...this.listeners[event], callback];
 	}
 
-	off(event: string, callback: TEbCallback) {
+	off<T = unknown>(event: string, callback: TEbCallback<T>): void {
 		if (!Array.isArray(this.listeners[event])) {
 			throw new Error(`Нет события: ${ event }`);
 		} else {
@@ -28,12 +29,12 @@ export class EventBus {
 		}
 	}
 
-	emit(event: string, ...args: unknown[]): void {
+	emit<T = unknown>(event: string, data?: T): void {
 		if (!Array.isArray(this.listeners[event])) {
 			throw new Error(`Нет события: ${ event }`);
 		} else {
 			this.listeners[event].forEach((listener: TEbCallback) => {
-				listener(...args);
+				listener(data);
 			});
 		}
 	}

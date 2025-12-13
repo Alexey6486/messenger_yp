@@ -1,41 +1,48 @@
 import { EventBus } from '@/event-bus';
 import * as Pages from '@/pages';
 import { IDS } from '@/constants';
+import { isFunction } from '@/utils/is-function';
 import type {
-	BlockProps,
-	E_FORM_FIELDS_NAME,
-	IChildren,
+	IComponent,
+	IEventBus,
 	IFormState,
 	IInputChangeParams,
-	Nullable,
+	TComponentProps,
+	TNullable,
 	TPages,
 } from '@/types';
-import { IEbEvents } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+	EB_EVENTS,
+} from '@/types';
 
-export abstract class Block<Props extends Record<string, unknown> | unknown = unknown> {
+export abstract class Block<Props extends TComponentProps = TComponentProps> implements IComponent {
 	static EVENTS = {
-		INIT: IEbEvents.INIT,
-		FLOW_CDM: IEbEvents.FLOW_CDM,
-		FLOW_CDU: IEbEvents.FLOW_CDU,
-		FLOW_CWU: IEbEvents.FLOW_CWU,
-		FLOW_RENDER: IEbEvents.FLOW_RENDER,
+		INIT: EB_EVENTS.INIT,
+		FLOW_CDM: EB_EVENTS.FLOW_CDM,
+		FLOW_CDU: EB_EVENTS.FLOW_CDU,
+		FLOW_CWU: EB_EVENTS.FLOW_CWU,
+		FLOW_RENDER: EB_EVENTS.FLOW_RENDER,
 	} as const;
 
-	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
-	props: Props;
-	children: Props;
-	childrenList: Props;
-	allInstances: Props;
-	protected eventBus: () => EventBus;
+	public _id: string;
+	protected _element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
+	protected parent: TNullable<Element | HTMLElement> = null;
+	protected props: Props = {} as Props;
+	protected children: Props = {} as Props;
+	protected childrenList: Props = {} as Props;
+	protected allInstances: Props = {} as Props;
+	protected eventBus: () => IEventBus;
 
 	/** JSDoc
-	 * @param {BlockProps} props
+	 * @param {TComponentProps} props
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: Props) {
+	constructor(props: Props = {} as Props) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
+		this._id = this.generateId();
 		this.props = this._makePropsProxy({ ...props_part });
 		this.children = children_part;
 		this.childrenList = children_list_part;
@@ -47,30 +54,52 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 		eventBus.emit(Block.EVENTS.INIT);
 	}
 
+	private generateId(): string {
+		return `component-${ Date.now() }-${ Math.random().toString(36).substring(2, 9) }`;
+	}
+
 	get element() {
 		return this._element;
 	}
 
-	private _getPropsParts(props: Props) {
-		let children_part: Props;
-		let children_list_part: Props;
-		let all_instances_part: Props;
-		let props_part: Props;
+	// function setValue<T, K extends keyof T>(
+	// 	props: Props<T>,
+	// 	key: K,
+	// 	value: T[K]
+
+
+	private _getPropsParts(props: Props): {
+		props_part: Props; children_list_part: Props; all_instances_part: Props; children_part: Props,
+	} {
+		let children_part = {} as Props;
+		let children_list_part = {} as Props;
+		let all_instances_part = {} as Props;
+		let props_part = {} as Props;
+
+		function getValue<Props, Key extends keyof Props>(obj: Props, key: Key) {
+			return obj[key];
+		}
+
+		const children = getValue(props, 'children');
+		if (children) {
+			Object.values(children).forEach((instance: Block) => {
+				if (typeof instance.props.id === 'string') {
+					children_part[instance.props.id] = instance;
+					all_instances_part[instance.props.id] = instance;
+				}
+			});
+		}
+
+		const childrenList = getValue(props, 'childrenList');
+		if (childrenList && Array.isArray(childrenList)) {
+			childrenList.forEach((instance: Block) => {
+				children_list_part[instance.props.id] = instance;
+				all_instances_part[instance.props.id] = instance;
+			});
+		}
 
 		Object.entries(props).forEach(([props_name, value]) => {
-			if (props_name === 'children') {
-				Object.values(value as Record<string, Block>).forEach((instance) => {
-					if (typeof instance.props.id === 'string') {
-						children_part[instance.props.id] = instance;
-						all_instances_part[instance.props.id] = instance;
-					}
-				});
-			} else if (props_name === 'childrenList' && Array.isArray(value)) {
-				value.forEach((instance) => {
-					children_list_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
-				});
-			} else {
+			if (props_name !== 'children' && props_name !== 'childrenList') {
 				props_part[props_name] = value;
 			}
 		});
@@ -128,7 +157,7 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 		this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 	}
 
-	private _componentDidUpdate() {
+	private _componentDidUpdate(props: { old: Props, new: Props }) {
 		const response = this.componentDidUpdate();
 		if (!response) {
 			return;
@@ -230,7 +259,10 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 		return new Proxy<Props>(props, {
 			get(target: Props, p: string) {
 				const value = target[p];
-				return typeof value === 'function' ? value.bind(target) : value;
+				if (isFunction(value)) {
+					return value.bind(target);
+				}
+				return value;
 			},
 			set(target: Props, p: string, newValue) {
 				const oldTarget = { ...target };
@@ -255,7 +287,10 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 					target[p] = newValue;
 				}
 
-				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+				self.eventBus().emit<{ old: Props, new: Props }>(Block.EVENTS.FLOW_CDU, {
+					old: oldTarget,
+					new: target,
+				});
 				return true;
 			},
 			deleteProperty() {
@@ -329,19 +364,19 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 	}
 
 	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
-	 * @param {IChildren<Block>} children
+	 * @param {Props} children
 	 * @param {string[]} idsList
-	 * @param {IChildren<Block>} childrenBlocks
+	 * @param {Props} childrenBlocks
 	 *
 	 * @returns {IChildren<Block>}
 	 */
 	private _getChildrenToUpdate(
-		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
-	): IChildren<Block> {
-		const targetChildren: IChildren<Block> = childrenBlocks || {};
+		children: Props, idsList: string[], childrenBlocks?: Props,
+	): Props | undefined {
+		const targetChildren: Props | undefined = childrenBlocks;
 
 		Object.entries(children).forEach(([id, instance]) => {
-			if (idsList.includes(id)) {
+			if (targetChildren && idsList.includes(id)) {
 				targetChildren[id] = instance;
 
 				if (instance.allInstances) {
@@ -380,15 +415,17 @@ export abstract class Block<Props extends Record<string, unknown> | unknown = un
 			childrenIdList,
 		);
 
-		childrenIdList.forEach((childId) => {
-			targetChildren[childId].setProps({
-				input_data: {
-					value: data.value,
-					error: data.error ?? '',
-					currentFocus: { element, selectionStart },
-				},
+		if (targetChildren) {
+			childrenIdList.forEach((childId) => {
+				targetChildren[childId].setProps({
+					input_data: {
+						value: data.value,
+						error: data.error ?? '',
+						currentFocus: { element, selectionStart },
+					},
+				});
 			});
-		});
+		}
 
 		this.setProps({
 			[formName]: {

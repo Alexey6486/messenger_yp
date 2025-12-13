@@ -4,7 +4,7 @@ import { compile } from '@/utils';
 import type {
 	BlockProps,
 	IChat,
-	Nullable,
+	TNullable,
 } from '@/types';
 import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
 import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';
@@ -14,7 +14,7 @@ import styles from '@/pages/main/styles.module.pcss';
 
 interface IMessagingBlock extends BlockProps {
 	id: string;
-	messages: Nullable<IChat[]>;
+	messages: TNullable<IChat[]>;
 	userData: Record<string, string>;
 	onChangePage: (e: Event) => void;
 }
@@ -24,9 +24,9 @@ export class MessagingBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
-				[IDS.MAIN.MESSAGING_HEADER]: `<div id="${IDS.MAIN.MESSAGING_HEADER}"></div>`,
-				[IDS.MAIN.MESSAGING_FOOTER]: `<div id="${IDS.MAIN.MESSAGING_FOOTER}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
+				[IDS.MAIN.MESSAGING_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_HEADER }"></div>`,
+				[IDS.MAIN.MESSAGING_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_FOOTER }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_HEADER]: new MessagingHeaderBlock({
