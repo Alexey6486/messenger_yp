@@ -1,6 +1,6 @@
 import type { BlockProps } from '@/types/block';
 
-export const IEbEvents: Record<string, string> = {
+export const IEbEvents = {
 	INIT: 'init',
 	FLOW_CDM: 'flow:component-did-mount',
 	FLOW_CDU: 'flow:component-did-update',

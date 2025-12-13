@@ -1,9 +1,7 @@
 import type { IRequestOptions } from './types';
 import { ERequestMethods } from './types';
-import type {
-	Nullable,
-} from '@/types';
-
+import type { Nullable } from '@/types';
+import type { RequestOptions } from 'http';
 
 function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
@@ -13,11 +11,11 @@ function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 		if (Array.isArray(dataList) && dataList.length) {
 			dataList.forEach((el, idx) => {
 				const key = el[0];
-				const value = Array.isArray(el[1]) ? (el[1] as Array<string>).join(',') : el[1];
+				const value = Array.isArray(el[1]) ? el[1].join(',') : el[1];
 				if (idx === 0) {
-					result += `?${key}=${value}`;
+					result += `?${ encodeURIComponent(key) }=${ encodeURIComponent(value) }`;
 				} else {
-					result += `&${key}=${value}`;
+					result += `&${ encodeURIComponent(key) }=${ encodeURIComponent(value) }`;
 				}
 			});
 		}
@@ -26,25 +24,28 @@ function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 	return result;
 }
 
+type HTTPMethod = (url: string, options?: Partial<RequestOptions & IRequestOptions>) => Promise<XMLHttpRequest>;
+
 export class HTTPTransport {
-	get = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: ERequestMethods.GET }, options.timeout as number);
-	};
+	// Фабричный метод для создания HTTP-методов
+	private createMethod(method: ERequestMethods): HTTPMethod {
+		return (url, options = {}) => this.request(url, { ...options, method });
+	}
 
-	post = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: ERequestMethods.POST }, options.timeout as number);
-	};
+	// Методы HTTP
+	protected readonly get = this.createMethod(ERequestMethods.GET);
 
-	put = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: ERequestMethods.PUT }, options.timeout as number);
-	};
+	protected readonly put = this.createMethod(ERequestMethods.PUT);
 
-	delete = (url: string, options: IRequestOptions = {} as IRequestOptions) => {
-		return this.request(url, { ...options, method: ERequestMethods.DELETE }, options.timeout as number);
-	};
+	protected readonly post = this.createMethod(ERequestMethods.POST);
 
-	request = (url: string, options: IRequestOptions = {} as IRequestOptions, timeout = 5000) => {
-		const { headers = {}, method, data } = options;
+	protected readonly delete = this.createMethod(ERequestMethods.DELETE);
+
+	private request(
+		url: string,
+		options: Partial<RequestOptions> & IRequestOptions,
+	): Promise<XMLHttpRequest> {
+		const { headers = {}, method, data, timeout = 5000 } = options;
 
 		return new Promise(function (resolve, reject) {
 			if (!method) {
@@ -58,7 +59,7 @@ export class HTTPTransport {
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${url}${queryStringify(data)}`
+					? `${ url }${ queryStringify(data) }`
 					: url,
 			);
 
@@ -82,5 +83,5 @@ export class HTTPTransport {
 				xhr.send(data);
 			}
 		});
-	};
+	}
 }
