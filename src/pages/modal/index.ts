@@ -1,1 +1,1 @@
-export { GetModal } from './modal';
+export { ModalBlock } from './modal-block';

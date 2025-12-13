@@ -1,0 +1,6 @@
+**/*.d.ts
+node_modules/
+dist/
+build/
+.idea/
+.vscode/

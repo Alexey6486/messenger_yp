@@ -1,1 +1,1 @@
-export { GetProfilePage } from './profile';
+export { ProfileBlock } from './profile-block';

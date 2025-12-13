@@ -1,1 +1,6 @@
-export * from './search-dataset';
+export { searchDataset } from './search-dataset';
+export { compile } from './compile';
+export {
+	Validator,
+	fieldsValidator,
+} from './validation';

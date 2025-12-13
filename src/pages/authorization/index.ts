@@ -1,2 +1,2 @@
-export { GetLoginPage } from './login/login';
-export { GetRegistrationPage } from './registration/registration';
+export { LoginBlock } from './login/login-block';
+export { RegistrationBlock } from './registration/registration-block';

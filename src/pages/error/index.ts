@@ -1,1 +1,1 @@
-export { GetErrorPage } from './error';
+export { ErrorBlock } from './error-block';

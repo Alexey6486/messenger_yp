@@ -1,0 +1,87 @@
+import type { IRequestOptions } from './types';
+import { ERequestMethods } from './types';
+import type { Nullable } from '@/types';
+import type { RequestOptions } from 'http';
+
+function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
+	let result = '';
+
+	if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+		const dataList = Object.entries(data);
+		if (Array.isArray(dataList) && dataList.length) {
+			dataList.forEach((el, idx) => {
+				const key = el[0];
+				const value = Array.isArray(el[1]) ? el[1].join(',') : el[1];
+				if (idx === 0) {
+					result += `?${ encodeURIComponent(key) }=${ encodeURIComponent(value) }`;
+				} else {
+					result += `&${ encodeURIComponent(key) }=${ encodeURIComponent(value) }`;
+				}
+			});
+		}
+	}
+
+	return result;
+}
+
+type HTTPMethod = (url: string, options?: Partial<RequestOptions & IRequestOptions>) => Promise<XMLHttpRequest>;
+
+export class HTTPTransport {
+	// Фабричный метод для создания HTTP-методов
+	private createMethod(method: ERequestMethods): HTTPMethod {
+		return (url, options = {}) => this.request(url, { ...options, method });
+	}
+
+	// Методы HTTP
+	protected readonly get = this.createMethod(ERequestMethods.GET);
+
+	protected readonly put = this.createMethod(ERequestMethods.PUT);
+
+	protected readonly post = this.createMethod(ERequestMethods.POST);
+
+	protected readonly delete = this.createMethod(ERequestMethods.DELETE);
+
+	private request(
+		url: string,
+		options: Partial<RequestOptions> & IRequestOptions,
+	): Promise<XMLHttpRequest> {
+		const { headers = {}, method, data, timeout = 5000 } = options;
+
+		return new Promise(function (resolve, reject) {
+			if (!method) {
+				reject('No method');
+				return;
+			}
+
+			const xhr = new XMLHttpRequest();
+			const isGet = method === ERequestMethods.GET;
+
+			xhr.open(
+				method,
+				isGet && !!data
+					? `${ url }${ queryStringify(data) }`
+					: url,
+			);
+
+			Object.keys(headers).forEach(key => {
+				xhr.setRequestHeader(key, headers[key]);
+			});
+
+			xhr.onload = function () {
+				resolve(xhr);
+			};
+
+			xhr.onabort = reject;
+			xhr.onerror = reject;
+
+			xhr.timeout = timeout;
+			xhr.ontimeout = reject;
+
+			if (isGet || !data) {
+				xhr.send();
+			} else {
+				xhr.send(data);
+			}
+		});
+	}
+}

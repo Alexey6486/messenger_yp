@@ -1,13 +1,9 @@
 <main class="{{styles.container}}">
-    <div class="{{styles.info}}">
-        <div class="{{styles.code}}">{{state.code}}</div>
-        <div class="{{styles.text}}">{{state.text}}</div>
-    </div>
-    <div class="{{styles.buttons}}" id="{{buttonsId}}" data-error="{{dataset}}">
-        {{>
-        Button
-            text="Назад к чатам"
-            class=styles.button
-        }}
-    </div>
+	<div class="{{styles.info}}">
+		<div class="{{styles.code}}">{{code}}</div>
+		<div class="{{styles.text}}">{{text}}</div>
+	</div>
+	<div class="{{styles.buttons}}">
+		{{{ markup.error-button }}}
+	</div>
 </main>
