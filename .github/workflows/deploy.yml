@@ -42,18 +42,18 @@ jobs:
             -   name: Debug Verify build
                 run: ls -la dist/assets/
 
-            -   name: Upload artifact
-                uses: actions/upload-pages-artifact@v3
+            -   name: Upload build artifact
+                uses: actions/upload-artifact@v3
                 with:
-                    name: github-pages
+                    name: build-artifact
                     path: ./dist
 
     deploy:
+        needs: build
+        runs-on: ubuntu-latest
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
-        needs: build
         steps:
             -   name: Print deployment URL
                 run: echo "Site deployed to ${{ steps.deployment.outputs.page_url }}"
