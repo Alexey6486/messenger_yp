@@ -2,24 +2,11 @@ import { Block } from '@/block';
 import { compile } from '@/utils';
 import type {
 	BlockProps,
-	IInputChangeParams,
-	IInputState,
-	Nullable,
 } from '@/types';
 import template from './input-template';
 
-interface IInputBlock extends BlockProps {
-	id: string;
-	input_data: Nullable<IInputState>;
-	dataset: string;
-	name: string;
-	placeholder: string;
-	type: string;
-	onChange: (params: IInputChangeParams<Block>) => void;
-}
-
 export class InputBlock extends Block {
-	constructor(props: IInputBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {
@@ -28,7 +15,7 @@ export class InputBlock extends Block {
 					e.stopPropagation();
 
 					if (e.target && e.target instanceof HTMLInputElement) {
-						props.onChange({
+						props?.onInputChange?.({
 							data: {
 								value: e.target.value,
 							},
@@ -42,7 +29,7 @@ export class InputBlock extends Block {
 				},
 				blur: (e: Event) => {
 					if (e.target && e.target instanceof HTMLInputElement) {
-						props.onChange({
+						props.onInputChange?.({
 							data: {
 								value: e.target.value,
 							},

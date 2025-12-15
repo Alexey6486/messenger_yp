@@ -3,19 +3,8 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './link-template';
 
-interface ILinkBlock extends BlockProps {
-	id: string;
-	class: string;
-	href: string;
-	ariaLabel: string;
-	tooltip: string;
-	target: string;
-	text: string;
-	onClick: (e: Event) => void;
-}
-
 export class LinkBlock extends Block {
-	constructor(props: ILinkBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {

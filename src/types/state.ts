@@ -2,6 +2,7 @@ import type {
 	Nullable,
 	TPages,
 } from '@/types';
+import { Block } from '@/block';
 
 export enum E_FORM_FIELDS_NAME {
 	first_name = 'first_name',
@@ -112,7 +113,7 @@ export interface IMainPageState {
 	currentChatId: Nullable<string>;
 	chatsSearchForm: IFormState<ISearchForm>;
 	newMessageForm: IFormState<IMessageForm>;
-	chats: IChat[];
+	chats: Nullable<IChat[]>;
 	messages: Nullable<IChat[]>;
 }
 
@@ -155,24 +156,24 @@ export interface IInputData {
 	error?: string;
 }
 
-export interface IInputInfo<T> {
+export interface IInputInfo {
 	event: string;
-	element: Nullable<T>;
+	element: Nullable<Block>;
 	selectionStart?: Nullable<number>;
 }
 
-export interface IInputChangeParams<T> {
+export interface IInputChangeParams {
 	data: IInputData;
-	info: IInputInfo<T>;
+	info: IInputInfo;
 }
 
 export interface ICurrentFocus {
-	element: Nullable<HTMLInputElement>;
+	element: Nullable<Block>;
 	selectionStart: Nullable<number>;
 }
 
 export interface IInputState {
 	value: string;
 	error: string;
-	currentFocus: ICurrentFocus;
+	currentFocus?: Nullable<ICurrentFocus>;
 }

@@ -26,12 +26,8 @@ import {
 } from '@/components/icons';
 import template from './messaging-footer-template';
 
-interface IMessagingFooterBlock extends BlockProps {
-	id: string;
-}
-
 export class MessagingFooterBlock extends Block {
-	constructor(props: IMessagingFooterBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {
@@ -97,14 +93,14 @@ export class MessagingFooterBlock extends Block {
 					input_data: {
 						value: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message,
 						error: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].errors.message,
-						currentFocus: props.currentFocus,
+						currentFocus: props?.currentFocus,
 					},
 					dataset: E_FORM_FIELDS_NAME.message,
 					name: E_FORM_FIELDS_NAME.message,
 					placeholder: 'Сообщение',
 					type: 'text',
 					class: props?.styles?.['message-input'] ?? '',
-					onChange: (params: IInputChangeParams<Block>) => {
+					onInputChange: (params: IInputChangeParams) => {
 						this.onFormInputChange(
 							{
 								...params,

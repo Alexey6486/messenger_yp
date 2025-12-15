@@ -11,10 +11,6 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 	IAddUserModalForm,
-	IFormState,
-	ILoginForm,
-	Nullable,
-	TPages,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -25,15 +21,8 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
-interface ILoginBlock extends BlockProps {
-	authorizationForm: IFormState<ILoginForm>;
-	appElement: Nullable<HTMLElement>;
-	changePage: (page: TPages) => void;
-	children: Record<string, FieldBlock | ButtonBlock>;
-}
-
 export class LoginBlock extends Block {
-	constructor(props: ILoginBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -72,7 +61,7 @@ export class LoginBlock extends Block {
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -120,7 +109,7 @@ export class LoginBlock extends Block {
 							name: E_FORM_FIELDS_NAME.password,
 							placeholder: '',
 							type: 'password',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -161,17 +150,17 @@ export class LoginBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (inputId.includes('input') && !inputInstance.props.input_data.error.length) {
+									if (inputId.includes('input') && !inputInstance.props?.input_data?.error.length) {
 										validationResult = fieldsValidator({
-											valueToValidate: inputInstance.props.input_data.value,
-											fieldName: inputInstance.props.name,
+											valueToValidate: inputInstance?.props?.input_data?.value,
+											fieldName: inputInstance?.props?.name ?? '',
 											requiredOnly: true,
 										});
 
 										if (validationResult.length) {
 											const childProps = {
 												input_data: {
-													value: inputInstance.props.input_data.value,
+													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
 													currentFocus: { element: null, selectionStart: null },
 												},
@@ -197,7 +186,7 @@ export class LoginBlock extends Block {
 						console.log('Login data submit: ', this.props[IDS.FORMS.AUTHORIZATION_FORM].fields);
 
 						if (validationResult.length) {
-							this.setProps(pageProps);
+							this.setProps(pageProps as BlockProps);
 						}
 					},
 				}),

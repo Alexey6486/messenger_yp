@@ -2,17 +2,15 @@ import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import type { InputBlock } from '@/components/input/input-block';
+import { InputBlock } from '@/components/input/input-block';
 import template from './form-template';
 
-interface IFormBlock extends BlockProps {
-	id: string;
-	childrenList: InputBlock[];
-	onSubmit: (e: Event) => void;
+interface IFormBlockProps extends BlockProps {
+	childrenList?: InputBlock[];
 }
 
 export class FormBlock extends Block {
-	constructor(props: IFormBlock) {
+	constructor(props: IFormBlockProps) {
 		super({
 			...props,
 			events: {

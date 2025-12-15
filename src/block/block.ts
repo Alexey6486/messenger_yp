@@ -59,13 +59,17 @@ export abstract class Block {
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
 				Object.values(value as Record<string, Block>).forEach((instance) => {
-					children_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+					if (instance.props.id) {
+						children_part[instance.props.id] = instance;
+						all_instances_part[instance.props.id] = instance;
+					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
 				value.forEach((instance) => {
-					children_list_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+					if (instance.props.id) {
+						children_list_part[instance.props.id] = instance;
+						all_instances_part[instance.props.id] = instance;
+					}
 				});
 			} else {
 				props_part[props_name] = value;
@@ -156,7 +160,7 @@ export abstract class Block {
 		}
 
 		if (props?.page) {
-			this.props.changePage(props.page);
+			this?.props?.changePage?.(props.page);
 		}
 	}
 
@@ -167,10 +171,12 @@ export abstract class Block {
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
-			const element = temp.content.getElementById(instance.props.id);
+			if (typeof instance.props.id === 'string') {
+				const element = temp.content.getElementById(instance.props.id);
 
-			if (element) {
-				element.replaceWith(instance.getContent());
+				if (element) {
+					element.replaceWith(instance.getContent());
+				}
 			}
 		});
 
@@ -362,13 +368,13 @@ export abstract class Block {
 	 * @returns {void}
 	 */
 	onFormInputChange(
-		params: IInputChangeParams<Block>,
+		params: IInputChangeParams,
 		childrenIdList: string[],
 		fieldName: E_FORM_FIELDS_NAME,
 		formName: string,
 	): void {
 		const { data, info } = params;
-		const { element, selectionStart } = info;
+		const { element, selectionStart = 0 } = info;
 
 		const targetChildren = this._getChildrenToUpdate(
 			this.allInstances,
@@ -378,7 +384,7 @@ export abstract class Block {
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps({
 				input_data: {
-					value: data.value,
+					value: data.value ?? '',
 					error: data.error ?? '',
 					currentFocus: { element, selectionStart },
 				},
@@ -390,7 +396,7 @@ export abstract class Block {
 				fields: { [fieldName]: data.value },
 				errors: { [fieldName]: data.error ?? '' },
 			},
-		});
+		} as BlockProps);
 	}
 
 	protected toggleInputsDisable() {
@@ -407,7 +413,7 @@ export abstract class Block {
 		});
 	}
 
-	protected resetTargetForm(formName: string, originData?: Record<string, string>) {
+	protected resetTargetForm<T>(formName: string, originData?: Record<string, T>) {
 		let pageProps = { [formName]: { ...this.props[formName] } };
 		let shouldBeUpdated = false;
 
@@ -417,8 +423,8 @@ export abstract class Block {
 					if (inputId.includes('input')) {
 						if (
 							(originData
-								&& originData?.[inputInstance.props.name] !== inputInstance.props.input_data.value)
-							|| (!originData && inputInstance.props.input_data.value !== '')
+								&& originData?.[inputInstance.props.name] !== inputInstance?.props?.input_data?.value)
+							|| (!originData && inputInstance?.props?.input_data?.value !== '')
 						) {
 							if (!shouldBeUpdated) {
 								shouldBeUpdated = true;
@@ -455,7 +461,7 @@ export abstract class Block {
 		});
 
 		if (shouldBeUpdated) {
-			this.setProps(pageProps);
+			this.setProps(pageProps as BlockProps);
 		}
 	}
 
@@ -464,10 +470,16 @@ export abstract class Block {
 			setTimeout(() => {
 				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
 					this._element.focus();
-					this._element.setSelectionRange(
-						this.props.input_data.currentFocus.selectionStart,
-						this.props.input_data.currentFocus.selectionStart,
-					);
+					if (
+						'currentFocus' in this.props.input_data
+						&& this?.props?.input_data?.currentFocus
+						&& this.props.input_data.currentFocus?.selectionStart !== null
+					) {
+						this._element.setSelectionRange(
+							this.props.input_data.currentFocus.selectionStart,
+							this.props.input_data.currentFocus.selectionStart,
+						);
+					}
 				}
 			}, 0);
 		}

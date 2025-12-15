@@ -3,15 +3,8 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './drop-down-option-template';
 
-interface IDropDownOptionBlock extends BlockProps {
-	id: string;
-	icon: string;
-	text: string;
-	onClick: (event: Event) => void;
-}
-
 export class DropDownOptionBlock extends Block {
-	constructor(props: IDropDownOptionBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {

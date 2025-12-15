@@ -7,8 +7,6 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
-	IAddUserModalForm,
-	IFormState,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -17,14 +15,8 @@ import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './add-user-template';
 
-export interface IAddUserBlock extends BlockProps {
-	id: string;
-	children: Record<string, FieldBlock>;
-	modalAddUserForm: IFormState<IAddUserModalForm>;
-}
-
 export class AddUserBlock extends Block {
-	constructor(props: IAddUserBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			id: IDS.MODAL.CONTENT,
@@ -54,7 +46,7 @@ export class AddUserBlock extends Block {
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'login',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,

@@ -4,7 +4,6 @@ import { compile } from '@/utils';
 import type {
 	BlockProps,
 	IChat,
-	Nullable,
 } from '@/types';
 import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
 import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';
@@ -12,15 +11,8 @@ import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messa
 import template from './messaging-template';
 import styles from '@/pages/main/styles.module.pcss';
 
-interface IMessagingBlock extends BlockProps {
-	id: string;
-	messages: Nullable<IChat[]>;
-	userData: Record<string, string>;
-	onChangePage: (e: Event) => void;
-}
-
 export class MessagingBlock extends Block {
-	constructor(props: IMessagingBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {
@@ -48,7 +40,7 @@ export class MessagingBlock extends Block {
 					author: last_message.user.display_name,
 					text: last_message.content,
 					date: last_message.time,
-					isMe: last_message.user.id === props.userData.id,
+					isMe: last_message.user.id === props?.userData?.id,
 				});
 			}),
 		});

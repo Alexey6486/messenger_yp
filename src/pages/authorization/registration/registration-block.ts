@@ -10,9 +10,6 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
-	IFormState,
-	IRegistrationFormUi,
-	TPages,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -23,14 +20,8 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
-interface IRegistrationBlock extends BlockProps {
-	registrationForm: IFormState<IRegistrationFormUi>;
-	changePage: (page: TPages) => void;
-	children: Record<string, FieldBlock | ButtonBlock>;
-}
-
 export class RegistrationBlock extends Block {
-	constructor(props: IRegistrationBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -68,7 +59,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.email,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -115,7 +106,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -162,7 +153,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.first_name,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -209,7 +200,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.second_name,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -256,7 +247,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.phone,
 							placeholder: '',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -303,7 +294,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.password,
 							placeholder: '',
 							type: 'password',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -350,7 +341,7 @@ export class RegistrationBlock extends Block {
 							name: E_FORM_FIELDS_NAME.confirmPassword,
 							placeholder: '',
 							type: 'password',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -391,10 +382,14 @@ export class RegistrationBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (inputId.includes('input') && !inputInstance.props.input_data.error.length) {
+									if (
+										inputId.includes('input')
+										&& typeof inputInstance?.props?.input_data?.error === 'string'
+										&& !inputInstance.props.input_data.error.length
+									) {
 										validationResult = fieldsValidator({
-											valueToValidate: inputInstance.props.input_data.value,
-											fieldName: inputInstance.props.name,
+											valueToValidate: inputInstance?.props?.input_data?.value,
+											fieldName: inputInstance?.props?.name ?? '',
 											...(inputInstance.props.name === E_FORM_FIELDS_NAME.confirmPassword && {
 												valueToCompare: this.props[IDS.FORMS.REGISTRATION_FORM].fields.password,
 											}),
@@ -403,7 +398,7 @@ export class RegistrationBlock extends Block {
 										if (validationResult.length) {
 											const data = {
 												input_data: {
-													value: inputInstance.props.input_data.value,
+													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
 													currentFocus: { element: null, selectionStart: null },
 												},
@@ -429,7 +424,7 @@ export class RegistrationBlock extends Block {
 						console.log('Registration data submit: ', this.props[IDS.FORMS.REGISTRATION_FORM].fields);
 
 						if (validationResult.length) {
-							this.setProps(pageProps);
+							this.setProps(pageProps as BlockProps);
 						}
 					},
 				}),

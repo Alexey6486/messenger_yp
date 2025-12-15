@@ -10,8 +10,6 @@ import type {
 	BlockProps,
 	IChat,
 	IInputChangeParams,
-	IMainPageState,
-	TPages,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -27,13 +25,8 @@ import { LinkBlock } from '@/components/link/link-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 
-interface IMainBlock extends IMainPageState, BlockProps {
-	userData: Record<string, string>,
-	changePage: (page: TPages) => void,
-}
-
 export class MainBlock extends Block {
-	constructor(props: IMainBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -62,7 +55,7 @@ export class MainBlock extends Block {
 							name: E_FORM_FIELDS_NAME.title,
 							placeholder: 'Поиск',
 							type: 'text',
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									params,
 									[IDS.MAIN.SEARCH_INPUT, IDS.MAIN.SEARCH_FORM],
@@ -76,7 +69,7 @@ export class MainBlock extends Block {
 				[IDS.MAIN.CHAT_LIST]: new UlBlock({
 					id: IDS.MAIN.CHAT_LIST,
 					class: styles.chats,
-					childrenList: props.chats.map(({ id, avatar, title, unread_count, last_message }: IChat) => {
+					childrenList: props?.chats?.map?.(({ id, avatar, title, unread_count, last_message }: IChat) => {
 						return new ChatBlock({
 							id: id,
 							styles,

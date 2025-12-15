@@ -14,12 +14,8 @@ import {
 } from '@/components/icons';
 import template from './messaging-header-template';
 
-interface IMessagingHeaderBlock extends BlockProps {
-	id: string;
-}
-
 export class MessagingHeaderBlock extends Block {
-	constructor(props: IMessagingHeaderBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {
@@ -62,9 +58,9 @@ export class MessagingHeaderBlock extends Block {
 					ariaLabel: 'profile link',
 					tooltip: 'profile link',
 					target: '_self',
-					text: props.userData.first_name,
+					text: props?.userData?.first_name ?? '',
 					onClick: () => {
-						props.onChangePage();
+						props.onChangePage?.();
 					},
 				}),
 			},

@@ -7,7 +7,7 @@ import { AddUserBlock } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
 
 export const getModalContentBlock = <T>(
-	contentId: string,
+	contentId: string | undefined,
 	contentForms: Record<string, IFormState<T>>,
 ): AddUserBlock | PlaceholderBlock => {
 	switch (contentId) {

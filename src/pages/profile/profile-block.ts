@@ -13,8 +13,6 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
-	TPages,
-	IProfilePageState,
 } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
@@ -24,14 +22,8 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
 
-interface IProfileBlock extends IProfilePageState, BlockProps {
-	userData: Record<string, string>,
-	children: Record<string, ProfileFieldBlock | InputBlock | ButtonBlock | ButtonRoundBlock>
-	changePage: (page: TPages) => void,
-}
-
 export class ProfileBlock extends Block {
-	constructor(props: IProfileBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -85,7 +77,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -135,7 +127,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -185,7 +177,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -235,7 +227,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -285,7 +277,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -335,7 +327,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -385,7 +377,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -433,7 +425,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -481,7 +473,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -515,7 +507,7 @@ export class ProfileBlock extends Block {
 					placeholder: '',
 					type: 'file',
 					input_data: null,
-					onChange: () => {
+					onInputChange: () => {
 					},
 				}),
 				[IDS.PROFILE.ASIDE_BTN]: new ButtonRoundBlock({
@@ -617,7 +609,7 @@ export class ProfileBlock extends Block {
 						event.stopPropagation();
 
 						this.toggleInputsDisable();
-						this.resetTargetForm(IDS.FORMS.PROFILE_USER_DATA_FORM, props.userData);
+						this.resetTargetForm(IDS.FORMS.PROFILE_USER_DATA_FORM, props?.userData);
 
 						this.setProps({
 							isDataEdit: false,
