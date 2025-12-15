@@ -1,5 +1,4 @@
 import {
-	E_FORM_FIELDS_NAME,
 	IAddUserModalForm,
 	IChat,
 	IChildren,
@@ -11,26 +10,16 @@ import {
 	IMessageForm,
 	IRegistrationFormUi,
 	ISearchForm,
-	IUserBase,
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
 } from '@/types/state';
 import { Block } from '@/block';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
-import { InputBlock } from '@/components/input/input-block';
 import { Nullable } from '@/types/general';
 import { TPages } from '@/types/pages';
-import { FieldBlock } from '@/components/form-fields/field-block';
-import { ButtonBlock } from '@/components/button/button-block';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { AddUserBlock } from '@/pages/modal/components';
-import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
-import { IDS } from '@/constants';
 
 export interface BlockProps {
 	children?: IChildren<Block>;
-	// childrenList?: IChildren<Block>[];
 	allInstances?: IChildren<Block>;
 	appElement?: Nullable<HTMLElement>;
 
