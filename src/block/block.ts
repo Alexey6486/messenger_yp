@@ -236,7 +236,35 @@ export abstract class Block {
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
 				const oldTarget = { ...target };
-				target[p] = newValue;
+				const key = p;
+				if (
+					key === 'authorizationForm'
+					|| key === 'registrationForm'
+					|| key === 'passwordForm'
+					|| key === 'userForm'
+					|| key === 'chatsSearchForm'
+					|| key === 'newMessageForm'
+					|| key === 'modalAddUserForm'
+				) {
+					const errors = target[key]?.errors;
+					const fields = target[key]?.fields;
+
+					if (errors && fields) {
+						target[key] = {
+							errors: {
+								...errors,
+								...newValue?.errors,
+							},
+							fields: {
+								...fields,
+								...newValue?.fields,
+							},
+						};
+					}
+
+				} else {
+					target[p] = newValue;
+				}
 
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;

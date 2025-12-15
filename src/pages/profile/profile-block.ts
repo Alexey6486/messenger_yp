@@ -582,7 +582,7 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Profile data form submit: ', this.props?.passwordForm?.fields);
+						console.log('Profile data form submit: ', this.props?.userForm?.fields);
 					},
 				}),
 				[IDS.PROFILE.CANCEL_PSW_EDIT_BTN]: new ButtonBlock({
