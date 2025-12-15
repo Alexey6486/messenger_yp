@@ -8,11 +8,11 @@ import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
 
 export const getModalContentBlock = <T>(
 	contentId: string | undefined,
-	contentForms: Record<string, IFormState<T>>,
+	contentForms?: Record<string, IFormState<T>>,
 ): AddUserBlock | PlaceholderBlock => {
 	switch (contentId) {
 		case IDS.FORMS.MODAL_ADD_USER_FORM: {
-			if ('modalAddUserForm' in contentForms) {
+			if (contentForms && 'modalAddUserForm' in contentForms) {
 				const modalAddUserForm = contentForms.modalAddUserForm as IFormState<IAddUserModalForm>;
 				return new AddUserBlock({
 					id: '',

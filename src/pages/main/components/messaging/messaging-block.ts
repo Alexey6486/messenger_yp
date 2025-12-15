@@ -3,7 +3,6 @@ import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type {
 	BlockProps,
-	IChat,
 } from '@/types';
 import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
 import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';
@@ -11,8 +10,12 @@ import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messa
 import template from './messaging-template';
 import styles from '@/pages/main/styles.module.pcss';
 
+interface IMessagingBlockProps extends BlockProps {
+	childrenList: MessagingMainBlock[];
+}
+
 export class MessagingBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IMessagingBlockProps) {
 		super({
 			...props,
 			markup: {
@@ -30,19 +33,9 @@ export class MessagingBlock extends Block {
 				[IDS.MAIN.MESSAGING_FOOTER]: new MessagingFooterBlock({
 					id: IDS.MAIN.MESSAGING_FOOTER,
 					styles,
-					[IDS.FORMS.MAIN_NEW_MESSAGE_FORM]: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM],
+					newMessageForm: props.newMessageForm,
 				}),
 			},
-			childrenList: props?.messages?.map?.(({ id, last_message }: IChat) => {
-				return new MessagingMainBlock({
-					id,
-					styles,
-					author: last_message.user.display_name,
-					text: last_message.content,
-					date: last_message.time,
-					isMe: last_message.user.id === props?.userData?.id,
-				});
-			}),
 		});
 	}
 

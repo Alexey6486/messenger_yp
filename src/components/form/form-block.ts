@@ -2,7 +2,7 @@ import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import { InputBlock } from '@/components/input/input-block';
+import type { InputBlock } from '@/components/input/input-block';
 import template from './form-template';
 
 interface IFormBlockProps extends BlockProps {

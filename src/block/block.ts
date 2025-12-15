@@ -3,13 +3,14 @@ import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
-	E_FORM_FIELDS_NAME,
 	IChildren,
 	IFormState,
 	IInputChangeParams,
 	Nullable,
 } from '@/types';
-import { IEbEvents } from '@/types';
+import {
+	IEbEvents,
+} from '@/types';
 
 export abstract class Block {
 	static EVENTS = {
@@ -72,7 +73,7 @@ export abstract class Block {
 					}
 				});
 			} else {
-				props_part[props_name] = value;
+				props_part[props_name as keyof BlockProps] = value;
 			}
 		});
 
@@ -229,32 +230,13 @@ export abstract class Block {
 		const self = this;
 
 		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: string) {
+			get(target: BlockProps, p: keyof BlockProps) {
 				const value = target[p];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: BlockProps, p: string, newValue) {
+			set(target: BlockProps, p: keyof BlockProps, newValue) {
 				const oldTarget = { ...target };
-				if (p === 'input_data') {
-					const { value, error, currentFocus } = newValue;
-
-					target[p] = {
-						...target[p],
-						value,
-						error,
-						currentFocus,
-					};
-				} else if (p.toLowerCase().includes('form')) {
-					const { fields, errors } = newValue;
-
-					target[p] = {
-						...target[p],
-						fields: { ...target[p].fields, ...fields },
-						errors: { ...target[p].errors, ...errors },
-					};
-				} else {
-					target[p] = newValue;
-				}
+				target[p] = newValue;
 
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;
@@ -370,7 +352,7 @@ export abstract class Block {
 	onFormInputChange(
 		params: IInputChangeParams,
 		childrenIdList: string[],
-		fieldName: E_FORM_FIELDS_NAME,
+		fieldName: string,
 		formName: string,
 	): void {
 		const { data, info } = params;
@@ -413,65 +395,14 @@ export abstract class Block {
 		});
 	}
 
-	protected resetTargetForm<T>(formName: string, originData?: Record<string, T>) {
-		let pageProps = { [formName]: { ...this.props[formName] } };
-		let shouldBeUpdated = false;
-
-		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field') && formName === fieldInstance.props.parentFormId) {
-				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-					if (inputId.includes('input')) {
-						if (
-							(originData
-								&& originData?.[inputInstance.props.name] !== inputInstance?.props?.input_data?.value)
-							|| (!originData && inputInstance?.props?.input_data?.value !== '')
-						) {
-							if (!shouldBeUpdated) {
-								shouldBeUpdated = true;
-							}
-
-							const childProps = {
-								input_data: {
-									value: originData?.[inputInstance.props.name] ?? '',
-									error: '',
-									currentFocus: { element: null, selectionStart: null },
-								},
-							};
-
-							inputInstance.setProps(childProps);
-							fieldInstance.setProps(childProps);
-
-							pageProps = {
-								[formName]: {
-									...pageProps[formName],
-									fields: {
-										...pageProps[formName].fields,
-										[inputInstance.props.name]: originData?.[inputInstance.props.name] ?? '',
-									},
-									errors: {
-										...pageProps[formName].errors,
-										[inputInstance.props.name]: '',
-									},
-								},
-							};
-						}
-					}
-				});
-			}
-		});
-
-		if (shouldBeUpdated) {
-			this.setProps(pageProps as BlockProps);
-		}
-	}
-
 	private _setFocus() {
 		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
 				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
 					this._element.focus();
 					if (
-						'currentFocus' in this.props.input_data
+						this?.props?.input_data
+						&& 'currentFocus' in this?.props?.input_data
 						&& this?.props?.input_data?.currentFocus
 						&& this.props.input_data.currentFocus?.selectionStart !== null
 					) {
@@ -486,7 +417,7 @@ export abstract class Block {
 	}
 
 	protected createModal<T>(
-		contentId: string,
+		contentId: keyof BlockProps,
 		contentForms: Record<string, IFormState<T>>,
 		title: string,
 	) {
@@ -495,15 +426,16 @@ export abstract class Block {
 			contentForms,
 			title,
 			error: '',
-			children: {},
 		});
 
-		if (this.props.appElement) {
+		if (this?.props?.appElement) {
 			const content = modal.getContent();
 
 			if (content) {
-				this.props.appElement.parentNode.appendChild(content);
-				modal.dispatchComponentDidMount();
+				if (this?.props?.appElement?.parentNode) {
+					this.props.appElement.parentNode.appendChild(content);
+					modal.dispatchComponentDidMount();
+				}
 			}
 		}
 	}

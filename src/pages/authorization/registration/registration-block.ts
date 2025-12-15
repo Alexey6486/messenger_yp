@@ -10,6 +10,7 @@ import {
 import type {
 	BlockProps,
 	IInputChangeParams,
+	IRegistrationFormUi,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -41,8 +42,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.EMAIL_FIELD,
 					id_label: IDS.REGISTRATION.EMAIL_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.email,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.email,
+						value: props?.registrationForm?.fields?.email ?? '',
+						error: props?.registrationForm?.errors?.email ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Почта',
@@ -51,8 +52,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.EMAIL_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.EMAIL_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.email,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.email,
+								value: props?.registrationForm?.fields?.email ?? '',
+								error: props?.registrationForm?.errors?.email ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
@@ -88,8 +89,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.LOGIN_FIELD,
 					id_label: IDS.REGISTRATION.LOGIN_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.login,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.login,
+						value: props?.registrationForm?.fields?.login ?? '',
+						error: props?.registrationForm?.errors?.login ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -98,8 +99,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.LOGIN_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.login,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.login,
+								value: props?.registrationForm?.fields?.login ?? '',
+								error: props?.registrationForm?.errors?.login ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -135,8 +136,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.F_NAME_FIELD,
 					id_label: IDS.REGISTRATION.F_NAME_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.first_name,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.first_name,
+						value: props?.registrationForm?.fields?.first_name ?? '',
+						error: props?.registrationForm?.errors?.first_name ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Имя',
@@ -145,8 +146,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.F_NAME_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.first_name,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.first_name,
+								value: props?.registrationForm?.fields?.first_name ?? '',
+								error: props?.registrationForm?.errors?.first_name ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
@@ -182,8 +183,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.S_NAME_FIELD,
 					id_label: IDS.REGISTRATION.S_NAME_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.second_name,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.second_name,
+						value: props?.registrationForm?.fields?.second_name ?? '',
+						error: props?.registrationForm?.errors?.second_name ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Фамилия',
@@ -192,8 +193,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.S_NAME_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.S_NAME_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.second_name,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.second_name,
+								value: props?.registrationForm?.fields?.second_name ?? '',
+								error: props?.registrationForm?.errors?.second_name ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
@@ -229,8 +230,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.PHONE_FIELD,
 					id_label: IDS.REGISTRATION.PHONE_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.phone,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.phone,
+						value: props?.registrationForm?.fields?.phone ?? '',
+						error: props?.registrationForm?.errors?.phone ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Телефон',
@@ -239,8 +240,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.PHONE_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PHONE_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.phone,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.phone,
+								value: props?.registrationForm?.fields?.phone ?? '',
+								error: props?.registrationForm?.errors?.phone ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
@@ -276,8 +277,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.PSW_FIELD,
 					id_label: IDS.REGISTRATION.PSW_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.password,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.password,
+						value: props?.registrationForm?.fields?.password ?? '',
+						error: props?.registrationForm?.errors?.password ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
@@ -286,8 +287,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.password,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.password,
+								value: props?.registrationForm?.fields?.password ?? '',
+								error: props?.registrationForm?.errors?.password ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
@@ -323,8 +324,8 @@ export class RegistrationBlock extends Block {
 					id: IDS.REGISTRATION.C_PSW_FIELD,
 					id_label: IDS.REGISTRATION.C_PSW_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.REGISTRATION_FORM].fields.confirmPassword,
-						error: props[IDS.FORMS.REGISTRATION_FORM].errors.confirmPassword,
+						value: props?.registrationForm?.fields?.confirmPassword ?? '',
+						error: props?.registrationForm?.errors?.confirmPassword ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль (еще раз)',
@@ -333,8 +334,8 @@ export class RegistrationBlock extends Block {
 						[IDS.REGISTRATION.C_PSW_INPUT]: new InputBlock({
 							id: IDS.REGISTRATION.C_PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.REGISTRATION_FORM].fields.confirmPassword,
-								error: props[IDS.FORMS.REGISTRATION_FORM].errors.confirmPassword,
+								value: props?.registrationForm?.fields?.confirmPassword ?? '',
+								error: props?.registrationForm?.errors?.confirmPassword ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
@@ -351,7 +352,7 @@ export class RegistrationBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.confirmPassword,
-													valueToCompare: this.props[IDS.FORMS.REGISTRATION_FORM].fields.password,
+													valueToCompare: this.props?.registrationForm?.fields?.password ?? '',
 												}),
 											},
 										}),
@@ -377,7 +378,7 @@ export class RegistrationBlock extends Block {
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { [IDS.FORMS.REGISTRATION_FORM]: { ...this.props[IDS.FORMS.REGISTRATION_FORM] } };
+						let pageProps = { registrationForm: { ...this.props.registrationForm } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
@@ -387,11 +388,12 @@ export class RegistrationBlock extends Block {
 										&& typeof inputInstance?.props?.input_data?.error === 'string'
 										&& !inputInstance.props.input_data.error.length
 									) {
+										const fieldName = inputInstance.props.name as keyof IRegistrationFormUi;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
 											fieldName: inputInstance?.props?.name ?? '',
-											...(inputInstance.props.name === E_FORM_FIELDS_NAME.confirmPassword && {
-												valueToCompare: this.props[IDS.FORMS.REGISTRATION_FORM].fields.password,
+											...(fieldName === 'confirmPassword' && {
+												valueToCompare: this.props?.registrationForm?.fields?.password ?? '',
 											}),
 										});
 
@@ -406,22 +408,26 @@ export class RegistrationBlock extends Block {
 											inputInstance.setProps(data);
 											fieldInstance.setProps(data);
 
-											pageProps = {
-												[IDS.FORMS.REGISTRATION_FORM]: {
-													...pageProps[IDS.FORMS.REGISTRATION_FORM],
-													errors: {
-														...pageProps[IDS.FORMS.REGISTRATION_FORM].errors,
-														[inputInstance.props.name]: validationResult,
+											const registrationForm = pageProps?.registrationForm as BlockProps['registrationForm'];
+											const registrationErrors = registrationForm?.errors;
+											if (registrationErrors) {
+												pageProps = {
+													registrationForm: {
+														...registrationForm,
+														errors: {
+															...registrationErrors,
+															[fieldName]: validationResult,
+														},
 													},
-												},
-											};
+												};
+											}
 										}
 									}
 								});
 							}
 						});
 
-						console.log('Registration data submit: ', this.props[IDS.FORMS.REGISTRATION_FORM].fields);
+						console.log('Registration data submit: ', this.props?.registrationForm?.fields);
 
 						if (validationResult.length) {
 							this.setProps(pageProps as BlockProps);

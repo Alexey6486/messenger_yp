@@ -111,4 +111,4 @@ export const IDS: Record<string, Record<string, string>> = {
 		MAIN_CHAT_SEARCH_FORM: 'chatsSearchForm',
 		MAIN_NEW_MESSAGE_FORM: 'newMessageForm',
 	},
-};
+} as const;

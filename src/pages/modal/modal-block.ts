@@ -45,7 +45,7 @@ export class ModalBlock<T> extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Modal form submit: ', this.children[IDS.MODAL.CONTENT].props[props.contentId].fields);
+						console.log('Modal form submit: ', {});
 					},
 				}),
 			},

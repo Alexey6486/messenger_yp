@@ -83,16 +83,19 @@ export class MessagingFooterBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						if (this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message.trim().length) {
-							console.log('New message submit', this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields);
+						if (
+							typeof this.props?.newMessageForm?.fields?.message === 'string'
+							&& this.props?.newMessageForm?.fields?.message.trim().length
+						) {
+							console.log('New message submit', this.props?.newMessageForm?.fields ?? '');
 						}
 					},
 				}),
 				[IDS.MAIN.NEW_MESSAGE_INPUT]: new InputBlock({
 					id: IDS.MAIN.NEW_MESSAGE_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message,
-						error: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].errors.message,
+						value: props?.newMessageForm?.fields?.message ?? '',
+						error: props?.newMessageForm?.errors?.message ?? '',
 						currentFocus: props?.currentFocus,
 					},
 					dataset: E_FORM_FIELDS_NAME.message,

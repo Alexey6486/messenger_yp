@@ -24,6 +24,7 @@ import { MessagingBlock } from '@/pages/main/components/messaging/messaging-bloc
 import { LinkBlock } from '@/components/link/link-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
+import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 
 export class MainBlock extends Block {
 	constructor(props: BlockProps) {
@@ -41,14 +42,14 @@ export class MainBlock extends Block {
 				[IDS.MAIN.SEARCH_FORM]: new FormBlock({
 					id: IDS.MAIN.SEARCH_FORM,
 					onSubmit: () => {
-						console.log('Search submit: ', { title: this.props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].fields.title });
+						console.log('Search submit: ', { title: this.props?.chatsSearchForm?.fields?.title ?? '' });
 					},
 					childrenList: [
 						new InputBlock({
 							id: IDS.MAIN.SEARCH_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].fields.title,
-								error: props[IDS.FORMS.MAIN_CHAT_SEARCH_FORM].errors.title,
+								value: props?.chatsSearchForm?.fields?.title ?? '',
+								error: props?.chatsSearchForm?.errors?.title ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.title,
@@ -79,7 +80,10 @@ export class MainBlock extends Block {
 							text: formatContentLength(last_message.content),
 							counter: unread_count,
 							isActive: props.currentChatId === id,
-							onClick: () => {
+							onClick: (event: Event) => {
+								event.preventDefault();
+								event.stopPropagation();
+
 								Object.entries(this.allInstances).forEach(([instanceId, instance]) => {
 									if (instanceId === IDS.MAIN.CHAT_LIST) {
 										Object.entries(instance.allInstances).forEach(([chatId, chatInstance]) => {
@@ -143,8 +147,20 @@ export class MainBlock extends Block {
 					id: IDS.MAIN.MESSAGING,
 					styles,
 					messages: props.messages,
-					[IDS.FORMS.MAIN_NEW_MESSAGE_FORM]: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM],
+					newMessageForm: props.newMessageForm,
 					userData: props.userData,
+					childrenList: Array.isArray(props?.messages)
+						? props?.messages?.map?.(({ id, last_message }: IChat) => {
+							return new MessagingMainBlock({
+								id,
+								styles,
+								author: last_message.user.display_name,
+								text: last_message.content,
+								date: last_message.time,
+								isMe: last_message.user.id === props?.userData?.id,
+							});
+						})
+						: [],
 					onChangePage: () => {
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
 					},
@@ -157,7 +173,10 @@ export class MainBlock extends Block {
 					tooltip: 'profile link',
 					target: '_self',
 					text: 'Профиль',
-					onClick: () => {
+					onClick: (event: Event) => {
+						event.preventDefault();
+						event.stopPropagation();
+
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
 					},
 				}),

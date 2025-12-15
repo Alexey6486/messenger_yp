@@ -59,7 +59,10 @@ export class MessagingHeaderBlock extends Block {
 					tooltip: 'profile link',
 					target: '_self',
 					text: props?.userData?.first_name ?? '',
-					onClick: () => {
+					onClick: (event: Event) => {
+						event.preventDefault();
+						event.stopPropagation();
+
 						props.onChangePage?.();
 					},
 				}),

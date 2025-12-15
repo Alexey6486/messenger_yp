@@ -2,69 +2,69 @@ import type {
 	Nullable,
 	TPages,
 } from '@/types';
-import { Block } from '@/block';
+import type { Block } from '@/block';
 
-export enum E_FORM_FIELDS_NAME {
-	first_name = 'first_name',
-	second_name = 'second_name',
-	display_name = 'display_name',
-	login = 'login',
-	password = 'password',
-	oldPassword = 'oldPassword',
-	newPassword = 'newPassword',
-	confirmPassword = 'confirmPassword',
-	email = 'email',
-	phone = 'phone',
-	avatar = 'avatar',
-	title = 'title',
-	message = 'message',
-}
+export const E_FORM_FIELDS_NAME = {
+	first_name: 'first_name',
+	second_name: 'second_name',
+	display_name: 'display_name',
+	login: 'login',
+	password: 'password',
+	oldPassword: 'oldPassword',
+	newPassword: 'newPassword',
+	confirmPassword: 'confirmPassword',
+	email: 'email',
+	phone: 'phone',
+	avatar: 'avatar',
+	title: 'title',
+	message: 'message',
+} as const;
 
 export interface ISearchForm {
-	[E_FORM_FIELDS_NAME.title]: string;
+	title: string;
 }
 
 export interface IMessageForm {
-	[E_FORM_FIELDS_NAME.message]: string;
+	message: string;
 }
 
 export interface IAddUserModalForm {
-	[E_FORM_FIELDS_NAME.login]: string;
+	login: string;
 }
 
 export interface ILoginForm {
-	[E_FORM_FIELDS_NAME.login]: string;
-	[E_FORM_FIELDS_NAME.password]: string;
+	login: string;
+	password: string;
 }
 
 export interface IRegistrationFormDto {
-	[E_FORM_FIELDS_NAME.first_name]: string;
-	[E_FORM_FIELDS_NAME.second_name]: string;
-	[E_FORM_FIELDS_NAME.login]: string;
-	[E_FORM_FIELDS_NAME.email]: string;
-	[E_FORM_FIELDS_NAME.password]: string;
-	[E_FORM_FIELDS_NAME.phone]: string;
+	first_name: string;
+	second_name: string;
+	login: string;
+	email: string;
+	password: string;
+	phone: string;
 }
 
 export interface IRegistrationFormUi extends IRegistrationFormDto {
-	[E_FORM_FIELDS_NAME.confirmPassword]: string;
+	confirmPassword: string;
 }
 
 export interface IUserDataForm {
 	id: string;
-	[E_FORM_FIELDS_NAME.first_name]: string;
-	[E_FORM_FIELDS_NAME.second_name]: string;
-	[E_FORM_FIELDS_NAME.display_name]: string;
-	[E_FORM_FIELDS_NAME.avatar]: string;
-	[E_FORM_FIELDS_NAME.login]: string;
-	[E_FORM_FIELDS_NAME.email]: string;
-	[E_FORM_FIELDS_NAME.phone]: string;
+	first_name: string;
+	second_name: string;
+	display_name: string;
+	avatar: string;
+	login: string;
+	email: string;
+	phone: string;
 }
 
 export interface IUserPasswordForm {
-	[E_FORM_FIELDS_NAME.oldPassword]: string;
-	[E_FORM_FIELDS_NAME.newPassword]: string;
-	[E_FORM_FIELDS_NAME.confirmPassword]: string;
+	oldPassword: string;
+	newPassword: string;
+	confirmPassword: string;
 }
 
 export interface IFormState<T> {
@@ -76,11 +76,11 @@ export type TFormsFields = ILoginForm & IRegistrationFormUi & ISearchForm;
 
 export interface IUserBase {
 	id: string;
-	[E_FORM_FIELDS_NAME.first_name]: string;
-	[E_FORM_FIELDS_NAME.second_name]: string;
-	[E_FORM_FIELDS_NAME.display_name]: string;
-	[E_FORM_FIELDS_NAME.avatar]: string;
-	[E_FORM_FIELDS_NAME.login]: string;
+	first_name: string;
+	second_name: string;
+	display_name: string;
+	avatar: string;
+	login: string;
 }
 
 export type TUserRole = 'admin' | 'regular';
@@ -90,8 +90,8 @@ export interface IChatUserResponse extends IUserBase {
 }
 
 export interface IUserResponse extends IUserBase {
-	[E_FORM_FIELDS_NAME.email]: string;
-	[E_FORM_FIELDS_NAME.phone]: string;
+	email: string;
+	phone: string;
 }
 
 export interface IChatLastMessage {

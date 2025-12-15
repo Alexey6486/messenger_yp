@@ -2,7 +2,7 @@ import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import { ChatBlock } from '@/pages/main/components/chat/chat-block';
+import type { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import template from './ul-template';
 
 interface IUlBlockProps extends BlockProps {

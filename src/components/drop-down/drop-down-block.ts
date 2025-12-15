@@ -5,10 +5,10 @@ import {
 	IDS,
 } from '@/constants';
 import type { BlockProps } from '@/types';
+import type { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgDots } from '@/components/icons';
 import template from './drop-down-template';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 
 interface IDropDownBlockProps extends BlockProps {
 	childrenList?: DropDownOptionBlock[];

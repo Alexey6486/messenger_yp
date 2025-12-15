@@ -28,8 +28,8 @@ export class AddUserBlock extends Block {
 					id: IDS.MODAL.ADD_USER_FIELD,
 					id_label: IDS.MODAL.ADD_USER_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-						error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+						value: props.modalAddUserForm?.fields?.login ?? '',
+						error: props.modalAddUserForm?.errors?.login ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -38,8 +38,8 @@ export class AddUserBlock extends Block {
 						[IDS.MODAL.ADD_USER_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_USER_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.MODAL_ADD_USER_FORM].fields.login,
-								error: props[IDS.FORMS.MODAL_ADD_USER_FORM].errors.login,
+								value: props.modalAddUserForm?.fields?.login ?? '',
+								error: props.modalAddUserForm?.errors?.login ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,

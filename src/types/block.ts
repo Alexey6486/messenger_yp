@@ -1,4 +1,4 @@
-import {
+import type {
 	IAddUserModalForm,
 	IChat,
 	IChildren,
@@ -14,9 +14,9 @@ import {
 	IUserPasswordForm,
 	IUserResponse,
 } from '@/types/state';
-import { Block } from '@/block';
-import { Nullable } from '@/types/general';
-import { TPages } from '@/types/pages';
+import type { Block } from '@/block';
+import type { Nullable } from '@/types/general';
+import type { TPages } from '@/types/pages';
 
 export interface BlockProps {
 	children?: IChildren<Block>;
@@ -54,7 +54,7 @@ export interface BlockProps {
 	fieldName?: string;
 	parentFormId?: string;
 	currentChatId?: Nullable<string>;
-	contentId?: string;
+	contentId?: keyof BlockProps;
 	error?: string;
 	buttonText?: string;
 	page?: TPages,
@@ -65,7 +65,7 @@ export interface BlockProps {
 	userData?: IUserResponse;
 	currentFocus?: Nullable<ICurrentFocus>;
 
-	onClick?: (event?: Event) => void;
+	onClick?: (event: Event) => void;
 	onSubmit?: (event?: Event) => void;
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
@@ -74,6 +74,7 @@ export interface BlockProps {
 	class?: string;
 	styles?: { [key: string]: string };
 
+	attr?: Record<string, string>;
 	markup?: Record<string, string>;
 	events?: Record<string, (e: Event) => void>;
 

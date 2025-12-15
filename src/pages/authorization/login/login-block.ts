@@ -11,6 +11,7 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 	IAddUserModalForm,
+	ILoginForm,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -43,8 +44,8 @@ export class LoginBlock extends Block {
 					id: IDS.AUTHORIZATION.LOGIN_FIELD,
 					id_label: IDS.AUTHORIZATION.LOGIN_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.login,
-						error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.login,
+						value: props?.authorizationForm?.fields?.login ?? '',
+						error: props?.authorizationForm?.errors?.login ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
@@ -53,8 +54,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.LOGIN_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.LOGIN_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.login,
-								error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.login,
+								value: props?.authorizationForm?.fields?.login ?? '',
+								error: props?.authorizationForm?.errors?.login ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -91,8 +92,8 @@ export class LoginBlock extends Block {
 					id: IDS.AUTHORIZATION.PSW_FIELD,
 					id_label: IDS.AUTHORIZATION.PSW_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.password,
-						error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.password,
+						value: props?.authorizationForm?.fields?.password ?? '',
+						error: props?.authorizationForm?.errors?.password ?? '',
 						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
@@ -101,8 +102,8 @@ export class LoginBlock extends Block {
 						[IDS.AUTHORIZATION.PSW_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.AUTHORIZATION_FORM].fields.password,
-								error: props[IDS.FORMS.AUTHORIZATION_FORM].errors.password,
+								value: props?.authorizationForm?.fields?.password ?? '',
+								error: props?.authorizationForm?.errors?.password ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
@@ -145,15 +146,19 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { [IDS.FORMS.AUTHORIZATION_FORM]: { ...this.props[IDS.FORMS.AUTHORIZATION_FORM] } };
+						let pageProps = { authorizationForm: { ...this.props.authorizationForm } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (inputId.includes('input') && !inputInstance.props?.input_data?.error.length) {
+									if (
+										inputId.includes('input')
+										&& !inputInstance.props?.input_data?.error.length
+									) {
+										const fieldName = inputInstance.props.name as keyof ILoginForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
-											fieldName: inputInstance?.props?.name ?? '',
+											fieldName: fieldName ?? '',
 											requiredOnly: true,
 										});
 
@@ -168,22 +173,26 @@ export class LoginBlock extends Block {
 											inputInstance.setProps(childProps);
 											fieldInstance.setProps(childProps);
 
-											pageProps = {
-												[IDS.FORMS.AUTHORIZATION_FORM]: {
-													...pageProps[IDS.FORMS.AUTHORIZATION_FORM],
-													errors: {
-														...pageProps[IDS.FORMS.AUTHORIZATION_FORM].errors,
-														[inputInstance.props.name]: validationResult,
+											const authorizationForm = pageProps?.authorizationForm as BlockProps['authorizationForm'];
+											const authorizationErrors = authorizationForm?.errors;
+											if (authorizationErrors) {
+												pageProps = {
+													authorizationForm: {
+														...authorizationForm,
+														errors: {
+															...authorizationErrors,
+															[fieldName]: validationResult,
+														},
 													},
-												},
-											};
+												};
+											}
 										}
 									}
 								});
 							}
 						});
 
-						console.log('Login data submit: ', this.props[IDS.FORMS.AUTHORIZATION_FORM].fields);
+						console.log('Login data submit: ', this.props?.authorizationForm?.fields ?? '');
 
 						if (validationResult.length) {
 							this.setProps(pageProps as BlockProps);
@@ -245,9 +254,9 @@ export class LoginBlock extends Block {
 						event.stopPropagation();
 
 						this.createModal<IAddUserModalForm>(
-							IDS.FORMS.MODAL_ADD_USER_FORM,
+							'modalAddUserForm',
 							{
-								[IDS.FORMS.MODAL_ADD_USER_FORM]: {
+								modalAddUserForm: {
 									fields: { login: '' },
 									errors: { login: '' },
 								},
