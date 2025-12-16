@@ -80,7 +80,7 @@ export const INIT_USER_DATA: IUserResponse = {
 	avatar: '',
 	login: 'ivan',
 	email: 'ivan@yandex.ru',
-	phone: '123456789',
+	phone: '1234567890',
 };
 
 export const INIT_PROFILE_USER_DATA_STATE: IFormState<IUserDataForm> = {

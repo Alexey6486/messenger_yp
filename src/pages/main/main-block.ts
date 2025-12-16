@@ -185,7 +185,6 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
-		console.log(this);
 		return compile(template, this.props);
 	}
 }

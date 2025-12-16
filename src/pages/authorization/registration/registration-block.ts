@@ -11,6 +11,7 @@ import type {
 	BlockProps,
 	IInputChangeParams,
 	IRegistrationFormUi,
+	IFormState,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -427,7 +428,16 @@ export class RegistrationBlock extends Block {
 							}
 						});
 
-						console.log('Registration data submit: ', this.props?.registrationForm?.fields);
+						const registrationForm: IFormState<IRegistrationFormUi> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
+						if (
+							registrationForm
+							&& registrationForm.errors
+						) {
+							const errorsList = Object.values(registrationForm.errors).filter((el) => Boolean(el));
+							if (!errorsList.length) {
+								console.log('Registration form submit: ', this.props?.registrationForm?.fields ?? '');
+							}
+						}
 
 						if (validationResult.length) {
 							this.setProps(pageProps as BlockProps);

@@ -12,6 +12,7 @@ import type {
 	IInputChangeParams,
 	IAddUserModalForm,
 	ILoginForm,
+	IFormState,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -192,7 +193,16 @@ export class LoginBlock extends Block {
 							}
 						});
 
-						console.log('Login data submit: ', this.props?.authorizationForm?.fields ?? '');
+						const authorizationForm: IFormState<ILoginForm> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
+						if (
+							authorizationForm
+							&& authorizationForm.errors
+						) {
+							const errorsList = Object.values(authorizationForm.errors).filter((el) => Boolean(el));
+							if (!errorsList.length) {
+								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
+							}
+						}
 
 						if (validationResult.length) {
 							this.setProps(pageProps as BlockProps);

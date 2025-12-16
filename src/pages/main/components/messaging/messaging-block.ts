@@ -4,9 +4,9 @@ import { compile } from '@/utils';
 import type {
 	BlockProps,
 } from '@/types';
+import type { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
 import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';
-import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 import template from './messaging-template';
 import styles from '@/pages/main/styles.module.pcss';
 

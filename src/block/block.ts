@@ -236,21 +236,21 @@ export abstract class Block {
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
 				const oldTarget = { ...target };
-				const key = p;
+
 				if (
-					key === 'authorizationForm'
-					|| key === 'registrationForm'
-					|| key === 'passwordForm'
-					|| key === 'userForm'
-					|| key === 'chatsSearchForm'
-					|| key === 'newMessageForm'
-					|| key === 'modalAddUserForm'
+					p === 'authorizationForm'
+					|| p === 'registrationForm'
+					|| p === 'passwordForm'
+					|| p === 'userForm'
+					|| p === 'chatsSearchForm'
+					|| p === 'newMessageForm'
+					|| p === 'modalAddUserForm'
 				) {
-					const errors = target[key]?.errors;
-					const fields = target[key]?.fields;
+					const errors = target[p]?.errors;
+					const fields = target[p]?.fields;
 
 					if (errors && fields) {
-						target[key] = {
+						target[p] = {
 							errors: {
 								...errors,
 								...newValue?.errors,
@@ -430,7 +430,6 @@ export abstract class Block {
 					this._element.focus();
 					if (
 						this?.props?.input_data
-						&& 'currentFocus' in this?.props?.input_data
 						&& this?.props?.input_data?.currentFocus
 						&& this.props.input_data.currentFocus?.selectionStart !== null
 					) {

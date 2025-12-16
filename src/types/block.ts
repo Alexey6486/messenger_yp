@@ -70,6 +70,7 @@ export interface BlockProps {
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
 	changePage?: (page: TPages) => void;
+	onCloseModal?: () => void;
 
 	class?: string;
 	styles?: { [key: string]: string };

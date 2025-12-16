@@ -6,7 +6,6 @@ import type {
 	BlockProps,
 	IFormState,
 } from '@/types';
-import { ButtonBlock } from '@/components/button/button-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgCross } from '@/components/icons';
 import template from './modal-template.hbs?raw';
@@ -25,7 +24,11 @@ export class ModalBlock<T> extends Block {
 				[IDS.MODAL.CLOSE]: `<div id="${IDS.MODAL.CLOSE}"></div>`,
 			},
 			children: {
-				[IDS.MODAL.CONTENT]: getModalContentBlock<T>(props?.contentId, props.contentForms),
+				[IDS.MODAL.CONTENT]: getModalContentBlock<T>(
+					props?.contentId,
+					props.contentForms,
+					() => this.eventBus().emit(Block.EVENTS.FLOW_CWU),
+				),
 				[IDS.MODAL.CLOSE]: new ButtonRoundBlock({
 					id: IDS.MODAL.CLOSE,
 					type: 'button',
@@ -35,17 +38,6 @@ export class ModalBlock<T> extends Block {
 						event.stopPropagation();
 
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU);
-					},
-				}),
-				[IDS.MODAL.SUBMIT]: new ButtonBlock({
-					id: IDS.MODAL.SUBMIT,
-					type: 'button',
-					text: props?.buttonText ?? 'Сохранить',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						console.log('Modal form submit: ', {});
 					},
 				}),
 			},

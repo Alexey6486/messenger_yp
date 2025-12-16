@@ -1,5 +1,6 @@
 export default `
-<div id="{{id}}">
+<form class="{{class}}" id="{{id}}">
 {{{ markup.modal-add-user-field }}}
-</div>
+{{{ markup.modal-add-user-submit }}}
+</form>
 `;
