@@ -73,7 +73,6 @@ export class LoginBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.login,
-													requiredOnly: true,
 												}),
 											},
 										}),
@@ -121,7 +120,6 @@ export class LoginBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.password,
-													requiredOnly: true,
 												}),
 											},
 										}),
@@ -160,7 +158,6 @@ export class LoginBlock extends Block {
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
 											fieldName: fieldName ?? '',
-											requiredOnly: true,
 										});
 
 										if (validationResult.length) {
