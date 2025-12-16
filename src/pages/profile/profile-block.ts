@@ -11,10 +11,11 @@ import {
 	E_FORM_FIELDS_NAME,
 } from '@/types';
 import type {
+	IUserDataForm,
+	IUserPasswordForm,
+	IFormState,
 	BlockProps,
 	IInputChangeParams,
-	TPages,
-	IProfilePageState,
 } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
@@ -24,14 +25,8 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
 
-interface IProfileBlock extends IProfilePageState, BlockProps {
-	userData: Record<string, string>,
-	children: Record<string, ProfileFieldBlock | InputBlock | ButtonBlock | ButtonRoundBlock>
-	changePage: (page: TPages) => void,
-}
-
 export class ProfileBlock extends Block {
-	constructor(props: IProfileBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			styles,
@@ -66,8 +61,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.EMAIL_FIELD,
 					fieldName: 'Почта',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.email,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.email,
+						value: props?.userForm?.fields?.email ?? '',
+						error: props?.userForm?.errors?.email ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -75,8 +70,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.EMAIL_INPUT]: new InputBlock({
 							id: IDS.PROFILE.EMAIL_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.email,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.email,
+								value: props?.userForm?.fields?.email ?? '',
+								error: props?.userForm?.errors?.email ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
@@ -85,7 +80,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -116,8 +111,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.LOGIN_FIELD,
 					fieldName: 'Логин',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.login,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.login,
+						value: props?.userForm?.fields?.login ?? '',
+						error: props?.userForm?.errors?.login ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -125,8 +120,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.LOGIN_INPUT]: new InputBlock({
 							id: IDS.PROFILE.LOGIN_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.login,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.login,
+								value: props?.userForm?.fields?.login ?? '',
+								error: props?.userForm?.errors?.login ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
@@ -135,7 +130,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -166,8 +161,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.F_NAME_FIELD,
 					fieldName: 'Имя',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.first_name,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.first_name,
+						value: props?.userForm?.fields?.first_name ?? '',
+						error: props?.userForm?.errors?.first_name ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -175,8 +170,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.F_NAME_INPUT]: new InputBlock({
 							id: IDS.PROFILE.F_NAME_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.first_name,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.first_name,
+								value: props?.userForm?.fields?.first_name ?? '',
+								error: props?.userForm?.errors?.first_name ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
@@ -185,7 +180,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -216,8 +211,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.S_NAME_FIELD,
 					fieldName: 'Фамилия',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.second_name,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.second_name,
+						value: props?.userForm?.fields?.second_name ?? '',
+						error: props?.userForm?.errors?.second_name ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -225,8 +220,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.S_NAME_INPUT]: new InputBlock({
 							id: IDS.PROFILE.S_NAME_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.second_name,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.second_name,
+								value: props?.userForm?.fields?.second_name ?? '',
+								error: props?.userForm?.errors?.second_name ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
@@ -235,7 +230,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -266,8 +261,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.D_NAME_FIELD,
 					fieldName: 'Имя в чате',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.display_name,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.display_name,
+						value: props?.userForm?.fields?.display_name ?? '',
+						error: props?.userForm?.errors?.display_name ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -275,8 +270,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.D_NAME_INPUT]: new InputBlock({
 							id: IDS.PROFILE.D_NAME_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.display_name,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.display_name,
+								value: props?.userForm?.fields?.display_name ?? '',
+								error: props?.userForm?.errors?.display_name ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.display_name,
@@ -285,7 +280,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -316,8 +311,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.PHONE_FIELD,
 					fieldName: 'Телефон',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.phone,
-						error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.phone,
+						value: props?.userForm?.fields?.phone ?? '',
+						error: props?.userForm?.errors?.phone ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
@@ -325,8 +320,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.PHONE_INPUT]: new InputBlock({
 							id: IDS.PROFILE.PHONE_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_DATA_FORM].fields.phone,
-								error: props[IDS.FORMS.PROFILE_USER_DATA_FORM].errors.phone,
+								value: props?.userForm?.fields?.phone ?? '',
+								error: props?.userForm?.errors?.phone ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
@@ -335,7 +330,7 @@ export class ProfileBlock extends Block {
 							type: 'text',
 							isDisabled: !props.isDataEdit,
 							parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -367,8 +362,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.O_PSW_FIELD,
 					fieldName: 'Старый пароль',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.oldPassword,
-						error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.oldPassword,
+						value: props.passwordForm?.fields?.oldPassword ?? '',
+						error: props.passwordForm?.errors?.oldPassword ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
@@ -376,8 +371,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.O_PSW_INPUT]: new InputBlock({
 							id: IDS.PROFILE.O_PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.oldPassword,
-								error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.oldPassword,
+								value: props.passwordForm?.fields?.oldPassword ?? '',
+								error: props.passwordForm?.errors?.oldPassword ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.oldPassword,
@@ -385,7 +380,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -395,6 +390,7 @@ export class ProfileBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.oldPassword,
+													requiredOnly: true,
 												}),
 											},
 										}),
@@ -415,8 +411,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.N_PSW_FIELD,
 					fieldName: 'Новый пароль',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.newPassword,
-						error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.newPassword,
+						value: props.passwordForm?.fields?.newPassword ?? '',
+						error: props.passwordForm?.errors?.newPassword ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
@@ -424,8 +420,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.N_PSW_INPUT]: new InputBlock({
 							id: IDS.PROFILE.N_PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.newPassword,
-								error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.newPassword,
+								value: props.passwordForm?.fields?.newPassword ?? '',
+								error: props.passwordForm?.errors?.newPassword ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.newPassword,
@@ -433,7 +429,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -463,8 +459,8 @@ export class ProfileBlock extends Block {
 					id: IDS.PROFILE.C_PSW_FIELD,
 					fieldName: 'Повторите новый пароль',
 					input_data: {
-						value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.confirmPassword,
-						error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.confirmPassword,
+						value: props.passwordForm?.fields?.confirmPassword ?? '',
+						error: props.passwordForm?.errors?.confirmPassword ?? '',
 						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
@@ -472,8 +468,8 @@ export class ProfileBlock extends Block {
 						[IDS.PROFILE.C_PSW_INPUT]: new InputBlock({
 							id: IDS.PROFILE.C_PSW_INPUT,
 							input_data: {
-								value: props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.confirmPassword,
-								error: props[IDS.FORMS.PROFILE_USER_PSW_FORM].errors.confirmPassword,
+								value: props.passwordForm?.fields?.confirmPassword ?? '',
+								error: props.passwordForm?.errors?.confirmPassword ?? '',
 								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
@@ -481,7 +477,7 @@ export class ProfileBlock extends Block {
 							placeholder: '',
 							type: 'password',
 							parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
-							onChange: (params: IInputChangeParams<Block>) => {
+							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
 										...params,
@@ -491,7 +487,7 @@ export class ProfileBlock extends Block {
 												error: fieldsValidator({
 													valueToValidate: params.data.value,
 													fieldName: E_FORM_FIELDS_NAME.confirmPassword,
-													valueToCompare: this.props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields.newPassword,
+													valueToCompare: this.props?.passwordForm?.fields?.newPassword ?? '',
 												}),
 											},
 										}),
@@ -515,7 +511,7 @@ export class ProfileBlock extends Block {
 					placeholder: '',
 					type: 'file',
 					input_data: null,
-					onChange: () => {
+					onInputChange: () => {
 					},
 				}),
 				[IDS.PROFILE.ASIDE_BTN]: new ButtonRoundBlock({
@@ -579,7 +575,66 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Profile password form submit: ', this.props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields);
+						let validationResult = '';
+						let pageProps = { passwordForm: { ...this.props.passwordForm } };
+
+						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
+							if (fieldId.includes('password-field')) {
+								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
+									if (
+										inputId.includes('input')
+										&& !inputInstance.props?.input_data?.error.length
+									) {
+										const fieldName = inputInstance.props.name as keyof IUserPasswordForm;
+										validationResult = fieldsValidator({
+											valueToValidate: inputInstance?.props?.input_data?.value,
+											fieldName: fieldName ?? '',
+										});
+
+										if (validationResult.length) {
+											const childProps = {
+												input_data: {
+													value: inputInstance?.props?.input_data?.value ?? '',
+													error: validationResult,
+													currentFocus: { element: null, selectionStart: null },
+												},
+											};
+											inputInstance.setProps(childProps);
+											fieldInstance.setProps(childProps);
+
+											const passwordForm = pageProps?.passwordForm as BlockProps['passwordForm'];
+											const passwordErrors = passwordForm?.errors;
+											if (passwordErrors) {
+												pageProps = {
+													passwordForm: {
+														...passwordForm,
+														errors: {
+															...passwordErrors,
+															[fieldName]: validationResult,
+														},
+													},
+												};
+											}
+										}
+									}
+								});
+							}
+						});
+
+						const passwordForm: IFormState<IUserPasswordForm> | undefined = this.props?.passwordForm as BlockProps['passwordForm'];
+						if (
+							passwordForm
+							&& passwordForm.errors
+						) {
+							const errorsList = Object.values(passwordForm.errors).filter((el) => Boolean(el));
+							if (!errorsList.length) {
+								console.log('Profile password form submit: ', this.props?.passwordForm?.fields ?? '');
+							}
+						}
+
+						if (validationResult.length) {
+							this.setProps(pageProps as BlockProps);
+						}
 					},
 				}),
 				[IDS.PROFILE.SAVE_DATA_BTN]: new ButtonBlock({
@@ -590,7 +645,66 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Profile data form submit: ', this.props[IDS.FORMS.PROFILE_USER_PSW_FORM].fields);
+						let validationResult = '';
+						let pageProps = { userForm: { ...this.props.userForm } };
+
+						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
+							if (fieldId.includes('data-field')) {
+								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
+									if (
+										inputId.includes('input')
+										&& !inputInstance.props?.input_data?.error.length
+									) {
+										const fieldName = inputInstance.props.name as keyof IUserDataForm;
+										validationResult = fieldsValidator({
+											valueToValidate: inputInstance?.props?.input_data?.value,
+											fieldName: fieldName ?? '',
+										});
+
+										if (validationResult.length) {
+											const childProps = {
+												input_data: {
+													value: inputInstance?.props?.input_data?.value ?? '',
+													error: validationResult,
+													currentFocus: { element: null, selectionStart: null },
+												},
+											};
+											inputInstance.setProps(childProps);
+											fieldInstance.setProps(childProps);
+
+											const userForm = pageProps?.userForm as BlockProps['userForm'];
+											const userErrors = userForm?.errors;
+											if (userErrors) {
+												pageProps = {
+													userForm: {
+														...userForm,
+														errors: {
+															...userErrors,
+															[fieldName]: validationResult,
+														},
+													},
+												};
+											}
+										}
+									}
+								});
+							}
+						});
+
+						const userForm: IFormState<IUserDataForm> | undefined = this.props?.userForm as BlockProps['userForm'];
+						if (
+							userForm
+							&& userForm.errors
+						) {
+							const errorsList = Object.values(userForm.errors).filter((el) => Boolean(el));
+							if (!errorsList.length) {
+								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
+							}
+						}
+
+						if (validationResult.length) {
+							this.setProps(pageProps as BlockProps);
+						}
 					},
 				}),
 				[IDS.PROFILE.CANCEL_PSW_EDIT_BTN]: new ButtonBlock({
@@ -600,8 +714,6 @@ export class ProfileBlock extends Block {
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
-
-						this.resetTargetForm(IDS.FORMS.PROFILE_USER_PSW_FORM);
 
 						this.setProps({
 							isPasswordEdit: false,
@@ -617,7 +729,6 @@ export class ProfileBlock extends Block {
 						event.stopPropagation();
 
 						this.toggleInputsDisable();
-						this.resetTargetForm(IDS.FORMS.PROFILE_USER_DATA_FORM, props.userData);
 
 						this.setProps({
 							isDataEdit: false,

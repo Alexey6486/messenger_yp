@@ -3,13 +3,14 @@ import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
-	E_FORM_FIELDS_NAME,
 	IChildren,
 	IFormState,
 	IInputChangeParams,
 	Nullable,
 } from '@/types';
-import { IEbEvents } from '@/types';
+import {
+	IEbEvents,
+} from '@/types';
 
 export abstract class Block {
 	static EVENTS = {
@@ -59,16 +60,20 @@ export abstract class Block {
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
 				Object.values(value as Record<string, Block>).forEach((instance) => {
-					children_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+					if (instance.props.id) {
+						children_part[instance.props.id] = instance;
+						all_instances_part[instance.props.id] = instance;
+					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
 				value.forEach((instance) => {
-					children_list_part[instance.props.id] = instance;
-					all_instances_part[instance.props.id] = instance;
+					if (instance.props.id) {
+						children_list_part[instance.props.id] = instance;
+						all_instances_part[instance.props.id] = instance;
+					}
 				});
 			} else {
-				props_part[props_name] = value;
+				props_part[props_name as keyof BlockProps] = value;
 			}
 		});
 
@@ -156,7 +161,7 @@ export abstract class Block {
 		}
 
 		if (props?.page) {
-			this.props.changePage(props.page);
+			this?.props?.changePage?.(props.page);
 		}
 	}
 
@@ -167,10 +172,12 @@ export abstract class Block {
 		temp.innerHTML = this.render();
 
 		Object.values(this.children).forEach((instance) => {
-			const element = temp.content.getElementById(instance.props.id);
+			if (typeof instance.props.id === 'string') {
+				const element = temp.content.getElementById(instance.props.id);
 
-			if (element) {
-				element.replaceWith(instance.getContent());
+				if (element) {
+					element.replaceWith(instance.getContent());
+				}
 			}
 		});
 
@@ -223,29 +230,38 @@ export abstract class Block {
 		const self = this;
 
 		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: string) {
+			get(target: BlockProps, p: keyof BlockProps) {
 				const value = target[p];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: BlockProps, p: string, newValue) {
+			set(target: BlockProps, p: keyof BlockProps, newValue) {
 				const oldTarget = { ...target };
-				if (p === 'input_data') {
-					const { value, error, currentFocus } = newValue;
 
-					target[p] = {
-						...target[p],
-						value,
-						error,
-						currentFocus,
-					};
-				} else if (p.toLowerCase().includes('form')) {
-					const { fields, errors } = newValue;
+				if (
+					p === 'authorizationForm'
+					|| p === 'registrationForm'
+					|| p === 'passwordForm'
+					|| p === 'userForm'
+					|| p === 'chatsSearchForm'
+					|| p === 'newMessageForm'
+					|| p === 'modalAddUserForm'
+				) {
+					const errors = target[p]?.errors;
+					const fields = target[p]?.fields;
 
-					target[p] = {
-						...target[p],
-						fields: { ...target[p].fields, ...fields },
-						errors: { ...target[p].errors, ...errors },
-					};
+					if (errors && fields) {
+						target[p] = {
+							errors: {
+								...errors,
+								...newValue?.errors,
+							},
+							fields: {
+								...fields,
+								...newValue?.fields,
+							},
+						};
+					}
+
 				} else {
 					target[p] = newValue;
 				}
@@ -362,13 +378,13 @@ export abstract class Block {
 	 * @returns {void}
 	 */
 	onFormInputChange(
-		params: IInputChangeParams<Block>,
+		params: IInputChangeParams,
 		childrenIdList: string[],
-		fieldName: E_FORM_FIELDS_NAME,
+		fieldName: string,
 		formName: string,
 	): void {
 		const { data, info } = params;
-		const { element, selectionStart } = info;
+		const { element, selectionStart = 0 } = info;
 
 		const targetChildren = this._getChildrenToUpdate(
 			this.allInstances,
@@ -378,7 +394,7 @@ export abstract class Block {
 		childrenIdList.forEach((childId) => {
 			targetChildren[childId].setProps({
 				input_data: {
-					value: data.value,
+					value: data.value ?? '',
 					error: data.error ?? '',
 					currentFocus: { element, selectionStart },
 				},
@@ -390,7 +406,7 @@ export abstract class Block {
 				fields: { [fieldName]: data.value },
 				errors: { [fieldName]: data.error ?? '' },
 			},
-		});
+		} as BlockProps);
 	}
 
 	protected toggleInputsDisable() {
@@ -407,74 +423,28 @@ export abstract class Block {
 		});
 	}
 
-	protected resetTargetForm(formName: string, originData?: Record<string, string>) {
-		let pageProps = { [formName]: { ...this.props[formName] } };
-		let shouldBeUpdated = false;
-
-		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field') && formName === fieldInstance.props.parentFormId) {
-				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-					if (inputId.includes('input')) {
-						if (
-							(originData
-								&& originData?.[inputInstance.props.name] !== inputInstance.props.input_data.value)
-							|| (!originData && inputInstance.props.input_data.value !== '')
-						) {
-							if (!shouldBeUpdated) {
-								shouldBeUpdated = true;
-							}
-
-							const childProps = {
-								input_data: {
-									value: originData?.[inputInstance.props.name] ?? '',
-									error: '',
-									currentFocus: { element: null, selectionStart: null },
-								},
-							};
-
-							inputInstance.setProps(childProps);
-							fieldInstance.setProps(childProps);
-
-							pageProps = {
-								[formName]: {
-									...pageProps[formName],
-									fields: {
-										...pageProps[formName].fields,
-										[inputInstance.props.name]: originData?.[inputInstance.props.name] ?? '',
-									},
-									errors: {
-										...pageProps[formName].errors,
-										[inputInstance.props.name]: '',
-									},
-								},
-							};
-						}
-					}
-				});
-			}
-		});
-
-		if (shouldBeUpdated) {
-			this.setProps(pageProps);
-		}
-	}
-
 	private _setFocus() {
 		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
 			setTimeout(() => {
 				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
 					this._element.focus();
-					this._element.setSelectionRange(
-						this.props.input_data.currentFocus.selectionStart,
-						this.props.input_data.currentFocus.selectionStart,
-					);
+					if (
+						this?.props?.input_data
+						&& this?.props?.input_data?.currentFocus
+						&& this.props.input_data.currentFocus?.selectionStart !== null
+					) {
+						this._element.setSelectionRange(
+							this.props.input_data.currentFocus.selectionStart,
+							this.props.input_data.currentFocus.selectionStart,
+						);
+					}
 				}
 			}, 0);
 		}
 	}
 
 	protected createModal<T>(
-		contentId: string,
+		contentId: keyof BlockProps,
 		contentForms: Record<string, IFormState<T>>,
 		title: string,
 	) {
@@ -483,15 +453,16 @@ export abstract class Block {
 			contentForms,
 			title,
 			error: '',
-			children: {},
 		});
 
-		if (this.props.appElement) {
+		if (this?.props?.appElement) {
 			const content = modal.getContent();
 
 			if (content) {
-				this.props.appElement.parentNode.appendChild(content);
-				modal.dispatchComponentDidMount();
+				if (this?.props?.appElement?.parentNode) {
+					this.props.appElement.parentNode.appendChild(content);
+					modal.dispatchComponentDidMount();
+				}
 			}
 		}
 	}

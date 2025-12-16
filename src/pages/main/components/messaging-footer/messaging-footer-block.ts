@@ -26,12 +26,8 @@ import {
 } from '@/components/icons';
 import template from './messaging-footer-template';
 
-interface IMessagingFooterBlock extends BlockProps {
-	id: string;
-}
-
 export class MessagingFooterBlock extends Block {
-	constructor(props: IMessagingFooterBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			markup: {
@@ -87,24 +83,27 @@ export class MessagingFooterBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						if (this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message.trim().length) {
-							console.log('New message submit', this.props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields);
+						if (
+							typeof this.props?.newMessageForm?.fields?.message === 'string'
+							&& this.props?.newMessageForm?.fields?.message.trim().length
+						) {
+							console.log('New message submit', this.props?.newMessageForm?.fields ?? '');
 						}
 					},
 				}),
 				[IDS.MAIN.NEW_MESSAGE_INPUT]: new InputBlock({
 					id: IDS.MAIN.NEW_MESSAGE_INPUT,
 					input_data: {
-						value: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].fields.message,
-						error: props[IDS.FORMS.MAIN_NEW_MESSAGE_FORM].errors.message,
-						currentFocus: props.currentFocus,
+						value: props?.newMessageForm?.fields?.message ?? '',
+						error: props?.newMessageForm?.errors?.message ?? '',
+						currentFocus: props?.currentFocus,
 					},
 					dataset: E_FORM_FIELDS_NAME.message,
 					name: E_FORM_FIELDS_NAME.message,
 					placeholder: 'Сообщение',
 					type: 'text',
 					class: props?.styles?.['message-input'] ?? '',
-					onChange: (params: IInputChangeParams<Block>) => {
+					onInputChange: (params: IInputChangeParams) => {
 						this.onFormInputChange(
 							{
 								...params,

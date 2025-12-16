@@ -103,7 +103,9 @@ export default class App {
 			const mainPage = new Pages.MainBlock({
 				...this.state.pages.main,
 				userData: { ...this.state.user },
-				changePage: (page: TPages) => this.changePage(page),
+				changePage: (page: TPages) => {
+					this.changePage(page);
+				},
 			});
 
 			if (this.appElement) {

@@ -3,17 +3,8 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './button-template';
 
-interface IButtonBlock extends BlockProps {
-	id: string;
-	type: string;
-	text: string;
-	class?: string;
-	dataset?: string;
-	onClick: (event: Event) => void;
-}
-
 export class ButtonBlock extends Block {
-	constructor(props: IButtonBlock) {
+	constructor(props: BlockProps) {
 		super({
 			...props,
 			events: {

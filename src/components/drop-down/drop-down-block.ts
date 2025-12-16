@@ -10,14 +10,12 @@ import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgDots } from '@/components/icons';
 import template from './drop-down-template';
 
-interface IDropDownBlock extends BlockProps {
-	id: string;
-	direction: string;
-	childrenList: DropDownOptionBlock[];
+interface IDropDownBlockProps extends BlockProps {
+	childrenList?: DropDownOptionBlock[];
 }
 
 export class DropDownBlock extends Block {
-	constructor(props: IDropDownBlock) {
+	constructor(props: IDropDownBlockProps) {
 		super({
 			...props,
 			markup: {

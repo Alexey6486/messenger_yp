@@ -89,6 +89,10 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 				validationResult = validator.isRequired().regexTest(REGEX.psw, VALIDATION_MSG.psw).result;
 				break;
 			}
+			case E_FORM_FIELDS_NAME.oldPassword: {
+				validationResult = validator.isRequired().result;
+				break;
+			}
 			case E_FORM_FIELDS_NAME.confirmPassword: {
 				validationResult = validator.isRequired().isValueEqualTo(valueToCompare, VALIDATION_MSG.c_psw).result;
 				break;
