@@ -1,54 +1,21 @@
 <div class="{{styles.container}}">
-    <aside class="{{styles.left}} {{#unless state.currentChatId}}{{styles.left-shadow}}{{/unless}}">
-        <div class="{{styles.profile}}">
-            {{>
-            DropDown
-                id=(lookup @root.ddNav 'id')
-                dataset=(lookup @root.ddNav 'dataset')
-                options=(lookup @root.ddNav 'options')
-                direction=(lookup @root.ddNav 'direction')
-                icon=(lookup @root.ddNav 'icon')
-            }}
-            <a class="{{styles.link}} {{profileLink}}" data-profile-btn="{{profileBtnDataset}}">
-                Профиль
-            </a>
-        </div>
-        <div class="{{styles.search}} {{#if state.searchForm.fields.search.length}}{{styles.filled}}{{/if}}">
-            <form id="{{searchFormId}}">
-                <input type="text" name="search" value="{{state.searchForm.fields.search}}" placeholder="Поиск" data-input="{{searchDataset}}">
-            </form>
-        </div>
-        <ul id="{{chatsId}}" class="{{styles.chats}}">
-            {{#map state.chats fnc}}
-                {{#each this}}
-                    {{>
-                    Chat
-                        id=this.id
-                        class=(lookup @root.styles)
-                        avatar=this.avatar
-                        title=this.title
-                        data=this.last_message.time
-                        text=this.last_message.content
-                        counter=this.unread_count
-                        dataset=(lookup @root.chatsDataset)
-                        isActive=(isChatActive @root.state this.id)
-                    }}
-                {{/each}}
-            {{/map}}
-        </ul>
-    </aside>
-    <div class="{{styles.right}}">
-        {{#if state.currentChatId}}
-            {{>
-            Messages
-                class=(lookup @root.styles)
-                me=(lookup @root.state.user.id)
-                messages=(lookup @root.state.messages)
-            }}
-        {{else}}
-            <main class="{{styles.placeholder}}">
-                Выберете чат, чтобы отправить сообщение
-            </main>
-        {{/if}}
-    </div>
+	<aside class="{{styles.left}} {{#unless currentChatId}}{{styles.left-shadow}}{{/unless}}">
+		<div class="{{styles.profile}}">
+			{{{ markup.main-dropdown-temp-nav }}}
+			{{{ markup.main-profile-link }}}
+		</div>
+		<div class="{{styles.search}} {{#if chatsSearchForm.fields.title.length}}{{styles.filled}}{{/if}}">
+			{{{ markup.main-search-form }}}
+		</div>
+		{{{ markup.main-chat-list }}}
+	</aside>
+	<div class="{{styles.right}}">
+		{{#if currentChatId}}
+			{{{ markup.main-messaging }}}
+		{{else}}
+			<main class="{{styles.placeholder}}">
+				Выберете чат, чтобы отправить сообщение
+			</main>
+		{{/if}}
+	</div>
 </div>

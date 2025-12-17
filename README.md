@@ -8,11 +8,15 @@
 
 ## Деплой
 
-![Netlify](https://radiant-chimera-91049a.netlify.app/)
-![Github Pages](https://alexey6486.github.io/messenger_yp/)
+Кредит для бесплатного использования netlify израсходован, в связи с чем, проект развернут на github
+https://radiant-chimera-91049a.netlify.app/
+
+https://alexey6486.github.io/messenger_yp/
 
 ## Установка
 
 - `npm install` — установка зависимостей,
 - `npm run start` — запуск приложения,
-- `npm run build` — сборка стабильной версии.
+- `npm run build` — сборка стабильной версии,
+- `npm run lint` — запуск проверки eslint,
+- `npm run lint:style` — запуск проверки стилей stylelint.

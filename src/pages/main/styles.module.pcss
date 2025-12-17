@@ -1,314 +1,315 @@
 .container {
-    width: 100%;
-    height: 100%;
-    display: flex;
+	width: 100%;
+	height: 100%;
+	display: flex;
 }
 
 .left {
-    width: 400px;
-    height: 100%;
-    background-color: var(--color-slg);
-    padding: 10px;
+	width: 400px;
+	height: 100%;
+	background-color: var(--color-slg);
+	padding: 10px;
 
-    &.left-shadow {
-        box-shadow: var(--shadow-btn);
-    }
+	&.left-shadow {
+		box-shadow: var(--shadow-btn);
+	}
 
-    & > .profile {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        padding: 10px 0 10px 10px;
-        position: relative;
-        height: 60px;
-        align-items: center;
+	& > .profile {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		padding: 10px 0 10px 10px;
+		position: relative;
+		height: 60px;
+		align-items: center;
 
-        & > .link {
-            cursor: pointer;
-            color: var(--color-gr);
-            transition: color var(--trns);
-            padding-right: 15px;
+		& > .link {
+			cursor: pointer;
+			color: var(--color-gr);
+			transition: color var(--trns);
+			padding-right: 15px;
+			text-decoration: none;
 
-            &::before {
-                content: "";
-                position: absolute;
-                right: 0;
-                top: 27px;
-                rotate: 45deg;
-                width: 8px;
-                height: 1px;
-                background-color: var(--color-gr);
-                transition: background-color var(--trns);
-            }
+			&::before {
+				content: "";
+				position: absolute;
+				right: 0;
+				top: 27px;
+				rotate: 45deg;
+				width: 8px;
+				height: 1px;
+				background-color: var(--color-gr);
+				transition: background-color var(--trns);
+			}
 
-            &::after {
-                content: "";
-                position: absolute;
-                right: 0;
-                bottom: 27px;
-                rotate: -45deg;
-                width: 8px;
-                height: 1px;
-                background-color: var(--color-gr);
-                transition: background-color var(--trns);
-            }
+			&::after {
+				content: "";
+				position: absolute;
+				right: 0;
+				bottom: 27px;
+				rotate: -45deg;
+				width: 8px;
+				height: 1px;
+				background-color: var(--color-gr);
+				transition: background-color var(--trns);
+			}
 
-            &:hover {
-                color: var(--color-hv);
+			&:hover {
+				color: var(--color-hv);
 
-                &::after,
-                &::before {
-                    background-color: var(--color-hv);
-                }
-            }
-        }
-    }
+				&::after,
+				&::before {
+					background-color: var(--color-hv);
+				}
+			}
+		}
+	}
 
-    & > .search {
-        position: relative;
-        width: 100%;
-        padding: 10px 0;
+	& > .search {
+		position: relative;
+		width: 100%;
+		padding: 10px 0;
 
-        & input {
-            padding: 0 10px;
-            width: 100%;
-            height: 40px;
-            box-shadow: var(--shadow-btn);
-        }
+		& input {
+			padding: 0 10px;
+			width: 100%;
+			height: 40px;
+			box-shadow: var(--shadow-btn);
+		}
 
-        & input::placeholder {
-            text-align: center;
-        }
+		& input::placeholder {
+			text-align: center;
+		}
 
-        &::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-65%);
-            left: 150px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 1px solid var(--color-gr);
-        }
-        &::after {
-            content: "";
-            position: absolute;
-            top: 34px;
-            left: 159px;
-            rotate: 45deg;
-            width: 6px;
-            height: 1px;
-            background-color: var(--color-gr);
-        }
+		&::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			transform: translateY(-65%);
+			left: 150px;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			border: 1px solid var(--color-gr);
+		}
 
-        &.filled {
-            &::after,
-            &::before {
-                content: none;
-            }
-        }
-    }
+		&::after {
+			content: "";
+			position: absolute;
+			top: 34px;
+			left: 159px;
+			rotate: 45deg;
+			width: 6px;
+			height: 1px;
+			background-color: var(--color-gr);
+		}
 
-    & > .chats {
-        width: 100%;
-        padding: 10px 0;
+		&.filled {
+			&::after,
+			&::before {
+				content: none;
+			}
+		}
+	}
 
-        & > .chat {
-            display: flex;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition:
-                background-color var(--trns),
-                box-shadow var(--trns);
-            padding: 10px 10px;
-            position: relative;
-            box-shadow: 0 1px 0 0 var(--color-bp);
+	& > .chats {
+		width: 100%;
+		padding: 10px 0;
 
-            &:hover {
-                box-shadow: 0 1px 2px 1px var(--color-bp);
-                background-color: white;
-            }
+		& > .chat {
+			display: flex;
+			margin-bottom: 6px;
+			cursor: pointer;
+			transition: background-color var(--trns),
+			box-shadow var(--trns);
+			padding: 10px;
+			position: relative;
+			box-shadow: 0 1px 0 0 var(--color-bp);
 
-            &.active:hover,
-            &.active {
-                box-shadow: 0 1px 2px 1px rgba(94, 153, 253, 0.45);
-                background-color: white;
-            }
+			&:hover {
+				box-shadow: 0 1px 2px 1px var(--color-bp);
+				background-color: white;
+			}
 
-            & > .img {
-                width: 60px;
-                min-width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                overflow: hidden;
-                background-color: var(--color-g);
-                margin-right: 10px;
-            }
+			&.active,
+			&.active:hover {
+				box-shadow: 0 1px 2px 1px rgb(94 153 253 / 45%);
+				background-color: white;
+			}
 
-            & > .block {
-                display: flex;
-                flex-direction: column;
-                flex-grow: 1;
+			& > .img {
+				width: 60px;
+				min-width: 60px;
+				height: 60px;
+				border-radius: 50%;
+				overflow: hidden;
+				background-color: var(--color-g);
+				margin-right: 10px;
+			}
 
-                & > .info {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 5px;
+			& > .block {
+				display: flex;
+				flex-direction: column;
+				flex-grow: 1;
 
-                    & > .title {
-                        font-weight: 600;
-                    }
+				& > .info {
+					display: flex;
+					justify-content: space-between;
+					margin-bottom: 5px;
 
-                    & > .date {
-                        color: var(--color-gr);
-                    }
-                }
+					& > .title {
+						font-weight: 600;
+					}
 
-                & > .text {
-                    padding: 0 30px 0 0;
-                    color: var(--color-gr);
-                    word-break: break-word;
-                }
-            }
+					& > .date {
+						color: var(--color-gr);
+					}
+				}
 
-            & > .counter {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background-color: var(--color-hv);
-                color: white;
-                position: absolute;
-                right: 10px;
-                bottom: 10px;
-            }
-        }
-    }
+				& > .text {
+					padding: 0 30px 0 0;
+					color: var(--color-gr);
+					overflow-wrap: anywhere;
+				}
+			}
+
+			& > .counter {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background-color: var(--color-hv);
+				color: white;
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+			}
+		}
+	}
 }
 
 .right {
-    display: flex;
-    flex-grow: 1;
+	display: flex;
+	flex-grow: 1;
 
-    & > .placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--color-gr);
-        font-size: 18px;
-    }
+	& > .placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--color-gr);
+		font-size: 18px;
+	}
 
-    & > .messages {
-        width: 100%;
-        height: 100%;
-        padding: 20px 0 20px 20px;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--color-slg);
+	& > .messages {
+		width: 100%;
+		height: 100%;
+		padding: 20px 0 20px 20px;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--color-slg);
 
-        & > .header {
-            padding: 0 20px 20px;
-            display: flex;
-            justify-content: space-between;
+		& > .header {
+			padding: 0 20px 20px;
+			display: flex;
+			justify-content: space-between;
 
-            & > .user {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
+			& > .user {
+				display: flex;
+				align-items: center;
+				cursor: pointer;
 
-                & > .user-icon {
-                    margin-right: 15px;
-                    width: 40px;
-                    min-width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    background-color: var(--color-g);
-                }
+				& > .user-icon {
+					margin-right: 15px;
+					width: 40px;
+					min-width: 40px;
+					height: 40px;
+					border-radius: 50%;
+					overflow: hidden;
+					background-color: var(--color-g);
+				}
 
-                & > .user-name {
-                    transition: color var(--trns);
-                }
+				& > .user-name {
+					transition: color var(--trns);
+					text-decoration: none;
+				}
 
-                &:hover > .user-name {
-                    color: var(--color-hv);
-                }
-            }
-        }
+				&:hover > .user-name {
+					color: var(--color-hv);
+				}
+			}
+		}
 
-        & > .main {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            flex-grow: 1;
-            padding: 20px;
-            box-shadow:
-                inset 1px 1px 3px 2px var(--color-bp),
-                inset 0 -1px 3px 1px var(--color-bp);
+		& > .main {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			flex-grow: 1;
+			padding: 20px;
+			box-shadow: inset 1px 1px 3px 2px var(--color-bp),
+			inset 0 -1px 3px 1px var(--color-bp);
 
-            & > .date-plate {
-                width: 100%;
-                color: var(--color-gr);
-                display: flex;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
+			& > .date-plate {
+				width: 100%;
+				color: var(--color-gr);
+				display: flex;
+				justify-content: center;
+				margin-bottom: 20px;
+			}
 
-            & > .message {
-                display: flex;
-                flex-direction: column;
-                background-color: var(--color-gl);
-                max-width: 500px;
-                border-radius: 4px;
-                padding: 10px 0 30px;
-                position: relative;
-                margin-bottom: 20px;
+			& > .message {
+				display: flex;
+				flex-direction: column;
+				background-color: var(--color-gl);
+				max-width: 500px;
+				border-radius: 4px;
+				padding: 10px 0 30px;
+				position: relative;
+				margin-bottom: 20px;
 
-                &.right-side {
-                    align-self: flex-end;
-                }
+				&.right-side {
+					align-self: flex-end;
+				}
 
-                & > .author {
-                    color: var(--color-gr);
-                    padding: 0 10px 5px;
-                }
+				& > .author {
+					color: var(--color-gr);
+					padding: 0 10px 5px;
+				}
 
-                & > .text {
-                    word-break: break-word;
-                    padding: 0 20px;
-                }
+				& > .text {
+					overflow-wrap: anywhere;
+					padding: 0 20px;
+				}
 
-                & > .date {
-                    position: absolute;
-                    bottom: 5px;
-                    right: 5px;
-                    color: var(--color-gr);
-                }
-            }
-        }
+				& > .date {
+					position: absolute;
+					bottom: 5px;
+					right: 5px;
+					color: var(--color-gr);
+				}
+			}
+		}
 
-        & > .footer {
-            padding: 20px 20px 0;
-            display: flex;
-            align-items: center;
+		& > .footer {
+			padding: 20px 20px 0;
+			display: flex;
+			align-items: center;
 
-            & > .message-form {
-                flex-grow: 1;
-                margin: 0 0 0 15px;
-                display: flex;
-                align-items: center;
+			& > .message-form {
+				flex-grow: 1;
+				margin: 0 0 0 15px;
+				display: flex;
+				align-items: center;
 
-                & > .message-input {
-                    width: 100%;
-                    background-color: var(--color-slg);
-                    margin-right: 15px;
-                }
-            }
-        }
-    }
+				& > .message-input {
+					width: 100%;
+					background-color: var(--color-slg);
+					margin-right: 15px;
+				}
+			}
+		}
+	}
 }

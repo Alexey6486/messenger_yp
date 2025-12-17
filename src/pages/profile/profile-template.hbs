@@ -1,199 +1,87 @@
 <div class="{{styles.container}}">
-    <aside class="{{styles.left}}">
-        {{>
-        ButtonRound
-            id=''
-            dataset=pageLinks.main
-            partialName=icons.arrowLeft.partialName
-            partialType=icons.arrowLeft.partialType
-        }}
-    </aside>
-    <main class="{{styles.right}}">
-        <div class="{{styles.content}}">
-            <form id="{{ids.formId}}" class="{{styles.form}}">
-                <div class="{{styles.avatar}}">
-                    <div class="{{styles.image}}">
-                        <input type="file" name="avatar" class="{{styles.image-input}}">
-                        <div class="{{styles.mask}}">
-                            Поменять аватар
-                        </div>
-                    </div>
-                    <div class="{{styles.name}}">{{state.user.first_name}}</div>
-                </div>
-                <div class="{{styles.fields-group}}">
-                    {{#if state.isPasswordEdit}}
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="oldPassword"
-                                fieldName="Старый пароль"
-                                value=state.passwordForm.fields.oldPassword
-                                dataset="oldPassword"
-                                name="oldPassword"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="newPassword"
-                                fieldName="Новый пароль"
-                                value=state.passwordForm.fields.newPassword
-                                dataset="newPassword"
-                                name="newPassword"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="confirmPassword"
-                                fieldName="Повторите новый пароль"
-                                value=state.passwordForm.fields.confirmPassword
-                                dataset="confirmPassword"
-                                name="confirmPassword"
-                            }}
-                        </div>
-                    {{else}}
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="email"
-                                fieldName="Почта"
-                                value=state.userForm.fields.email
-                                isDisabled=isEditDisabled
-                                dataset="email"
-                                name="email"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="login"
-                                fieldName="Логин"
-                                value=state.userForm.fields.login
-                                isDisabled=isEditDisabled
-                                dataset="login"
-                                name="login"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="first_name"
-                                fieldName="Имя"
-                                value=state.userForm.fields.first_name
-                                isDisabled=isEditDisabled
-                                dataset="first_name"
-                                name="first_name"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="second_name"
-                                fieldName="Фамилия"
-                                value=state.userForm.fields.second_name
-                                isDisabled=isEditDisabled
-                                dataset="second_name"
-                                name="second_name"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="display_name"
-                                fieldName="Имя в чате"
-                                value=state.userForm.fields.display_name
-                                isDisabled=isEditDisabled
-                                dataset="display_name"
-                                name="display_name"
-                            }}
-                        </div>
-                        <div class="{{styles.block}}">
-                            {{>
-                            ProfileField
-                                class=styles
-                                id="phone"
-                                fieldName="Телефон"
-                                value=state.userForm.fields.phone
-                                isDisabled=isEditDisabled
-                                dataset="phone"
-                                name="phone"
-                            }}
-                        </div>
-                    {{/if}}
-                </div>
-                {{#if state.isDataEdit}}
-                    <div class="{{styles.buttons}}">
-                        <div class="{{styles.buttons-center}}">
-                            {{>
-                            Button
-                                id=ids.saveData
-                                dataset=datasets.account
-                                text='Сохранить'
-                                type="submit"
-                            }}
-                        </div>
-                    </div>
-                {{/if}}
-                {{#if state.isPasswordEdit}}
-                    <div class="{{styles.buttons}}">
-                        <div class="{{styles.buttons-center}}">
-                            {{>
-                            Button
-                                id=ids.saveData
-                                dataset=datasets.account
-                                text='Сохранить'
-                                type="submit"
-                            }}
-                        </div>
-                    </div>
-                {{/if}}
-            </form>
-            <div class="{{styles.buttons}}" id="{{ids.buttons}}">
-                {{#if state.isDataEdit}}
-                    <div class="{{styles.buttons-center}}">
-                        {{>
-                        Button
-                            id=ids.cancel
-                            dataset=datasets.account
-                            text='Отмена'
-                        }}
-                    </div>
-                {{else if state.isPasswordEdit}}
-                    <div class="{{styles.buttons-center}}">
-                        {{>
-                        Button
-                            id=ids.cancel
-                            dataset=datasets.account
-                            text='Отмена'
-                        }}
-                    </div>
-                {{else}}
-                    <div class="{{styles.block}}">
-                        <div id="{{ids.changeData}}" data-btn="{{datasets.account}}" class="{{styles.button-link}}">
-                            Изменить данные
-                        </div>
-                    </div>
-                    <div class="{{styles.block}}">
-                        <div id="{{ids.changePassword}}" data-btn="{{datasets.account}}" class="{{styles.button-link}}">
-                            Изменить пароль
-                        </div>
-                    </div>
-                    <div class="{{styles.block}}">
-                        <div id="{{ids.logout}}" data-btn="{{datasets.account}}" class="{{styles.button-link}} {{styles.red}}">
-                            Выйти из аккаунта
-                        </div>
-                    </div>
-                {{/if}}
-            </div>
-        </div>
-    </main>
+	<aside class="{{styles.left}}">
+		{{{ markup.profile-aside-button }}}
+	</aside>
+	<main class="{{styles.right}}">
+		<div class="{{styles.content}}">
+			<form class="{{styles.form}}">
+				<div class="{{styles.avatar}}">
+					<div class="{{styles.image}}">
+						{{{ markup.profile-avatar }}}
+						<div class="{{styles.mask}}">
+							Поменять аватар
+						</div>
+					</div>
+					<div class="{{styles.name}}">{{userData.first_name}}</div>
+				</div>
+				<div class="{{styles.fields-group}}">
+					{{#if isPasswordEdit}}
+						<div class="{{styles.block}}">
+							{{{ markup.profile-old-password-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-new-password-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-confirm-password-field }}}
+						</div>
+					{{else}}
+						<div class="{{styles.block}}">
+							{{{ markup.profile-email-data-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-login-data-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-first-name-data-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-second-name-data-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-display-name-data-field }}}
+						</div>
+						<div class="{{styles.block}}">
+							{{{ markup.profile-phone-data-field }}}
+						</div>
+					{{/if}}
+				</div>
+				{{#if isDataEdit}}
+					<div class="{{styles.buttons}}">
+						<div class="{{styles.buttons-center}}">
+							{{{ markup.profile-save-data-button }}}
+						</div>
+					</div>
+				{{/if}}
+				{{#if isPasswordEdit}}
+					<div class="{{styles.buttons}}">
+						<div class="{{styles.buttons-center}}">
+							{{{ markup.profile-save-password-button }}}
+						</div>
+					</div>
+				{{/if}}
+			</form>
+			<div class="{{styles.buttons}}">
+				{{#if isDataEdit}}
+					<div class="{{styles.buttons-center}}">
+						{{{ markup.profile-cancel-data-edit-button }}}
+					</div>
+				{{else if isPasswordEdit}}
+					<div class="{{styles.buttons-center}}">
+						{{{ markup.profile-cancel-psw-edit-button }}}
+					</div>
+				{{else}}
+					<div class="{{styles.block}}">
+						{{{ markup.profile-change-data-button }}}
+					</div>
+					<div class="{{styles.block}}">
+						{{{ markup.profile-change-psw-button }}}
+					</div>
+					<div class="{{styles.block}}">
+						{{{ markup.profile-logout-button }}}
+					</div>
+				{{/if}}
+			</div>
+		</div>
+	</main>
 </div>

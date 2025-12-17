@@ -1,1 +1,1 @@
-export { GetMainPage } from './main';
+export { MainBlock } from './main-block';
