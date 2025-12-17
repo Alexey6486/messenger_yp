@@ -21,6 +21,13 @@ export const IDS: Record<string, Record<string, string>> = {
 	},
 	PROFILE: {
 		FORM: 'profile-form',
+		P_FORM: 'profile-password-form',
+		P_FORM_CONTAINER: 'profile-password-form-container',
+		D_FORM_CONTAINER: 'profile-data-form-container',
+		P_FORM_FIELDS: 'profile-password-form-fields',
+		D_FORM_FIELDS: 'profile-data-form-fields',
+		P_FORM_SUBMIT: 'profile-password-form-submit',
+		D_FORM_SUBMIT: 'profile-data-form-submit',
 		AVATAR: 'profile-avatar',
 
 		EMAIL_INPUT: 'profile-email-data-input',

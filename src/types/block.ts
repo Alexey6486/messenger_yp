@@ -3,6 +3,7 @@ import type {
 	IChat,
 	IChildren,
 	ICurrentFocus,
+	IFormsStateTest,
 	IFormState,
 	IInputChangeParams,
 	IInputState,
@@ -86,4 +87,6 @@ export interface BlockProps {
 	chatsSearchForm?: IFormState<ISearchForm>;
 	newMessageForm?: IFormState<IMessageForm>;
 	modalAddUserForm?: IFormState<IAddUserModalForm>;
+
+	forms?: IFormsStateTest;
 }

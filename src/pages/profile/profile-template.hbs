@@ -14,53 +14,12 @@
 					</div>
 					<div class="{{styles.name}}">{{userData.first_name}}</div>
 				</div>
-				<div class="{{styles.fields-group}}">
-					{{#if isPasswordEdit}}
-						<div class="{{styles.block}}">
-							{{{ markup.profile-old-password-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-new-password-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-confirm-password-field }}}
-						</div>
-					{{else}}
-						<div class="{{styles.block}}">
-							{{{ markup.profile-email-data-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-login-data-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-first-name-data-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-second-name-data-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-display-name-data-field }}}
-						</div>
-						<div class="{{styles.block}}">
-							{{{ markup.profile-phone-data-field }}}
-						</div>
-					{{/if}}
-				</div>
-				{{#if isDataEdit}}
-					<div class="{{styles.buttons}}">
-						<div class="{{styles.buttons-center}}">
-							{{{ markup.profile-save-data-button }}}
-						</div>
-					</div>
-				{{/if}}
-				{{#if isPasswordEdit}}
-					<div class="{{styles.buttons}}">
-						<div class="{{styles.buttons-center}}">
-							{{{ markup.profile-save-password-button }}}
-						</div>
-					</div>
-				{{/if}}
 			</form>
+			{{#if isPasswordEdit}}
+				{{{ markup.profile-password-form-container }}}
+			{{else}}
+				{{{ markup.profile-data-form-container }}}
+			{{/if}}
 			<div class="{{styles.buttons}}">
 				{{#if isDataEdit}}
 					<div class="{{styles.buttons-center}}">

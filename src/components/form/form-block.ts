@@ -2,15 +2,14 @@ import { Block } from '@/block';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import type { InputBlock } from '@/components/input/input-block';
 import template from './form-template';
 
-interface IFormBlockProps extends BlockProps {
-	childrenList?: InputBlock[];
+interface IFormBlockProps<T> extends BlockProps {
+	childrenList?: T[];
 }
 
-export class FormBlock extends Block {
-	constructor(props: IFormBlockProps) {
+export class FormBlock<T> extends Block {
+	constructor(props: IFormBlockProps<T>) {
 		super({
 			...props,
 			events: {
@@ -22,12 +21,13 @@ export class FormBlock extends Block {
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 		});
 	}
 
 	override render(): string {
+		console.log('Render FormBlock', this);
 		return compile(template, this.props);
 	}
 }

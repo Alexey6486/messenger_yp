@@ -21,7 +21,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.AUTHORIZATION,
+			currentPage: PAGES.PROFILE,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
@@ -42,7 +42,6 @@ export default class App {
 			const loginPage = new Pages.LoginBlock({
 				...this.state.pages.authorization,
 				appElement: this.appElement,
-				children: {},
 				changePage: (page: TPages) => this.changePage(page),
 			});
 
@@ -57,7 +56,6 @@ export default class App {
 		} else if (this.state.currentPage === PAGES.REGISTRATION) {
 			const registrationPage = new Pages.RegistrationBlock({
 				...this.state.pages.registration,
-				children: {},
 				changePage: (page: TPages) => this.changePage(page),
 			});
 
@@ -87,7 +85,9 @@ export default class App {
 			const profilePage = new Pages.ProfileBlock({
 				...this.state.pages.profile,
 				userData: { ...this.state.user },
-				children: {},
+				forms: {
+					passwordForm: { ...this.state.pages.profile.passwordForm },
+				},
 				changePage: (page: TPages) => this.changePage(page),
 			});
 

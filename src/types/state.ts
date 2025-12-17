@@ -20,6 +20,19 @@ export const E_FORM_FIELDS_NAME = {
 	message: 'message',
 } as const;
 
+export interface IDefaultFormField {
+	[k: string]: string;
+}
+
+export interface IFormStateTest {
+	fields: unknown;
+	errors: unknown;
+}
+
+export interface IFormsStateTest {
+	[k: string]: IFormStateTest;
+}
+
 export interface ISearchForm {
 	title: string;
 }

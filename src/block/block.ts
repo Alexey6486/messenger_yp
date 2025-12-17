@@ -8,9 +8,7 @@ import type {
 	IInputChangeParams,
 	Nullable,
 } from '@/types';
-import {
-	IEbEvents,
-} from '@/types';
+import { IEbEvents } from '@/types';
 
 export abstract class Block {
 	static EVENTS = {
