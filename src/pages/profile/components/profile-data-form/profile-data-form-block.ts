@@ -19,7 +19,7 @@ import template from './profile-data-form-template';
 import styles from '@/pages/profile/styles.module.pcss';
 
 interface IProfileDataFormBlock extends BlockProps {
-	userForm: IFormState<IUserDataForm>
+	userForm: IFormState<IUserDataForm>;
 	children?: Record<string, ProfileFieldBlock>;
 }
 

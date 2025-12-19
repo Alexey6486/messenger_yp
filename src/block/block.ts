@@ -8,7 +8,7 @@ import type {
 } from '@/types';
 import { IEbEvents } from '@/types';
 
-export abstract class Block {
+export abstract class Block<T, K extends BlockProps<T>> {
 	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,
@@ -18,10 +18,10 @@ export abstract class Block {
 	} as const;
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
-	props: BlockProps;
-	children: IChildren<Block>;
-	childrenList: IChildren<Block>;
-	allInstances: IChildren<Block>;
+	props: Omit<BlockProps, 'children' | 'childrenList'>;
+	children: IChildren<Block<T, K>>;
+	childrenList: IChildren<Block<T, K>>;
+	allInstances: IChildren<Block<T, K>>;
 	protected eventBus: () => EventBus;
 
 	/** JSDoc
@@ -29,7 +29,7 @@ export abstract class Block {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: BlockProps = {}) {
+	constructor(props: K) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
@@ -47,15 +47,17 @@ export abstract class Block {
 		return this._element;
 	}
 
-	private _getPropsParts(props: BlockProps) {
-		const children_part: Record<string, Block> = {};
-		const children_list_part: Record<string, Block> = {};
-		const all_instances_part: Record<string, Block> = {};
-		const props_part: BlockProps = {};
+	private _getPropsParts(props: K) {
+		const children_part: Record<string, Block<T, K>> = {};
+		const children_list_part: Record<string, Block<T, K>> = {};
+		const all_instances_part: Record<string, Block<T, K>> = {};
+		const props_part: Omit<BlockProps, 'children' | 'childrenList'> = {};
+		type BlockPropsKeys = keyof BlockProps;
+		type ValueType = BlockProps[BlockPropsKeys];
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
-				Object.values(value as Record<string, Block>).forEach((instance) => {
+				Object.values(value as Record<string, Block<T, K>>).forEach((instance) => {
 					if (instance.props.id) {
 						children_part[instance.props.id] = instance;
 						all_instances_part[instance.props.id] = instance;
@@ -69,11 +71,7 @@ export abstract class Block {
 					}
 				});
 			} else {
-				// type ElementType<T> = T extends (infer BlockProps) ? BlockProps[] : T;
-				// type A = ElementType<value>;
-				type InferSomething<T> = T extends BlockProps<infer U> ? U : never;
-				type B = InferSomething<value>;
-				props_part[props_name as keyof BlockProps] = value as B;
+				props_part[props_name as keyof typeof props_part] = value;
 			}
 		});
 
@@ -219,7 +217,7 @@ export abstract class Block {
 		return this.element;
 	}
 
-	setProps(nextProps: BlockProps) {
+	setProps(nextProps: Partial<K>) {
 		if (!nextProps) {
 			return;
 		}
@@ -350,9 +348,9 @@ export abstract class Block {
 	 * @returns {IChildren<Block>}
 	 */
 	private _getChildrenToUpdate(
-		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
-	): IChildren<Block> {
-		const targetChildren: IChildren<Block> = childrenBlocks || {};
+		children: IChildren<Block<T, K>>, idsList: string[], childrenBlocks?: IChildren<Block<T, K>>,
+	): IChildren<Block<T, K>> {
+		const targetChildren: IChildren<Block<T, K>> = childrenBlocks || {};
 
 		Object.entries(children).forEach(([id, instance]) => {
 			if (idsList.includes(id)) {

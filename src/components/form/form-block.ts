@@ -4,17 +4,12 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './form-template';
 
-// interface IFormBlockProps<T> extends BlockProps {
-// 	childrenList?: T[];
-// }
-
-
-interface IFormBlockProps<T> extends Omit<BlockProps, 'onSubmit'> {
+interface IFormBlockProps<T> extends Omit<BlockProps<T>, 'onSubmit' | 'childrenList'> {
 	onSubmit: (e: Event, id: string) => void;
 	childrenList?: T[];
 }
 
-export class FormBlock<T> extends Block {
+export class FormBlock<T> extends Block<T, IFormBlockProps<T>> {
 	constructor(props: IFormBlockProps<T>) {
 		super({
 			...props,

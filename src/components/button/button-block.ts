@@ -8,7 +8,7 @@ interface IButtonBlock extends BlockProps {
 	text: string;
 }
 
-export class ButtonBlock extends Block {
+export class ButtonBlock extends Block<unknown, IButtonBlock> {
 	constructor(props: IButtonBlock) {
 		super({
 			...props,

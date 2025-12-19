@@ -41,10 +41,10 @@ export default class App {
 		if (this.state.currentPage === PAGES.PROFILE) {
 			const profilePage = new Pages.ProfileBlock({
 				userData: { ...this.state.user },
-				forms: {
-					passwordForm: { ...this.state.pages.profile.passwordForm },
-					userForm: { ...this.state.pages.profile.userForm },
-				},
+				passwordForm: { ...this.state.pages.profile.passwordForm },
+				userForm: { ...this.state.pages.profile.userForm },
+				isDataEdit: this.state.pages.profile.isDataEdit,
+				isPasswordEdit: this.state.pages.profile.isPasswordEdit,
 				changePage: (page: TPages) => this.changePage(page),
 			});
 

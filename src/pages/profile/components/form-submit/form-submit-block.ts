@@ -5,8 +5,12 @@ import { ButtonBlock } from '@/components/button/button-block';
 import { compile } from '@/utils';
 import template from './form-submit-template';
 
+interface IProfileSubmitFormBlock extends BlockProps {
+	isVisible: boolean;
+}
+
 export class ProfileSubmitFormBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IProfileSubmitFormBlock) {
 		super({
 			...props,
 			markup: {
