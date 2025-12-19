@@ -2,11 +2,27 @@ import { Block } from '@/block';
 import { compile } from '@/utils';
 import type {
 	BlockProps,
+	IInputState,
 } from '@/types';
 import template from './input-template';
+import {
+	IInputChangeParams,
+} from '@/types';
+
+interface IInputBlock extends BlockProps {
+	input_data: IInputState;
+	dataset: string;
+	name: string;
+	placeholder: string;
+	type: string;
+	isDisabled: boolean;
+	parentFormId: string;
+	onInputChange: (params: IInputChangeParams) => void;
+}
+
 
 export class InputBlock extends Block {
-	constructor(props: BlockProps) {
+	constructor(props: IInputBlock) {
 		super({
 			...props,
 			events: {

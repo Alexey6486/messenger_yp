@@ -4,7 +4,13 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './form-template';
 
-interface IFormBlockProps<T> extends BlockProps {
+// interface IFormBlockProps<T> extends BlockProps {
+// 	childrenList?: T[];
+// }
+
+
+interface IFormBlockProps<T> extends Omit<BlockProps, 'onSubmit'> {
+	onSubmit: (e: Event, id: string) => void;
 	childrenList?: T[];
 }
 
@@ -17,11 +23,11 @@ export class FormBlock<T> extends Block {
 					e.preventDefault();
 					e.stopPropagation();
 
-					props?.onSubmit?.(e);
+					props?.onSubmit?.(e, 'id');
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
 			},
 		});
 	}

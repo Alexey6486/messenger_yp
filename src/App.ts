@@ -21,7 +21,7 @@ export default class App {
 	constructor() {
 		this.appElement = document.getElementById('app');
 		this.state = {
-			currentPage: PAGES.PROFILE,
+			currentPage: PAGES.AUTHORIZATION,
 			user: JSON.parse(JSON.stringify(INIT_USER_DATA)),
 			pages: {
 				authorization: { authorizationForm: JSON.parse(JSON.stringify(INIT_LOGIN_STATE)) },
@@ -38,55 +38,12 @@ export default class App {
 			return;
 		}
 
-		if (this.state.currentPage === PAGES.AUTHORIZATION) {
-			const loginPage = new Pages.LoginBlock({
-				...this.state.pages.authorization,
-				appElement: this.appElement,
-				changePage: (page: TPages) => this.changePage(page),
-			});
-
-			if (this.appElement) {
-				const content = loginPage.getContent();
-
-				if (content) {
-					this.appElement.appendChild(content);
-					loginPage.dispatchComponentDidMount();
-				}
-			}
-		} else if (this.state.currentPage === PAGES.REGISTRATION) {
-			const registrationPage = new Pages.RegistrationBlock({
-				...this.state.pages.registration,
-				changePage: (page: TPages) => this.changePage(page),
-			});
-
-			if (this.appElement) {
-				const content = registrationPage.getContent();
-
-				if (content) {
-					this.appElement.appendChild(content);
-					registrationPage.dispatchComponentDidMount();
-				}
-			}
-		} else if (this.state.currentPage === PAGES.ERROR) {
-			const errorPage = new Pages.ErrorBlock({
-				...this.state.pages.error,
-				changePage: (page: TPages) => this.changePage(page),
-			});
-
-			if (this.appElement) {
-				const content = errorPage.getContent();
-
-				if (content) {
-					this.appElement.appendChild(content);
-					errorPage.dispatchComponentDidMount();
-				}
-			}
-		} else if (this.state.currentPage === PAGES.PROFILE) {
+		if (this.state.currentPage === PAGES.PROFILE) {
 			const profilePage = new Pages.ProfileBlock({
-				...this.state.pages.profile,
 				userData: { ...this.state.user },
 				forms: {
 					passwordForm: { ...this.state.pages.profile.passwordForm },
+					userForm: { ...this.state.pages.profile.userForm },
 				},
 				changePage: (page: TPages) => this.changePage(page),
 			});
@@ -97,23 +54,6 @@ export default class App {
 				if (content) {
 					this.appElement.appendChild(content);
 					profilePage.dispatchComponentDidMount();
-				}
-			}
-		} else if (this.state.currentPage === PAGES.MAIN) {
-			const mainPage = new Pages.MainBlock({
-				...this.state.pages.main,
-				userData: { ...this.state.user },
-				changePage: (page: TPages) => {
-					this.changePage(page);
-				},
-			});
-
-			if (this.appElement) {
-				const content = mainPage.getContent();
-
-				if (content) {
-					this.appElement.appendChild(content);
-					mainPage.dispatchComponentDidMount();
 				}
 			}
 		}

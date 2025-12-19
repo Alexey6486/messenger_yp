@@ -1,10 +1,8 @@
 import { EventBus } from '@/event-bus';
-import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
 	IChildren,
-	IFormState,
 	IInputChangeParams,
 	Nullable,
 } from '@/types';
@@ -71,7 +69,11 @@ export abstract class Block {
 					}
 				});
 			} else {
-				props_part[props_name as keyof BlockProps] = value;
+				// type ElementType<T> = T extends (infer BlockProps) ? BlockProps[] : T;
+				// type A = ElementType<value>;
+				type InferSomething<T> = T extends BlockProps<infer U> ? U : never;
+				type B = InferSomething<value>;
+				props_part[props_name as keyof BlockProps] = value as B;
 			}
 		});
 
@@ -158,8 +160,9 @@ export abstract class Block {
 			}
 		}
 
-		if (props?.page) {
-			this?.props?.changePage?.(props.page);
+		const targetPage = props?.page;
+		if (targetPage) {
+			this?.props?.changePage?.(targetPage);
 		}
 	}
 
@@ -235,34 +238,36 @@ export abstract class Block {
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
 				const oldTarget = { ...target };
 
-				if (
-					p === 'authorizationForm'
-					|| p === 'registrationForm'
-					|| p === 'passwordForm'
-					|| p === 'userForm'
-					|| p === 'chatsSearchForm'
-					|| p === 'newMessageForm'
-					|| p === 'modalAddUserForm'
-				) {
-					const errors = target[p]?.errors;
-					const fields = target[p]?.fields;
+				// if (
+				// 	p === 'authorizationForm'
+				// 	|| p === 'registrationForm'
+				// 	|| p === 'passwordForm'
+				// 	|| p === 'userForm'
+				// 	|| p === 'chatsSearchForm'
+				// 	|| p === 'newMessageForm'
+				// 	|| p === 'modalAddUserForm'
+				// ) {
+				// 	const errors = target[p]?.errors;
+				// 	const fields = target[p]?.fields;
+				//
+				// 	if (errors && fields) {
+				// 		target[p] = {
+				// 			errors: {
+				// 				...errors,
+				// 				...newValue?.errors,
+				// 			},
+				// 			fields: {
+				// 				...fields,
+				// 				...newValue?.fields,
+				// 			},
+				// 		};
+				// 	}
+				//
+				// } else {
+				// 	target[p] = newValue;
+				// }
 
-					if (errors && fields) {
-						target[p] = {
-							errors: {
-								...errors,
-								...newValue?.errors,
-							},
-							fields: {
-								...fields,
-								...newValue?.fields,
-							},
-						};
-					}
-
-				} else {
-					target[p] = newValue;
-				}
+				target[p] = newValue;
 
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;
@@ -438,30 +443,6 @@ export abstract class Block {
 					}
 				}
 			}, 0);
-		}
-	}
-
-	protected createModal<T>(
-		contentId: keyof BlockProps,
-		contentForms: Record<string, IFormState<T>>,
-		title: string,
-	) {
-		const modal = new Pages.ModalBlock<T>({
-			contentId,
-			contentForms,
-			title,
-			error: '',
-		});
-
-		if (this?.props?.appElement) {
-			const content = modal.getContent();
-
-			if (content) {
-				if (this?.props?.appElement?.parentNode) {
-					this.props.appElement.parentNode.appendChild(content);
-					modal.dispatchComponentDidMount();
-				}
-			}
 		}
 	}
 }

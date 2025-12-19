@@ -1,1 +1,0 @@
-export { getModalContentBlock } from './utils';
