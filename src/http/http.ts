@@ -33,13 +33,13 @@ export class HTTPTransport {
 	}
 
 	// Методы HTTP
-	protected readonly get = this.createMethod(ERequestMethods.GET);
+	readonly get = this.createMethod(ERequestMethods.GET);
 
-	protected readonly put = this.createMethod(ERequestMethods.PUT);
+	readonly put = this.createMethod(ERequestMethods.PUT);
 
-	protected readonly post = this.createMethod(ERequestMethods.POST);
+	readonly post = this.createMethod(ERequestMethods.POST);
 
-	protected readonly delete = this.createMethod(ERequestMethods.DELETE);
+	readonly delete = this.createMethod(ERequestMethods.DELETE);
 
 	private request(
 		url: string,
