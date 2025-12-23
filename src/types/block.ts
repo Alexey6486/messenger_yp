@@ -17,11 +17,13 @@ import type {
 import type { Block } from '@/block';
 import type { Nullable } from '@/types/general';
 import type { TPages } from '@/types/pages';
+import type { Router } from '@/router';
 
 export interface BlockProps {
 	children?: IChildren<Block>;
 	allInstances?: IChildren<Block>;
 	appElement?: Nullable<HTMLElement>;
+	router?: Router;
 
 	isRequired?: boolean;
 	isActive?: boolean;

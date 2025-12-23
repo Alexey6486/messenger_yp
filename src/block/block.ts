@@ -8,9 +8,7 @@ import type {
 	IInputChangeParams,
 	Nullable,
 } from '@/types';
-import {
-	IEbEvents,
-} from '@/types';
+import { IEbEvents } from '@/types';
 
 export abstract class Block {
 	static EVENTS = {
@@ -26,7 +24,7 @@ export abstract class Block {
 	children: IChildren<Block>;
 	childrenList: IChildren<Block>;
 	allInstances: IChildren<Block>;
-	protected eventBus: () => EventBus;
+	eventBus: () => EventBus;
 
 	/** JSDoc
 	 * @param {BlockProps} props
@@ -144,6 +142,7 @@ export abstract class Block {
 	}
 
 	private _componentWillUnmount(props: BlockProps) {
+		console.log('_componentWillUnmount: ', this.element);
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -212,6 +211,8 @@ export abstract class Block {
 	}
 
 	getContent() {
+		console.log('Block getContent: ', this);
+
 		if (!this.element) {
 			throw new Error('Элемент не создан');
 		}
