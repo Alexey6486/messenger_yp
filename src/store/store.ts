@@ -4,9 +4,9 @@ export enum StoreEvents {
 	Updated = 'updated',
 }
 
-export interface Indexed {
-
-}
+type Indexed<T = unknown> = {
+	[key in string]: T;
+};
 
 class Store extends EventBus {
 	private state: Indexed = {};
