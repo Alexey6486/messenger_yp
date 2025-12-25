@@ -1,5 +1,5 @@
 export {
-	LoginBlock,
+	LoginPage,
 	RegistrationBlock,
 } from './authorization';
 export { ErrorBlock } from './error';

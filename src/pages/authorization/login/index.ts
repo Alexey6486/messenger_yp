@@ -1,1 +1,1 @@
-export { LoginBlock } from './login-block';
+export { LoginPage } from './connect-login';

@@ -1,22 +1,17 @@
 import { EventBus } from '@/event-bus';
-
-export enum StoreEvents {
-	Updated = 'updated',
-}
-
-type Indexed<T = unknown> = {
-	[key in string]: T;
-};
+import { setProps } from '@/utils';
+import { StoreEvents } from '@/store/types';
+import type { BlockProps } from '@/types';
 
 class Store extends EventBus {
-	private state: Indexed = {};
+	private state: Partial<BlockProps> = {};
 
 	public getState() {
 		return this.state;
 	}
 
 	public set(path: string, value: unknown) {
-		set(this.state, path, value);
+		setProps(this.state, path, value);
 
 		this.emit(StoreEvents.Updated);
 	};

@@ -16,7 +16,7 @@ export default class App {
 
 			if (router !) {
 				router
-					.use('/', Pages.LoginBlock, router)
+					.use('/', Pages.LoginPage, router)
 					.use('/404', Pages.ErrorBlock, router, { ...INIT_ERROR_STATE })
 					.use('/sign-up', Pages.RegistrationBlock, router)
 					.use('/settings', Pages.ProfileBlock, router)

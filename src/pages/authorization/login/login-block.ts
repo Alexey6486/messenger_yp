@@ -1,4 +1,5 @@
 import { Block } from '@/block';
+import { StoreEvents, Store } from '@/store';
 import {
 	IDS,
 	PAGES,
@@ -273,9 +274,15 @@ export class LoginBlock extends Block {
 				}),
 			},
 		});
+		Store.on(StoreEvents.Updated, () => {
+			console.log('state: ', Store.getState());
+			this.setProps(Store.getState());
+		});
+		Store.set('userData', { first_name: 'test' });
 	}
 
 	override render(): string {
+		console.log('Render LoginBlock: ', this);
 		return compile(template, this.props);
 	}
 }
