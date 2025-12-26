@@ -9,22 +9,25 @@ import type {
 	IInputChangeParams,
 	IUserDataForm,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { IDS } from '@/constants';
 import { InputBlock } from '@/components/input/input-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
 import template from './profile-data-form-template';
 import styles from '@/pages/profile/styles.module.pcss';
 
-interface IProfileDataFormBlock extends BlockProps {
+interface IProfileDataFormBlock {
 	userForm: IFormState<IUserDataForm>;
+
+	[key: string]: unknown;
+
 	children?: Record<string, ProfileFieldBlock>;
 }
 
+type TProps = BlockProps<IProfileDataFormBlock>;
+
 export class ProfileDataFormBlock extends Block {
-	constructor(props: IProfileDataFormBlock) {
+	constructor(props: TProps) {
 		super({
 			...props,
 			markup: {

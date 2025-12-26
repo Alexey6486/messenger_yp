@@ -4,12 +4,10 @@ import type {
 	BlockProps,
 	IInputState,
 } from '@/types';
+import { IInputChangeParams } from '@/types';
 import template from './input-template';
-import {
-	IInputChangeParams,
-} from '@/types';
 
-interface IInputBlock extends BlockProps {
+interface IInputBlock {
 	input_data: IInputState;
 	dataset: string;
 	name: string;
@@ -17,12 +15,16 @@ interface IInputBlock extends BlockProps {
 	type: string;
 	isDisabled: boolean;
 	parentFormId: string;
+
+	[key: string]: unknown;
+
 	onInputChange: (params: IInputChangeParams) => void;
 }
 
+type TProps = BlockProps<IInputBlock>;
 
 export class InputBlock extends Block {
-	constructor(props: IInputBlock) {
+	constructor(props: TProps) {
 		super({
 			...props,
 			events: {

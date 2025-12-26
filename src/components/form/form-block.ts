@@ -4,13 +4,17 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './form-template';
 
-interface IFormBlockProps<T> extends Omit<BlockProps<T>, 'onSubmit' | 'childrenList'> {
+interface IFormBlockProps<T> {
+	[key: string]: unknown;
+
 	onSubmit: (e: Event, id: string) => void;
 	childrenList?: T[];
 }
 
-export class FormBlock<T> extends Block<T, IFormBlockProps<T>> {
-	constructor(props: IFormBlockProps<T>) {
+type TProps<T> = BlockProps<IFormBlockProps<T>>;
+
+export class FormBlock<T> extends Block {
+	constructor(props: TProps<T>) {
 		super({
 			...props,
 			events: {
@@ -22,7 +26,7 @@ export class FormBlock<T> extends Block<T, IFormBlockProps<T>> {
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 		});
 	}

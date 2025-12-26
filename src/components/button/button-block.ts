@@ -3,13 +3,17 @@ import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './button-template';
 
-interface IButtonBlock extends BlockProps {
+interface IButtonBlock {
 	type: string;
 	text: string;
+
+	[key: string]: unknown;
 }
 
-export class ButtonBlock extends Block<unknown, IButtonBlock> {
-	constructor(props: IButtonBlock) {
+type TProps = BlockProps<IButtonBlock>;
+
+export class ButtonBlock extends Block {
+	constructor(props: TProps) {
 		super({
 			...props,
 			events: {

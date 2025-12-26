@@ -1,14 +1,17 @@
 import { EventBus } from '@/event-bus';
 import { IDS } from '@/constants';
 import type {
+	Attributes,
+	BlockLists,
 	BlockProps,
-	IChildren,
 	IInputChangeParams,
 	Nullable,
+	TBlock,
+	TObjectUnknown,
 } from '@/types';
 import { IEbEvents } from '@/types';
 
-export abstract class Block<T, K extends BlockProps<T>> {
+export abstract class Block<T extends BlockProps = BlockProps> {
 	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,
@@ -18,10 +21,10 @@ export abstract class Block<T, K extends BlockProps<T>> {
 	} as const;
 
 	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
-	props: Omit<BlockProps, 'children' | 'childrenList'>;
-	children: IChildren<Block<T, K>>;
-	childrenList: IChildren<Block<T, K>>;
-	allInstances: IChildren<Block<T, K>>;
+	props: T;
+	children: TBlock;
+	childrenList: BlockLists;
+	allInstances: TBlock;
 	protected eventBus: () => EventBus;
 
 	/** JSDoc
@@ -29,7 +32,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: K) {
+	constructor(props: T = {} as T) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
@@ -47,17 +50,15 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		return this._element;
 	}
 
-	private _getPropsParts(props: K) {
-		const children_part: Record<string, Block<T, K>> = {};
-		const children_list_part: Record<string, Block<T, K>> = {};
-		const all_instances_part: Record<string, Block<T, K>> = {};
-		const props_part: Omit<BlockProps, 'children' | 'childrenList'> = {};
-		type BlockPropsKeys = keyof BlockProps;
-		type ValueType = BlockProps[BlockPropsKeys];
+	private _getPropsParts(props: T) {
+		const children_part: TBlock = {};
+		const children_list_part: BlockLists = {};
+		const all_instances_part: TBlock = {};
+		const props_part: Partial<T> = {} as Partial<T>;
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
-				Object.values(value as Record<string, Block<T, K>>).forEach((instance) => {
+				Object.values(value as Record<string, Block>).forEach((instance) => {
 					if (instance.props.id) {
 						children_part[instance.props.id] = instance;
 						all_instances_part[instance.props.id] = instance;
@@ -71,7 +72,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 					}
 				});
 			} else {
-				props_part[props_name as keyof typeof props_part] = value;
+				(props_part as Record<string, unknown>)[props_name] = value;
 			}
 		});
 
@@ -141,7 +142,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	private _componentWillUnmount(props: Attributes) {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -159,9 +160,8 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		}
 
 		const targetPage = props?.page;
-		if (targetPage) {
-			this?.props?.changePage?.(targetPage);
-		}
+		// TODO use Router
+		console.log({ targetPage });
 	}
 
 	private _render() {
@@ -187,7 +187,9 @@ export abstract class Block<T, K extends BlockProps<T>> {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
 				Object.values(this.childrenList).forEach((instance) => {
-					children = [...children, instance.getContent()];
+					if ('getContent' in instance) {
+						children = [...children, instance.getContent()];
+					}
 				});
 
 				element.replaceWith(...children);
@@ -217,7 +219,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		return this.element;
 	}
 
-	setProps(nextProps: Partial<K>) {
+	setProps(nextProps: Partial<T>) {
 		if (!nextProps) {
 			return;
 		}
@@ -225,48 +227,17 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		Object.assign(this.props, nextProps);
 	}
 
-	private _makePropsProxy(props: BlockProps) {
+	private _makePropsProxy<T extends TObjectUnknown>(props: T): Partial<T> {
 		const self = this;
 
-		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: keyof BlockProps) {
-				const value = target[p];
-				return typeof value === 'function' ? value.bind(target) : value;
+		return new Proxy(props, {
+			get(target: T, p: string) {
+				const value = target[p as keyof T];
+				return 'bind' in value ? value.bind(target) : value;
 			},
-			set(target: BlockProps, p: keyof BlockProps, newValue) {
+			set(target: T, p: string, value: unknown) {
 				const oldTarget = { ...target };
-
-				// if (
-				// 	p === 'authorizationForm'
-				// 	|| p === 'registrationForm'
-				// 	|| p === 'passwordForm'
-				// 	|| p === 'userForm'
-				// 	|| p === 'chatsSearchForm'
-				// 	|| p === 'newMessageForm'
-				// 	|| p === 'modalAddUserForm'
-				// ) {
-				// 	const errors = target[p]?.errors;
-				// 	const fields = target[p]?.fields;
-				//
-				// 	if (errors && fields) {
-				// 		target[p] = {
-				// 			errors: {
-				// 				...errors,
-				// 				...newValue?.errors,
-				// 			},
-				// 			fields: {
-				// 				...fields,
-				// 				...newValue?.fields,
-				// 			},
-				// 		};
-				// 	}
-				//
-				// } else {
-				// 	target[p] = newValue;
-				// }
-
-				target[p] = newValue;
-
+				(target as TObjectUnknown)[p] = value;
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;
 			},
@@ -348,9 +319,9 @@ export abstract class Block<T, K extends BlockProps<T>> {
 	 * @returns {IChildren<Block>}
 	 */
 	private _getChildrenToUpdate(
-		children: IChildren<Block<T, K>>, idsList: string[], childrenBlocks?: IChildren<Block<T, K>>,
-	): IChildren<Block<T, K>> {
-		const targetChildren: IChildren<Block<T, K>> = childrenBlocks || {};
+		children: TBlock, idsList: string[], childrenBlocks?: TBlock,
+	): TBlock {
+		const targetChildren: TBlock = childrenBlocks || {};
 
 		Object.entries(children).forEach(([id, instance]) => {
 			if (idsList.includes(id)) {
@@ -414,7 +385,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 			if (fieldId.includes('field')) {
 				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-					if (inputId.includes('input')) {
+					if (inputId.includes('input') && 'isDisabled' in inputInstance.props) {
 						inputInstance.setProps({
 							isDisabled: !inputInstance.props.isDisabled,
 						});
@@ -425,22 +396,25 @@ export abstract class Block<T, K extends BlockProps<T>> {
 	}
 
 	private _setFocus() {
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
-			setTimeout(() => {
-				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
-					this._element.focus();
-					if (
-						this?.props?.input_data
-						&& this?.props?.input_data?.currentFocus
-						&& this.props.input_data.currentFocus?.selectionStart !== null
-					) {
-						this._element.setSelectionRange(
-							this.props.input_data.currentFocus.selectionStart,
-							this.props.input_data.currentFocus.selectionStart,
-						);
+		const tp = this.props;
+		if ('input_data' in tp) {
+			if (tp.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
+				setTimeout(() => {
+					if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
+						this._element.focus();
+						if (
+							this?.props?.input_data
+							&& this?.props?.input_data?.currentFocus
+							&& this.props.input_data.currentFocus?.selectionStart !== null
+						) {
+							this._element.setSelectionRange(
+								this.props.input_data.currentFocus.selectionStart,
+								this.props.input_data.currentFocus.selectionStart,
+							);
+						}
 					}
-				}
-			}, 0);
+				}, 0);
+			}
 		}
 	}
 }

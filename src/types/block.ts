@@ -1,19 +1,21 @@
-import type { Nullable } from '@/types/general';
-import type { TPages } from '@/types/pages';
-import type { IChildren } from '@/types/state';
+import type { Block } from '@/block';
+import type { IInputState } from '@/types/state';
 
-export interface BlockProps<T = unknown> {
-	children?: IChildren<T>;
-	childrenList?: IChildren<T>;
-	appElement?: Nullable<HTMLElement>;
-	id?: string;
-	page?: TPages,
-	onClick?: (event: Event) => void;
-	onSubmit?: (event?: Event) => void;
-	changePage?: (page: TPages) => void;
-	class?: string;
-	styles?: { [key: string]: string };
-	attr?: Record<string, string>;
+export type EventHandlers = Record<string, (event: Event) => void>;
+export type Attributes = Record<string, string | number | boolean>;
+export type BlockListItem = Block | string | number | boolean;
+export type BlockList = BlockListItem[];
+// export type BlockLists = Record<string, BlockList>;
+export type BlockLists = Record<string, BlockListItem>;
+export type TBlock = Record<string, Block>;
+export type TObjectUnknown = Record<string, unknown>;
+
+export interface BlockPropsBase {
+	attr?: Attributes;
 	markup?: Record<string, string>;
-	events?: Record<string, (e: Event) => void>;
+	events?: EventHandlers;
+	input_data?: IInputState;
+	isDisabled?: boolean;
 }
+
+export type BlockProps<TData = TObjectUnknown> = BlockPropsBase & TData;

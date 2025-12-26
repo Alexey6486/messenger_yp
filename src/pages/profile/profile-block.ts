@@ -19,7 +19,7 @@ import { ButtonBlock } from '@/components/button/button-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
 
-interface IProfileBlockForms extends BlockProps<FormBlock<ProfileDataFormBlock> | ButtonBlock> {
+interface IProfileBlockForms {
 	userData: IUserDataForm,
 	passwordForm: {
 		fields: IUserPasswordForm,
@@ -31,17 +31,22 @@ interface IProfileBlockForms extends BlockProps<FormBlock<ProfileDataFormBlock> 
 	},
 	isDataEdit: boolean,
 	isPasswordEdit: boolean,
-	// children?: Record<string, FormBlock<ProfileDataFormBlock> | ButtonBlock>
+
+	[key: string]: unknown;
+
+	children?: Record<string, FormBlock<ProfileDataFormBlock | ProfileSubmitFormBlock> | ButtonBlock>
 }
 
-export class ProfileBlock extends Block<FormBlock<ProfileDataFormBlock> | ButtonBlock, IProfileBlockForms> {
-	constructor(props: IProfileBlockForms) {
+type TProps = BlockProps<IProfileBlockForms>;
+
+export class ProfileBlock extends Block {
+	constructor(props: TProps) {
 		super({
 			...props,
 			styles,
 			markup: {
-				[IDS.PROFILE.D_FORM_CONTAINER]: `<div id="${IDS.PROFILE.D_FORM_CONTAINER}"></div>`,
-				[IDS.PROFILE.LOGOUT_BTN]: `<div id="${IDS.PROFILE.LOGOUT_BTN}"></div>`,
+				[IDS.PROFILE.D_FORM_CONTAINER]: `<div id="${ IDS.PROFILE.D_FORM_CONTAINER }"></div>`,
+				[IDS.PROFILE.LOGOUT_BTN]: `<div id="${ IDS.PROFILE.LOGOUT_BTN }"></div>`,
 			},
 			children: {
 				[IDS.PROFILE.D_FORM_CONTAINER]: new FormBlock<ProfileDataFormBlock | ProfileSubmitFormBlock>({
@@ -124,7 +129,7 @@ export class ProfileBlock extends Block<FormBlock<ProfileDataFormBlock> | Button
 
 								if (validationResult.length) {
 									// this.setProps(pageProps as BlockProps);
-									this.setProps(pageProps);
+									this.setProps(pageProps as Partial<BlockProps>);
 								}
 							},
 						}),
