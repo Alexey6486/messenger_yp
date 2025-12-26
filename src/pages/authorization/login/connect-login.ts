@@ -4,7 +4,7 @@ import type { BlockProps } from '@/types';
 
 function mapUserToProps(state: Partial<BlockProps>) {
 	return {
-		userData: state.userData,
+		authorizationForm: state.authorizationForm,
 	};
 }
 

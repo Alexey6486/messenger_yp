@@ -15,14 +15,14 @@ import type {
 	IUserResponse,
 } from '@/types/state';
 import type { Block } from '@/block';
-import type { Nullable } from '@/types/general';
+import type { TNullable } from '@/types/general';
 import type { TPages } from '@/types/pages';
 import type { Router } from '@/router';
 
 export interface BlockProps {
 	children?: IChildren<Block>;
 	allInstances?: IChildren<Block>;
-	appElement?: Nullable<HTMLElement>;
+	appElement?: TNullable<HTMLElement>;
 	router?: Router;
 
 	isRequired?: boolean;
@@ -55,17 +55,17 @@ export interface BlockProps {
 	author?: string;
 	fieldName?: string;
 	parentFormId?: string;
-	currentChatId?: Nullable<string>;
+	currentChatId?: TNullable<string>;
 	contentId?: keyof BlockProps;
 	error?: string;
 	buttonText?: string;
 	page?: TPages,
 
-	input_data?: Nullable<IInputState>;
-	messages?: Nullable<IChat[]>;
-	chats?: Nullable<IChat[]>;
+	input_data?: TNullable<IInputState>;
+	messages?: TNullable<IChat[]>;
+	chats?: TNullable<IChat[]>;
 	userData?: IUserResponse;
-	currentFocus?: Nullable<ICurrentFocus>;
+	currentFocus?: TNullable<ICurrentFocus>;
 
 	onClick?: (event: Event) => void;
 	onSubmit?: (event?: Event) => void;

@@ -1,9 +1,9 @@
 import type { IRequestOptions } from './types';
 import { ERequestMethods } from './types';
-import type { Nullable } from '@/types';
+import type { TNullable } from '@/types';
 import type { RequestOptions } from 'http';
 
-function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
+function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
 
 	if (typeof data === 'object' && data !== null && !Array.isArray(data)) {

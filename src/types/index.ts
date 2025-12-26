@@ -1,5 +1,5 @@
 export type { TPages } from './pages';
-export type { Nullable, Indexed } from './general';
+export type { TNullable, TIndexed, TPlainObject, TFunctionUnknown } from './general';
 export type {
 	IState,
 	IFormState,

@@ -6,7 +6,7 @@ import type {
 	IChildren,
 	IFormState,
 	IInputChangeParams,
-	Nullable,
+	TNullable,
 } from '@/types';
 import { IEbEvents } from '@/types';
 
@@ -19,7 +19,7 @@ export abstract class Block {
 		FLOW_RENDER: IEbEvents.FLOW_RENDER,
 	} as const;
 
-	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
+	_element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
 	props: BlockProps;
 	children: IChildren<Block>;
 	childrenList: IChildren<Block>;

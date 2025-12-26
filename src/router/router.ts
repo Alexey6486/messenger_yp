@@ -1,7 +1,7 @@
 import { Block } from '@/block';
 import type {
 	BlockProps,
-	Nullable,
+	TNullable,
 } from '@/types';
 
 function isEqual(lhs: string, rhs: string) {
@@ -17,7 +17,7 @@ function render(rootContainer: HTMLElement, block: Block) {
 class Route {
 	private _pathname: string;
 	private _view: new (props: BlockProps) => Block;
-	private _instance: Nullable<Block>;
+	private _instance: TNullable<Block>;
 	private _rootContainer: HTMLElement;
 	private _router: Router;
 	private _props: BlockProps;
@@ -69,10 +69,10 @@ class Route {
 
 export class Router {
 	private static __instance: Router;
-	private routes: Nullable<Route[]> = null;
-	private history: Nullable<History> = null;
-	private _currentRoute: Nullable<Route> = null;
-	private _rootContainer: Nullable<HTMLElement> = null;
+	private routes: TNullable<Route[]> = null;
+	private history: TNullable<History> = null;
+	private _currentRoute: TNullable<Route> = null;
+	private _rootContainer: TNullable<HTMLElement> = null;
 
 	constructor(rootContainer: HTMLElement) {
 		if (Router.__instance) {

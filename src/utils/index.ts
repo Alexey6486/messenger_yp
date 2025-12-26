@@ -5,5 +5,6 @@ export {
 	fieldsValidator,
 } from './validation';
 export { setProps } from './props-mutation';
-export { isPlainObject } from './is-object';
+export { isPlainObject, isArrayOrObject, isArray, isFunction } from './is-type';
 export { isEqual } from './is-equal';
+export { cloneDeep } from './clone-deep';

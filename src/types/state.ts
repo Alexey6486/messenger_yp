@@ -1,5 +1,5 @@
 import type {
-	Nullable,
+	TNullable,
 	TPages,
 } from '@/types';
 import type { Block } from '@/block';
@@ -110,11 +110,11 @@ export interface IChat {
 }
 
 export interface IMainPageState {
-	currentChatId: Nullable<string>;
+	currentChatId: TNullable<string>;
 	chatsSearchForm: IFormState<ISearchForm>;
 	newMessageForm: IFormState<IMessageForm>;
-	chats: Nullable<IChat[]>;
-	messages: Nullable<IChat[]>;
+	chats: TNullable<IChat[]>;
+	messages: TNullable<IChat[]>;
 }
 
 export interface IMainPageHbsState extends IMainPageState {
@@ -158,8 +158,8 @@ export interface IInputData {
 
 export interface IInputInfo {
 	event: string;
-	element: Nullable<Block>;
-	selectionStart?: Nullable<number>;
+	element: TNullable<Block>;
+	selectionStart?: TNullable<number>;
 }
 
 export interface IInputChangeParams {
@@ -168,12 +168,12 @@ export interface IInputChangeParams {
 }
 
 export interface ICurrentFocus {
-	element: Nullable<Block>;
-	selectionStart: Nullable<number>;
+	element: TNullable<Block>;
+	selectionStart: TNullable<number>;
 }
 
 export interface IInputState {
 	value: string;
 	error: string;
-	currentFocus?: Nullable<ICurrentFocus>;
+	currentFocus?: TNullable<ICurrentFocus>;
 }

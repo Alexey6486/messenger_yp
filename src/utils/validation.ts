@@ -2,7 +2,7 @@ import {
 	E_FORM_FIELDS_NAME,
 } from '@/types';
 import type {
-	Nullable,
+	TNullable,
 } from '@/types';
 import {
 	REGEX,
@@ -59,7 +59,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 	requiredOnly?: boolean,
 	valueToCompare?: string,
 }): string => {
-	let validator: Nullable<Validator> = new Validator(valueToValidate);
+	let validator: TNullable<Validator> = new Validator(valueToValidate);
 	let validationResult: string;
 
 	if (requiredOnly) {
