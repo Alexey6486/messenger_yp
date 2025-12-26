@@ -224,7 +224,7 @@ export abstract class Block<T = unknown, K extends BlockProps<T> = BlockProps<T>
 		Object.assign(this.props, nextProps);
 	}
 
-	private _makePropsProxy(props: K) {
+	private _makePropsProxy(props: Omit<BlockProps, 'children' | 'childrenList'>) {
 		const self = this;
 
 		return new Proxy<K>(props, {
