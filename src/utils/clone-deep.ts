@@ -64,3 +64,6 @@ export function cloneDeep<T = unknown>(obj: T): CloneableResult<T> {
         throw new Error(`Unable to copy object: ${item}`);
     })(obj);
 }
+// function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+// 	return obj[key];
+// }
