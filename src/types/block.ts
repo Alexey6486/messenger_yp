@@ -1,6 +1,9 @@
 import type { Nullable } from '@/types/general';
 import type { TPages } from '@/types/pages';
-import type { IChildren } from '@/types/state';
+import type {
+	IChildren,
+	IInputState,
+} from '@/types/state';
 
 export interface BlockProps<T = unknown> {
 	children?: IChildren<T>;
@@ -16,4 +19,6 @@ export interface BlockProps<T = unknown> {
 	attr?: Record<string, string>;
 	markup?: Record<string, string>;
 	events?: Record<string, (e: Event) => void>;
+	input_data?: IInputState;
+	isDisabled?: boolean;
 }

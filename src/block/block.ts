@@ -7,8 +7,9 @@ import type {
 	Nullable,
 } from '@/types';
 import { IEbEvents } from '@/types';
+import { isFunction } from '@/utils';
 
-export abstract class Block<T, K extends BlockProps<T>> {
+export abstract class Block<T = unknown, K extends BlockProps<T> = BlockProps<T>> {
 	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,
@@ -29,7 +30,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 	 *
 	 * @returns {void}
 	 */
-	constructor(props: K) {
+	constructor(props: K = {} as K) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
@@ -52,8 +53,6 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		const children_list_part: Record<string, Block<T, K>> = {};
 		const all_instances_part: Record<string, Block<T, K>> = {};
 		const props_part: Omit<BlockProps, 'children' | 'childrenList'> = {};
-		type BlockPropsKeys = keyof BlockProps;
-		type ValueType = BlockProps[BlockPropsKeys];
 
 		Object.entries(props).forEach(([props_name, value]) => {
 			if (props_name === 'children') {
@@ -141,7 +140,7 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	private _componentWillUnmount(props: K) {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -225,45 +224,16 @@ export abstract class Block<T, K extends BlockProps<T>> {
 		Object.assign(this.props, nextProps);
 	}
 
-	private _makePropsProxy(props: BlockProps) {
+	private _makePropsProxy(props: K) {
 		const self = this;
 
-		return new Proxy<BlockProps>(props, {
-			get(target: BlockProps, p: keyof BlockProps) {
+		return new Proxy<K>(props, {
+			get(target: K, p: keyof K) {
 				const value = target[p];
-				return typeof value === 'function' ? value.bind(target) : value;
+				return isFunction(value) ? value.bind(target) : value;
 			},
-			set(target: BlockProps, p: keyof BlockProps, newValue) {
+			set(target: K, p: keyof K, newValue: K[keyof K]) {
 				const oldTarget = { ...target };
-
-				// if (
-				// 	p === 'authorizationForm'
-				// 	|| p === 'registrationForm'
-				// 	|| p === 'passwordForm'
-				// 	|| p === 'userForm'
-				// 	|| p === 'chatsSearchForm'
-				// 	|| p === 'newMessageForm'
-				// 	|| p === 'modalAddUserForm'
-				// ) {
-				// 	const errors = target[p]?.errors;
-				// 	const fields = target[p]?.fields;
-				//
-				// 	if (errors && fields) {
-				// 		target[p] = {
-				// 			errors: {
-				// 				...errors,
-				// 				...newValue?.errors,
-				// 			},
-				// 			fields: {
-				// 				...fields,
-				// 				...newValue?.fields,
-				// 			},
-				// 		};
-				// 	}
-				//
-				// } else {
-				// 	target[p] = newValue;
-				// }
 
 				target[p] = newValue;
 
