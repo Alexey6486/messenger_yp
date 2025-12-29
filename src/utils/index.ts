@@ -13,4 +13,7 @@ export {
 } from './is-type';
 export { isEqual } from './is-equal';
 export { cloneDeep } from './clone-deep';
-export { isErrorWithMessage } from './is-error';
+export {
+	isErrorWithMessage,
+	getErrorText,
+} from './error';

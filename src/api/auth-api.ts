@@ -1,6 +1,7 @@
 import type { IRequestOptions } from '@/http';
 import { HTTPTransport } from '@/http';
 import type { RequestOptions } from 'http';
+import { responseHandler } from '@/api/utils';
 
 const authAPIInstance = new HTTPTransport();
 const baseApi = '/api/v2/auth/';
@@ -19,11 +20,7 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signin: ', { options, resolve });
-			if (resolve.status !== 200) {
-				throw new Error(`{"code": ${ resolve?.status }, "text": ${ resolve?.response }}`);
-			} else {
-				return resolve;
-			}
+			responseHandler(resolve);
 		});
 	}
 
@@ -48,11 +45,7 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signup resolve: ', { options, resolve });
-			if (resolve.status !== 200) {
-				throw new Error(`{"code": ${ resolve?.status }, "text": ${ resolve?.response }}`);
-			} else {
-				return resolve;
-			}
+			responseHandler(resolve);
 		});
 	}
 }

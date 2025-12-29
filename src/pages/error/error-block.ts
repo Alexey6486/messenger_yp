@@ -5,7 +5,10 @@ import {
 } from '@/store';
 import { mapUserToPropsError } from '@/pages/error/connect-error';
 import { IDS } from '@/constants';
-import { compile } from '@/utils';
+import {
+	compile,
+	isEqual,
+} from '@/utils';
 import type { BlockProps } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import template from './error-template.hbs?raw';
@@ -13,8 +16,11 @@ import styles from './styles.module.pcss';
 
 export class ErrorBlock extends Block {
 	constructor(props: BlockProps) {
+		let state = mapUserToPropsError(Store.getState());
+
 		super({
 			...props,
+			...mapUserToPropsError(Store.getState()),
 			styles,
 			markup: {
 				[IDS.ERROR.BUTTON]: `<div id="${ IDS.ERROR.BUTTON }"></div>`,
@@ -29,6 +35,7 @@ export class ErrorBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.set('error', { code: '', text: '' });
 						this?.props?.router?.back();
 					},
 				}),
@@ -36,8 +43,14 @@ export class ErrorBlock extends Block {
 		});
 
 		Store.on(StoreEvents.Updated, () => {
-			console.log('State ErrorBlock: ', mapUserToPropsError(Store.getState()));
-			this.setProps(mapUserToPropsError(Store.getState()));
+			const newState = mapUserToPropsError(Store.getState());
+			console.log('State ErrorBlock: ', newState);
+
+			if (!isEqual(state, newState)) {
+				this.setProps({ ...newState });
+			}
+
+			state = newState;
 		});
 	}
 

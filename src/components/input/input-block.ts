@@ -1,5 +1,8 @@
 import { Block } from '@/block';
-import { compile } from '@/utils';
+import {
+	compile,
+	isEqual,
+} from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './input-template';
 import {
@@ -9,8 +12,11 @@ import {
 
 export class InputBlock extends Block {
 	constructor(props: BlockProps) {
+		let state = props?.mapStateToProps?.(Store.getState());
+
 		super({
 			...props,
+			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			events: {
 				input: (e: Event) => {
 					e.preventDefault();
@@ -47,10 +53,14 @@ export class InputBlock extends Block {
 		});
 
 		Store.on(StoreEvents.Updated, () => {
-			console.log('State InputBlock: ', Store.getState());
-			if (props.mapStateToProps) {
-				this.setProps(props.mapStateToProps(Store.getState()));
+			const newState = props?.mapStateToProps?.(Store.getState());
+			console.log('State InputBlock: ', newState);
+
+			if (props.mapStateToProps && state && newState && !isEqual(state, newState)) {
+				this.setProps(newState);
 			}
+
+			state = newState;
 		});
 	}
 

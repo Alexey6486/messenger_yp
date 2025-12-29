@@ -1,8 +1,4 @@
 import { Block } from '@/block';
-import {
-	Store,
-	StoreEvents,
-} from '@/store';
 import { AuthController } from '@/controllers';
 import {
 	IDS,
@@ -21,7 +17,6 @@ import type {
 	ILoginForm,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
-import { mapUserToPropsLogin } from '@/pages/authorization/login/connect-login';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -301,11 +296,6 @@ export class LoginBlock extends Block {
 					},
 				}),
 			},
-		});
-
-		Store.on(StoreEvents.Updated, () => {
-			console.log('State LoginBlock: ', mapUserToPropsLogin(Store.getState()));
-			this.setProps(mapUserToPropsLogin(Store.getState()));
 		});
 	}
 

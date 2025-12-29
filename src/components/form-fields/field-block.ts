@@ -1,5 +1,8 @@
 import { Block } from '@/block';
-import { compile } from '@/utils';
+import {
+	compile,
+	isEqual,
+} from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './field-template';
 import {
@@ -9,15 +12,22 @@ import {
 
 export class FieldBlock extends Block {
 	constructor(props: BlockProps) {
+		let state = props?.mapStateToProps?.(Store.getState());
+
 		super({
 			...props,
+			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 		});
 
 		Store.on(StoreEvents.Updated, () => {
-			console.log('State FieldBlock: ', Store.getState());
-			if (props.mapStateToProps) {
-				this.setProps(props.mapStateToProps(Store.getState()));
+			const newState = props?.mapStateToProps?.(Store.getState());
+			console.log('State FieldBlock: ', state, newState);
+
+			if (props.mapStateToProps && state && newState && !isEqual(state, newState)) {
+				this.setProps(newState);
 			}
+
+			state = newState;
 		});
 	}
 

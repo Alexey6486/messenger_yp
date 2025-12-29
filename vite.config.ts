@@ -32,14 +32,6 @@ export default defineConfig({
 	server: {
 		port: 3000,
 		open: true,
-		proxy: {
-			'/api': {
-				target: 'https://ya-praktikum.tech/api',
-				changeOrigin: true,
-				secure: false, // если целевой сервер использует самоподписанный сертификат
-				rewrite: (path) => path.replace(/^\/api/, ''),
-			},
-		},
 	},
 	base: process.env.VITE_BASE || '/',
 	build: {

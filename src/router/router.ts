@@ -3,6 +3,7 @@ import type {
 	BlockProps,
 	TNullable,
 } from '@/types';
+import { PAGES_URL } from '@/constants';
 
 function isEqual(lhs: string, rhs: string) {
 	return lhs === rhs;
@@ -111,7 +112,7 @@ export class Router {
 		console.log('_onRoute: ', { pathname, route, cr: this._currentRoute, check: this._currentRoute !== route });
 
 		if (!route) {
-			this.go('/404');
+			this.go(PAGES_URL.ERROR);
 			return;
 		}
 
@@ -124,6 +125,7 @@ export class Router {
 	}
 
 	go(pathname: string) {
+		console.log({ pathname, history: this.history });
 		if (this.history) {
 			this.history.pushState({}, '', pathname);
 			this._onRoute(pathname);
