@@ -1,7 +1,12 @@
 import { Block } from '@/block';
 import {
+	Store,
+	StoreEvents,
+} from '@/store';
+import { AuthController } from '@/controllers';
+import {
 	IDS,
-	PAGES,
+	PAGES_URL,
 } from '@/constants';
 import {
 	compile,
@@ -9,13 +14,12 @@ import {
 } from '@/utils';
 import type {
 	BlockProps,
+	IFormState,
 	IInputChangeParams,
 	IRegistrationFormUi,
-	IFormState,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
+import { mapUserToPropsRegistration } from '@/pages/authorization/registration/connect-registration';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -28,15 +32,15 @@ export class RegistrationBlock extends Block {
 			...props,
 			styles,
 			markup: {
-				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
-				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
-				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${IDS.REGISTRATION.F_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${IDS.REGISTRATION.S_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${IDS.REGISTRATION.PHONE_FIELD}"></div>`,
-				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${IDS.REGISTRATION.PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${IDS.REGISTRATION.C_PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.SUBMIT]: `<div id="${IDS.REGISTRATION.SUBMIT}"></div>`,
-				[IDS.REGISTRATION.SIGNIN]: `<div id="${IDS.REGISTRATION.SIGNIN}"></div>`,
+				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${ IDS.REGISTRATION.EMAIL_FIELD }"></div>`,
+				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${ IDS.REGISTRATION.LOGIN_FIELD }"></div>`,
+				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.F_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.S_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${ IDS.REGISTRATION.PHONE_FIELD }"></div>`,
+				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${ IDS.REGISTRATION.PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${ IDS.REGISTRATION.C_PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.SUBMIT]: `<div id="${ IDS.REGISTRATION.SUBMIT }"></div>`,
+				[IDS.REGISTRATION.SIGNIN]: `<div id="${ IDS.REGISTRATION.SIGNIN }"></div>`,
 			},
 			children: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: new FieldBlock({
@@ -83,7 +87,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.EMAIL_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.EMAIL_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.LOGIN_FIELD]: new FieldBlock({
@@ -130,7 +134,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.F_NAME_FIELD]: new FieldBlock({
@@ -177,7 +181,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.F_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.F_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.S_NAME_FIELD]: new FieldBlock({
@@ -224,7 +228,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.S_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.S_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PHONE_FIELD]: new FieldBlock({
@@ -271,7 +275,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PHONE_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PHONE_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PSW_FIELD]: new FieldBlock({
@@ -318,7 +322,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.C_PSW_FIELD]: new FieldBlock({
@@ -366,7 +370,7 @@ export class RegistrationBlock extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.C_PSW_INPUT }"></div>`,
 					},
 				}),
 
@@ -386,8 +390,8 @@ export class RegistrationBlock extends Block {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
 									if (
 										inputId.includes('input')
-										&& typeof inputInstance?.props?.input_data?.error === 'string'
-										&& !inputInstance.props.input_data.error.length
+										// && typeof inputInstance?.props?.input_data?.error === 'string'
+										// && !inputInstance.props.input_data.error.length
 									) {
 										const fieldName = inputInstance.props.name as keyof IRegistrationFormUi;
 										validationResult = fieldsValidator({
@@ -434,13 +438,15 @@ export class RegistrationBlock extends Block {
 							&& registrationForm.errors
 						) {
 							const errorsList = Object.values(registrationForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
+							if (errorsList.length) {
+								if (validationResult.length) {
+									this.setProps(pageProps as BlockProps);
+								}
+							} else {
 								console.log('Registration form submit: ', this.props?.registrationForm?.fields ?? '');
+								const data = JSON.stringify(this.props?.registrationForm?.fields);
+								AuthController.signup({ data }, this.props.router);
 							}
-						}
-
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
 						}
 					},
 				}),
@@ -452,10 +458,15 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+						this?.props?.router?.go?.(PAGES_URL.AUTHORIZATION);
 					},
 				}),
 			},
+		});
+
+		Store.on(StoreEvents.Updated, () => {
+			console.log('State RegistrationBlock: ', mapUserToPropsRegistration(Store.getState()));
+			this.setProps(mapUserToPropsRegistration(Store.getState()));
 		});
 	}
 

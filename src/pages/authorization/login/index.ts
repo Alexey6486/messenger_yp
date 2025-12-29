@@ -1,1 +1,4 @@
-export { LoginPage } from './connect-login';
+export {
+	LoginPage,
+	mapUserToPropsLogin,
+} from './connect-login';

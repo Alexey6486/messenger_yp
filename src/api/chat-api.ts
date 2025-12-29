@@ -2,13 +2,14 @@ import { HTTPTransport } from '@/http';
 import { BaseAPI } from './base-api';
 
 const chatAPIInstance = new HTTPTransport();
-const baseChatApi = '/api/v1/chats/';
+const baseChatApi = '/api/v2/chats/';
 
 export class ChatAPI extends BaseAPI {
 	create() {
-		return chatAPIInstance.post(`${baseChatApi}`);
+		return chatAPIInstance.post(`${ baseChatApi }`);
 	}
+
 	request() {
-		return chatAPIInstance.get(`${baseChatApi}full`);
+		return chatAPIInstance.get(`${ baseChatApi }full`);
 	}
 }

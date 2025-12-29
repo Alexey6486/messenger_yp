@@ -1,6 +1,6 @@
 import * as Pages from './pages';
 import { Router } from '@/router';
-import { INIT_ERROR_STATE } from './constants';
+import { PAGES_URL } from './constants';
 import type { TNullable } from './types';
 
 export default class App {
@@ -16,11 +16,11 @@ export default class App {
 
 			if (router) {
 				router
-					.use('/', Pages.LoginPage, router)
-					.use('/404', Pages.ErrorBlock, router, { ...INIT_ERROR_STATE })
-					.use('/sign-up', Pages.RegistrationBlock, router)
-					.use('/settings', Pages.ProfileBlock, router)
-					.use('/messenger', Pages.MainBlock, router)
+					.use(PAGES_URL.AUTHORIZATION, Pages.LoginPage, router)
+					.use(PAGES_URL.ERROR, Pages.ErrorPage, router)
+					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router)
+					.use(PAGES_URL.PROFILE, Pages.ProfileBlock, router)
+					.use(PAGES_URL.MAIN, Pages.MainBlock, router)
 					.start();
 			}
 		}

@@ -1,7 +1,4 @@
-import type {
-	TNullable,
-	TPages,
-} from '@/types';
+import type { TNullable } from '@/types';
 import type { Block } from '@/block';
 
 export const E_FORM_FIELDS_NAME = {
@@ -126,6 +123,10 @@ export interface IErrorPageState {
 	code: string;
 }
 
+export interface IErrorState {
+	error: IErrorPageState;
+}
+
 export interface IProfilePageState {
 	isDataEdit: boolean
 	isPasswordEdit: boolean
@@ -135,18 +136,6 @@ export interface IProfilePageState {
 
 export interface IProfilePageHbsState extends IProfilePageState {
 	user: IUserResponse,
-}
-
-export interface IState {
-	currentPage: TPages
-	user: IUserResponse,
-	pages: {
-		authorization: { authorizationForm: IFormState<ILoginForm> }
-		registration: { registrationForm: IFormState<IRegistrationFormUi> }
-		main: IMainPageState
-		profile: IProfilePageState
-		error: IErrorPageState
-	}
 }
 
 export type IChildren<T> = Record<string, T>;

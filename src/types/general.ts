@@ -11,3 +11,5 @@ export type TPlainObject<T = unknown> = {
 export type TFunctionUnknown = (...args: unknown[]) => unknown;
 
 export type TObjectUnknown<T = unknown> = { [key: string | number | symbol]: T };
+
+export type TErrorMessage = { message?: string };

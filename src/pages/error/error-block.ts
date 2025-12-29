@@ -1,4 +1,9 @@
 import { Block } from '@/block';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
+import { mapUserToPropsError } from '@/pages/error/connect-error';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
@@ -24,11 +29,15 @@ export class ErrorBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						// this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
-						this?.props?.router?.go?.('/');
+						this?.props?.router?.back();
 					},
 				}),
 			},
+		});
+
+		Store.on(StoreEvents.Updated, () => {
+			console.log('State ErrorBlock: ', mapUserToPropsError(Store.getState()));
+			this.setProps(mapUserToPropsError(Store.getState()));
 		});
 	}
 

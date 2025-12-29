@@ -453,7 +453,6 @@ export abstract class Block {
 			contentId,
 			contentForms,
 			title,
-			error: '',
 		});
 
 		if (this?.props?.appElement) {

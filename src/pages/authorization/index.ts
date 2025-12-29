@@ -1,2 +1,2 @@
 export { LoginPage } from './login';
-export { RegistrationBlock } from './registration';
+export { RegistrationPage } from './registration';

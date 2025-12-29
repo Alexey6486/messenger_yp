@@ -3,9 +3,11 @@ import {
 	Store,
 	StoreEvents,
 } from '@/store';
+import { AuthController } from '@/controllers';
 import {
 	IDS,
 	PAGES,
+	PAGES_URL,
 } from '@/constants';
 import {
 	compile,
@@ -19,6 +21,7 @@ import type {
 	ILoginForm,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
+import { mapUserToPropsLogin } from '@/pages/authorization/login/connect-login';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -172,7 +175,7 @@ export class LoginBlock extends Block {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
 									if (
 										inputId.includes('input')
-										&& !inputInstance.props?.input_data?.error.length
+										// && !inputInstance.props?.input_data?.error.length
 									) {
 										const fieldName = inputInstance.props.name as keyof ILoginForm;
 										validationResult = fieldsValidator({
@@ -216,13 +219,17 @@ export class LoginBlock extends Block {
 							&& authorizationForm.errors
 						) {
 							const errorsList = Object.values(authorizationForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
+							console.log({ errorsList });
+							if (errorsList.length) {
+								console.log({ validationResult });
+								if (validationResult.length) {
+									this.setProps(pageProps as BlockProps);
+								}
+							} else {
 								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
+								const data = JSON.stringify(this.props?.authorizationForm?.fields);
+								AuthController.signin({ data }, this.props.router);
 							}
-						}
-
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
 						}
 					},
 				}),
@@ -234,7 +241,8 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
+						// this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
+						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
 
@@ -247,8 +255,7 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						// this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
-						this?.props?.router?.go?.('/404');
+						this?.props?.router?.go?.(PAGES_URL.ERROR);
 					},
 				}),
 				[IDS.AUTHORIZATION.TEMP_PROFILE]: new ButtonBlock({
@@ -295,12 +302,11 @@ export class LoginBlock extends Block {
 				}),
 			},
 		});
+
 		Store.on(StoreEvents.Updated, () => {
-			console.log('State LoginBlock: ', Store.getState());
-			// TODO
-			this.setProps(Store.getState());
+			console.log('State LoginBlock: ', mapUserToPropsLogin(Store.getState()));
+			this.setProps(mapUserToPropsLogin(Store.getState()));
 		});
-		Store.set('userData', { first_name: 'test' });
 	}
 
 	override render(): string {

@@ -3,13 +3,13 @@ import type {
 	IFormState,
 	ILoginForm,
 	IMainPageState,
+	IMessageForm,
 	IProfilePageState,
 	IRegistrationFormUi,
 	ISearchForm,
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
-	IMessageForm,
 } from '@/types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
@@ -55,8 +55,8 @@ export const INIT_MESSAGE_STATE: IFormState<IMessageForm> = {
 };
 
 export const INIT_ERROR_STATE: IErrorPageState = {
-	code: '404',
-	text: 'Страница не найдена',
+	code: '',
+	text: '',
 };
 
 export const INIT_PROFILE_USER_PASSWORD_STATE: IFormState<IUserPasswordForm> = {

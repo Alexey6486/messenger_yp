@@ -2,12 +2,11 @@ import { LoginBlock } from './login-block';
 import { connect } from '@/hoc';
 import type { BlockProps } from '@/types';
 
-function mapUserToProps(state: Partial<BlockProps>) {
+export function mapUserToPropsLogin(state: Partial<BlockProps>) {
 	return {
 		authorizationForm: state?.authorizationForm,
-		userData: state?.userData,
 	};
 }
 
-const connectLogin = connect(mapUserToProps);
+const connectLogin = connect(mapUserToPropsLogin);
 export const LoginPage = connectLogin(LoginBlock);

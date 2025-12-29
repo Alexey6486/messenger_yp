@@ -1,4 +1,7 @@
-export { PAGES } from './pages';
+export {
+	PAGES,
+	PAGES_URL,
+} from './pages';
 export {
 	INIT_LOGIN_STATE,
 	INIT_REGISTRATION_STATE,

@@ -11,4 +11,5 @@ export interface IRequestOptions {
 	method: ERequestMethods;
 	data?: TNullable<Document | XMLHttpRequestBodyInit>;
 	headers?: Record<string, string>;
+	credentials?: string;
 }

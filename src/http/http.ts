@@ -45,7 +45,14 @@ export class HTTPTransport {
 		url: string,
 		options: Partial<RequestOptions> & IRequestOptions,
 	): Promise<XMLHttpRequest> {
-		const { headers = {}, method, data, timeout = 5000 } = options;
+		const {
+			headers = {},
+			credentials = '',
+			// mode = 'cors',
+			method,
+			data,
+			timeout = 5000,
+		} = options;
 
 		return new Promise(function (resolve, reject) {
 			if (!method) {
@@ -54,6 +61,7 @@ export class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
+			xhr.withCredentials = credentials === 'include';
 			const isGet = method === ERequestMethods.GET;
 
 			xhr.open(

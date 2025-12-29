@@ -1,8 +1,8 @@
 export {
 	LoginPage,
-	RegistrationBlock,
+	RegistrationPage,
 } from './authorization';
-export { ErrorBlock } from './error';
+export { ErrorPage } from './error';
 export { ProfileBlock } from './profile';
 export { ModalBlock } from './modal';
 export { MainBlock } from './main';

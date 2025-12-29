@@ -1,7 +1,13 @@
 export type { TPages } from './pages';
-export type { TNullable, TIndexed, TPlainObject, TFunctionUnknown } from './general';
 export type {
-	IState,
+	TNullable,
+	TIndexed,
+	TPlainObject,
+	TFunctionUnknown,
+	TErrorMessage,
+} from './general';
+export type {
+	IErrorState,
 	IFormState,
 	ILoginForm,
 	IRegistrationFormUi,

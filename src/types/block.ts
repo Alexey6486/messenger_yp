@@ -3,6 +3,7 @@ import type {
 	IChat,
 	IChildren,
 	ICurrentFocus,
+	IErrorPageState,
 	IFormState,
 	IInputChangeParams,
 	IInputState,
@@ -51,15 +52,14 @@ export interface BlockProps {
 	tooltip?: string;
 	target?: string;
 	text?: string;
-	code?: string;
 	author?: string;
 	fieldName?: string;
 	parentFormId?: string;
 	currentChatId?: TNullable<string>;
 	contentId?: keyof BlockProps;
-	error?: string;
 	buttonText?: string;
-	page?: TPages,
+	page?: TPages;
+	error?: IErrorPageState;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
