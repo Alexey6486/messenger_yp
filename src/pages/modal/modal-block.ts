@@ -10,8 +10,8 @@ import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgCross } from '@/components/icons';
 import template from './modal-template.hbs?raw';
 
-interface IModalBlock<T> extends BlockProps {
-	contentForms: Record<string, IFormState<T>>;
+interface IModalBlock<T = unknown> extends Omit<BlockProps, 'contentForms'> {
+	contentForms?: Record<string, IFormState<T>>;
 }
 
 export class ModalBlock<T> extends Block {
@@ -19,9 +19,9 @@ export class ModalBlock<T> extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.MODAL.CONTENT]: `<div id="${IDS.MODAL.CONTENT}"></div>`,
-				[IDS.MODAL.SUBMIT]: `<div id="${IDS.MODAL.SUBMIT}"></div>`,
-				[IDS.MODAL.CLOSE]: `<div id="${IDS.MODAL.CLOSE}"></div>`,
+				[IDS.MODAL.CONTENT]: `<div id="${ IDS.MODAL.CONTENT }"></div>`,
+				[IDS.MODAL.SUBMIT]: `<div id="${ IDS.MODAL.SUBMIT }"></div>`,
+				[IDS.MODAL.CLOSE]: `<div id="${ IDS.MODAL.CLOSE }"></div>`,
 			},
 			children: {
 				[IDS.MODAL.CONTENT]: getModalContentBlock<T>(

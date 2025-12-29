@@ -48,7 +48,7 @@ export function cloneDeep<T = unknown>(obj: T): CloneableResult<T> {
 			// Object.keys(item as TObjectUnknown).forEach(k => (copy[k] = cloneDeepInner((item as TObjectUnknown)[k] as T)));
 			// Object.getOwnPropertySymbols(item as TObjectUnknown).forEach(s => (copy[s] = cloneDeepInner((item as TObjectUnknown)[s] as T)));
 
-			let copy: Record<string, unknown> = {};
+			const copy: Record<string, unknown> = {};
 			// Object.keys(item).forEach(k => (copy[k] = cloneDeepInner(item[k])));
 			// return copy as CloneableResult<U>;
 

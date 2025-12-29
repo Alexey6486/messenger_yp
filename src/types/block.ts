@@ -89,4 +89,5 @@ export interface BlockProps {
 	chatsSearchForm?: IFormState<ISearchForm>;
 	newMessageForm?: IFormState<IMessageForm>;
 	modalAddUserForm?: IFormState<IAddUserModalForm>;
+	contentForms?: Record<string, IFormState<unknown>>;
 }
