@@ -1,23 +1,23 @@
 import type { TIndexed } from '@/types';
 import { isPlainObject } from '@/utils/is-type';
 
-export function merge(lhs: TIndexed, rhs: TIndexed): TIndexed {
-	for (const p in rhs) {
-		if (!Object.hasOwnProperty.call(rhs, 'key')) {
+export function merge(oldObj: TIndexed, newObj: TIndexed): TIndexed {
+	for (const p in newObj) {
+		if (!Object.hasOwnProperty.call(newObj, p)) {
 			continue;
 		}
 
 		try {
-			if (isPlainObject(rhs[p])) {
-				rhs[p] = merge(lhs[p] as TIndexed, rhs[p] as TIndexed);
+			if (isPlainObject(newObj[p])) {
+				oldObj[p] = merge(oldObj[p] as TIndexed, newObj[p] as TIndexed);
 			} else {
-				lhs[p] = rhs[p];
+				oldObj[p] = newObj[p];
 			}
 		} catch (e) {
 			console.log(e);
-			lhs[p] = rhs[p];
+			oldObj[p] = newObj[p];
 		}
 	}
 
-	return lhs;
+	return oldObj;
 }

@@ -4,9 +4,10 @@ import type { BlockProps } from '@/types';
 
 function mapUserToProps(state: Partial<BlockProps>) {
 	return {
-		authorizationForm: state.authorizationForm,
+		authorizationForm: state?.authorizationForm,
+		userData: state?.userData,
 	};
 }
 
 const connectLogin = connect(mapUserToProps);
-export const LoginPage = connectLogin(LoginBlock)
+export const LoginPage = connectLogin(LoginBlock);

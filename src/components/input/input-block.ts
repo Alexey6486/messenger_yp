@@ -1,9 +1,11 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
-import type {
-	BlockProps,
-} from '@/types';
+import type { BlockProps } from '@/types';
 import template from './input-template';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 
 export class InputBlock extends Block {
 	constructor(props: BlockProps) {
@@ -42,6 +44,13 @@ export class InputBlock extends Block {
 					}
 				},
 			},
+		});
+
+		Store.on(StoreEvents.Updated, () => {
+			console.log('State InputBlock: ', Store.getState());
+			if (props.mapStateToProps) {
+				this.setProps(props.mapStateToProps(Store.getState()));
+			}
 		});
 	}
 

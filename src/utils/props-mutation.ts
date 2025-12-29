@@ -6,7 +6,7 @@ const prepData = (str: string, val: unknown): Record<string, unknown> => str
 	.reduceRight((acc, key, idx, arr) => ({ [key]: arr.length - 1 === idx ? val : acc }), {});
 
 export function setProps(object: TIndexed | unknown, path: string, value: unknown): TIndexed | unknown {
-	console.log({ object, path, value });
+	console.log('setProps params: ', { object, path, value });
 
 	if (typeof path !== 'string') {
 		throw new Error('path must be string');
@@ -17,6 +17,7 @@ export function setProps(object: TIndexed | unknown, path: string, value: unknow
 	}
 
 	const newObject = prepData(path, value);
-
-	return merge(object as TIndexed, newObject);
+	const result = merge(object as TIndexed, newObject);
+	console.log('setProps result: ', { newObject, result });
+	return result;
 }

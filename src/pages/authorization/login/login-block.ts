@@ -1,5 +1,8 @@
 import { Block } from '@/block';
-import { StoreEvents, Store } from '@/store';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 import {
 	IDS,
 	PAGES,
@@ -97,6 +100,15 @@ export class LoginBlock extends Block {
 					},
 					label: 'Пароль',
 					isRequired: true,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							input_data: {
+								value: data?.authorizationForm?.fields?.password ?? '',
+								error: data?.authorizationForm?.errors?.password ?? '',
+								currentFocus: data.currentFocus,
+							},
+						};
+					},
 					children: {
 						[IDS.AUTHORIZATION.PSW_INPUT]: new InputBlock({
 							id: IDS.AUTHORIZATION.PSW_INPUT,
@@ -104,6 +116,15 @@ export class LoginBlock extends Block {
 								value: props?.authorizationForm?.fields?.password ?? '',
 								error: props?.authorizationForm?.errors?.password ?? '',
 								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return {
+									input_data: {
+										value: data?.authorizationForm?.fields?.password ?? '',
+										error: data?.authorizationForm?.errors?.password ?? '',
+										currentFocus: data.currentFocus,
+									},
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
 							name: E_FORM_FIELDS_NAME.password,
@@ -275,7 +296,8 @@ export class LoginBlock extends Block {
 			},
 		});
 		Store.on(StoreEvents.Updated, () => {
-			console.log('state: ', Store.getState());
+			console.log('State LoginBlock: ', Store.getState());
+			// TODO
 			this.setProps(Store.getState());
 		});
 		Store.set('userData', { first_name: 'test' });

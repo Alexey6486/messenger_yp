@@ -4,16 +4,21 @@ import {
 	setProps,
 } from '@/utils';
 import { StoreEvents } from '@/store/types';
-import type { BlockProps } from '@/types';
-import { INIT_LOGIN_STATE } from '@/constants';
 import type {
+	BlockProps,
 	IFormState,
 	ILoginForm,
+	IRegistrationFormUi,
 } from '@/types';
+import {
+	INIT_LOGIN_STATE,
+	INIT_REGISTRATION_STATE,
+} from '@/constants';
 
 class Store extends EventBus {
 	private state: Partial<BlockProps> = {
 		authorizationForm: cloneDeep(INIT_LOGIN_STATE) as IFormState<ILoginForm>,
+		registrationForm: cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>,
 	};
 
 	public getState() {
