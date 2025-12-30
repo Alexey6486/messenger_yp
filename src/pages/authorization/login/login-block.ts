@@ -1,7 +1,7 @@
 import { Block } from '@/block';
 import { AuthController } from '@/controllers';
 import { Store } from '@/store';
-import { FocusManager } from '@/focus-manager';
+import { FocusManager, getFocusData } from '@/focus-manager';
 import {
 	IDS,
 	PAGES_URL,
@@ -90,11 +90,7 @@ export class LoginBlock extends Block {
 										},
 									}),
 								};
-								const focus = {
-									element: params?.info?.element ?? null,
-									selectionStart: params?.info?.selectionStart ?? null
-								};
-								FocusManager.set(focus);
+								FocusManager.set(getFocusData(params.info));
 								Store.set(
 									'authorizationForm',
 									{
@@ -108,23 +104,6 @@ export class LoginBlock extends Block {
 										},
 									},
 								);
-								// this.onFormInputChange(
-								// 	{
-								// 		...params,
-								// 		...(params.info.event === 'blur' && {
-								// 			data: {
-								// 				...params.data,
-								// 				error: fieldsValidator({
-								// 					valueToValidate: params.data.value,
-								// 					fieldName: E_FORM_FIELDS_NAME.login,
-								// 				}),
-								// 			},
-								// 		}),
-								// 	},
-								// 	[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN_FIELD],
-								// 	E_FORM_FIELDS_NAME.login,
-								// 	IDS.FORMS.AUTHORIZATION_FORM,
-								// );
 							},
 						}),
 					},
@@ -181,11 +160,7 @@ export class LoginBlock extends Block {
 										},
 									}),
 								};
-								const focus = {
-									element: params?.info?.element ?? null,
-									selectionStart: params?.info?.selectionStart ?? null
-								};
-								FocusManager.set(focus);
+								FocusManager.set(getFocusData(params.info));
 								Store.set(
 									'authorizationForm',
 									{
@@ -199,23 +174,6 @@ export class LoginBlock extends Block {
 										},
 									},
 								);
-								// this.onFormInputChange(
-								// 	{
-								// 		...params,
-								// 		...(params.info.event === 'blur' && {
-								// 			data: {
-								// 				...params.data,
-								// 				error: fieldsValidator({
-								// 					valueToValidate: params.data.value,
-								// 					fieldName: E_FORM_FIELDS_NAME.password,
-								// 				}),
-								// 			},
-								// 		}),
-								// 	},
-								// 	[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PSW_FIELD],
-								// 	E_FORM_FIELDS_NAME.password,
-								// 	IDS.FORMS.AUTHORIZATION_FORM,
-								// );
 							},
 						}),
 					},

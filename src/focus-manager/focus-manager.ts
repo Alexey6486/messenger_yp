@@ -1,9 +1,8 @@
-import { EventBus } from '@/event-bus';
 import type {
 	ICurrentFocus,
 } from '@/types';
 
-class FocusManager extends EventBus {
+class FocusManager {
 	private state: ICurrentFocus = {
 		element: null,
 		selectionStart: null,
@@ -16,8 +15,6 @@ class FocusManager extends EventBus {
 	public set(value: ICurrentFocus) {
 		console.log('FocusManager set: ', { value });
 		this.state = value;
-
-		// this.emit(FocusEvents.Updated);
 	}
 }
 
