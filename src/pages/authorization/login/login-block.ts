@@ -196,10 +196,7 @@ export class LoginBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										// && !inputInstance.props?.input_data?.error.length
-									) {
+									if (inputId.includes('input')) {
 										const fieldName = inputInstance.props.name as keyof ILoginForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
@@ -207,15 +204,6 @@ export class LoginBlock extends Block {
 										});
 
 										if (validationResult.length) {
-											const childProps = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-												},
-											};
-											inputInstance.setProps(childProps);
-											fieldInstance.setProps(childProps);
-
 											const authorizationForm = pageProps?.authorizationForm as BlockProps['authorizationForm'];
 											const authorizationErrors = authorizationForm?.errors;
 											if (authorizationErrors) {
@@ -236,14 +224,21 @@ export class LoginBlock extends Block {
 						});
 
 						const authorizationForm: IFormState<ILoginForm> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
+						console.log({ pageProps });
+
 						if (
 							authorizationForm
 							&& authorizationForm.errors
 						) {
 							const errorsList = Object.values(authorizationForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList, validationResult });
+							console.log({ errorsList });
+
 							if (errorsList.length) {
-								this.setProps(pageProps as BlockProps);
+								const { authorizationForm: { errors, fields } } = pageProps;
+								Store.set(
+									'authorizationForm',
+									{ fields, errors },
+								);
 							} else {
 								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
 								const data = JSON.stringify(this.props?.authorizationForm?.fields);
