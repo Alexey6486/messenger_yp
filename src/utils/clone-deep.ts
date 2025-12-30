@@ -44,13 +44,7 @@ export function cloneDeep<T = unknown>(obj: T): CloneableResult<T> {
 		}
 
 		if (item instanceof Object) {
-			// const copy: TObjectUnknown = {};
-			// Object.keys(item as TObjectUnknown).forEach(k => (copy[k] = cloneDeepInner((item as TObjectUnknown)[k] as T)));
-			// Object.getOwnPropertySymbols(item as TObjectUnknown).forEach(s => (copy[s] = cloneDeepInner((item as TObjectUnknown)[s] as T)));
-
 			const copy: Record<string, unknown> = {};
-			// Object.keys(item).forEach(k => (copy[k] = cloneDeepInner(item[k])));
-			// return copy as CloneableResult<U>;
 
 			const keys = Object.keys(item) as Array<keyof typeof item>;
 			keys.forEach(k => {
@@ -66,7 +60,3 @@ export function cloneDeep<T = unknown>(obj: T): CloneableResult<T> {
 		throw new Error(`Unable to copy object: ${ item }`);
 	})(obj);
 }
-
-// function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
-// 	return obj[key];
-// }

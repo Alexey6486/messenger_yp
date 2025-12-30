@@ -19,6 +19,10 @@ import type { TNullable } from '@/types/general';
 import type { TPages } from '@/types/pages';
 import type { Router } from '@/router';
 
+// function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+// 	return obj[key];
+// }
+
 export interface BlockProps {
 	children?: IChildren<Block>;
 	allInstances?: IChildren<Block>;

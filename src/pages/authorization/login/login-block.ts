@@ -9,6 +9,7 @@ import {
 import {
 	compile,
 	fieldsValidator,
+	getInputStateSlice,
 } from '@/utils';
 import type {
 	BlockProps,
@@ -33,12 +34,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
 				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
 				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
-
-				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${ IDS.AUTHORIZATION.TEMP_ERROR }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${ IDS.AUTHORIZATION.TEMP_PROFILE }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${ IDS.AUTHORIZATION.TEMP_MAIN }"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${ IDS.AUTHORIZATION.TEMP_MODAL }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -49,12 +44,7 @@ export class LoginBlock extends Block {
 						error: props?.authorizationForm?.errors?.login ?? '',
 					},
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-						return {
-							input_data: {
-								value: data?.authorizationForm?.fields?.login ?? '',
-								error: data?.authorizationForm?.errors?.login ?? '',
-							},
-						};
+						return getInputStateSlice(data?.authorizationForm, 'login');
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -66,12 +56,7 @@ export class LoginBlock extends Block {
 								error: props?.authorizationForm?.errors?.login ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return {
-									input_data: {
-										value: data?.authorizationForm?.fields?.login ?? '',
-										error: data?.authorizationForm?.errors?.login ?? '',
-									},
-								};
+								return getInputStateSlice(data?.authorizationForm, 'login');
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -119,12 +104,7 @@ export class LoginBlock extends Block {
 						error: props?.authorizationForm?.errors?.password ?? '',
 					},
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-						return {
-							input_data: {
-								value: data?.authorizationForm?.fields?.password ?? '',
-								error: data?.authorizationForm?.errors?.password ?? '',
-							},
-						};
+						return getInputStateSlice(data?.authorizationForm, 'password');
 					},
 					label: 'Пароль',
 					isRequired: true,
@@ -136,12 +116,7 @@ export class LoginBlock extends Block {
 								error: props?.authorizationForm?.errors?.password ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return {
-									input_data: {
-										value: data?.authorizationForm?.fields?.password ?? '',
-										error: data?.authorizationForm?.errors?.password ?? '',
-									},
-								};
+								return getInputStateSlice(data?.authorizationForm, 'password');
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
 							name: E_FORM_FIELDS_NAME.password,

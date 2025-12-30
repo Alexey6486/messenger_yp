@@ -52,9 +52,6 @@ export class InputBlock extends Block {
 			},
 		});
 
-		// FocusManager.on(FocusEvents.Updated, () => {
-		// 	console.log('Focus updated');
-		// });
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
 

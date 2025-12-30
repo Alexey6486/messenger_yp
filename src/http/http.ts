@@ -27,12 +27,10 @@ function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 type HTTPMethod = (url: string, options?: Partial<RequestOptions & IRequestOptions>) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
-	// Фабричный метод для создания HTTP-методов
 	private createMethod(method: ERequestMethods): HTTPMethod {
 		return (url, options = {}) => this.request(url, { ...options, method });
 	}
 
-	// Методы HTTP
 	readonly get = this.createMethod(ERequestMethods.GET);
 
 	readonly put = this.createMethod(ERequestMethods.PUT);

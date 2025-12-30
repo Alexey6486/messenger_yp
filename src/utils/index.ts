@@ -17,3 +17,4 @@ export {
 	isErrorWithMessage,
 	getErrorText,
 } from './error';
+export { getInputStateSlice } from './state-slice';

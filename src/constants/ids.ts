@@ -60,12 +60,6 @@ export const IDS: Record<string, Record<string, string>> = {
 		LOGIN_INPUT: 'authorization-login-input',
 		PSW_FIELD: 'authorization-psw-field',
 		PSW_INPUT: 'authorization-psw-input',
-
-		// Временные кнопки для перехода на другие страницы
-		TEMP_ERROR: 'authorization-temp-error',
-		TEMP_PROFILE: 'authorization-temp-profile',
-		TEMP_MAIN: 'authorization-temp-main',
-		TEMP_MODAL: 'authorization-temp-modal',
 	},
 	REGISTRATION: {
 		FORM: 'registration-form',
