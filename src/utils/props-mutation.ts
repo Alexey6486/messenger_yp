@@ -15,7 +15,8 @@ export function setProps(object: TIndexed | unknown, path: string, value: unknow
 	}
 
 	const newObject = prepData(path, value);
-	const res = merge(object as TIndexed, newObject);
-	console.log('res:', res);
-	return res;
+	const result = merge(object as TIndexed, newObject);
+	console.log('setProps merge result:', result);
+
+	return result;
 }

@@ -1,14 +1,14 @@
 import { Block } from '@/block';
 import {
+	Store,
+	StoreEvents,
+} from '@/store';
+import {
 	compile,
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './input-template';
-import {
-	Store,
-	StoreEvents,
-} from '@/store';
 
 export class InputBlock extends Block {
 	constructor(props: BlockProps) {
@@ -52,12 +52,19 @@ export class InputBlock extends Block {
 			},
 		});
 
+		// FocusManager.on(FocusEvents.Updated, () => {
+		// 	console.log('Focus updated');
+		// });
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-			console.log('State InputBlock: ', newState);
 
-			if (props.mapStateToProps && state && newState && !isEqual(state, newState)) {
-				this.setProps(newState);
+			if (props.mapStateToProps && state && newState) {
+				const isEqualCheck = isEqual(state, newState);
+				console.log('State InputBlock: ', { isEqualCheck, state, newState, t: this });
+
+				if (!isEqualCheck) {
+					this.setProps(newState);
+				}
 			}
 
 			state = newState;
@@ -65,6 +72,7 @@ export class InputBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render InputBlock', this);
 		return compile(template, this.props);
 	}
 }

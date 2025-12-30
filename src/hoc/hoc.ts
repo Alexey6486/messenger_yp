@@ -21,8 +21,10 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 
 				Store.on(StoreEvents.Updated, () => {
 					const newState = mapStateToProps(Store.getState());
+					const isEqualCheck = isEqual(state, newState);
+					console.log('State Connect: ', { isEqualCheck, state, newState, t: this });
 
-					if (!isEqual(state, newState)) {
+					if (!isEqualCheck) {
 						this.setProps({...newState});
 					}
 

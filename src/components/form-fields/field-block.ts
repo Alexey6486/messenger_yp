@@ -1,14 +1,14 @@
 import { Block } from '@/block';
 import {
+	Store,
+	StoreEvents,
+} from '@/store';
+import {
 	compile,
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
 import template from './field-template';
-import {
-	Store,
-	StoreEvents,
-} from '@/store';
 
 export class FieldBlock extends Block {
 	constructor(props: BlockProps) {
@@ -21,10 +21,14 @@ export class FieldBlock extends Block {
 
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-			console.log('State FieldBlock: ', state, newState);
 
-			if (props.mapStateToProps && state && newState && !isEqual(state, newState)) {
-				this.setProps(newState);
+			if (props.mapStateToProps && state && newState) {
+				const isEqualCheck = isEqual(state, newState);
+				console.log('State FieldBlock: ', { isEqualCheck, state, newState, t: this });
+
+				if (!isEqualCheck) {
+					this.setProps(newState);
+				}
 			}
 
 			state = newState;
@@ -32,6 +36,7 @@ export class FieldBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render FieldBlock', this);
 		return compile(template, this.props);
 	}
 }

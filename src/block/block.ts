@@ -1,4 +1,5 @@
 import { EventBus } from '@/event-bus';
+import { FocusManager } from '@/focus-manager'
 import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
@@ -142,7 +143,6 @@ export abstract class Block {
 	}
 
 	private _componentWillUnmount(props: BlockProps) {
-		console.log('_componentWillUnmount: ', this.element);
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -203,7 +203,26 @@ export abstract class Block {
 
 		this._addEvents();
 		this._addAttributes();
-		this._setFocus();
+		const { element: focusElement, selectionStart } = FocusManager.getState();
+		if (this.element === focusElement?.element) {
+			this._setFocus(selectionStart);
+		}
+	}
+
+	private _setFocus(selectionStart: TNullable<number>) {
+		if (this._element instanceof HTMLInputElement) {
+			setTimeout(() => {
+				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
+					this._element.focus();
+					if (selectionStart !== null) {
+						this._element.setSelectionRange(
+							selectionStart,
+							selectionStart,
+						);
+					}
+				}
+			}, 0);
+		}
 	}
 
 	render(): string {
@@ -211,8 +230,6 @@ export abstract class Block {
 	}
 
 	getContent() {
-		console.log('Block getContent: ', this);
-
 		if (!this.element) {
 			throw new Error('Элемент не создан');
 		}
@@ -422,26 +439,6 @@ export abstract class Block {
 				});
 			}
 		});
-	}
-
-	private _setFocus() {
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
-			setTimeout(() => {
-				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
-					this._element.focus();
-					if (
-						this?.props?.input_data
-						&& this?.props?.input_data?.currentFocus
-						&& this.props.input_data.currentFocus?.selectionStart !== null
-					) {
-						this._element.setSelectionRange(
-							this.props.input_data.currentFocus.selectionStart,
-							this.props.input_data.currentFocus.selectionStart,
-						);
-					}
-				}
-			}, 0);
-		}
 	}
 
 	protected createModal<T>(
