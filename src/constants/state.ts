@@ -4,7 +4,6 @@ import type {
 	ILoginForm,
 	IMainPageState,
 	IMessageForm,
-	IProfilePageState,
 	IRegistrationFormUi,
 	ISearchForm,
 	IUserDataForm,
@@ -73,35 +72,37 @@ export const INIT_PROFILE_USER_PASSWORD_STATE: IFormState<IUserPasswordForm> = {
 };
 
 export const INIT_USER_DATA: IUserResponse = {
-	id: 'logged_user',
-	first_name: 'Иван',
-	second_name: 'Иванов',
-	display_name: 'Иван',
+	id: '',
+	first_name: '',
+	second_name: '',
+	display_name: '',
+	login: '',
+	email: '',
+	phone: '',
 	avatar: '',
-	login: 'ivan',
-	email: 'ivan@yandex.ru',
-	phone: '1234567890',
 };
 
 export const INIT_PROFILE_USER_DATA_STATE: IFormState<IUserDataForm> = {
-	fields: INIT_USER_DATA,
+	fields: {
+		id: '',
+		first_name: '',
+		second_name: '',
+		display_name: '',
+		login: '',
+		email: '',
+		phone: '',
+		avatar: '',
+	},
 	errors: {
 		id: '',
 		first_name: '',
 		second_name: '',
 		display_name: '',
-		avatar: '',
 		login: '',
 		email: '',
 		phone: '',
+		avatar: '',
 	},
-};
-
-export const INIT_PROFILE_PAGE_STATE: IProfilePageState = {
-	isDataEdit: false,
-	isPasswordEdit: false,
-	passwordForm: INIT_PROFILE_USER_PASSWORD_STATE,
-	userForm: INIT_PROFILE_USER_DATA_STATE,
 };
 
 export const INIT_MAIN_PAGE_STATE: IMainPageState = {

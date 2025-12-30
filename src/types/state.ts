@@ -127,17 +127,6 @@ export interface IErrorState {
 	error: IErrorPageState;
 }
 
-export interface IProfilePageState {
-	isDataEdit: boolean
-	isPasswordEdit: boolean
-	passwordForm: IFormState<IUserPasswordForm>,
-	userForm: IFormState<IUserDataForm>,
-}
-
-export interface IProfilePageHbsState extends IProfilePageState {
-	user: IUserResponse,
-}
-
 export type IChildren<T> = Record<string, T>;
 
 export interface IInputData {

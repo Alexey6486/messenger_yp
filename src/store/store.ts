@@ -10,11 +10,17 @@ import type {
 	IFormState,
 	ILoginForm,
 	IRegistrationFormUi,
+	IUserResponse,
+	IUserDataForm,
+	IUserPasswordForm,
 } from '@/types';
 import {
 	INIT_ERROR_STATE,
 	INIT_LOGIN_STATE,
 	INIT_REGISTRATION_STATE,
+	INIT_USER_DATA,
+	INIT_PROFILE_USER_DATA_STATE,
+	INIT_PROFILE_USER_PASSWORD_STATE,
 } from '@/constants';
 
 class Store extends EventBus {
@@ -22,6 +28,11 @@ class Store extends EventBus {
 		authorizationForm: cloneDeep(INIT_LOGIN_STATE) as IFormState<ILoginForm>,
 		registrationForm: cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>,
 		error: cloneDeep(INIT_ERROR_STATE) as IErrorPageState,
+		userData: cloneDeep(INIT_USER_DATA) as IUserResponse,
+		isDataEdit: false,
+		isPasswordEdit: false,
+		passwordForm: cloneDeep(INIT_PROFILE_USER_PASSWORD_STATE) as IFormState<IUserPasswordForm>,
+		userForm: cloneDeep(INIT_PROFILE_USER_DATA_STATE) as IFormState<IUserDataForm>,
 	};
 
 	public getState() {
