@@ -2,7 +2,6 @@ import type {
 	IAddUserModalForm,
 	IChat,
 	IChildren,
-	ICurrentFocus,
 	IErrorPageState,
 	IFormState,
 	IInputChangeParams,
@@ -65,7 +64,6 @@ export interface BlockProps {
 	messages?: TNullable<IChat[]>;
 	chats?: TNullable<IChat[]>;
 	userData?: IUserResponse;
-	currentFocus?: TNullable<ICurrentFocus>;
 
 	onClick?: (event: Event) => void;
 	onSubmit?: (event?: Event) => void;

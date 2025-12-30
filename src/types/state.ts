@@ -153,5 +153,4 @@ export interface ICurrentFocus {
 export interface IInputState {
 	value: string;
 	error: string;
-	currentFocus?: TNullable<ICurrentFocus>;
 }

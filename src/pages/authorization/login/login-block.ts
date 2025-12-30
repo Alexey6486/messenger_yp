@@ -47,14 +47,12 @@ export class LoginBlock extends Block {
 					input_data: {
 						value: props?.authorizationForm?.fields?.login ?? '',
 						error: props?.authorizationForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
 					},
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							input_data: {
 								value: data?.authorizationForm?.fields?.login ?? '',
 								error: data?.authorizationForm?.errors?.login ?? '',
-								currentFocus: data.currentFocus,
 							},
 						};
 					},
@@ -66,14 +64,12 @@ export class LoginBlock extends Block {
 							input_data: {
 								value: props?.authorizationForm?.fields?.login ?? '',
 								error: props?.authorizationForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 								return {
 									input_data: {
 										value: data?.authorizationForm?.fields?.login ?? '',
 										error: data?.authorizationForm?.errors?.login ?? '',
-										currentFocus: data.currentFocus,
 									},
 								};
 							},
@@ -149,14 +145,12 @@ export class LoginBlock extends Block {
 					input_data: {
 						value: props?.authorizationForm?.fields?.password ?? '',
 						error: props?.authorizationForm?.errors?.password ?? '',
-						currentFocus: props.currentFocus,
 					},
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							input_data: {
 								value: data?.authorizationForm?.fields?.password ?? '',
 								error: data?.authorizationForm?.errors?.password ?? '',
-								currentFocus: data.currentFocus,
 							},
 						};
 					},
@@ -168,14 +162,12 @@ export class LoginBlock extends Block {
 							input_data: {
 								value: props?.authorizationForm?.fields?.password ?? '',
 								error: props?.authorizationForm?.errors?.password ?? '',
-								currentFocus: props.currentFocus,
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 								return {
 									input_data: {
 										value: data?.authorizationForm?.fields?.password ?? '',
 										error: data?.authorizationForm?.errors?.password ?? '',
-										currentFocus: data.currentFocus,
 									},
 								};
 							},
@@ -268,7 +260,6 @@ export class LoginBlock extends Block {
 												input_data: {
 													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
 												},
 											};
 											inputInstance.setProps(childProps);
