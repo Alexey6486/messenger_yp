@@ -49,7 +49,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.email ?? '',
 						error: props?.registrationForm?.errors?.email ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Почта',
 					isRequired: true,
@@ -59,7 +58,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.email ?? '',
 								error: props?.registrationForm?.errors?.email ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
 							name: E_FORM_FIELDS_NAME.email,
@@ -96,7 +94,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.login ?? '',
 						error: props?.registrationForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -106,7 +103,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.login ?? '',
 								error: props?.registrationForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -143,7 +139,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.first_name ?? '',
 						error: props?.registrationForm?.errors?.first_name ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Имя',
 					isRequired: true,
@@ -153,7 +148,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.first_name ?? '',
 								error: props?.registrationForm?.errors?.first_name ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
 							name: E_FORM_FIELDS_NAME.first_name,
@@ -190,7 +184,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.second_name ?? '',
 						error: props?.registrationForm?.errors?.second_name ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Фамилия',
 					isRequired: true,
@@ -200,7 +193,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.second_name ?? '',
 								error: props?.registrationForm?.errors?.second_name ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
 							name: E_FORM_FIELDS_NAME.second_name,
@@ -237,7 +229,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.phone ?? '',
 						error: props?.registrationForm?.errors?.phone ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Телефон',
 					isRequired: true,
@@ -247,7 +238,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.phone ?? '',
 								error: props?.registrationForm?.errors?.phone ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
 							name: E_FORM_FIELDS_NAME.phone,
@@ -284,7 +274,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.password ?? '',
 						error: props?.registrationForm?.errors?.password ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль',
 					isRequired: true,
@@ -294,7 +283,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.password ?? '',
 								error: props?.registrationForm?.errors?.password ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
 							name: E_FORM_FIELDS_NAME.password,
@@ -331,7 +319,6 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.confirmPassword ?? '',
 						error: props?.registrationForm?.errors?.confirmPassword ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Пароль (еще раз)',
 					isRequired: true,
@@ -341,7 +328,6 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.confirmPassword ?? '',
 								error: props?.registrationForm?.errors?.confirmPassword ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
 							name: E_FORM_FIELDS_NAME.confirmPassword,
@@ -407,7 +393,6 @@ export class RegistrationBlock extends Block {
 												input_data: {
 													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
 												},
 											};
 											inputInstance.setProps(data);

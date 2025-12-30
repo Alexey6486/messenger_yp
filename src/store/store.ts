@@ -25,7 +25,6 @@ class Store extends EventBus {
 		registrationForm: cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>,
 		error: cloneDeep(INIT_ERROR_STATE) as IErrorPageState,
 		userData: cloneDeep(INIT_USER_DATA) as IUserResponse,
-		currentFocus: null,
 		// isDataEdit: false,
 		// isPasswordEdit: false,
 		// passwordForm: cloneDeep(INIT_PROFILE_USER_PASSWORD_STATE) as IFormState<IUserPasswordForm>,

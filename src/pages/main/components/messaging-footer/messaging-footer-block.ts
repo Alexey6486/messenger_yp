@@ -96,7 +96,6 @@ export class MessagingFooterBlock extends Block {
 					input_data: {
 						value: props?.newMessageForm?.fields?.message ?? '',
 						error: props?.newMessageForm?.errors?.message ?? '',
-						currentFocus: props?.currentFocus,
 					},
 					dataset: E_FORM_FIELDS_NAME.message,
 					name: E_FORM_FIELDS_NAME.message,

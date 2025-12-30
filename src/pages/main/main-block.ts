@@ -50,7 +50,6 @@ export class MainBlock extends Block {
 							input_data: {
 								value: props?.chatsSearchForm?.fields?.title ?? '',
 								error: props?.chatsSearchForm?.errors?.title ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.title,
 							name: E_FORM_FIELDS_NAME.title,

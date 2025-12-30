@@ -63,7 +63,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.email ?? '',
 						error: props?.userForm?.errors?.email ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -72,7 +71,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.email ?? '',
 								error: props?.userForm?.errors?.email ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
 							name: E_FORM_FIELDS_NAME.email,
@@ -113,7 +111,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.login ?? '',
 						error: props?.userForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -122,7 +119,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.login ?? '',
 								error: props?.userForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -163,7 +159,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.first_name ?? '',
 						error: props?.userForm?.errors?.first_name ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -172,7 +167,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.first_name ?? '',
 								error: props?.userForm?.errors?.first_name ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
 							name: E_FORM_FIELDS_NAME.first_name,
@@ -213,7 +207,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.second_name ?? '',
 						error: props?.userForm?.errors?.second_name ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -222,7 +215,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.second_name ?? '',
 								error: props?.userForm?.errors?.second_name ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
 							name: E_FORM_FIELDS_NAME.second_name,
@@ -263,7 +255,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.display_name ?? '',
 						error: props?.userForm?.errors?.display_name ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -272,7 +263,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.display_name ?? '',
 								error: props?.userForm?.errors?.display_name ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.display_name,
 							name: E_FORM_FIELDS_NAME.display_name,
@@ -313,7 +303,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props?.userForm?.fields?.phone ?? '',
 						error: props?.userForm?.errors?.phone ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_DATA_FORM,
 					children: {
@@ -322,7 +311,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props?.userForm?.fields?.phone ?? '',
 								error: props?.userForm?.errors?.phone ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
 							name: E_FORM_FIELDS_NAME.phone,
@@ -364,7 +352,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props.passwordForm?.fields?.oldPassword ?? '',
 						error: props.passwordForm?.errors?.oldPassword ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
 					children: {
@@ -373,7 +360,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props.passwordForm?.fields?.oldPassword ?? '',
 								error: props.passwordForm?.errors?.oldPassword ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.oldPassword,
 							name: E_FORM_FIELDS_NAME.oldPassword,
@@ -413,7 +399,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props.passwordForm?.fields?.newPassword ?? '',
 						error: props.passwordForm?.errors?.newPassword ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
 					children: {
@@ -422,7 +407,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props.passwordForm?.fields?.newPassword ?? '',
 								error: props.passwordForm?.errors?.newPassword ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.newPassword,
 							name: E_FORM_FIELDS_NAME.newPassword,
@@ -461,7 +445,6 @@ export class ProfileBlock extends Block {
 					input_data: {
 						value: props.passwordForm?.fields?.confirmPassword ?? '',
 						error: props.passwordForm?.errors?.confirmPassword ?? '',
-						currentFocus: props.currentFocus,
 					},
 					parentFormId: IDS.FORMS.PROFILE_USER_PSW_FORM,
 					children: {
@@ -470,7 +453,6 @@ export class ProfileBlock extends Block {
 							input_data: {
 								value: props.passwordForm?.fields?.confirmPassword ?? '',
 								error: props.passwordForm?.errors?.confirmPassword ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
 							name: E_FORM_FIELDS_NAME.confirmPassword,
@@ -596,7 +578,6 @@ export class ProfileBlock extends Block {
 												input_data: {
 													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
 												},
 											};
 											inputInstance.setProps(childProps);
@@ -666,7 +647,6 @@ export class ProfileBlock extends Block {
 												input_data: {
 													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
 												},
 											};
 											inputInstance.setProps(childProps);

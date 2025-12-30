@@ -401,8 +401,7 @@ export abstract class Block {
 		fieldName: string,
 		formName: string,
 	): void {
-		const { data, info } = params;
-		const { element, selectionStart = 0 } = info;
+		const { data } = params;
 
 		const targetChildren = this._getChildrenToUpdate(
 			this.allInstances,
@@ -414,7 +413,6 @@ export abstract class Block {
 				input_data: {
 					value: data.value ?? '',
 					error: data.error ?? '',
-					currentFocus: { element, selectionStart },
 				},
 			});
 		});

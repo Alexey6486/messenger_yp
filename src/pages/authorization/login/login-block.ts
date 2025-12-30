@@ -108,13 +108,6 @@ export class LoginBlock extends Block {
 										},
 									},
 								);
-								// Store.set(
-								// 	'currentFocus',
-								// 	{
-								// 		element: params.info.element,
-								// 		selectionStart: params.info.selectionStart,
-								// 	},
-								// );
 								// this.onFormInputChange(
 								// 	{
 								// 		...params,

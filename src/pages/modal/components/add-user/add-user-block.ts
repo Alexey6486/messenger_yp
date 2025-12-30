@@ -41,7 +41,6 @@ export class AddUserBlock extends Block {
 					input_data: {
 						value: props.modalAddUserForm?.fields?.login ?? '',
 						error: props.modalAddUserForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -51,7 +50,6 @@ export class AddUserBlock extends Block {
 							input_data: {
 								value: props.modalAddUserForm?.fields?.login ?? '',
 								error: props.modalAddUserForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -113,7 +111,6 @@ export class AddUserBlock extends Block {
 												input_data: {
 													value: inputInstance?.props?.input_data?.value ?? '',
 													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
 												},
 											};
 											inputInstance.setProps(childProps);
