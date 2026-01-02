@@ -16,3 +16,4 @@ export {
 export { IDS } from './ids';
 export { CLASSES } from './classes';
 export * from './validation';
+export { STORAGE_KEY } from './api';

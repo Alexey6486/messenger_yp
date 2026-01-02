@@ -54,7 +54,16 @@ export class ErrorBlock extends Block {
 		});
 	}
 
+	override componentDidMount() {
+		const state = mapUserToPropsError(Store.getState());
+
+		if (!state.error) {
+			Store.set('error', { code: '404', text: 'Not found' });
+		}
+	}
+
 	override render(): string {
+		console.log('Render ErrorBlock', this);
 		return compile(template, this.props);
 	}
 }

@@ -3,11 +3,13 @@ import { Store } from '@/store';
 import type { RequestOptions } from 'http';
 import type { IRequestOptions } from '@/http';
 import type { Router } from '@/router';
-import { PAGES_URL } from '@/constants';
+import {
+	PAGES_URL,
+	STORAGE_KEY,
+} from '@/constants';
 import { isErrorWithMessage } from '@/utils';
 
 const api = new AuthAPI();
-const STORAGE_KEY = 'ach-ym-ud';
 
 class AuthController {
 	public async signin(options: Partial<RequestOptions & IRequestOptions>, router?: Router) {
@@ -15,7 +17,7 @@ class AuthController {
 			await api.signin(options);
 
 			const result = await api.user();
-			localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
 			Store.set('userData', result);
 
 			if (router) {
@@ -68,8 +70,8 @@ class AuthController {
 			const result = await api.logout();
 			console.log('AuthController.logout: ', { result });
 
-			if (localStorage.getItem(STORAGE_KEY)) {
-				localStorage.removeItem(STORAGE_KEY);
+			if (sessionStorage.getItem(STORAGE_KEY)) {
+				sessionStorage.removeItem(STORAGE_KEY);
 			}
 
 			if (router) {
@@ -77,8 +79,8 @@ class AuthController {
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.logout Error: ', { e });
-			if (localStorage.getItem(STORAGE_KEY)) {
-				localStorage.removeItem(STORAGE_KEY);
+			if (sessionStorage.getItem(STORAGE_KEY)) {
+				sessionStorage.removeItem(STORAGE_KEY);
 			}
 
 			if (isErrorWithMessage(e)) {

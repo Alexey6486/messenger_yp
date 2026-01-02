@@ -6,7 +6,6 @@ import {
 import { StoreEvents } from '@/store/types';
 import type {
 	BlockProps,
-	IErrorPageState,
 	IFormState,
 	ILoginForm,
 	IRegistrationFormUi,
@@ -15,7 +14,6 @@ import type {
 	IUserResponse,
 } from '@/types';
 import {
-	INIT_ERROR_STATE,
 	INIT_LOGIN_STATE,
 	INIT_PROFILE_USER_DATA_STATE,
 	INIT_PROFILE_USER_PASSWORD_STATE,
@@ -27,7 +25,7 @@ class Store extends EventBus {
 	private state: Partial<BlockProps> = {
 		authorizationForm: cloneDeep(INIT_LOGIN_STATE) as IFormState<ILoginForm>,
 		registrationForm: cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>,
-		error: cloneDeep(INIT_ERROR_STATE) as IErrorPageState,
+		error: null,
 		userData: cloneDeep(INIT_USER_DATA) as IUserResponse,
 		isDataEdit: false,
 		isPasswordEdit: false,

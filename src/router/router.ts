@@ -3,7 +3,10 @@ import type {
 	BlockProps,
 	TNullable,
 } from '@/types';
-import { PAGES_URL } from '@/constants';
+import {
+	PAGES_URL,
+	STORAGE_KEY,
+} from '@/constants';
 import { AuthController } from '@/controllers';
 
 function isEqual(lhs: string, rhs: string) {
@@ -114,10 +117,27 @@ export class Router {
 
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
-		console.log('_onRoute: ', { pathname, route, cr: this._currentRoute, check: this._currentRoute !== route });
+		console.log('Router _onRoute: ', {
+			pathname,
+			route,
+			cr: this._currentRoute,
+			check: this._currentRoute !== route,
+		});
+
+		const isAuthed = sessionStorage.getItem(STORAGE_KEY);
 
 		if (!route) {
 			this.go(PAGES_URL.ERROR);
+			return;
+		}
+
+		if (
+			route
+			&& !isAuthed
+			&& (pathname !== PAGES_URL.AUTHORIZATION
+				&& pathname !== PAGES_URL.ERROR)
+		) {
+			this.go(PAGES_URL.AUTHORIZATION);
 			return;
 		}
 
@@ -130,7 +150,7 @@ export class Router {
 	}
 
 	go(pathname: string) {
-		console.log({ pathname, history: this.history });
+		console.log('Router go: ', { pathname, history: this.history });
 		if (this.history) {
 			this.history.pushState({}, '', pathname);
 			this._onRoute(pathname);

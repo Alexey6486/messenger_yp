@@ -62,7 +62,7 @@ export interface BlockProps {
 	contentId?: keyof BlockProps;
 	buttonText?: string;
 	page?: TPages;
-	error?: IErrorPageState;
+	error?: TNullable<IErrorPageState>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
