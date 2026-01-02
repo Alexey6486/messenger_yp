@@ -1,7 +1,10 @@
 import { Block } from '@/block';
 import { AuthController } from '@/controllers';
 import { Store } from '@/store';
-import { FocusManager, getFocusData } from '@/focus-manager';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	IDS,
 	PAGES_URL,
@@ -490,6 +493,7 @@ export class RegistrationBlock extends Block {
 										if (validationResult.length) {
 											const registrationForm = pageProps?.registrationForm as BlockProps['registrationForm'];
 											const registrationErrors = registrationForm?.errors;
+
 											if (registrationErrors) {
 												pageProps = {
 													registrationForm: {

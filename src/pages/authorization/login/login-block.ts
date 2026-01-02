@@ -184,6 +184,7 @@ export class LoginBlock extends Block {
 										if (validationResult.length) {
 											const authorizationForm = pageProps?.authorizationForm as BlockProps['authorizationForm'];
 											const authorizationErrors = authorizationForm?.errors;
+
 											if (authorizationErrors) {
 												pageProps = {
 													authorizationForm: {

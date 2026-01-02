@@ -8,7 +8,8 @@ const baseApi = '/api/v2/auth/';
 
 export class AuthAPI {
 	public signin(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('AuthAPI.signin: ', { options });
+		console.log('AuthAPI.signin options: ', { options });
+
 		return authAPIInstance.post(
 			`${ baseApi }signin`,
 			{
@@ -19,8 +20,9 @@ export class AuthAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('AuthAPI.signin: ', { options, resolve });
-			responseHandler(resolve);
+			console.log('AuthAPI.signin resolve: ', { resolve });
+
+			return responseHandler(resolve);
 		});
 	}
 
@@ -29,11 +31,16 @@ export class AuthAPI {
 	}
 
 	public user() {
-		return authAPIInstance.get(`${ baseApi }user`);
+		return authAPIInstance.get(`${ baseApi }user`).then(resolve => {
+			console.log('AuthAPI.user resolve: ', { resolve });
+
+			return responseHandler(resolve);
+		});
 	}
 
 	public signup(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('AuthAPI.signup: ', { options });
+
 		return authAPIInstance.post(
 			`${ baseApi }signup`,
 			{
@@ -45,6 +52,7 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signup resolve: ', { options, resolve });
+
 			responseHandler(resolve);
 		});
 	}

@@ -4,6 +4,7 @@ import type {
 	TNullable,
 } from '@/types';
 import { PAGES_URL } from '@/constants';
+import { AuthController } from '@/controllers';
 
 function isEqual(lhs: string, rhs: string) {
 	return lhs === rhs;
@@ -102,6 +103,10 @@ export class Router {
 			if (event.currentTarget instanceof Window) {
 				this._onRoute(event.currentTarget.location.pathname);
 			}
+		}).bind(this);
+
+		window.onpagehide = (() => {
+			AuthController.logout();
 		}).bind(this);
 
 		this._onRoute(window.location.pathname);

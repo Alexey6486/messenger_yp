@@ -6,7 +6,7 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
-	PAGES,
+	PAGES_URL,
 } from '@/constants';
 import {
 	compile,
@@ -28,6 +28,7 @@ import { ButtonBlock } from '@/components/button/button-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
+import { AuthController } from '@/controllers';
 
 export class ProfileBlock extends Block {
 	constructor(props: BlockProps) {
@@ -91,7 +92,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.email ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'email');
+								const fieldData = getInputStateSlice(data?.userForm, 'email');
+								return {
+									...fieldData,
+									isDataEdit: !props.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
 							name: E_FORM_FIELDS_NAME.email,
@@ -639,11 +644,12 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.toggleInputsDisable();
+						// this.toggleInputsDisable();
 
-						this.setProps({
-							isDataEdit: true,
-						});
+						Store.set(
+							'isDataEdit',
+							true,
+						);
 					},
 				}),
 				[IDS.PROFILE.SAVE_DATA_BTN]: new ButtonBlock({
@@ -660,10 +666,7 @@ export class ProfileBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('data-field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										&& !inputInstance.props?.input_data?.error.length
-									) {
+									if (inputId.includes('input')) {
 										const fieldName = inputInstance.props.name as keyof IUserDataForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
@@ -671,15 +674,6 @@ export class ProfileBlock extends Block {
 										});
 
 										if (validationResult.length) {
-											const childProps = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-												},
-											};
-											inputInstance.setProps(childProps);
-											fieldInstance.setProps(childProps);
-
 											const userForm = pageProps?.userForm as BlockProps['userForm'];
 											const userErrors = userForm?.errors;
 											if (userErrors) {
@@ -700,18 +694,26 @@ export class ProfileBlock extends Block {
 						});
 
 						const userForm: IFormState<IUserDataForm> | undefined = this.props?.userForm as BlockProps['userForm'];
+						console.log({ pageProps });
+
 						if (
 							userForm
 							&& userForm.errors
 						) {
 							const errorsList = Object.values(userForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
-								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
-							}
-						}
+							console.log({ errorsList });
 
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
+							if (errorsList.length) {
+								const { userForm: { errors, fields } } = pageProps;
+								Store.set(
+									'userForm',
+									{ fields, errors },
+								);
+							} else {
+								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
+								// const data = JSON.stringify(this.props?.userForm?.fields);
+								// ProfileController.editProfile({ data }, this.props.router);
+							}
 						}
 					},
 				}),
@@ -725,9 +727,10 @@ export class ProfileBlock extends Block {
 
 						this.toggleInputsDisable();
 
-						this.setProps({
-							isDataEdit: false,
-						});
+						Store.set(
+							'isDataEdit',
+							false,
+						);
 					},
 				}),
 
@@ -740,9 +743,10 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.setProps({
-							isPasswordEdit: true,
-						});
+						Store.set(
+							'isPasswordEdit',
+							true,
+						);
 					},
 				}),
 				[IDS.PROFILE.SAVE_PSW_BTN]: new ButtonBlock({
@@ -759,10 +763,7 @@ export class ProfileBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('password-field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										&& !inputInstance.props?.input_data?.error.length
-									) {
+									if (inputId.includes('input')) {
 										const fieldName = inputInstance.props.name as keyof IUserPasswordForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
@@ -770,17 +771,9 @@ export class ProfileBlock extends Block {
 										});
 
 										if (validationResult.length) {
-											const childProps = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-												},
-											};
-											inputInstance.setProps(childProps);
-											fieldInstance.setProps(childProps);
-
 											const passwordForm = pageProps?.passwordForm as BlockProps['passwordForm'];
 											const passwordErrors = passwordForm?.errors;
+
 											if (passwordErrors) {
 												pageProps = {
 													passwordForm: {
@@ -799,18 +792,26 @@ export class ProfileBlock extends Block {
 						});
 
 						const passwordForm: IFormState<IUserPasswordForm> | undefined = this.props?.passwordForm as BlockProps['passwordForm'];
+						console.log({ pageProps });
+
 						if (
 							passwordForm
 							&& passwordForm.errors
 						) {
 							const errorsList = Object.values(passwordForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
-								console.log('Profile password form submit: ', this.props?.passwordForm?.fields ?? '');
-							}
-						}
+							console.log({ errorsList });
 
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
+							if (errorsList.length) {
+								const { passwordForm: { errors, fields } } = pageProps;
+								Store.set(
+									'passwordForm',
+									{ fields, errors },
+								);
+							} else {
+								console.log('Profile password form submit: ', this.props?.passwordForm?.fields ?? '');
+								// const data = JSON.stringify(this.props?.passwordForm?.fields);
+								// ProfileController.changePassword({ data }, this.props.router);
+							}
 						}
 					},
 				}),
@@ -822,9 +823,10 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.setProps({
-							isPasswordEdit: false,
-						});
+						Store.set(
+							'isPasswordEdit',
+							false,
+						);
 					},
 				}),
 
@@ -836,7 +838,7 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+						this?.props?.router?.go?.(PAGES_URL.MAIN);
 					},
 				}),
 				[IDS.PROFILE.LOGOUT_BTN]: new ButtonBlock({
@@ -848,7 +850,7 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+						AuthController.logout(this.props.router);
 					},
 				}),
 			},

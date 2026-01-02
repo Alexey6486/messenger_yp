@@ -9,11 +9,16 @@ export function isErrorWithMessage(error: unknown): error is { message: string }
 
 export function getErrorText(response?: XMLHttpRequest) {
 	const code = response?.status ?? '';
-	const text = (response?.response && response?.response.length)
-		? response.response
-		: (response?.statusText && response?.statusText.length)
-			? `"${ response.statusText }"`
-			: '';
+	let text = '';
+	if (response?.response && response?.response.length) {
+		console.log({ response });
+		const parsedText = JSON.parse(response?.response);
+		if (parsedText && parsedText.reason) {
+			text = parsedText.reason;
+		}
+	} else if (response?.statusText && response?.statusText.length) {
+		text = response.statusText;
+	}
 
-	return `{"code": ${ code }, "text": ${ text }}`;
+	return `{"code": ${ code }, "text": "${ text }"}`;
 }

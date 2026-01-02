@@ -7,15 +7,18 @@ import { PAGES_URL } from '@/constants';
 import { isErrorWithMessage } from '@/utils';
 
 const api = new AuthAPI();
+const STORAGE_KEY = 'ach-ym-ud';
 
 class AuthController {
 	public async signin(options: Partial<RequestOptions & IRequestOptions>, router?: Router) {
 		try {
-			const result = await api.signin(options);
-			console.log('AuthController.signin: ', { result });
+			await api.signin(options);
+
+			const result = await api.user();
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			Store.set('userData', result);
 
 			if (router) {
-				
 				router.go(PAGES_URL.PROFILE);
 			}
 		} catch (e: unknown) {
@@ -53,6 +56,38 @@ class AuthController {
 				if (router) {
 					Store.set('error', { ...error });
 					router.go(PAGES_URL.ERROR);
+				}
+			} else {
+				throw new Error('Unknown error');
+			}
+		}
+	}
+
+	public async logout(router?: Router) {
+		try {
+			const result = await api.logout();
+			console.log('AuthController.logout: ', { result });
+
+			if (localStorage.getItem(STORAGE_KEY)) {
+				localStorage.removeItem(STORAGE_KEY);
+			}
+
+			if (router) {
+				router.go(PAGES_URL.AUTHORIZATION);
+			}
+		} catch (e: unknown) {
+			console.log('AuthController.logout Error: ', { e });
+			if (localStorage.getItem(STORAGE_KEY)) {
+				localStorage.removeItem(STORAGE_KEY);
+			}
+
+			if (isErrorWithMessage(e)) {
+				const error = JSON.parse(e.message);
+				console.log('AuthController.logout Error Data: ', { ...error }, router);
+
+				if (router) {
+					Store.set('error', { ...error });
+					router.go(PAGES_URL.AUTHORIZATION);
 				}
 			} else {
 				throw new Error('Unknown error');

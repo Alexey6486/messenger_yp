@@ -18,3 +18,4 @@ export {
 	getErrorText,
 } from './error';
 export { getInputStateSlice } from './state-slice';
+export { isJsonString } from './is-json';
