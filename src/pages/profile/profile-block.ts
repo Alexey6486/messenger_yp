@@ -1,4 +1,5 @@
 import { Block } from '@/block';
+import { AuthController } from '@/controllers';
 import { Store } from '@/store';
 import {
 	FocusManager,
@@ -28,7 +29,6 @@ import { ButtonBlock } from '@/components/button/button-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
-import { AuthController } from '@/controllers';
 
 export class ProfileBlock extends Block {
 	constructor(props: BlockProps) {
@@ -855,6 +855,20 @@ export class ProfileBlock extends Block {
 				}),
 			},
 		});
+	}
+
+	override componentDidMount() {
+		console.log('ProfileBlock componentDidMount override', this);
+
+		function mapUserToPropsUserData(state: Partial<BlockProps>) {
+			return {
+				...(state?.userData && { ...state.userData }),
+			};
+		}
+
+		const userData = mapUserToPropsUserData(Store.getState());
+
+		Store.set('userForm.fields', { ...userData });
 	}
 
 	override render(): string {

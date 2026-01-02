@@ -6,6 +6,7 @@ export function mapUserToPropsProfile(state: Partial<BlockProps>) {
 	return {
 		passwordForm: state?.passwordForm,
 		userForm: state?.userForm,
+		userData: state?.userData,
 		isDataEdit: state?.isDataEdit,
 		isPasswordEdit: state?.isPasswordEdit,
 	};

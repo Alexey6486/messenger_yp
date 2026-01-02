@@ -1,3 +1,5 @@
+import { isJsonString } from '@/utils/is-json';
+
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (
 		typeof error === 'object' &&
@@ -10,13 +12,12 @@ export function isErrorWithMessage(error: unknown): error is { message: string }
 export function getErrorText(response?: XMLHttpRequest) {
 	const code = response?.status ?? '';
 	let text = '';
-	if (response?.response && response?.response.length) {
-		console.log({ response });
+	if (isJsonString(response?.response)) {
 		const parsedText = JSON.parse(response?.response);
 		if (parsedText && parsedText.reason) {
 			text = parsedText.reason;
 		}
-	} else if (response?.statusText && response?.statusText.length) {
+	} else if (typeof response?.statusText === 'string' && !isJsonString(response?.statusText)) {
 		text = response.statusText;
 	}
 

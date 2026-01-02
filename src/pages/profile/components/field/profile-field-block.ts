@@ -1,16 +1,42 @@
 import { Block } from '@/block';
-import { compile } from '@/utils';
-import type {
-	BlockProps,
-} from '@/types';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
+import {
+	compile,
+	isEqual,
+} from '@/utils';
+import type { BlockProps } from '@/types';
 import template from './profile-field-template';
 
 export class ProfileFieldBlock extends Block {
 	constructor(props: BlockProps) {
-		super(props);
+		let state = props?.mapStateToProps?.(Store.getState());
+
+		super({
+			...props,
+			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
+		});
+
+		Store.on(StoreEvents.Updated, () => {
+			const newState = props?.mapStateToProps?.(Store.getState());
+
+			if (props.mapStateToProps && state && newState) {
+				const isEqualCheck = isEqual(state, newState);
+				console.log('State ProfileFieldBlock: ', { isEqualCheck, state, newState, t: this });
+
+				if (!isEqualCheck) {
+					this.setProps(newState);
+				}
+			}
+
+			state = newState;
+		});
 	}
 
 	override render(): string {
+		console.log('Render ProfileFieldBlock', this);
 		return compile(template, this.props);
 	}
 }

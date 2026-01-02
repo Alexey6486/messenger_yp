@@ -1,4 +1,4 @@
-export function isJsonString(str: string): boolean {
+export function isJsonString(str: string | undefined): boolean {
 	if (typeof str !== 'string') return false;
 
 	try {
