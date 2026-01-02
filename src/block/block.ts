@@ -1,5 +1,5 @@
 import { EventBus } from '@/event-bus';
-import { FocusManager } from '@/focus-manager'
+import { FocusManager } from '@/focus-manager';
 import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
@@ -438,7 +438,7 @@ export abstract class Block {
 		});
 	}
 
-	protected createModal<T>(
+	createModal<T>(
 		contentId: keyof BlockProps,
 		contentForms: Record<string, IFormState<T>>,
 		title: string,
@@ -448,13 +448,14 @@ export abstract class Block {
 			contentForms,
 			title,
 		});
+		console.log('Block createModal: ', { contentId, contentForms, title, modal, t: this });
 
-		if (this?.props?.appElement) {
+		if (this?.props?.container) {
 			const content = modal.getContent();
 
 			if (content) {
-				if (this?.props?.appElement?.parentNode) {
-					this.props.appElement.parentNode.appendChild(content);
+				if (this?.props?.container?.parentNode) {
+					this.props.container.parentNode.appendChild(content);
 					modal.dispatchComponentDidMount();
 				}
 			}

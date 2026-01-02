@@ -58,7 +58,7 @@ export class ErrorBlock extends Block {
 		const state = mapUserToPropsError(Store.getState());
 
 		if (!state.error) {
-			Store.set('error', { code: '404', text: 'Not found' });
+			Store.set('error', { code: '404', text: 'Страница не найдена' });
 		}
 	}
 

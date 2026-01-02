@@ -117,27 +117,32 @@ export class Router {
 
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
+		const isAuthed = Boolean(sessionStorage.getItem(STORAGE_KEY));
+
 		console.log('Router _onRoute: ', {
+			isAuthed,
 			pathname,
 			route,
 			cr: this._currentRoute,
 			check: this._currentRoute !== route,
 		});
 
-		const isAuthed = sessionStorage.getItem(STORAGE_KEY);
-
-		if (!route) {
-			this.go(PAGES_URL.ERROR);
+		// не авторизован - переход на страницу авторизации
+		if (!isAuthed && route && !route.match(PAGES_URL.AUTHORIZATION)) {
+			this.go(PAGES_URL.AUTHORIZATION);
 			return;
 		}
 
-		if (
-			route
-			&& !isAuthed
-			&& (pathname !== PAGES_URL.AUTHORIZATION
-				&& pathname !== PAGES_URL.ERROR)
-		) {
-			this.go(PAGES_URL.AUTHORIZATION);
+		// авторизован - но такого урла нет, страница 404
+		if (!route) {
+			this.go(PAGES_URL.NOT_FOUND);
+			return;
+		}
+
+		// авторизован - при попытке перейти на страницу авторизации, переход на главную
+		if (isAuthed && route && route.match(PAGES_URL.AUTHORIZATION)) {
+			// TODO поменять на PAGES_URL.MAIN
+			this.go(PAGES_URL.PROFILE);
 			return;
 		}
 
@@ -160,6 +165,8 @@ export class Router {
 	back() {
 		if (this.history) {
 			this.history.back();
+		} else {
+			this.go(PAGES_URL.AUTHORIZATION);
 		}
 	}
 

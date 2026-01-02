@@ -13,5 +13,5 @@ export const PAGES_URL: Record<string, string> = {
 	REGISTRATION: '/sign-up',
 	MAIN: '/messenger',
 	PROFILE: '/setting',
-	ERROR: '/error',
+	NOT_FOUND: '/404',
 };

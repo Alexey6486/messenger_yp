@@ -1,18 +1,20 @@
 import { AuthAPI } from '@/api';
 import { Store } from '@/store';
-import type { RequestOptions } from 'http';
-import type { IRequestOptions } from '@/http';
-import type { Router } from '@/router';
 import {
 	PAGES_URL,
 	STORAGE_KEY,
 } from '@/constants';
+import type { RequestOptions } from 'http';
+import type { IRequestOptions } from '@/http';
+import type { Router } from '@/router';
+import type { Block } from '@/block';
+import type { IErrorPageState } from '@/types';
 import { isErrorWithMessage } from '@/utils';
 
 const api = new AuthAPI();
 
 class AuthController {
-	public async signin(options: Partial<RequestOptions & IRequestOptions>, router?: Router) {
+	public async signin(options: Partial<RequestOptions & IRequestOptions>, router?: Router, instance?: Block) {
 		try {
 			await api.signin(options);
 
@@ -30,10 +32,24 @@ class AuthController {
 				const error = JSON.parse(e.message);
 				console.log('AuthController.signin Error Data: ', { ...error }, router);
 
-				if (router) {
-					Store.set('error', { ...error });
-					router.go(PAGES_URL.ERROR);
+				if (instance) {
+					Store.set('modalError', { ...error });
+					instance.createModal<IErrorPageState>(
+						'modalErrorForm',
+						{
+							modalErrorForm: {
+								fields: { code: '', text: '' },
+								errors: { code: '', text: '' },
+							},
+						},
+						'Ошибка',
+					);
 				}
+
+				// if (router) {
+				// 	Store.set('modalError', { ...error });
+				// 	router.go(PAGES_URL.NOT_FOUND);
+				// }
 			} else {
 				throw new Error('Unknown error');
 			}
@@ -56,8 +72,8 @@ class AuthController {
 				console.log('AuthController.signup Error Data: ', { ...error }, router);
 
 				if (router) {
-					Store.set('error', { ...error });
-					router.go(PAGES_URL.ERROR);
+					Store.set('modalError', { ...error });
+					router.go(PAGES_URL.NOT_FOUND);
 				}
 			} else {
 				throw new Error('Unknown error');
@@ -88,7 +104,7 @@ class AuthController {
 				console.log('AuthController.logout Error Data: ', { ...error }, router);
 
 				if (router) {
-					Store.set('error', { ...error });
+					Store.set('modalError', { ...error });
 					router.go(PAGES_URL.AUTHORIZATION);
 				}
 			} else {

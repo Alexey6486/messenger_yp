@@ -54,8 +54,8 @@ export const INIT_MESSAGE_STATE: IFormState<IMessageForm> = {
 };
 
 export const INIT_ERROR_STATE: IErrorPageState = {
-	code: '',
-	text: '',
+	code: '404',
+	text: 'Страница не найдена',
 };
 
 export const INIT_PROFILE_USER_PASSWORD_STATE: IFormState<IUserPasswordForm> = {

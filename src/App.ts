@@ -4,20 +4,25 @@ import { PAGES_URL } from './constants';
 import type { TNullable } from './types';
 
 export default class App {
-	private appElement: TNullable<HTMLElement>;
+	private _appElement: TNullable<HTMLElement>;
 
 	constructor() {
-		this.appElement = document.getElementById('app');
+		this._appElement = document.getElementById('app');
+	}
+
+	get element() {
+		return this._appElement;
 	}
 
 	init() {
-		if (this.appElement) {
-			const router = new Router(this.appElement);
+		const container = this.element;
+		if (container) {
+			const router = new Router(container);
 
 			if (router) {
 				router
-					.use(PAGES_URL.AUTHORIZATION, Pages.LoginPage, router)
-					.use(PAGES_URL.ERROR, Pages.ErrorPage, router)
+					.use(PAGES_URL.AUTHORIZATION, Pages.LoginPage, router, { container })
+					.use(PAGES_URL.NOT_FOUND, Pages.ErrorPage, router)
 					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router)
 					.use(PAGES_URL.PROFILE, Pages.ProfilePage, router)
 					.use(PAGES_URL.MAIN, Pages.MainBlock, router)

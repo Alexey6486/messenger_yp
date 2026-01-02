@@ -221,7 +221,7 @@ export class LoginBlock extends Block {
 							} else {
 								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
 								const data = JSON.stringify(this.props?.authorizationForm?.fields);
-								AuthController.signin({ data }, this.props.router);
+								AuthController.signin({ data }, this.props.router, this);
 							}
 						}
 					},

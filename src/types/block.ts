@@ -26,7 +26,7 @@ import type { Router } from '@/router';
 export interface BlockProps {
 	children?: IChildren<Block>;
 	allInstances?: IChildren<Block>;
-	appElement?: TNullable<HTMLElement>;
+	container?: TNullable<HTMLElement>;
 	router?: Router;
 
 	isRequired?: boolean;
@@ -63,6 +63,7 @@ export interface BlockProps {
 	buttonText?: string;
 	page?: TPages;
 	error?: TNullable<IErrorPageState>;
+	modalError?: TNullable<IErrorPageState>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
@@ -91,5 +92,6 @@ export interface BlockProps {
 	chatsSearchForm?: IFormState<ISearchForm>;
 	newMessageForm?: IFormState<IMessageForm>;
 	modalAddUserForm?: IFormState<IAddUserModalForm>;
+	modalErrorForm?: IFormState<IErrorPageState>;
 	contentForms?: Record<string, IFormState<unknown>>;
 }

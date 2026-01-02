@@ -8,7 +8,6 @@ export const IDS: Record<string, Record<string, string>> = {
 		MESSAGING_FOOTER: 'main-messaging-footer',
 		MESSAGING_DD_HEADER: 'messaging-header-drop-down',
 		MESSAGING_DD_FOOTER: 'messaging-footer-drop-down',
-		TEMP_NAV: 'main-dropdown-temp-nav',
 		MAIN_ADD_USER_OPTION: 'main-add-user-option',
 		MAIN_REMOVE_USER_OPTION: 'main-remove-user-option',
 		MAIN_ADD_PHOTO_OPTION: 'main-add-photo-option',
@@ -96,6 +95,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		INPUT: 'input',
 		COMPONENTS_LIST: 'components-list',
 		DROP_DOWN_BTN: 'drop-down-button',
+		MODAL: 'modal',
 	},
 	FORMS: {
 		AUTHORIZATION_FORM: 'authorizationForm',
@@ -105,5 +105,6 @@ export const IDS: Record<string, Record<string, string>> = {
 		MODAL_ADD_USER_FORM: 'modalAddUserForm',
 		MAIN_CHAT_SEARCH_FORM: 'chatsSearchForm',
 		MAIN_NEW_MESSAGE_FORM: 'newMessageForm',
+		MODAL_ERROR_FORM: 'modalErrorForm',
 	},
 } as const;

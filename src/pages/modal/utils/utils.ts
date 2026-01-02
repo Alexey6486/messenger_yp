@@ -5,6 +5,7 @@ import type {
 } from '@/types';
 import { AddUserBlock } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
+import { ModalError } from '@/pages/modal/components/error';
 
 export const getModalContentBlock = <T>(
 	contentId: string | undefined,
@@ -19,6 +20,16 @@ export const getModalContentBlock = <T>(
 					onCloseModal,
 					modalAddUserForm,
 				});
+			}
+			return new PlaceholderBlock({});
+		}
+		case IDS.FORMS.MODAL_ERROR_FORM: {
+			if (contentForms && 'modalErrorForm' in contentForms) {
+				const el = new ModalError({
+					onCloseModal,
+				});
+				console.log('getModalContentBlock', { el });
+				return el;
 			}
 			return new PlaceholderBlock({});
 		}

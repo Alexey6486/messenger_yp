@@ -31,6 +31,7 @@ class Store extends EventBus {
 		isPasswordEdit: false,
 		passwordForm: cloneDeep(INIT_PROFILE_USER_PASSWORD_STATE) as IFormState<IUserPasswordForm>,
 		userForm: cloneDeep(INIT_PROFILE_USER_DATA_STATE) as IFormState<IUserDataForm>,
+		modalError: null,
 	};
 
 	public getState() {
