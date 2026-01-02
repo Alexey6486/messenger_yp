@@ -1,7 +1,10 @@
 import { Block } from '@/block';
 import { AuthController } from '@/controllers';
 import { Store } from '@/store';
-import { FocusManager, getFocusData } from '@/focus-manager';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	IDS,
 	PAGES_URL,
@@ -233,27 +236,6 @@ export class LoginBlock extends Block {
 						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
-
-				// [IDS.AUTHORIZATION.TEMP_MODAL]: new ButtonBlock({
-				// 	id: IDS.AUTHORIZATION.TEMP_MODAL,
-				// 	type: 'button',
-				// 	text: 'Модальное окно',
-				// 	onClick: (event: Event) => {
-				// 		event.preventDefault();
-				// 		event.stopPropagation();
-				//
-				// 		this.createModal<IAddUserModalForm>(
-				// 			'modalAddUserForm',
-				// 			{
-				// 				modalAddUserForm: {
-				// 					fields: { login: '' },
-				// 					errors: { login: '' },
-				// 				},
-				// 			},
-				// 			'Добавить пользователя',
-				// 		);
-				// 	},
-				// }),
 			},
 		});
 	}

@@ -19,7 +19,7 @@ export default class App {
 					.use(PAGES_URL.AUTHORIZATION, Pages.LoginPage, router)
 					.use(PAGES_URL.ERROR, Pages.ErrorPage, router)
 					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router)
-					.use(PAGES_URL.PROFILE, Pages.ProfileBlock, router)
+					.use(PAGES_URL.PROFILE, Pages.ProfilePage, router)
 					.use(PAGES_URL.MAIN, Pages.MainBlock, router)
 					.start();
 			}

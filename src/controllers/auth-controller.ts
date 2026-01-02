@@ -15,7 +15,8 @@ class AuthController {
 			console.log('AuthController.signin: ', { result });
 
 			if (router) {
-				// router.go(PAGES_URL.MAIN);
+				
+				router.go(PAGES_URL.PROFILE);
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.signin Error: ', { e });
