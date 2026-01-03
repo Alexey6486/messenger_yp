@@ -29,10 +29,10 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 					console.log('State Connect: ', { isEqualCheck, state, newState, t: this });
 
 					if (!isEqualCheck) {
-						if (isArray(args) && args.length) {
-							const stateKey = args[0];
-							console.log('CHECK: ', {stateKey, c: stateKey in newState});
-							if (stateKey in newState) {
+						if (isArray(args) && (args as BlockProps[]).length) {
+							const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
+							console.log('CHECK: ', { stateKey, c: stateKey in newState });
+							if (stateKey && stateKey in newState) {
 								const targetField = newState[stateKey];
 								this.setProps({ [stateKey]: targetField });
 							} else {
