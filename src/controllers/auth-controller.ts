@@ -39,11 +39,6 @@ class AuthController {
 						'Ошибка',
 					);
 				}
-
-				// if (router) {
-				// 	Store.set('modalError', { ...error });
-				// 	router.go(PAGES_URL.NOT_FOUND);
-				// }
 			} else {
 				throw new Error('Unknown error');
 			}
@@ -72,11 +67,6 @@ class AuthController {
 						'Ошибка',
 					);
 				}
-
-				// if (router) {
-				// 	Store.set('modalError', { ...error });
-				// 	router.go(PAGES_URL.NOT_FOUND);
-				// }
 			} else {
 				throw new Error('Unknown error');
 			}
@@ -112,11 +102,6 @@ class AuthController {
 						'Ошибка',
 					);
 				}
-
-				// if (router) {
-				// 	Store.set('modalError', { ...error });
-				// 	router.go(PAGES_URL.AUTHORIZATION);
-				// }
 			} else {
 				throw new Error('Unknown error');
 			}

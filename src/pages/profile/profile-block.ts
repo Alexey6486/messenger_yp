@@ -28,9 +28,7 @@ import type {
 	IUserResponse,
 	TNullable,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
 import { SvgArrowLeft } from '@/components/icons';
@@ -168,7 +166,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.login ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'login');
+								const fieldData = getInputStateSlice(data?.userForm, 'login');
+								return {
+									...fieldData,
+									isDisabled: !data.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -202,6 +204,7 @@ export class ProfileBlock extends Block {
 											login: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -230,7 +233,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.first_name ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'first_name');
+								const fieldData = getInputStateSlice(data?.userForm, 'first_name');
+								return {
+									...fieldData,
+									isDisabled: !data.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
 							name: E_FORM_FIELDS_NAME.first_name,
@@ -264,6 +271,7 @@ export class ProfileBlock extends Block {
 											first_name: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -292,7 +300,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.second_name ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'second_name');
+								const fieldData = getInputStateSlice(data?.userForm, 'second_name');
+								return {
+									...fieldData,
+									isDisabled: !data.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
 							name: E_FORM_FIELDS_NAME.second_name,
@@ -326,6 +338,7 @@ export class ProfileBlock extends Block {
 											second_name: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -354,7 +367,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.display_name ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'display_name');
+								const fieldData = getInputStateSlice(data?.userForm, 'display_name');
+								return {
+									...fieldData,
+									isDisabled: !data.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.display_name,
 							name: E_FORM_FIELDS_NAME.display_name,
@@ -388,6 +405,7 @@ export class ProfileBlock extends Block {
 											display_name: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -416,7 +434,11 @@ export class ProfileBlock extends Block {
 								error: props?.userForm?.errors?.phone ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.userForm, 'phone');
+								const fieldData = getInputStateSlice(data?.userForm, 'phone');
+								return {
+									...fieldData,
+									isDisabled: !data.isDataEdit,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
 							name: E_FORM_FIELDS_NAME.phone,
@@ -450,6 +472,7 @@ export class ProfileBlock extends Block {
 											phone: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -513,6 +536,7 @@ export class ProfileBlock extends Block {
 											oldPassword: data?.data?.error ?? '',
 										},
 									},
+									'passwordForm' as BlockProps,
 								);
 							},
 						}),
@@ -574,6 +598,7 @@ export class ProfileBlock extends Block {
 											newPassword: data?.data?.error ?? '',
 										},
 									},
+									'passwordForm' as BlockProps,
 								);
 							},
 						}),
@@ -636,6 +661,7 @@ export class ProfileBlock extends Block {
 											confirmPassword: data?.data?.error ?? '',
 										},
 									},
+									'passwordForm' as BlockProps,
 								);
 							},
 						}),
@@ -653,8 +679,6 @@ export class ProfileBlock extends Block {
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
-
-						// this.toggleInputsDisable();
 
 						Store.set(
 							'isDataEdit',
@@ -719,6 +743,7 @@ export class ProfileBlock extends Block {
 								Store.set(
 									'userForm',
 									{ fields, errors },
+									'userForm' as BlockProps,
 								);
 							} else {
 								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
@@ -735,8 +760,6 @@ export class ProfileBlock extends Block {
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
-
-						this.toggleInputsDisable();
 
 						Store.set(
 							'isDataEdit',
@@ -819,6 +842,7 @@ export class ProfileBlock extends Block {
 								Store.set(
 									'passwordForm',
 									{ fields, errors },
+									'passwordForm' as BlockProps,
 								);
 							} else {
 								console.log('Profile password form submit: ', this.props?.passwordForm?.fields ?? '');
@@ -877,14 +901,30 @@ export class ProfileBlock extends Block {
 		console.log('ProfileBlock componentDidMount override', { userData, t: this });
 
 		if (!isEmpty(userData) && userData?.id) {
-			Store.set('userForm', { fields: { ...userData }, errors });
-			Store.set('userData', userData);
+			Store.set(
+				'userForm',
+				{ fields: { ...userData }, errors },
+				'userForm' as BlockProps,
+			);
+			Store.set(
+				'userData',
+				userData,
+				'userData' as BlockProps,
+			);
 		} else {
 			const storageData = sessionStorage.getItem(STORAGE_KEY);
 			if (storageData) {
 				const userStorageData = JSON.parse(storageData);
-				Store.set('userForm', { fields: { ...userStorageData }, errors });
-				Store.set('userData', userStorageData);
+				Store.set(
+					'userForm',
+					{ fields: { ...userStorageData }, errors },
+					'userForm' as BlockProps,
+				);
+				Store.set(
+					'userData',
+					userStorageData,
+					'userData' as BlockProps,
+				);
 			}
 		}
 	}
