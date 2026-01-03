@@ -8,7 +8,8 @@ export function merge(oldObj: TIndexed, newObj: TIndexed): TIndexed {
 		}
 
 		try {
-			if (isPlainObject(newObj[p])) {
+			console.log('merge: ', { n: newObj[p], o: oldObj[p], newObj, oldObj, p });
+			if (isPlainObject(newObj[p]) && isPlainObject(oldObj[p])) {
 				oldObj[p] = merge(oldObj[p] as TIndexed, newObj[p] as TIndexed);
 			} else {
 				oldObj[p] = newObj[p];

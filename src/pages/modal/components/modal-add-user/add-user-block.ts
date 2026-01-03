@@ -19,7 +19,7 @@ import { ButtonBlock } from '@/components/button/button-block';
 import template from './add-user-template';
 import styles from './styles.module.pcss';
 
-export class AddUserBlock extends Block {
+export class ModalAddUser extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,

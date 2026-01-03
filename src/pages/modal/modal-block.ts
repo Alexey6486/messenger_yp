@@ -49,24 +49,3 @@ export class ModalBlock<T> extends Block {
 		return compile(template, this.props);
 	}
 }
-
-// [IDS.AUTHORIZATION.TEMP_MODAL]: new ButtonBlock({
-// 	id: IDS.AUTHORIZATION.TEMP_MODAL,
-// 	type: 'button',
-// 	text: 'Модальное окно',
-// 	onClick: (event: Event) => {
-// 		event.preventDefault();
-// 		event.stopPropagation();
-//
-// 		this.createModal<IAddUserModalForm>(
-// 			'modalAddUserForm',
-// 			{
-// 				modalAddUserForm: {
-// 					fields: { login: '' },
-// 					errors: { login: '' },
-// 				},
-// 			},
-// 			'Добавить пользователя',
-// 		);
-// 	},
-// }),

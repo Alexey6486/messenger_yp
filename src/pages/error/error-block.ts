@@ -35,7 +35,7 @@ export class ErrorBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						Store.set('error', { code: '', text: '' });
+						// Store.set('error', { code: '', text: '' });
 						this?.props?.router?.back();
 					},
 				}),
@@ -57,7 +57,7 @@ export class ErrorBlock extends Block {
 	override componentDidMount() {
 		const state = mapUserToPropsError(Store.getState());
 
-		if (!state.error) {
+		if (!state.error || (state?.error?.code !== '404')) {
 			Store.set('error', { code: '404', text: 'Страница не найдена' });
 		}
 	}

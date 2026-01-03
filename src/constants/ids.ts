@@ -90,6 +90,8 @@ export const IDS: Record<string, Record<string, string>> = {
 		ADD_USER_FIELD: 'modal-add-user-field',
 		ADD_USER_INPUT: 'modal-add-user-input',
 		ADD_USER_SUBMIT: 'modal-add-user-submit',
+		MODAL_ERROR: 'modalError',
+		MODAL_ERROR_BTN: 'modal-error-btn',
 	},
 	COMMON: {
 		INPUT: 'input',
@@ -105,6 +107,5 @@ export const IDS: Record<string, Record<string, string>> = {
 		MODAL_ADD_USER_FORM: 'modalAddUserForm',
 		MAIN_CHAT_SEARCH_FORM: 'chatsSearchForm',
 		MAIN_NEW_MESSAGE_FORM: 'newMessageForm',
-		MODAL_ERROR_FORM: 'modalErrorForm',
 	},
 } as const;

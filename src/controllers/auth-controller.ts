@@ -35,13 +35,7 @@ class AuthController {
 				if (instance) {
 					Store.set('modalError', { ...error });
 					instance.createModal<IErrorPageState>(
-						'modalErrorForm',
-						{
-							modalErrorForm: {
-								fields: { code: '', text: '' },
-								errors: { code: '', text: '' },
-							},
-						},
+						'modalError',
 						'Ошибка',
 					);
 				}
@@ -56,7 +50,7 @@ class AuthController {
 		}
 	}
 
-	public async signup(options: Partial<RequestOptions & IRequestOptions>, router?: Router) {
+	public async signup(options: Partial<RequestOptions & IRequestOptions>, router?: Router, instance?: Block) {
 		try {
 			const result = await api.signup(options);
 			console.log('AuthController.signup: ', { result });
@@ -71,17 +65,25 @@ class AuthController {
 				const error = JSON.parse(e.message);
 				console.log('AuthController.signup Error Data: ', { ...error }, router);
 
-				if (router) {
+				if (instance) {
 					Store.set('modalError', { ...error });
-					router.go(PAGES_URL.NOT_FOUND);
+					instance.createModal<IErrorPageState>(
+						'modalError',
+						'Ошибка',
+					);
 				}
+
+				// if (router) {
+				// 	Store.set('modalError', { ...error });
+				// 	router.go(PAGES_URL.NOT_FOUND);
+				// }
 			} else {
 				throw new Error('Unknown error');
 			}
 		}
 	}
 
-	public async logout(router?: Router) {
+	public async logout(router?: Router, instance?: Block) {
 		try {
 			const result = await api.logout();
 			console.log('AuthController.logout: ', { result });
@@ -103,10 +105,18 @@ class AuthController {
 				const error = JSON.parse(e.message);
 				console.log('AuthController.logout Error Data: ', { ...error }, router);
 
-				if (router) {
+				if (instance) {
 					Store.set('modalError', { ...error });
-					router.go(PAGES_URL.AUTHORIZATION);
+					instance.createModal<IErrorPageState>(
+						'modalError',
+						'Ошибка',
+					);
 				}
+
+				// if (router) {
+				// 	Store.set('modalError', { ...error });
+				// 	router.go(PAGES_URL.AUTHORIZATION);
+				// }
 			} else {
 				throw new Error('Unknown error');
 			}

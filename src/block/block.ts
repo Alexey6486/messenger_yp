@@ -440,8 +440,8 @@ export abstract class Block {
 
 	createModal<T>(
 		contentId: keyof BlockProps,
-		contentForms: Record<string, IFormState<T>>,
 		title: string,
+		contentForms?: Record<string, IFormState<T>>,
 	) {
 		const modal = new Pages.ModalBlock<T>({
 			contentId,

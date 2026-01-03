@@ -1,0 +1,26 @@
+.modal-error {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	& > div {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+
+		& > div:first-child {
+			display: flex;
+			justify-content: center;
+			font-weight: 600;
+			font-size: 24px;
+		}
+
+		& > div:last-child {
+			display: flex;
+			justify-content: center;
+			flex-grow: 1;
+			align-items: center;
+		}
+	}
+}

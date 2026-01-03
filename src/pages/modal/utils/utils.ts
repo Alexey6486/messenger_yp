@@ -3,35 +3,29 @@ import type {
 	IAddUserModalForm,
 	IFormState,
 } from '@/types';
-import { AddUserBlock } from '@/pages/modal/components';
+import { ModalAddUser, ModalErrorBlock } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
-import { ModalError } from '@/pages/modal/components/error';
 
 export const getModalContentBlock = <T>(
 	contentId: string | undefined,
 	contentForms?: Record<string, IFormState<T>>,
 	onCloseModal?: () => void,
-): AddUserBlock | PlaceholderBlock => {
+): ModalAddUser | ModalErrorBlock | PlaceholderBlock => {
 	switch (contentId) {
 		case IDS.FORMS.MODAL_ADD_USER_FORM: {
 			if (contentForms && 'modalAddUserForm' in contentForms) {
 				const modalAddUserForm = contentForms.modalAddUserForm as IFormState<IAddUserModalForm>;
-				return new AddUserBlock({
+				return new ModalAddUser({
 					onCloseModal,
 					modalAddUserForm,
 				});
 			}
 			return new PlaceholderBlock({});
 		}
-		case IDS.FORMS.MODAL_ERROR_FORM: {
-			if (contentForms && 'modalErrorForm' in contentForms) {
-				const el = new ModalError({
-					onCloseModal,
-				});
-				console.log('getModalContentBlock', { el });
-				return el;
-			}
-			return new PlaceholderBlock({});
+		case IDS.MODAL.MODAL_ERROR: {
+			return new ModalErrorBlock({
+				onCloseModal,
+			});
 		}
 		default: {
 			return new PlaceholderBlock({});

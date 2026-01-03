@@ -1,1 +1,2 @@
-export { AddUserBlock } from './add-user';
+export { ModalAddUser } from './modal-add-user';
+export { ModalErrorBlock } from './modal-error';
