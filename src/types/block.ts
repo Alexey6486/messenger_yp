@@ -68,7 +68,7 @@ export interface BlockProps {
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
 	chats?: TNullable<IChat[]>;
-	userData?: IUserResponse;
+	userData?: TNullable<IUserResponse>;
 
 	onClick?: (event: Event) => void;
 	onSubmit?: (event?: Event) => void;
@@ -85,13 +85,13 @@ export interface BlockProps {
 	markup?: Record<string, string>;
 	events?: Record<string, (e: Event) => void>;
 
-	authorizationForm?: IFormState<ILoginForm>;
-	registrationForm?: IFormState<IRegistrationFormUi>;
-	passwordForm?: IFormState<IUserPasswordForm>,
-	userForm?: IFormState<IUserDataForm>,
-	chatsSearchForm?: IFormState<ISearchForm>;
-	newMessageForm?: IFormState<IMessageForm>;
-	modalAddUserForm?: IFormState<IAddUserModalForm>;
-	modalErrorForm?: IFormState<IErrorPageState>;
+	authorizationForm?: TNullable<IFormState<ILoginForm>>;
+	registrationForm?: TNullable<IFormState<IRegistrationFormUi>>;
+	passwordForm?: TNullable<IFormState<IUserPasswordForm>>,
+	userForm?: TNullable<IFormState<IUserDataForm>>,
+	chatsSearchForm?: TNullable<IFormState<ISearchForm>>;
+	newMessageForm?: TNullable<IFormState<IMessageForm>>;
+	modalAddUserForm?: TNullable<IFormState<IAddUserModalForm>>;
+	modalErrorForm?: TNullable<IFormState<IErrorPageState>>;
 	contentForms?: Record<string, IFormState<unknown>>;
 }

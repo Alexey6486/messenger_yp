@@ -1,6 +1,6 @@
 import { Block } from '@/block';
 import { Store } from '@/store';
-import { mapUserToPropsModalError } from './map-state-to-props';
+import { mapUserToPropsModalError } from './utils';
 import { IDS } from '@/constants';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';

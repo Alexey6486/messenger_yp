@@ -1,10 +1,16 @@
 import { LoginBlock } from './login-block';
 import { connect } from '@/hoc';
 import type { BlockProps } from '@/types';
+import type {
+	IFormState,
+	ILoginForm,
+	TNullable,
+} from '@/types';
+import { cloneDeep } from '@/utils';
 
-export function mapUserToPropsLogin(state: Partial<BlockProps>) {
+export function mapUserToPropsLogin(state: Partial<BlockProps>): { authorizationForm: TNullable<IFormState<ILoginForm>> | undefined } {
 	return {
-		authorizationForm: state?.authorizationForm,
+		authorizationForm: cloneDeep(state?.authorizationForm),
 	};
 }
 

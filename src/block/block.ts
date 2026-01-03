@@ -237,6 +237,7 @@ export abstract class Block {
 	}
 
 	setProps(nextProps: BlockProps) {
+		console.log(nextProps);
 		if (!nextProps) {
 			return;
 		}
@@ -253,6 +254,7 @@ export abstract class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
+				console.log({target, p, newValue});
 				const oldTarget = { ...target };
 
 				if (
@@ -264,8 +266,8 @@ export abstract class Block {
 					|| p === 'newMessageForm'
 					|| p === 'modalAddUserForm'
 				) {
-					const errors = target[p]?.errors;
-					const fields = target[p]?.fields;
+					const errors = target[p]?.errors ?? {};
+					const fields = target[p]?.fields ?? {};
 
 					if (errors && fields) {
 						target[p] = {

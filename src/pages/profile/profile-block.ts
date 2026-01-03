@@ -7,21 +7,30 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_PROFILE_USER_DATA_STATE,
 	PAGES_URL,
+	STORAGE_KEY,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
+	isEmpty,
 } from '@/utils';
+import { mapUserToPropsUserData } from '@/pages/profile/utils';
 import type {
 	BlockProps,
 	IFormState,
 	IInputChangeParams,
 	IUserDataForm,
 	IUserPasswordForm,
+	IUserResponse,
+	TNullable,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
 import { SvgArrowLeft } from '@/components/icons';
@@ -693,7 +702,7 @@ export class ProfileBlock extends Block {
 							}
 						});
 
-						const userForm: IFormState<IUserDataForm> | undefined = this.props?.userForm as BlockProps['userForm'];
+						const userForm: TNullable<IFormState<IUserDataForm>> | undefined = this.props?.userForm as BlockProps['userForm'];
 						console.log({ pageProps });
 
 						if (
@@ -791,7 +800,7 @@ export class ProfileBlock extends Block {
 							}
 						});
 
-						const passwordForm: IFormState<IUserPasswordForm> | undefined = this.props?.passwordForm as BlockProps['passwordForm'];
+						const passwordForm: TNullable<IFormState<IUserPasswordForm>> | undefined = this.props?.passwordForm as BlockProps['passwordForm'];
 						console.log({ pageProps });
 
 						if (
@@ -858,17 +867,23 @@ export class ProfileBlock extends Block {
 	}
 
 	override componentDidMount() {
-		console.log('ProfileBlock componentDidMount override', this);
+		const userData: TNullable<IUserResponse> = mapUserToPropsUserData(Store.getState());
+		const { errors } = cloneDeep(INIT_PROFILE_USER_DATA_STATE) as IFormState<IUserDataForm>;
+		console.log('ProfileBlock componentDidMount override', { userData, t: this });
 
-		function mapUserToPropsUserData(state: Partial<BlockProps>) {
-			return {
-				...(state?.userData && { ...state.userData }),
-			};
+		if (!isEmpty(userData) && userData?.id) {
+			Store.set('userForm', { fields: { ...userData }, errors });
+			Store.set('userData', userData);
+			return;
+		} else {
+			const storageData = sessionStorage.getItem(STORAGE_KEY);
+			if (storageData) {
+				const userStorageData = JSON.parse(storageData);
+				Store.set('userForm', { fields: { ...userStorageData }, errors });
+				Store.set('userData', userStorageData);
+				return;
+			}
 		}
-
-		const userData = mapUserToPropsUserData(Store.getState());
-
-		Store.set('userForm.fields', { ...userData });
 	}
 
 	override render(): string {

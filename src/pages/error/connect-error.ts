@@ -1,10 +1,15 @@
 import { ErrorBlock } from './error-block';
 import { connect } from '@/hoc';
 import type { BlockProps } from '@/types';
+import type {
+	IErrorPageState,
+	TNullable,
+} from '@/types';
+import { cloneDeep } from '@/utils';
 
-export function mapUserToPropsError(state: Partial<BlockProps>) {
+export function mapUserToPropsError(state: Partial<BlockProps>): { error: TNullable<IErrorPageState> | undefined } {
 	return {
-		error: state?.error,
+		error: cloneDeep(state?.error),
 	};
 }
 

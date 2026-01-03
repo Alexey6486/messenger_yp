@@ -7,9 +7,11 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_LOGIN_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -19,8 +21,11 @@ import type {
 	IFormState,
 	IInputChangeParams,
 	ILoginForm,
+	TNullable,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -202,8 +207,8 @@ export class LoginBlock extends Block {
 							}
 						});
 
-						const authorizationForm: IFormState<ILoginForm> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
-						console.log({ pageProps });
+						const authorizationForm: TNullable<IFormState<ILoginForm>> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
+						console.log({ pageProps, t: this });
 
 						if (
 							authorizationForm
@@ -239,6 +244,11 @@ export class LoginBlock extends Block {
 				}),
 			},
 		});
+	}
+
+	override componentDidMount() {
+		console.log('LoginBlock componentDidMount override', this);
+		Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE) as IFormState<ILoginForm>);
 	}
 
 	override render(): string {

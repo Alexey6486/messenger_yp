@@ -7,9 +7,11 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_REGISTRATION_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -19,8 +21,11 @@ import type {
 	IFormState,
 	IInputChangeParams,
 	IRegistrationFormUi,
+	TNullable,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -511,7 +516,7 @@ export class RegistrationBlock extends Block {
 							}
 						});
 
-						const registrationForm: IFormState<IRegistrationFormUi> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
+						const registrationForm: TNullable<IFormState<IRegistrationFormUi>> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
 						console.log({ pageProps });
 
 						if (
@@ -548,6 +553,12 @@ export class RegistrationBlock extends Block {
 				}),
 			},
 		});
+	}
+
+	override componentDidMount() {
+		const { fields, errors } = cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>;
+		console.log('RegistrationBlock componentDidMount override', this);
+		Store.set('registrationForm', { fields, errors });
 	}
 
 	override render(): string {

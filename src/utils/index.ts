@@ -10,6 +10,7 @@ export {
 	isArrayOrObject,
 	isArray,
 	isFunction,
+	isJsonString,
 } from './is-type';
 export { isEqual } from './is-equal';
 export { cloneDeep } from './clone-deep';
@@ -18,4 +19,4 @@ export {
 	getErrorText,
 } from './error';
 export { getInputStateSlice } from './state-slice';
-export { isJsonString } from './is-json';
+export { isEmpty } from './is-empty';

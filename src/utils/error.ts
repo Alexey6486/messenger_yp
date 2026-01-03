@@ -1,4 +1,4 @@
-import { isJsonString } from '@/utils/is-json';
+import { isJsonString } from '@/utils';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (

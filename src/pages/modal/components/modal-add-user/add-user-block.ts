@@ -9,6 +9,7 @@ import type {
 	IInputChangeParams,
 	IAddUserModalForm,
 	IFormState,
+	TNullable,
 } from '@/types';
 import {
 	E_FORM_FIELDS_NAME,
@@ -135,7 +136,7 @@ export class ModalAddUser extends Block {
 							}
 						});
 
-						const modalAddUserForm: IFormState<IAddUserModalForm> | undefined = pageProps?.modalAddUserForm as BlockProps['modalAddUserForm'];
+						const modalAddUserForm: TNullable<IFormState<IAddUserModalForm>> | undefined = pageProps?.modalAddUserForm as BlockProps['modalAddUserForm'];
 						if (
 							modalAddUserForm
 							&& modalAddUserForm.errors
