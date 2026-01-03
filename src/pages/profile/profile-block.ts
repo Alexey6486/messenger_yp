@@ -139,6 +139,7 @@ export class ProfileBlock extends Block {
 											email: data?.data?.error ?? '',
 										},
 									},
+									'userForm' as BlockProps,
 								);
 							},
 						}),
@@ -658,6 +659,7 @@ export class ProfileBlock extends Block {
 						Store.set(
 							'isDataEdit',
 							true,
+							'isDataEdit' as BlockProps,
 						);
 					},
 				}),
@@ -739,6 +741,7 @@ export class ProfileBlock extends Block {
 						Store.set(
 							'isDataEdit',
 							false,
+							'isDataEdit' as BlockProps,
 						);
 					},
 				}),
@@ -755,6 +758,7 @@ export class ProfileBlock extends Block {
 						Store.set(
 							'isPasswordEdit',
 							true,
+							'isPasswordEdit' as BlockProps,
 						);
 					},
 				}),
@@ -835,6 +839,7 @@ export class ProfileBlock extends Block {
 						Store.set(
 							'isPasswordEdit',
 							false,
+							'isPasswordEdit' as BlockProps,
 						);
 					},
 				}),
