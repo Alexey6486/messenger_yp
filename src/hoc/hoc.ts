@@ -1,6 +1,4 @@
-import type {
-	BlockProps,
-} from '@/types';
+import type { BlockProps } from '@/types';
 import type { Block } from '@/block';
 import {
 	Store,
@@ -12,7 +10,7 @@ import {
 } from '@/utils';
 
 export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial<BlockProps>) {
-	return function(Component: typeof Block) {
+	return function (Component: typeof Block) {
 		return class extends Component {
 			constructor(props: BlockProps) {
 				let state = mapStateToProps(Store.getState());
@@ -31,7 +29,7 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 					if (!isEqualCheck) {
 						if (isArray(args) && (args as BlockProps[]).length) {
 							const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
-							console.log('CHECK: ', { stateKey, c: stateKey in newState });
+							console.log('Connect check: ', { stateKey, c: stateKey in newState });
 							if (stateKey && stateKey in newState) {
 								const targetField = newState[stateKey];
 								this.setProps({ [stateKey]: targetField });
@@ -46,6 +44,6 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 					state = newState;
 				});
 			}
-		}
-	}
+		};
+	};
 }

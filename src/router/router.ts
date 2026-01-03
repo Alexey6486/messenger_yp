@@ -128,7 +128,11 @@ export class Router {
 		});
 
 		// не авторизован - переход на страницу авторизации
-		if (!isAuthed && route && !route.match(PAGES_URL.AUTHORIZATION)) {
+		if (
+			!isAuthed
+			&& route
+			&& (!route.match(PAGES_URL.AUTHORIZATION) && !route.match(PAGES_URL.REGISTRATION))
+		) {
 			this.go(PAGES_URL.AUTHORIZATION);
 			return;
 		}
@@ -140,7 +144,11 @@ export class Router {
 		}
 
 		// авторизован - при попытке перейти на страницу авторизации, переход на главную
-		if (isAuthed && route && route.match(PAGES_URL.AUTHORIZATION)) {
+		if (
+			isAuthed
+			&& route
+			&& (route.match(PAGES_URL.AUTHORIZATION) || route.match(PAGES_URL.REGISTRATION))
+		) {
 			// TODO поменять на PAGES_URL.MAIN
 			this.go(PAGES_URL.PROFILE);
 			return;

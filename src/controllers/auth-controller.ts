@@ -23,6 +23,7 @@ class AuthController {
 			Store.set('userData', result);
 
 			if (router) {
+				Store.clear();
 				router.go(PAGES_URL.PROFILE);
 			}
 		} catch (e: unknown) {
@@ -51,6 +52,7 @@ class AuthController {
 			console.log('AuthController.signup: ', { result });
 
 			if (router) {
+				Store.clear();
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
 		} catch (e: unknown) {
@@ -83,6 +85,7 @@ class AuthController {
 			}
 
 			if (router) {
+				Store.clear();
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
 		} catch (e: unknown) {
