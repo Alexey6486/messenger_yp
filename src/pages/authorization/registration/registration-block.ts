@@ -7,11 +7,9 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
-	INIT_REGISTRATION_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
-	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -553,12 +551,6 @@ export class RegistrationBlock extends Block {
 				}),
 			},
 		});
-	}
-
-	override componentDidMount() {
-		const { fields, errors } = cloneDeep(INIT_REGISTRATION_STATE) as IFormState<IRegistrationFormUi>;
-		console.log('RegistrationBlock componentDidMount override', this);
-		Store.set('registrationForm', { fields, errors });
 	}
 
 	override render(): string {

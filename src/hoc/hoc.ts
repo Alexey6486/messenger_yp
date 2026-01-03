@@ -25,7 +25,7 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 					console.log('State Connect: ', { isEqualCheck, state, newState, t: this });
 
 					if (!isEqualCheck) {
-						this.setProps({...newState});
+						this.setProps({ ...newState });
 					}
 
 					state = newState;

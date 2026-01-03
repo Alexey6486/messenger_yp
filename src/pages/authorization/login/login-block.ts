@@ -7,11 +7,9 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
-	INIT_LOGIN_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
-	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -42,6 +40,7 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
 				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
 				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
+				['logout']: `<div id="logout"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -242,13 +241,19 @@ export class LoginBlock extends Block {
 						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
+				['logout']: new ButtonBlock({
+					id: 'logout',
+					type: 'button',
+					text: 'Выйти',
+					onClick: (event: Event) => {
+						event.preventDefault();
+						event.stopPropagation();
+
+						AuthController.logout(this.props.router, this);
+					},
+				}),
 			},
 		});
-	}
-
-	override componentDidMount() {
-		console.log('LoginBlock componentDidMount override', this);
-		Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE) as IFormState<ILoginForm>);
 	}
 
 	override render(): string {

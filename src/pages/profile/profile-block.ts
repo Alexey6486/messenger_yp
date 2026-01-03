@@ -104,7 +104,7 @@ export class ProfileBlock extends Block {
 								const fieldData = getInputStateSlice(data?.userForm, 'email');
 								return {
 									...fieldData,
-									isDataEdit: !props.isDataEdit,
+									isDisabled: !data.isDataEdit,
 								};
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
@@ -874,14 +874,12 @@ export class ProfileBlock extends Block {
 		if (!isEmpty(userData) && userData?.id) {
 			Store.set('userForm', { fields: { ...userData }, errors });
 			Store.set('userData', userData);
-			return;
 		} else {
 			const storageData = sessionStorage.getItem(STORAGE_KEY);
 			if (storageData) {
 				const userStorageData = JSON.parse(storageData);
 				Store.set('userForm', { fields: { ...userStorageData }, errors });
 				Store.set('userData', userStorageData);
-				return;
 			}
 		}
 	}

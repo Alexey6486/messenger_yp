@@ -6,11 +6,10 @@ import type {
 	IRegistrationFormUi,
 	TNullable,
 } from '@/types';
-import { cloneDeep } from '@/utils';
 
 export function mapUserToPropsRegistration(state: Partial<BlockProps>): { registrationForm: TNullable<IFormState<IRegistrationFormUi>> | undefined } {
 	return {
-		registrationForm: cloneDeep(state?.registrationForm),
+		registrationForm: state?.registrationForm,
 	};
 }
 

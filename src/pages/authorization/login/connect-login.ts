@@ -6,11 +6,10 @@ import type {
 	ILoginForm,
 	TNullable,
 } from '@/types';
-import { cloneDeep } from '@/utils';
 
 export function mapUserToPropsLogin(state: Partial<BlockProps>): { authorizationForm: TNullable<IFormState<ILoginForm>> | undefined } {
 	return {
-		authorizationForm: cloneDeep(state?.authorizationForm),
+		authorizationForm: state?.authorizationForm,
 	};
 }
 
