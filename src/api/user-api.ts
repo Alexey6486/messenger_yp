@@ -32,9 +32,9 @@ export class UserAPI {
 			`${ baseApi }profile/avatar`,
 			{
 				...options,
-				headers: {
-					'content-type': 'application/json',
-				},
+				// headers: {
+				// 	'content-type': 'multipart/form-data',
+				// },
 				credentials: 'include',
 			},
 		).then(resolve => {

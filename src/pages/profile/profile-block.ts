@@ -80,8 +80,19 @@ export class ProfileBlock extends Block {
 					name: E_FORM_FIELDS_NAME.avatar,
 					placeholder: '',
 					type: 'file',
+					accept: "image/*",
 					input_data: null,
-					onInputChange: () => {
+					// mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+					// 	return {
+					// 		isDisabled: !data.isDataEdit,
+					// 	};
+					// },
+					// isDisabled: !props.isDataEdit,
+					onFileChange: (fileList: FileList) => {
+						console.log('Avatar onInputChange: ', { fileList });
+						const formData = new FormData();
+						formData.append('avatar', fileList[0]);
+						UserController.changeAvatar({ data: formData as FormData }, this.props.router, this)
 					},
 				}),
 

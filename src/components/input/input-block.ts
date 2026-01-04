@@ -18,6 +18,11 @@ export class InputBlock extends Block {
 			...props,
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			events: {
+				change: (e: Event) => {
+					if (props?.onFileChange && e.target && e.target instanceof HTMLInputElement) {
+						props.onFileChange(e.target.files);
+					}
+				},
 				input: (e: Event) => {
 					e.preventDefault();
 					e.stopPropagation();

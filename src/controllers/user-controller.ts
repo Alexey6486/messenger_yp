@@ -67,6 +67,32 @@ class UserController {
 			}
 		}
 	}
+	public async changeAvatar(options: Partial<RequestOptions & IRequestOptions>, router?: Router, instance?: Block) {
+		try {
+			const result = await api.avatar(options);
+			console.log('UserController.changeAvatar: ', { result });
+			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			Store.set('userData', result, 'userData' as BlockProps);
+			Store.set('userForm.fields', result, 'userForm' as BlockProps);
+		} catch (e: unknown) {
+			console.log('UserController.changeAvatar Error: ', { e });
+
+			if (isErrorWithMessage(e)) {
+				const error = JSON.parse(e.message);
+				console.log('UserController.changeAvatar Error Data: ', { ...error }, router);
+
+				if (instance) {
+					Store.set('modalError', { ...error });
+					instance.createModal<IErrorPageState>(
+						'modalError',
+						'Ошибка',
+					);
+				}
+			} else {
+				throw new Error('Unknown error');
+			}
+		}
+	}
 }
 
 export default new UserController();

@@ -39,6 +39,7 @@ export interface BlockProps {
 
 	id?: string;
 	type?: string;
+	accept?: string;
 	dataset?: string;
 	placeholder?: string;
 	name?: string;
@@ -75,6 +76,7 @@ export interface BlockProps {
 	onSubmit?: (event?: Event) => void;
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
+	onFileChange?: (fileList: FileList) => void;
 	changePage?: (page: TPages) => void;
 	onCloseModal?: () => void;
 	mapStateToProps?: (data: Partial<BlockProps>) => Partial<BlockProps>
