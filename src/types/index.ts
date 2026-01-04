@@ -1,10 +1,10 @@
 export type { TPages } from './pages';
 export type {
 	TNullable,
-	TIndexed,
 	TPlainObject,
 	TFunctionUnknown,
 	TErrorMessage,
+	TObjectUnknown,
 } from './general';
 export type {
 	IErrorState,

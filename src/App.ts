@@ -23,8 +23,8 @@ export default class App {
 				router
 					.use(PAGES_URL.AUTHORIZATION, Pages.LoginPage, router, { container })
 					.use(PAGES_URL.NOT_FOUND, Pages.ErrorPage, router)
-					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router)
-					.use(PAGES_URL.PROFILE, Pages.ProfilePage, router)
+					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router, { container })
+					.use(PAGES_URL.PROFILE, Pages.ProfilePage, router, { container })
 					.use(PAGES_URL.MAIN, Pages.MainBlock, router)
 					.start();
 			}

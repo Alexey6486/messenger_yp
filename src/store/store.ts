@@ -38,14 +38,16 @@ class Store extends EventBus {
 		return this.state;
 	}
 
-	public set(path: string, value: unknown, stateKey?: BlockProps) {
+	public set(path: string, value: unknown, stateKey?: BlockProps, noEmit?: boolean) {
 		console.log('Store set: ', { path, value });
 		setProps(this.state, path, value);
 
-		if (stateKey) {
-			this.emit(StoreEvents.Updated, stateKey);
-		} else {
-			this.emit(StoreEvents.Updated);
+		if (!noEmit) {
+			if (stateKey) {
+				this.emit(StoreEvents.Updated, stateKey);
+			} else {
+				this.emit(StoreEvents.Updated);
+			}
 		}
 	}
 }

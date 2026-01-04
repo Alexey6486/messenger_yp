@@ -1,9 +1,5 @@
 export type TNullable<T> = T | null;
 
-export type TIndexed<T = unknown> = {
-	[key in string]: T;
-};
-
 export type TPlainObject<T = unknown> = {
 	[k in string]: T;
 };

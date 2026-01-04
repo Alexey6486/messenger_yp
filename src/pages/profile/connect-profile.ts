@@ -1,12 +1,13 @@
 import { ProfileBlock } from './profile-block';
 import { connect } from '@/hoc';
 import type { BlockProps } from '@/types';
+import { cloneDeep } from '@/utils';
 
 export function mapUserToPropsProfile(state: Partial<BlockProps>) {
 	return {
 		passwordForm: state?.passwordForm,
 		userForm: state?.userForm,
-		userData: state?.userData,
+		userData: cloneDeep(state?.userData),
 		isDataEdit: state?.isDataEdit,
 		isPasswordEdit: state?.isPasswordEdit,
 	};

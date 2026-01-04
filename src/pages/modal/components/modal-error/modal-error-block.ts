@@ -29,7 +29,7 @@ export class ModalErrorBlock extends Block {
 						event.stopPropagation();
 
 						this.props?.onCloseModal?.();
-						Store.set('modalError', null);
+						// Store.set('modalError', null);
 					},
 				}),
 			}

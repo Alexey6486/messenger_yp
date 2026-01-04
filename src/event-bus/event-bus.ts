@@ -39,7 +39,7 @@ export class EventBus {
 		}
 	}
 
-	clear() {
+	clearSubs() {
 		this.listeners = {};
 	}
 }

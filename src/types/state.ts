@@ -80,15 +80,15 @@ export interface IUserBase {
 	login: string;
 }
 
+export interface IUserResponse extends IUserBase {
+	email: string;
+	phone: string;
+}
+
 export type TUserRole = 'admin' | 'regular';
 
 export interface IChatUserResponse extends IUserBase {
 	role: TUserRole[];
-}
-
-export interface IUserResponse extends IUserBase {
-	email: string;
-	phone: string;
 }
 
 export interface IChatLastMessage {

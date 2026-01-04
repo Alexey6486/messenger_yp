@@ -1,5 +1,8 @@
 import { Block } from '@/block';
-import { AuthController } from '@/controllers';
+import {
+	AuthController,
+	UserController,
+} from '@/controllers';
 import { Store } from '@/store';
 import {
 	FocusManager,
@@ -8,6 +11,7 @@ import {
 import {
 	IDS,
 	INIT_PROFILE_USER_DATA_STATE,
+	INIT_PROFILE_USER_PASSWORD_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
 } from '@/constants';
@@ -17,6 +21,7 @@ import {
 	fieldsValidator,
 	getInputStateSlice,
 	isEmpty,
+	isEqual,
 } from '@/utils';
 import { mapUserToPropsUserData } from '@/pages/profile/utils';
 import type {
@@ -27,6 +32,7 @@ import type {
 	IUserPasswordForm,
 	IUserResponse,
 	TNullable,
+	TPlainObject,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
@@ -747,8 +753,23 @@ export class ProfileBlock extends Block {
 								);
 							} else {
 								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
-								// const data = JSON.stringify(this.props?.userForm?.fields);
-								// ProfileController.editProfile({ data }, this.props.router);
+								if (this.props?.userData && this.props?.userForm?.fields) {
+									if (
+										!isEqual(
+											this.props.userData as unknown as TPlainObject,
+											this.props.userForm.fields as unknown as TPlainObject,
+										)
+									) {
+										const data = JSON.stringify(this.props?.userForm?.fields);
+										UserController.changeUserData({ data }, this.props.router, this);
+									} else {
+										Store.set(
+											'isDataEdit',
+											false,
+											'isDataEdit' as BlockProps,
+										);
+									}
+								}
 							}
 						}
 					},
@@ -766,6 +787,25 @@ export class ProfileBlock extends Block {
 							false,
 							'isDataEdit' as BlockProps,
 						);
+
+						if (this.props?.userData && this.props?.userForm?.fields) {
+							if (
+								!isEqual(
+									this.props.userData as unknown as TPlainObject,
+									this.props.userForm.fields as unknown as TPlainObject,
+								)
+							) {
+								const { errors } = cloneDeep(INIT_PROFILE_USER_DATA_STATE);
+								Store.set(
+									'userForm',
+									{
+										fields: cloneDeep(this.props.userData),
+										errors,
+									},
+									'userForm' as BlockProps,
+								);
+							}
+						}
 					},
 				}),
 
@@ -845,9 +885,13 @@ export class ProfileBlock extends Block {
 									'passwordForm' as BlockProps,
 								);
 							} else {
-								console.log('Profile password form submit: ', this.props?.passwordForm?.fields ?? '');
-								// const data = JSON.stringify(this.props?.passwordForm?.fields);
-								// ProfileController.changePassword({ data }, this.props.router);
+								console.log('Profile password form submit: ', this);
+								const fields = this.props?.passwordForm?.fields;
+								if (fields) {
+									const { oldPassword, newPassword } = fields;
+									const data = JSON.stringify({ oldPassword, newPassword });
+									UserController.changePassword({ data }, this.props.router, this);
+								}
 							}
 						}
 					},
@@ -865,6 +909,16 @@ export class ProfileBlock extends Block {
 							false,
 							'isPasswordEdit' as BlockProps,
 						);
+
+						const { fields, errors } = cloneDeep(INIT_PROFILE_USER_PASSWORD_STATE);
+						Store.set(
+							'passwordForm',
+							{
+								fields,
+								errors,
+							},
+							'passwordForm' as BlockProps,
+						);
 					},
 				}),
 
@@ -876,6 +930,7 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.clearSubs();
 						this?.props?.router?.go?.(PAGES_URL.MAIN);
 					},
 				}),
@@ -888,7 +943,7 @@ export class ProfileBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						AuthController.logout(this.props.router);
+						AuthController.logout(this.props.router, this);
 					},
 				}),
 			},

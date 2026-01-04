@@ -27,7 +27,11 @@ export class AuthAPI {
 	}
 
 	public logout() {
-		return authAPIInstance.post(`${ baseApi }logout`);
+		return authAPIInstance.post(`${ baseApi }logout`).then(resolve => {
+			console.log('AuthAPI.logout resolve: ', { resolve });
+
+			return responseHandler(resolve);
+		});
 	}
 
 	public user() {

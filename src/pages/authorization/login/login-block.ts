@@ -7,9 +7,11 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_LOGIN_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -238,13 +240,15 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.clearSubs();
+						Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
 						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
 				['logout']: new ButtonBlock({
 					id: 'logout',
 					type: 'button',
-					text: 'Выйти',
+					text: 'temp_logout',
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();

@@ -7,9 +7,11 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_REGISTRATION_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -29,6 +31,7 @@ import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
+
 
 export class RegistrationBlock extends Block {
 	constructor(props: BlockProps) {
@@ -533,7 +536,7 @@ export class RegistrationBlock extends Block {
 							} else {
 								console.log('Registration form submit: ', this.props?.registrationForm?.fields ?? '');
 								const data = JSON.stringify(this.props?.registrationForm?.fields);
-								AuthController.signup({ data }, this.props.router);
+								AuthController.signup({ data }, this.props.router, this);
 							}
 						}
 					},
@@ -546,6 +549,8 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.clearSubs();
+						Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
 						this?.props?.router?.go?.(PAGES_URL.AUTHORIZATION);
 					},
 				}),

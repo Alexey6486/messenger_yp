@@ -3,8 +3,10 @@ import store from '@/store/store';
 
 const api = new ChatAPI();
 
-export class ChatController {
+class ChatController {
 	public getChats() {
 		api.request().then(data => store.set('chats', data));
 	}
 }
+
+export default new ChatController();

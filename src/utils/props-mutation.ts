@@ -1,11 +1,11 @@
-import type { TIndexed } from '@/types';
+import type { TPlainObject } from '@/types';
 import { merge } from '@/utils/merge';
 
 const prepData = (str: string, val: unknown): Record<string, unknown> => str
 	.split('.')
 	.reduceRight((acc, key, idx, arr) => ({ [key]: arr.length - 1 === idx ? val : acc }), {});
 
-export function setProps(object: TIndexed | unknown, path: string, value: unknown): TIndexed | unknown {
+export function setProps(object: TPlainObject | unknown, path: string, value: unknown): TPlainObject | unknown {
 	if (typeof path !== 'string') {
 		throw new Error('path must be string');
 	}
@@ -15,7 +15,7 @@ export function setProps(object: TIndexed | unknown, path: string, value: unknow
 	}
 
 	const newObject = prepData(path, value);
-	const result = merge(object as TIndexed, newObject);
+	const result = merge(object as TPlainObject, newObject);
 	console.log('setProps merge result:', result);
 
 	return result;

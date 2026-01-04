@@ -1,6 +1,8 @@
 import { AuthAPI } from '@/api';
 import { Store } from '@/store';
 import {
+	INIT_LOGIN_STATE,
+	INIT_REGISTRATION_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
 } from '@/constants';
@@ -9,7 +11,10 @@ import type { IRequestOptions } from '@/http';
 import type { Router } from '@/router';
 import type { Block } from '@/block';
 import type { IErrorPageState } from '@/types';
-import { isErrorWithMessage } from '@/utils';
+import {
+	cloneDeep,
+	isErrorWithMessage,
+} from '@/utils';
 
 const api = new AuthAPI();
 
@@ -20,10 +25,11 @@ class AuthController {
 
 			const result = await api.user();
 			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
-			Store.set('userData', result);
+			Store.set('userData', result, undefined, true);
 
 			if (router) {
-				Store.clear();
+				Store.clearSubs();
+				Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
 				router.go(PAGES_URL.PROFILE);
 			}
 		} catch (e: unknown) {
@@ -52,7 +58,8 @@ class AuthController {
 			console.log('AuthController.signup: ', { result });
 
 			if (router) {
-				Store.clear();
+				Store.clearSubs();
+				Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
 		} catch (e: unknown) {
@@ -85,7 +92,7 @@ class AuthController {
 			}
 
 			if (router) {
-				Store.clear();
+				Store.clearSubs();
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
 		} catch (e: unknown) {
