@@ -19,7 +19,7 @@ export class InputBlock extends Block {
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			events: {
 				change: (e: Event) => {
-					if (props?.onFileChange && e.target && e.target instanceof HTMLInputElement) {
+					if (props?.onFileChange && e.target && e.target instanceof HTMLInputElement && e.target.files) {
 						props.onFileChange(e.target.files);
 					}
 				},
