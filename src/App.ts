@@ -25,7 +25,7 @@ export default class App {
 					.use(PAGES_URL.NOT_FOUND, Pages.ErrorPage, router)
 					.use(PAGES_URL.REGISTRATION, Pages.RegistrationPage, router, { container })
 					.use(PAGES_URL.PROFILE, Pages.ProfilePage, router, { container })
-					.use(PAGES_URL.MAIN, Pages.MainBlock, router)
+					.use(PAGES_URL.MAIN, Pages.MainPage, router, { container })
 					.start();
 			}
 		}

@@ -1,9 +1,18 @@
 import { Block } from '@/block';
+import { Store } from '@/store';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	IDS,
-	PAGES,
+	PAGES_URL,
 } from '@/constants';
-import { compile } from '@/utils';
+import {
+	compile,
+	fieldsValidator,
+	getInputStateSlice,
+} from '@/utils';
 import { formatContentLength } from '@/pages/main/utils';
 import type {
 	BlockProps,
@@ -14,12 +23,12 @@ import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
-import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
 import { LinkBlock } from '@/components/link/link-block';
+import { ChatBlock } from '@/pages/main/components/chat/chat-block';
+import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
-import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 
 export class MainBlock extends Block {
 	constructor(props: BlockProps) {
@@ -45,16 +54,40 @@ export class MainBlock extends Block {
 								value: props?.chatsSearchForm?.fields?.title ?? '',
 								error: props?.chatsSearchForm?.errors?.title ?? '',
 							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.chatsSearchForm, 'title');
+							},
 							dataset: E_FORM_FIELDS_NAME.title,
 							name: E_FORM_FIELDS_NAME.title,
 							placeholder: 'Поиск',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
-									params,
-									[IDS.MAIN.SEARCH_INPUT, IDS.MAIN.SEARCH_FORM],
-									E_FORM_FIELDS_NAME.title,
-									IDS.FORMS.MAIN_CHAT_SEARCH_FORM,
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.title,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'chatsSearchForm',
+									{
+										fields: {
+											...props?.chatsSearchForm?.fields,
+											title: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.chatsSearchForm?.errors,
+											title: data?.data?.error ?? '',
+										},
+									},
+									'chatsSearchForm' as BlockProps,
 								);
 							},
 						}),
@@ -63,6 +96,11 @@ export class MainBlock extends Block {
 				[IDS.MAIN.CHAT_LIST]: new UlBlock({
 					id: IDS.MAIN.CHAT_LIST,
 					class: styles.chats,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							chats: data?.chats,
+						};
+					},
 					childrenList: props?.chats?.map?.(({ id, avatar, title, unread_count, last_message }: IChat) => {
 						return new ChatBlock({
 							id: id,
@@ -73,23 +111,16 @@ export class MainBlock extends Block {
 							text: formatContentLength(last_message.content),
 							counter: unread_count,
 							isActive: props.currentChatId === id,
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return {
+									isActive: id === data?.currentChatId,
+								};
+							},
 							onClick: (event: Event) => {
 								event.preventDefault();
 								event.stopPropagation();
 
-								Object.entries(this.allInstances).forEach(([instanceId, instance]) => {
-									if (instanceId === IDS.MAIN.CHAT_LIST) {
-										Object.entries(instance.allInstances).forEach(([chatId, chatInstance]) => {
-											chatInstance.setProps({
-												isActive: chatId === id,
-											});
-										});
-									}
-								});
-
-								this.setProps({
-									currentChatId: id,
-								});
+								Store.set('currentChatId', id, 'currentChatId' as BlockProps);
 							},
 						});
 					}),
@@ -100,6 +131,12 @@ export class MainBlock extends Block {
 					messages: props.messages,
 					newMessageForm: props.newMessageForm,
 					userData: props.userData,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							messages: data.messages,
+							newMessageForm: data.newMessageForm,
+						};
+					},
 					childrenList: Array.isArray(props?.messages)
 						? props?.messages?.map?.(({ id, last_message }: IChat) => {
 							return new MessagingMainBlock({
@@ -113,7 +150,7 @@ export class MainBlock extends Block {
 						})
 						: [],
 					onChangePage: () => {
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
+						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),
 				[IDS.MAIN.PROFILE_LINK]: new LinkBlock({
@@ -128,7 +165,7 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
+						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),
 			},
@@ -136,6 +173,7 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render MainBlock', this.props);
 		return compile(template, this.props);
 	}
 }

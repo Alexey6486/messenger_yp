@@ -19,8 +19,8 @@ export class MessagingHeaderBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${IDS.MAIN.MESSAGING_DD_HEADER}"></div>`,
-				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${IDS.MAIN.HEADER_PROFILE_LINK}"></div>`,
+				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_DD_HEADER }"></div>`,
+				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${ IDS.MAIN.HEADER_PROFILE_LINK }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_HEADER]: new DropDownBlock({
@@ -71,6 +71,7 @@ export class MessagingHeaderBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render MessagingHeaderBlock', this.props);
 		return compile(template, this.props);
 	}
 }

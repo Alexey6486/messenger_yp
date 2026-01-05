@@ -1,9 +1,5 @@
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
-import type {
-	TNullable,
-} from '@/types';
+import type { TNullable } from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import {
 	REGEX,
 	VALIDATION_MSG,
@@ -43,6 +39,14 @@ export class Validator {
 	isValueEqualTo(valueToCompare: string | undefined, errorMessage?: string) {
 		if (this.isValid && this.value !== valueToCompare) {
 			this.message = errorMessage || 'Значения не совпадают';
+			this.isValid = false;
+		}
+		return this;
+	}
+
+	maxLength(value: number, errorMessage?: string) {
+		if (typeof this.value === 'string' && this.value.length > value) {
+			this.message = errorMessage || `Максимум ${ value } символов`;
 			this.isValid = false;
 		}
 		return this;
@@ -95,6 +99,10 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 			}
 			case E_FORM_FIELDS_NAME.confirmPassword: {
 				validationResult = validator.isRequired().isValueEqualTo(valueToCompare, VALIDATION_MSG.c_psw).result;
+				break;
+			}
+			case E_FORM_FIELDS_NAME.title: {
+				validationResult = validator.maxLength(10).result;
 				break;
 			}
 			default: {

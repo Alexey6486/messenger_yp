@@ -1,4 +1,9 @@
 import { Block } from '@/block';
+import { Store } from '@/store';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	CLASSES,
 	IDS,
@@ -6,14 +11,13 @@ import {
 import {
 	compile,
 	fieldsValidator,
+	getInputStateSlice,
 } from '@/utils';
 import type {
 	BlockProps,
 	IInputChangeParams,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down-block';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
@@ -31,9 +35,9 @@ export class MessagingFooterBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${IDS.MAIN.MESSAGING_DD_FOOTER}"></div>`,
-				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${IDS.MAIN.SEND_MESSAGE_BTN}"></div>`,
-				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${IDS.MAIN.NEW_MESSAGE_INPUT}"></div>`,
+				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_DD_FOOTER }"></div>`,
+				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${ IDS.MAIN.SEND_MESSAGE_BTN }"></div>`,
+				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${ IDS.MAIN.NEW_MESSAGE_INPUT }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_FOOTER]: new DropDownBlock({
@@ -97,28 +101,41 @@ export class MessagingFooterBlock extends Block {
 						value: props?.newMessageForm?.fields?.message ?? '',
 						error: props?.newMessageForm?.errors?.message ?? '',
 					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.newMessageForm, 'message');
+					},
 					dataset: E_FORM_FIELDS_NAME.message,
 					name: E_FORM_FIELDS_NAME.message,
 					placeholder: 'Сообщение',
 					type: 'text',
 					class: props?.styles?.['message-input'] ?? '',
 					onInputChange: (params: IInputChangeParams) => {
-						this.onFormInputChange(
+						const data = {
+							...params,
+							...(params.info.event === 'blur' && {
+								data: {
+									...params.data,
+									error: fieldsValidator({
+										valueToValidate: params.data.value,
+										fieldName: E_FORM_FIELDS_NAME.message,
+									}),
+								},
+							}),
+						};
+						FocusManager.set(getFocusData(params.info));
+						Store.set(
+							'newMessageForm',
 							{
-								...params,
-								...(params.info.event === 'blur' && {
-									data: {
-										...params.data,
-										error: fieldsValidator({
-											valueToValidate: params.data.value,
-											fieldName: E_FORM_FIELDS_NAME.message,
-										}),
-									},
-								}),
+								fields: {
+									...props?.userForm?.fields,
+									message: data?.data?.value ?? '',
+								},
+								errors: {
+									...props?.userForm?.errors,
+									message: data?.data?.error ?? '',
+								},
 							},
-							[IDS.MAIN.NEW_MESSAGE_INPUT],
-							E_FORM_FIELDS_NAME.message,
-							IDS.FORMS.MAIN_NEW_MESSAGE_FORM,
+							'newMessageForm' as BlockProps,
 						);
 					},
 				}),
@@ -127,6 +144,7 @@ export class MessagingFooterBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render MessagingFooterBlock', this.props);
 		return compile(template, this.props);
 	}
 }

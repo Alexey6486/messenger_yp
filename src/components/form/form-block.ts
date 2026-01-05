@@ -22,12 +22,13 @@ export class FormBlock extends Block {
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 		});
 	}
 
 	override render(): string {
+		console.log('Render FormBlock', this.props);
 		return compile(template, this.props);
 	}
 }

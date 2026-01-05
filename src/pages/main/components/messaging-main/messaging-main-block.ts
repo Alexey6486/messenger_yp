@@ -11,6 +11,7 @@ export class MessagingMainBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render MessagingMainBlock', this.props);
 		return compile(template, this.props);
 	}
 }

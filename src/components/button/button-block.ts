@@ -19,6 +19,7 @@ export class ButtonBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render ButtonBlock', this.props);
 		return compile(template, this.props);
 	}
 }

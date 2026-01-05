@@ -19,8 +19,8 @@ export class DropDownBlock extends Block {
 		super({
 			...props,
 			markup: {
-				[IDS.COMMON.DROP_DOWN_BTN]: `<div id="${IDS.COMMON.DROP_DOWN_BTN}"></div>`,
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.DROP_DOWN_BTN]: `<div id="${ IDS.COMMON.DROP_DOWN_BTN }"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 			children: {
 				[IDS.COMMON.DROP_DOWN_BTN]: new ButtonRoundBlock({
@@ -39,6 +39,7 @@ export class DropDownBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render DropDownBlock', this.props);
 		return compile(template, this.props);
 	}
 }

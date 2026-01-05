@@ -30,7 +30,7 @@ class AuthController {
 			if (router) {
 				Store.clearSubs();
 				Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
-				router.go(PAGES_URL.PROFILE);
+				router.go(PAGES_URL.MAIN);
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.signin Error: ', { e });

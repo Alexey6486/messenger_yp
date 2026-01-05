@@ -19,6 +19,7 @@ export class ButtonRoundBlock extends Block {
 	}
 
 	override render(): string {
+		console.log('Render ButtonRoundBlock', this.props);
 		return compile(template, this.props);
 	}
 }
