@@ -129,16 +129,15 @@ export class MainBlock extends Block {
 					id: IDS.MAIN.CHAT_LIST,
 					class: styles.chats,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-						console.log({ data });
 						return {
 							chats: data?.chats,
 						};
 					},
-					onSetCL: (list) => {
-						console.log({ list });
-						if (isArray(list) && list.length) {
-							const childrenList = {};
-							list.forEach(({ id, avatar, title, unread_count, last_message }: IChat) => {
+					onSetChildrenList: (data: Partial<BlockProps>) => {
+						const childrenList: { [key: string]: Block } = {};
+
+						if (isArray(data?.chats) && data?.chats.length) {
+							data.chats.forEach(({ id, avatar, title, unread_count, last_message }: IChat) => {
 								childrenList[id] = new ChatBlock({
 									id: id,
 									styles,
@@ -161,34 +160,10 @@ export class MainBlock extends Block {
 									},
 								});
 							});
-							console.log({ childrenList });
-							return childrenList;
 						}
+
+						return childrenList;
 					},
-					childrenList: [],
-					// childrenList: props?.chats?.map?.(({ id, avatar, title, unread_count, last_message }: IChat) => {
-					// 	return new ChatBlock({
-					// 		id: id,
-					// 		styles,
-					// 		avatar: avatar,
-					// 		title: title,
-					// 		date: last_message.time,
-					// 		text: formatContentLength(last_message.content),
-					// 		counter: unread_count,
-					// 		isActive: props.currentChatId === id,
-					// 		mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-					// 			return {
-					// 				isActive: id === data?.currentChatId,
-					// 			};
-					// 		},
-					// 		onClick: (event: Event) => {
-					// 			event.preventDefault();
-					// 			event.stopPropagation();
-					//
-					// 			Store.set('currentChatId', id, 'currentChatId' as BlockProps);
-					// 		},
-					// 	});
-					// }),
 				}),
 				[IDS.MAIN.MESSAGING]: new MessagingBlock({
 					id: IDS.MAIN.MESSAGING,
@@ -245,7 +220,7 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MainBlock', this.props);
+		console.log('Render MainBlock', this);
 		return compile(template, this.props);
 	}
 }

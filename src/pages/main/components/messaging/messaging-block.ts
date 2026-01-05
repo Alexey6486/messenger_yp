@@ -80,7 +80,7 @@ export class MessagingBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MessagingBlock', this.props);
+		console.log('Render MessagingBlock', this);
 		return compile(template, this.props);
 	}
 }

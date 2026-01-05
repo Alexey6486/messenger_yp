@@ -144,7 +144,7 @@ export class MessagingFooterBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MessagingFooterBlock', this.props);
+		console.log('Render MessagingFooterBlock', this);
 		return compile(template, this.props);
 	}
 }

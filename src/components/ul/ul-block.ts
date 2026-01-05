@@ -9,11 +9,10 @@ import {
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
-import type { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import template from './ul-template';
 
 interface IUlBlockProps extends BlockProps {
-	childrenList?: ChatBlock[];
+	childrenList?: unknown[];
 }
 
 export class UlBlock extends Block {
@@ -35,11 +34,15 @@ export class UlBlock extends Block {
 				const isEqualCheck = isEqual(state, newState);
 				console.log('State UlBlock: ', { isEqualCheck, state, newState, t: this });
 
-				if (!isEqualCheck && props?.onSetCL) {
-					// this.setProps(newState);
-					const res = props?.onSetCL(newState.chats);
-					console.log({ res });
-					this.setChildrenList(res);
+				if (!isEqualCheck) {
+					if (props?.onSetChildrenList) {
+						const blocks = props?.onSetChildrenList(newState);
+						if (blocks) {
+							this.setChildrenList(blocks);
+						}
+					} else {
+						this.setProps(newState);
+					}
 				}
 			}
 
@@ -48,7 +51,7 @@ export class UlBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render UlBlock', this.props);
+		console.log('Render UlBlock', this);
 		return compile(template, this.props);
 	}
 }

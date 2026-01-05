@@ -71,7 +71,7 @@ export class MessagingHeaderBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MessagingHeaderBlock', this.props);
+		console.log('Render MessagingHeaderBlock', this);
 		return compile(template, this.props);
 	}
 }

@@ -19,7 +19,7 @@ export class LinkBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render LinkBlock', this.props);
+		console.log('Render LinkBlock', this);
 		return compile(template, this.props);
 	}
 }

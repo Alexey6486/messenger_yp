@@ -44,7 +44,7 @@ export class ChatBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ChatBlock', this.props);
+		console.log('Render ChatBlock', this);
 		return compile(template, this.props);
 	}
 }

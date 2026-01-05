@@ -34,9 +34,9 @@ export abstract class Block {
 	 */
 	constructor(props: BlockProps = {}) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
-		console.log({ children_list_part });
+
 		this.props = this._makePropsProxy({ ...props_part });
-		this.childrenList = this._makePropsProxy({ ...children_list_part });
+		this.childrenList = this._makeChildrenListProxy({ ...children_list_part });
 		this.children = children_part;
 		this.allInstances = all_instances_part;
 
@@ -142,7 +142,7 @@ export abstract class Block {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	private _componentWillUnmount() {
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
@@ -157,10 +157,6 @@ export abstract class Block {
 					child.dispatchComponentWillUnmount();
 				});
 			}
-		}
-
-		if (props?.page) {
-			this?.props?.changePage?.(props.page);
 		}
 	}
 
@@ -187,6 +183,7 @@ export abstract class Block {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
 				Object.values(this.childrenList).forEach((instance) => {
+					console.log({ instance });
 					children = [...children, instance.getContent()];
 				});
 
@@ -254,6 +251,29 @@ export abstract class Block {
 		Object.assign(this.props, nextProps);
 	}
 
+	private _makeChildrenListProxy(props: IChildren<Block>) {
+		const self = this;
+
+		return new Proxy<IChildren<Block>>(props, {
+			get(target: IChildren<Block>, p: string) {
+				return target[p];
+			},
+			set(target: IChildren<Block>, p: string, newValue: Block) {
+				console.log({ target, newValue });
+				const oldTarget = { ...target };
+
+				target[p] = newValue;
+
+				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+				return true;
+			},
+			deleteProperty() {
+				// throw new Error('No access');
+				return false;
+			},
+		});
+	}
+
 	private _makePropsProxy(props: BlockProps) {
 		const self = this;
 
@@ -274,6 +294,7 @@ export abstract class Block {
 					|| p === 'chatsSearchForm'
 					|| p === 'newMessageForm'
 					|| p === 'modalAddUserForm'
+					|| p === 'modalAddChatForm'
 				) {
 					const errors = target[p]?.errors ?? {};
 					const fields = target[p]?.fields ?? {};
