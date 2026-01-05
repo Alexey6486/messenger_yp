@@ -1,6 +1,7 @@
 <div class="{{styles.container}}">
 	<aside class="{{styles.left}} {{#unless currentChatId}}{{styles.left-shadow}}{{/unless}}">
 		<div class="{{styles.profile}}">
+			{{{ markup.main-add-chat }}}
 			{{{ markup.main-profile-link }}}
 		</div>
 		<div class="{{styles.search}} {{#if chatsSearchForm.fields.title.length}}{{styles.filled}}{{/if}}">

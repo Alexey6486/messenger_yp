@@ -28,6 +28,7 @@ export class ModalBlock<T> extends Block {
 					props?.contentId,
 					props.contentForms,
 					() => this.eventBus().emit(Block.EVENTS.FLOW_CWU),
+					props?.onSubmit,
 				),
 				[IDS.MODAL.CLOSE]: new ButtonRoundBlock({
 					id: IDS.MODAL.CLOSE,

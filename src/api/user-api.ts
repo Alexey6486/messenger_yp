@@ -25,6 +25,7 @@ export class UserAPI {
 			return responseHandler(resolve);
 		});
 	}
+
 	public avatar(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('UserAPI.avatar options: ', { options });
 
@@ -32,9 +33,6 @@ export class UserAPI {
 			`${ baseApi }profile/avatar`,
 			{
 				...options,
-				// headers: {
-				// 	'content-type': 'multipart/form-data',
-				// },
 				credentials: 'include',
 			},
 		).then(resolve => {
@@ -43,6 +41,7 @@ export class UserAPI {
 			return responseHandler(resolve);
 		});
 	}
+
 	public password(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('UserAPI.password options: ', { options });
 
@@ -61,6 +60,7 @@ export class UserAPI {
 			return responseHandler(resolve);
 		});
 	}
+
 	public search(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('UserAPI.search options: ', { options });
 

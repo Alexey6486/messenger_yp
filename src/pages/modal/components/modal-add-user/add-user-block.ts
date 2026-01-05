@@ -6,19 +6,17 @@ import {
 } from '@/utils';
 import type {
 	BlockProps,
-	IInputChangeParams,
 	IAddUserModalForm,
 	IFormState,
+	IInputChangeParams,
 	TNullable,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import { ButtonBlock } from '@/components/button/button-block';
 import template from './add-user-template';
-import styles from './styles.module.pcss';
+import styles from '../styles.module.pcss';
 
 export class ModalAddUser extends Block {
 	constructor(props: BlockProps) {
@@ -32,8 +30,8 @@ export class ModalAddUser extends Block {
 				},
 			},
 			markup: {
-				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${IDS.MODAL.ADD_USER_FIELD}"></div>`,
-				[IDS.MODAL.ADD_USER_SUBMIT]: `<div id="${IDS.MODAL.ADD_USER_SUBMIT}"></div>`,
+				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${ IDS.MODAL.ADD_USER_FIELD }"></div>`,
+				[IDS.MODAL.ADD_USER_SUBMIT]: `<div id="${ IDS.MODAL.ADD_USER_SUBMIT }"></div>`,
 			},
 			children: {
 				[IDS.MODAL.ADD_USER_FIELD]: new FieldBlock({
@@ -55,7 +53,7 @@ export class ModalAddUser extends Block {
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
-							type: 'login',
+							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
 								this.onFormInputChange(
 									{
@@ -79,7 +77,7 @@ export class ModalAddUser extends Block {
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.MODAL.ADD_USER_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.MODAL.ADD_USER_INPUT }"></div>`,
 					},
 				}),
 				[IDS.MODAL.ADD_USER_SUBMIT]: new ButtonBlock({
@@ -158,6 +156,6 @@ export class ModalAddUser extends Block {
 	}
 
 	override render(): string {
-		return compile(template, { ...this.props, class: styles['add-user-form'] });
+		return compile(template, { ...this.props, class: styles['add-modal-form'] });
 	}
 }

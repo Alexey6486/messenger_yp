@@ -12,6 +12,8 @@ export {
 	INIT_PROFILE_USER_PASSWORD_STATE,
 	INIT_MESSAGE_STATE,
 	INIT_SEARCH_STATE,
+	INIT_ADD_CHAT_STATE,
+	INIT_ADD_USER_STATE,
 } from './state';
 export { IDS } from './ids';
 export { CLASSES } from './classes';

@@ -8,6 +8,7 @@ import type {
 	ISearchForm,
 	TNullable,
 } from '@/types';
+import { cloneDeep } from '@/utils';
 
 export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	currentChatId: TNullable<string> | undefined,
@@ -18,7 +19,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 } {
 	return {
 		currentChatId: state?.currentChatId,
-		chatsSearchForm: state?.chatsSearchForm,
+		chatsSearchForm: cloneDeep(state?.chatsSearchForm),
 		newMessageForm: state?.newMessageForm,
 		chats: state?.chats,
 		messages: state?.messages,

@@ -254,7 +254,7 @@ export abstract class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
-				console.log({target, p, newValue});
+				console.log({ target, p, newValue });
 				const oldTarget = { ...target };
 
 				if (
@@ -444,11 +444,13 @@ export abstract class Block {
 		contentId: keyof BlockProps,
 		title: string,
 		contentForms?: Record<string, IFormState<T>>,
+		onSubmit?: (event?: Event, data?: Partial<BlockProps>) => void,
 	) {
 		const modal = new Pages.ModalBlock<T>({
 			contentId,
-			contentForms,
 			title,
+			contentForms,
+			onSubmit,
 		});
 		console.log('Block createModal: ', { contentId, contentForms, title, modal, t: this });
 

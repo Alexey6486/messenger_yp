@@ -1,4 +1,5 @@
 import type {
+	IAddChatModalForm,
 	IAddUserModalForm,
 	IChat,
 	IChildren,
@@ -73,7 +74,7 @@ export interface BlockProps {
 	userName?: string;
 
 	onClick?: (event: Event) => void;
-	onSubmit?: (event?: Event) => void;
+	onSubmit?: (event?: Event, data?: Partial<BlockProps>) => void;
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
 	onFileChange?: (fileList: FileList) => void;
@@ -95,6 +96,7 @@ export interface BlockProps {
 	chatsSearchForm?: TNullable<IFormState<ISearchForm>>;
 	newMessageForm?: TNullable<IFormState<IMessageForm>>;
 	modalAddUserForm?: TNullable<IFormState<IAddUserModalForm>>;
+	modalAddChatForm?: TNullable<IFormState<IAddChatModalForm>>;
 	modalErrorForm?: TNullable<IFormState<IErrorPageState>>;
 	contentForms?: Record<string, IFormState<unknown>>;
 }

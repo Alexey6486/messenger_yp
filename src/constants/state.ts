@@ -1,4 +1,6 @@
 import type {
+	IAddChatModalForm,
+	IAddUserModalForm,
 	IErrorPageState,
 	IFormState,
 	ILoginForm,
@@ -44,8 +46,18 @@ export const INIT_REGISTRATION_STATE: IFormState<IRegistrationFormUi> = {
 };
 
 export const INIT_SEARCH_STATE: IFormState<ISearchForm> = {
+	fields: { login: '' },
+	errors: { login: '' },
+};
+
+export const INIT_ADD_CHAT_STATE: IFormState<IAddChatModalForm> = {
 	fields: { title: '' },
 	errors: { title: '' },
+};
+
+export const INIT_ADD_USER_STATE: IFormState<IAddUserModalForm> = {
+	fields: { login: '' },
+	errors: { login: '' },
 };
 
 export const INIT_MESSAGE_STATE: IFormState<IMessageForm> = {

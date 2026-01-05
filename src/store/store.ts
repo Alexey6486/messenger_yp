@@ -6,6 +6,8 @@ import {
 import { StoreEvents } from '@/store/types';
 import type {
 	BlockProps,
+	IAddChatModalForm,
+	IAddUserModalForm,
 	IFormState,
 	ILoginForm,
 	IMessageForm,
@@ -16,6 +18,8 @@ import type {
 	IUserResponse,
 } from '@/types';
 import {
+	INIT_ADD_CHAT_STATE,
+	INIT_ADD_USER_STATE,
 	INIT_LOGIN_STATE,
 	INIT_MESSAGE_STATE,
 	INIT_PROFILE_USER_DATA_STATE,
@@ -36,12 +40,13 @@ class Store extends EventBus {
 		isDataEdit: false,
 		isPasswordEdit: false,
 		modalError: null,
-
 		currentChatId: null,
 		chatsSearchForm: cloneDeep(INIT_SEARCH_STATE) as IFormState<ISearchForm>,
 		newMessageForm: cloneDeep(INIT_MESSAGE_STATE) as IFormState<IMessageForm>,
 		chats: [],
 		messages: [],
+		modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm>,
+		modalAddUserForm: cloneDeep(INIT_ADD_USER_STATE) as IFormState<IAddUserModalForm>,
 	};
 
 	public getState() {

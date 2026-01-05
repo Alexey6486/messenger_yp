@@ -101,7 +101,7 @@ export const fieldsValidator = ({ valueToValidate, fieldName, requiredOnly, valu
 				validationResult = validator.isRequired().isValueEqualTo(valueToCompare, VALIDATION_MSG.c_psw).result;
 				break;
 			}
-			case E_FORM_FIELDS_NAME.title: {
+			case E_FORM_FIELDS_NAME.search: {
 				validationResult = validator.maxLength(10).result;
 				break;
 			}

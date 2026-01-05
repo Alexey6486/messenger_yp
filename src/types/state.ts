@@ -15,10 +15,11 @@ export const E_FORM_FIELDS_NAME = {
 	avatar: 'avatar',
 	title: 'title',
 	message: 'message',
+	search: 'search',
 } as const;
 
 export interface ISearchForm {
-	title: string;
+	login: string;
 }
 
 export interface IMessageForm {
@@ -27,6 +28,10 @@ export interface IMessageForm {
 
 export interface IAddUserModalForm {
 	login: string;
+}
+
+export interface IAddChatModalForm {
+	title: string;
 }
 
 export interface ILoginForm {

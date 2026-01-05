@@ -1,14 +1,17 @@
 import { Block } from '@/block';
 import { Store } from '@/store';
+import { ChatsController } from '@/controllers';
 import {
 	FocusManager,
 	getFocusData,
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_ADD_CHAT_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -16,17 +19,21 @@ import {
 import { formatContentLength } from '@/pages/main/utils';
 import type {
 	BlockProps,
+	IAddChatModalForm,
 	IChat,
+	IFormState,
 	IInputChangeParams,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
-import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
 import { LinkBlock } from '@/components/link/link-block';
+import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
+import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
+import { SvgPlus } from '@/components/icons';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 
@@ -37,28 +44,52 @@ export class MainBlock extends Block {
 			styles,
 			markup: {
 				[IDS.MAIN.SEARCH_FORM]: `<div id="${ IDS.MAIN.SEARCH_FORM }"></div>`,
+				[IDS.MAIN.ADD_CHAT]: `<div id="${ IDS.MAIN.ADD_CHAT }"></div>`,
 				[IDS.MAIN.CHAT_LIST]: `<div id="${ IDS.MAIN.CHAT_LIST }"></div>`,
 				[IDS.MAIN.MESSAGING]: `<div id="${ IDS.MAIN.MESSAGING }"></div>`,
 				[IDS.MAIN.PROFILE_LINK]: `<div id="${ IDS.MAIN.PROFILE_LINK }"></div>`,
 			},
 			children: {
+				[IDS.MAIN.ADD_CHAT]: new ButtonRoundBlock({
+					id: IDS.MAIN.ADD_CHAT,
+					type: 'button',
+					title: 'Создать чат',
+					icon: SvgPlus,
+					onClick: (event: Event) => {
+						event.preventDefault();
+						event.stopPropagation();
+
+						this.createModal(
+							'modalAddChatForm',
+							'Создание чата',
+							{ modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm> },
+							(event, data) => {
+								if (data) {
+									console.log('Create chat submit: ', { event, data });
+									ChatsController.createChat({ data: JSON.stringify(data) }, this);
+								}
+							},
+						);
+					},
+				}),
+
 				[IDS.MAIN.SEARCH_FORM]: new FormBlock({
 					id: IDS.MAIN.SEARCH_FORM,
 					onSubmit: () => {
-						console.log('Search submit: ', { title: this.props?.chatsSearchForm?.fields?.title ?? '' });
+						console.log('Search submit: ', { title: this.props?.chatsSearchForm?.fields?.login ?? '' });
 					},
 					childrenList: [
 						new InputBlock({
 							id: IDS.MAIN.SEARCH_INPUT,
 							input_data: {
-								value: props?.chatsSearchForm?.fields?.title ?? '',
-								error: props?.chatsSearchForm?.errors?.title ?? '',
+								value: props?.chatsSearchForm?.fields?.login ?? '',
+								error: props?.chatsSearchForm?.errors?.login ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.chatsSearchForm, 'title');
+								return getInputStateSlice(data?.chatsSearchForm, 'login');
 							},
-							dataset: E_FORM_FIELDS_NAME.title,
-							name: E_FORM_FIELDS_NAME.title,
+							dataset: E_FORM_FIELDS_NAME.login,
+							name: E_FORM_FIELDS_NAME.login,
 							placeholder: 'Поиск',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
@@ -69,7 +100,7 @@ export class MainBlock extends Block {
 											...params.data,
 											error: fieldsValidator({
 												valueToValidate: params.data.value,
-												fieldName: E_FORM_FIELDS_NAME.title,
+												fieldName: E_FORM_FIELDS_NAME.search,
 											}),
 										},
 									}),
@@ -80,11 +111,11 @@ export class MainBlock extends Block {
 									{
 										fields: {
 											...props?.chatsSearchForm?.fields,
-											title: data?.data?.value ?? '',
+											login: data?.data?.value ?? '',
 										},
 										errors: {
 											...props?.chatsSearchForm?.errors,
-											title: data?.data?.error ?? '',
+											login: data?.data?.error ?? '',
 										},
 									},
 									'chatsSearchForm' as BlockProps,
@@ -150,6 +181,7 @@ export class MainBlock extends Block {
 						})
 						: [],
 					onChangePage: () => {
+						Store.clearSubs();
 						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),
@@ -165,11 +197,17 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.clearSubs();
 						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),
 			},
 		});
+	}
+
+	override componentDidMount() {
+		console.log('ProfileBlock componentDidMount override', this);
+		ChatsController.getChats(this);
 	}
 
 	override render(): string {
