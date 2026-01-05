@@ -34,10 +34,10 @@ export abstract class Block {
 	 */
 	constructor(props: BlockProps = {}) {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
-
+		console.log({ children_list_part });
 		this.props = this._makePropsProxy({ ...props_part });
+		this.childrenList = this._makePropsProxy({ ...children_list_part });
 		this.children = children_part;
-		this.childrenList = children_list_part;
 		this.allInstances = all_instances_part;
 
 		const eventBus = new EventBus();
@@ -182,7 +182,7 @@ export abstract class Block {
 
 		if (this.childrenList) {
 			const element = temp.content.getElementById(IDS.COMMON.COMPONENTS_LIST);
-
+			console.log({ element, t: this });
 			if (element) {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
@@ -234,6 +234,15 @@ export abstract class Block {
 			throw new Error('Элемент не создан');
 		}
 		return this.element;
+	}
+
+	setChildrenList(childrenList: IChildren<Block>) {
+		console.log(childrenList);
+		if (!childrenList) {
+			return;
+		}
+
+		Object.assign(this.childrenList, childrenList);
 	}
 
 	setProps(nextProps: BlockProps) {

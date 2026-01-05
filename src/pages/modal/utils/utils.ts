@@ -35,7 +35,7 @@ export const getModalContentBlock = <T>(
 			}
 			return new PlaceholderBlock({});
 		}
-		case IDS.MODAL.MODAL_ADD_CHAT_FORM: {
+		case IDS.FORMS.MODAL_ADD_CHAT_FORM: {
 			if (contentForms && 'modalAddChatForm' in contentForms) {
 				const modalAddChatForm = contentForms.modalAddChatForm as IFormState<IAddChatModalForm>;
 				return new ModalAddChat({

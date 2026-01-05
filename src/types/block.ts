@@ -27,6 +27,7 @@ import type { Router } from '@/router';
 export interface BlockProps {
 	children?: IChildren<Block>;
 	allInstances?: IChildren<Block>;
+	childrenList?: IChildren<Block>;
 	container?: TNullable<HTMLElement>;
 	router?: Router;
 
@@ -44,6 +45,8 @@ export interface BlockProps {
 	dataset?: string;
 	placeholder?: string;
 	name?: string;
+	// unread_count?: string;
+	// last_message?: IChatLastMessage;
 	label?: string;
 	id_label?: string;
 	avatar?: string;

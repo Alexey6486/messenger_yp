@@ -15,8 +15,8 @@ import {
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
+	isArray,
 } from '@/utils';
-import { formatContentLength } from '@/pages/main/utils';
 import type {
 	BlockProps,
 	IAddChatModalForm,
@@ -31,8 +31,9 @@ import { UlBlock } from '@/components/ul/ul-block';
 import { LinkBlock } from '@/components/link/link-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
-import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
+import { ChatBlock } from '@/pages/main/components/chat/chat-block';
+import { formatContentLength } from '@/pages/main/utils';
 import { SvgPlus } from '@/components/icons';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
@@ -128,33 +129,66 @@ export class MainBlock extends Block {
 					id: IDS.MAIN.CHAT_LIST,
 					class: styles.chats,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						console.log({ data });
 						return {
 							chats: data?.chats,
 						};
 					},
-					childrenList: props?.chats?.map?.(({ id, avatar, title, unread_count, last_message }: IChat) => {
-						return new ChatBlock({
-							id: id,
-							styles,
-							avatar: avatar,
-							title: title,
-							date: last_message.time,
-							text: formatContentLength(last_message.content),
-							counter: unread_count,
-							isActive: props.currentChatId === id,
-							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return {
-									isActive: id === data?.currentChatId,
-								};
-							},
-							onClick: (event: Event) => {
-								event.preventDefault();
-								event.stopPropagation();
+					onSetCL: (list) => {
+						console.log({ list });
+						if (isArray(list) && list.length) {
+							const childrenList = {};
+							list.forEach(({ id, avatar, title, unread_count, last_message }: IChat) => {
+								childrenList[id] = new ChatBlock({
+									id: id,
+									styles,
+									avatar: avatar,
+									title: title,
+									date: last_message?.time,
+									text: formatContentLength(last_message?.content),
+									counter: unread_count,
+									isActive: props.currentChatId === id,
+									mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+										return {
+											isActive: id === data?.currentChatId,
+										};
+									},
+									onClick: (event: Event) => {
+										event.preventDefault();
+										event.stopPropagation();
 
-								Store.set('currentChatId', id, 'currentChatId' as BlockProps);
-							},
-						});
-					}),
+										Store.set('currentChatId', id, 'currentChatId' as BlockProps);
+									},
+								});
+							});
+							console.log({ childrenList });
+							return childrenList;
+						}
+					},
+					childrenList: [],
+					// childrenList: props?.chats?.map?.(({ id, avatar, title, unread_count, last_message }: IChat) => {
+					// 	return new ChatBlock({
+					// 		id: id,
+					// 		styles,
+					// 		avatar: avatar,
+					// 		title: title,
+					// 		date: last_message.time,
+					// 		text: formatContentLength(last_message.content),
+					// 		counter: unread_count,
+					// 		isActive: props.currentChatId === id,
+					// 		mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+					// 			return {
+					// 				isActive: id === data?.currentChatId,
+					// 			};
+					// 		},
+					// 		onClick: (event: Event) => {
+					// 			event.preventDefault();
+					// 			event.stopPropagation();
+					//
+					// 			Store.set('currentChatId', id, 'currentChatId' as BlockProps);
+					// 		},
+					// 	});
+					// }),
 				}),
 				[IDS.MAIN.MESSAGING]: new MessagingBlock({
 					id: IDS.MAIN.MESSAGING,

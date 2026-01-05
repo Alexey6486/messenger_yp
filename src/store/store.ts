@@ -43,7 +43,7 @@ class Store extends EventBus {
 		currentChatId: null,
 		chatsSearchForm: cloneDeep(INIT_SEARCH_STATE) as IFormState<ISearchForm>,
 		newMessageForm: cloneDeep(INIT_MESSAGE_STATE) as IFormState<IMessageForm>,
-		chats: [],
+		chats: null,
 		messages: [],
 		modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm>,
 		modalAddUserForm: cloneDeep(INIT_ADD_USER_STATE) as IFormState<IAddUserModalForm>,

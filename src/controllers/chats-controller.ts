@@ -41,7 +41,7 @@ class ChatsController {
 		try {
 			const result = await api.createChat(options);
 			console.log('ChatController.createChat result: ', { result });
-			this.getChats();
+			await this.getChats(instance);
 		} catch (e: unknown) {
 			console.log('ChatController.createChat Error: ', { e });
 

@@ -35,8 +35,11 @@ export class UlBlock extends Block {
 				const isEqualCheck = isEqual(state, newState);
 				console.log('State UlBlock: ', { isEqualCheck, state, newState, t: this });
 
-				if (!isEqualCheck) {
-					this.setProps(newState);
+				if (!isEqualCheck && props?.onSetCL) {
+					// this.setProps(newState);
+					const res = props?.onSetCL(newState.chats);
+					console.log({ res });
+					this.setChildrenList(res);
 				}
 			}
 
