@@ -1,4 +1,4 @@
 export { ModalErrorBlock } from './modal-error';
-export { ModalAddUser } from './modal-add-user';
+export { ModalAddUsers } from './modal-add-users';
 export { ModalAddChat } from './modal-add-chat';
 

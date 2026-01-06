@@ -86,7 +86,7 @@ export class ProfileBlock extends Block {
 						console.log('Avatar onInputChange: ', { fileList });
 						const formData = new FormData();
 						formData.append('avatar', fileList[0]);
-						UserController.changeAvatar({ data: formData as FormData }, this.props.router, this);
+						UserController.changeAvatar({ data: formData as FormData }, this);
 					},
 				}),
 
@@ -766,7 +766,7 @@ export class ProfileBlock extends Block {
 										)
 									) {
 										const data = JSON.stringify(this.props?.userForm?.fields);
-										UserController.changeUserData({ data }, this.props.router, this);
+										UserController.changeUserData({ data }, this);
 									} else {
 										Store.set(
 											'isDataEdit',
@@ -895,7 +895,7 @@ export class ProfileBlock extends Block {
 								if (fields) {
 									const { oldPassword, newPassword } = fields;
 									const data = JSON.stringify({ oldPassword, newPassword });
-									UserController.changePassword({ data }, this.props.router, this);
+									UserController.changePassword({ data }, this);
 								}
 							}
 						}

@@ -3,6 +3,7 @@ import { connect } from '@/hoc';
 import type {
 	BlockProps,
 	IChat,
+	ICurrentChatData,
 	IFormState,
 	IMessageForm,
 	ISearchForm,
@@ -11,14 +12,14 @@ import type {
 import { cloneDeep } from '@/utils';
 
 export function mapUserToPropsMain(state: Partial<BlockProps>): {
-	currentChatId: TNullable<string> | undefined,
+	currentChatData: TNullable<ICurrentChatData> | undefined,
 	chatsSearchForm: TNullable<IFormState<ISearchForm>> | undefined,
 	newMessageForm: TNullable<IFormState<IMessageForm>> | undefined,
 	chats: TNullable<IChat[]> | undefined,
 	messages: TNullable<IChat[]> | undefined,
 } {
 	return {
-		currentChatId: state?.currentChatId,
+		currentChatData: state?.currentChatData,
 		chatsSearchForm: cloneDeep(state?.chatsSearchForm),
 		newMessageForm: state?.newMessageForm,
 		chats: state?.chats,

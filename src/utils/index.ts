@@ -1,4 +1,3 @@
-export { searchDataset } from './search-dataset';
 export { compile } from './compile';
 export {
 	Validator,
@@ -15,8 +14,8 @@ export {
 export { isEqual } from './is-equal';
 export { cloneDeep } from './clone-deep';
 export {
-	isErrorWithMessage,
-	getErrorText,
+	handleRequestError,
+	responseHandler,
 } from './error';
 export { getInputStateSlice } from './state-slice';
 export { isEmpty } from './is-empty';

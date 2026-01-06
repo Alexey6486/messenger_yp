@@ -22,7 +22,7 @@ export function isFunction(value: unknown): value is TFunctionUnknown {
 	return typeof value === 'function';
 }
 
-export function isJsonString(str: string | undefined): boolean {
+export function isJsonString(str: unknown | undefined): boolean {
 	if (typeof str !== 'string') return false;
 
 	try {

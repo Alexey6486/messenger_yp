@@ -1,4 +1,7 @@
 import { isJsonString } from '@/utils';
+import { Store } from '@/store';
+import type { IErrorPageState } from '@/types';
+import type { Block } from '@/block';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (
@@ -22,4 +25,36 @@ export function getErrorText(response?: XMLHttpRequest) {
 	}
 
 	return `{"code": ${ code }, "text": "${ text }"}`;
+}
+
+export function responseHandler(response?: XMLHttpRequest): unknown {
+	if (typeof response?.status === 'number' && response.status > 399) {
+		throw new Error(getErrorText(response));
+	} else {
+		let result = {};
+		if (isJsonString(response?.response)) {
+			const parsedText = JSON.parse(response?.response);
+			if (parsedText) {
+				result = parsedText;
+			}
+		}
+		return result;
+	}
+}
+
+export function handleRequestError(e: unknown, instance?: Block) {
+	if (isErrorWithMessage(e)) {
+		const error = JSON.parse(e.message);
+		console.log('handleRequestError Error Data: ', { ...error });
+
+		if (instance) {
+			Store.set('modalError', { ...error });
+			instance.createModal<IErrorPageState>(
+				'modalError',
+				'Ошибка',
+			);
+		}
+	} else {
+		throw new Error('Unknown error');
+	}
 }

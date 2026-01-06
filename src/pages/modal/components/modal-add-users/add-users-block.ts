@@ -1,4 +1,9 @@
 import { Block } from '@/block';
+import { Store } from '@/store';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import { IDS } from '@/constants';
 import {
 	compile,
@@ -6,7 +11,7 @@ import {
 } from '@/utils';
 import type {
 	BlockProps,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IFormState,
 	IInputChangeParams,
 	TNullable,
@@ -15,10 +20,10 @@ import { E_FORM_FIELDS_NAME } from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import { ButtonBlock } from '@/components/button/button-block';
-import template from './add-user-template';
+import template from './add-users-template';
 import styles from '../styles.module.pcss';
 
-export class ModalAddUser extends Block {
+export class ModalAddUsersBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
@@ -38,8 +43,8 @@ export class ModalAddUser extends Block {
 					id: IDS.MODAL.ADD_USER_FIELD,
 					id_label: IDS.MODAL.ADD_USER_INPUT,
 					input_data: {
-						value: props.modalAddUserForm?.fields?.login ?? '',
-						error: props.modalAddUserForm?.errors?.login ?? '',
+						value: props.modalAddUsersForm?.fields?.login ?? '',
+						error: props.modalAddUsersForm?.errors?.login ?? '',
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -47,31 +52,39 @@ export class ModalAddUser extends Block {
 						[IDS.MODAL.ADD_USER_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_USER_INPUT,
 							input_data: {
-								value: props.modalAddUserForm?.fields?.login ?? '',
-								error: props.modalAddUserForm?.errors?.login ?? '',
+								value: props.modalAddUsersForm?.fields?.login ?? '',
+								error: props.modalAddUsersForm?.errors?.login ?? '',
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.login,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'modalAddUsersForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.login,
-													requiredOnly: true,
-												}),
-											},
-										}),
+										fields: {
+											...props?.modalAddUsersForm?.fields,
+											login: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.modalAddUsersForm?.errors,
+											login: data?.data?.error ?? '',
+										},
 									},
-									[IDS.MODAL.ADD_USER_INPUT, IDS.MODAL.ADD_USER_FIELD],
-									E_FORM_FIELDS_NAME.login,
-									IDS.FORMS.MODAL_ADD_USER_FORM,
 								);
 							},
 						}),
@@ -89,16 +102,13 @@ export class ModalAddUser extends Block {
 						event.stopPropagation();
 
 						let validationResult = '';
-						let pageProps = { modalAddUserForm: { ...this.props.modalAddUserForm } };
+						let pageProps = { modalAddUsersForm: { ...this.props.modalAddUsersForm } };
 
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										&& !inputInstance.props?.input_data?.error.length
-									) {
-										const fieldName = inputInstance.props.name as keyof IAddUserModalForm;
+									if (inputId.includes('input')) {
+										const fieldName = inputInstance.props.name as keyof IAddUsersModalForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
 											fieldName: fieldName ?? '',
@@ -106,23 +116,14 @@ export class ModalAddUser extends Block {
 										});
 
 										if (validationResult.length) {
-											const childProps = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-												},
-											};
-											inputInstance.setProps(childProps);
-											fieldInstance.setProps(childProps);
-
-											const modalAddUserForm = pageProps?.modalAddUserForm as BlockProps['modalAddUserForm'];
-											const modalAddUserErrors = modalAddUserForm?.errors;
-											if (modalAddUserErrors) {
+											const modalAddUsersForm = pageProps?.modalAddUsersForm as BlockProps['modalAddUsersForm'];
+											const modalAddUsersErrors = modalAddUsersForm?.errors;
+											if (modalAddUsersErrors) {
 												pageProps = {
-													modalAddUserForm: {
-														...modalAddUserForm,
+													modalAddUsersForm: {
+														...modalAddUsersForm,
 														errors: {
-															...modalAddUserErrors,
+															...modalAddUsersErrors,
 															[fieldName]: validationResult,
 														},
 													},
@@ -134,20 +135,30 @@ export class ModalAddUser extends Block {
 							}
 						});
 
-						const modalAddUserForm: TNullable<IFormState<IAddUserModalForm>> | undefined = pageProps?.modalAddUserForm as BlockProps['modalAddUserForm'];
-						if (
-							modalAddUserForm
-							&& modalAddUserForm.errors
-						) {
-							const errorsList = Object.values(modalAddUserForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
-								console.log('Add user form submit: ', this.props?.modalAddUserForm?.fields ?? '');
-								this.props?.onCloseModal?.();
-							}
-						}
+						const modalAddUsersForm: TNullable<IFormState<IAddUsersModalForm>> | undefined = pageProps?.modalAddUsersForm as BlockProps['modalAddUsersForm'];
+						console.log({ pageProps, t: this });
 
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
+						if (
+							modalAddUsersForm
+							&& modalAddUsersForm.errors
+						) {
+							const errorsList = Object.values(modalAddUsersForm.errors).filter((el) => Boolean(el));
+							console.log({ errorsList });
+
+							if (errorsList.length) {
+								const { modalAddUsersForm: { errors, fields } } = pageProps;
+								Store.set(
+									'modalAddUsersForm',
+									{ fields, errors },
+								);
+							} else {
+								console.log('Add users form submit: ', this.props?.modalAddUsersForm?.fields ?? '');
+								this.props?.onCloseModal?.();
+								this.props?.onSubmit?.(
+									event,
+									{ modalAddUsersForm: props?.modalAddUsersForm },
+								);
+							}
 						}
 					},
 				}),

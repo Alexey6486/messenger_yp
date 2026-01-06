@@ -1,5 +1,5 @@
 <div class="{{styles.container}}">
-	<aside class="{{styles.left}} {{#unless currentChatId}}{{styles.left-shadow}}{{/unless}}">
+	<aside class="{{styles.left}} {{#unless currentChatData}}{{styles.left-shadow}}{{/unless}}">
 		<div class="{{styles.profile}}">
 			{{{ markup.main-add-chat }}}
 			{{{ markup.main-profile-link }}}
@@ -10,7 +10,7 @@
 		{{{ markup.main-chat-list }}}
 	</aside>
 	<div class="{{styles.right}}">
-		{{#if currentChatId}}
+		{{#if currentChatData}}
 			{{{ markup.main-messaging }}}
 		{{else}}
 			<main class="{{styles.placeholder}}">

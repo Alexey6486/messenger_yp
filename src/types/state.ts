@@ -26,7 +26,7 @@ export interface IMessageForm {
 	message: string;
 }
 
-export interface IAddUserModalForm {
+export interface IAddUsersModalForm {
 	login: string;
 }
 
@@ -111,18 +111,6 @@ export interface IChat {
 	last_message: IChatLastMessage;
 }
 
-export interface IMainPageState {
-	currentChatId: TNullable<string>;
-	chatsSearchForm: IFormState<ISearchForm>;
-	newMessageForm: IFormState<IMessageForm>;
-	chats: TNullable<IChat[]>;
-	messages: TNullable<IChat[]>;
-}
-
-export interface IMainPageHbsState extends IMainPageState {
-	user: IUserResponse;
-}
-
 export interface IErrorPageState {
 	text: string;
 	code: string;
@@ -158,4 +146,10 @@ export interface ICurrentFocus {
 export interface IInputState {
 	value: string;
 	error: string;
+}
+
+export interface ICurrentChatData {
+	users: IChatUserResponse[];
+	info: IChat;
+	owner: IChatUserResponse;
 }

@@ -13,7 +13,6 @@ export type {
 	IRegistrationFormUi,
 	IRegistrationFormDto,
 	TFormsFields,
-	IMainPageState,
 	IChat,
 	IUserBase,
 	IChatLastMessage,
@@ -24,16 +23,16 @@ export type {
 	IUserPasswordForm,
 	IUserDataForm,
 	IUserResponse,
-	IMainPageHbsState,
 	IInputData,
 	IChildren,
 	IInputChangeParams,
 	IInputState,
 	ICurrentFocus,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IMessageForm,
 	IInputInfo,
 	IAddChatModalForm,
+	ICurrentChatData,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';

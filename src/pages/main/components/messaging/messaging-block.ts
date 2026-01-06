@@ -17,7 +17,7 @@ import template from './messaging-template';
 import styles from '@/pages/main/styles.module.pcss';
 
 interface IMessagingBlockProps extends BlockProps {
-	childrenList: MessagingMainBlock[];
+	childrenList?: MessagingMainBlock[];
 }
 
 export class MessagingBlock extends Block {
@@ -36,8 +36,12 @@ export class MessagingBlock extends Block {
 				[IDS.MAIN.MESSAGING_HEADER]: new MessagingHeaderBlock({
 					id: IDS.MAIN.MESSAGING_HEADER,
 					styles,
-					userData: props.userData,
-					onChangePage: props.onChangePage,
+					container: props.container,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							currentChatData: data.currentChatData,
+						};
+					},
 				}),
 				[IDS.MAIN.MESSAGING_FOOTER]: new MessagingFooterBlock({
 					id: IDS.MAIN.MESSAGING_FOOTER,

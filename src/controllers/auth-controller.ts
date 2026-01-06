@@ -10,10 +10,9 @@ import type { RequestOptions } from 'http';
 import type { IRequestOptions } from '@/http';
 import type { Router } from '@/router';
 import type { Block } from '@/block';
-import type { IErrorPageState } from '@/types';
 import {
 	cloneDeep,
-	isErrorWithMessage,
+	handleRequestError,
 } from '@/utils';
 
 const api = new AuthAPI();
@@ -34,21 +33,7 @@ class AuthController {
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.signin Error: ', { e });
-
-			if (isErrorWithMessage(e)) {
-				const error = JSON.parse(e.message);
-				console.log('AuthController.signin Error Data: ', { ...error }, router);
-
-				if (instance) {
-					Store.set('modalError', { ...error });
-					instance.createModal<IErrorPageState>(
-						'modalError',
-						'Ошибка',
-					);
-				}
-			} else {
-				throw new Error('Unknown error');
-			}
+			handleRequestError(e, instance);
 		}
 	}
 
@@ -64,21 +49,7 @@ class AuthController {
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.signup Error: ', { e });
-
-			if (isErrorWithMessage(e)) {
-				const error = JSON.parse(e.message);
-				console.log('AuthController.signup Error Data: ', { ...error }, router);
-
-				if (instance) {
-					Store.set('modalError', { ...error });
-					instance.createModal<IErrorPageState>(
-						'modalError',
-						'Ошибка',
-					);
-				}
-			} else {
-				throw new Error('Unknown error');
-			}
+			handleRequestError(e, instance);
 		}
 	}
 
@@ -100,21 +71,7 @@ class AuthController {
 			if (sessionStorage.getItem(STORAGE_KEY)) {
 				sessionStorage.removeItem(STORAGE_KEY);
 			}
-
-			if (isErrorWithMessage(e)) {
-				const error = JSON.parse(e.message);
-				console.log('AuthController.logout Error Data: ', { ...error }, router);
-
-				if (instance) {
-					Store.set('modalError', { ...error });
-					instance.createModal<IErrorPageState>(
-						'modalError',
-						'Ошибка',
-					);
-				}
-			} else {
-				throw new Error('Unknown error');
-			}
+			handleRequestError(e, instance);
 		}
 	}
 }

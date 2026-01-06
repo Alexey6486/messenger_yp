@@ -1,8 +1,9 @@
 import type {
 	IAddChatModalForm,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IChat,
 	IChildren,
+	ICurrentChatData,
 	IErrorPageState,
 	IFormState,
 	IInputChangeParams,
@@ -60,12 +61,12 @@ export interface BlockProps {
 	author?: string;
 	fieldName?: string;
 	parentFormId?: string;
-	currentChatId?: TNullable<string>;
 	contentId?: keyof BlockProps;
 	buttonText?: string;
 	page?: TPages;
 	error?: TNullable<IErrorPageState>;
 	modalError?: TNullable<IErrorPageState>;
+	currentChatData?: TNullable<ICurrentChatData>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
@@ -74,7 +75,7 @@ export interface BlockProps {
 	userName?: string;
 
 	onClick?: (event: Event) => void;
-	onSubmit?: (event?: Event, data?: Partial<BlockProps>) => void;
+	onSubmit?: (event?: Event, data?: unknown) => void;
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
 	onFileChange?: (fileList: FileList) => void;
@@ -97,7 +98,7 @@ export interface BlockProps {
 	userForm?: TNullable<IFormState<IUserDataForm>>,
 	chatsSearchForm?: TNullable<IFormState<ISearchForm>>;
 	newMessageForm?: TNullable<IFormState<IMessageForm>>;
-	modalAddUserForm?: TNullable<IFormState<IAddUserModalForm>>;
+	modalAddUsersForm?: TNullable<IFormState<IAddUsersModalForm>>;
 	modalAddChatForm?: TNullable<IFormState<IAddChatModalForm>>;
 	modalErrorForm?: TNullable<IFormState<IErrorPageState>>;
 	contentForms?: Record<string, IFormState<unknown>>;

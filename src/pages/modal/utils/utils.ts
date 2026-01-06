@@ -1,14 +1,13 @@
 import { IDS } from '@/constants';
 import type { Block } from '@/block';
 import type {
-	BlockProps,
 	IAddChatModalForm,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IFormState,
 } from '@/types';
 import {
 	ModalAddChat,
-	ModalAddUser,
+	ModalAddUsers,
 	ModalErrorBlock,
 } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
@@ -17,7 +16,7 @@ export const getModalContentBlock = <T>(
 	contentId: string | undefined,
 	contentForms?: Record<string, IFormState<T>>,
 	onCloseModal?: () => void,
-	onSubmit?: (event?: Event, data?: Partial<BlockProps>) => void,
+	onSubmit?: (event?: Event, data?: unknown) => void,
 ): Block => {
 	switch (contentId) {
 		case IDS.MODAL.MODAL_ERROR: {
@@ -25,12 +24,13 @@ export const getModalContentBlock = <T>(
 				onCloseModal,
 			});
 		}
-		case IDS.FORMS.MODAL_ADD_USER_FORM: {
-			if (contentForms && 'modalAddUserForm' in contentForms) {
-				const modalAddUserForm = contentForms.modalAddUserForm as IFormState<IAddUserModalForm>;
-				return new ModalAddUser({
+		case IDS.FORMS.MODAL_ADD_USERS_FORM: {
+			if (contentForms && 'modalAddUsersForm' in contentForms) {
+				const modalAddUsersForm = contentForms.modalAddUsersForm as IFormState<IAddUsersModalForm>;
+				return new ModalAddUsers({
 					onCloseModal,
-					modalAddUserForm,
+					onSubmit,
+					modalAddUsersForm,
 				});
 			}
 			return new PlaceholderBlock({});

@@ -1,7 +1,7 @@
 import type { IRequestOptions } from '@/http';
 import { HTTPTransport } from '@/http';
 import type { RequestOptions } from 'http';
-import { responseHandler } from '@/api/utils';
+import { responseHandler } from '@/utils';
 
 const chatAPIInstance = new HTTPTransport();
 const baseChatApi = '/api/v2/chats/';
@@ -10,7 +10,6 @@ export class ChatAPI {
 	public getChats() {
 		return chatAPIInstance.get(`${ baseChatApi }`).then(resolve => {
 			console.log('ChatAPI.getChats resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}
@@ -27,12 +26,11 @@ export class ChatAPI {
 			},
 		).then(resolve => {
 			console.log('ChatAPI.createChat resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}
 
-	public addUser(options?: Partial<RequestOptions & IRequestOptions>) {
+	public addUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.put(
 			`${ baseChatApi }users`,
 			{
@@ -43,8 +41,14 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.addUser resolve: ', { resolve });
+			console.log('ChatAPI.addUsers resolve: ', { resolve });
+			return responseHandler(resolve);
+		});
+	}
 
+	public getChatUsers(chatId: string) {
+		return chatAPIInstance.get(`${ baseChatApi }/${ chatId }/users`).then(resolve => {
+			console.log('ChatAPI.getChatUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
@@ -61,7 +65,6 @@ export class ChatAPI {
 			},
 		).then(resolve => {
 			console.log('ChatAPI.deleteUser resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}

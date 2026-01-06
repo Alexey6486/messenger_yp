@@ -31,7 +31,6 @@ import { UlBlock } from '@/components/ul/ul-block';
 import { LinkBlock } from '@/components/link/link-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
-import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 import { ChatBlock } from '@/pages/main/components/chat/chat-block';
 import { formatContentLength } from '@/pages/main/utils';
 import { SvgPlus } from '@/components/icons';
@@ -65,8 +64,8 @@ export class MainBlock extends Block {
 							'Создание чата',
 							{ modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm> },
 							(event, data) => {
+								console.log('Add chat submit: ', { event, data });
 								if (data) {
-									console.log('Create chat submit: ', { event, data });
 									ChatsController.createChat({ data: JSON.stringify(data) }, this);
 								}
 							},
@@ -137,7 +136,8 @@ export class MainBlock extends Block {
 						const childrenList: { [key: string]: Block } = {};
 
 						if (isArray(data?.chats) && data?.chats.length) {
-							data.chats.forEach(({ id, avatar, title, unread_count, last_message }: IChat) => {
+							data.chats.forEach((chat: IChat) => {
+								const { id, avatar, title, unread_count, last_message } = chat;
 								childrenList[id] = new ChatBlock({
 									id: id,
 									styles,
@@ -146,17 +146,17 @@ export class MainBlock extends Block {
 									date: last_message?.time,
 									text: formatContentLength(last_message?.content),
 									counter: unread_count,
-									isActive: props.currentChatId === id,
+									isActive: props.currentChatData?.info?.id === id,
 									mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 										return {
-											isActive: id === data?.currentChatId,
+											isActive: id === data?.currentChatData?.info?.id,
 										};
 									},
 									onClick: (event: Event) => {
 										event.preventDefault();
 										event.stopPropagation();
 
-										Store.set('currentChatId', id, 'currentChatId' as BlockProps);
+										ChatsController.getChatUsers({ data: JSON.stringify(chat) });
 									},
 								});
 							});
@@ -170,36 +170,34 @@ export class MainBlock extends Block {
 					styles,
 					messages: props.messages,
 					newMessageForm: props.newMessageForm,
-					userData: props.userData,
+					currentChatData: props.currentChatData,
+					container: props.container,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							messages: data.messages,
 							newMessageForm: data.newMessageForm,
+							currentChatData: data.currentChatData,
 						};
 					},
-					childrenList: Array.isArray(props?.messages)
-						? props?.messages?.map?.(({ id, last_message }: IChat) => {
-							return new MessagingMainBlock({
-								id,
-								styles,
-								author: last_message.user.display_name,
-								text: last_message.content,
-								date: last_message.time,
-								isMe: last_message.user.id === props?.userData?.id,
-							});
-						})
-						: [],
-					onChangePage: () => {
-						Store.clearSubs();
-						this?.props?.router?.go?.(PAGES_URL.PROFILE);
-					},
+					// childrenList: Array.isArray(props?.messages)
+					// 	? props?.messages?.map?.(({ id, last_message }: IChat) => {
+					// 		return new MessagingMainBlock({
+					// 			id,
+					// 			styles,
+					// 			author: last_message.user.display_name,
+					// 			text: last_message.content,
+					// 			date: last_message.time,
+					// 			isMe: last_message.user.id === props?.userData?.id,
+					// 		});
+					// 	})
+					// 	: [],
 				}),
 				[IDS.MAIN.PROFILE_LINK]: new LinkBlock({
 					id: IDS.MAIN.PROFILE_LINK,
 					class: styles.link,
 					href: '#',
 					ariaLabel: 'profile link',
-					tooltip: 'profile link',
+					tooltip: 'Перейти в профиль',
 					target: '_self',
 					text: 'Профиль',
 					onClick: (event: Event) => {

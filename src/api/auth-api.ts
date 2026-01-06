@@ -1,7 +1,7 @@
 import type { IRequestOptions } from '@/http';
 import { HTTPTransport } from '@/http';
 import type { RequestOptions } from 'http';
-import { responseHandler } from '@/api/utils';
+import { responseHandler } from '@/utils';
 
 const authAPIInstance = new HTTPTransport();
 const baseApi = '/api/v2/auth/';
@@ -21,7 +21,6 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signin resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}
@@ -29,7 +28,6 @@ export class AuthAPI {
 	public logout() {
 		return authAPIInstance.post(`${ baseApi }logout`).then(resolve => {
 			console.log('AuthAPI.logout resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}
@@ -37,7 +35,6 @@ export class AuthAPI {
 	public user() {
 		return authAPIInstance.get(`${ baseApi }user`).then(resolve => {
 			console.log('AuthAPI.user resolve: ', { resolve });
-
 			return responseHandler(resolve);
 		});
 	}
@@ -56,7 +53,6 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signup resolve: ', { options, resolve });
-
 			responseHandler(resolve);
 		});
 	}

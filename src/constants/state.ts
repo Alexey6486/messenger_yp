@@ -1,10 +1,9 @@
 import type {
 	IAddChatModalForm,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IErrorPageState,
 	IFormState,
 	ILoginForm,
-	IMainPageState,
 	IMessageForm,
 	IRegistrationFormUi,
 	ISearchForm,
@@ -55,7 +54,7 @@ export const INIT_ADD_CHAT_STATE: IFormState<IAddChatModalForm> = {
 	errors: { title: '' },
 };
 
-export const INIT_ADD_USER_STATE: IFormState<IAddUserModalForm> = {
+export const INIT_ADD_USERS_STATE: IFormState<IAddUsersModalForm> = {
 	fields: { login: '' },
 	errors: { login: '' },
 };
@@ -115,98 +114,4 @@ export const INIT_PROFILE_USER_DATA_STATE: IFormState<IUserDataForm> = {
 		phone: '',
 		avatar: '',
 	},
-};
-
-export const INIT_MAIN_PAGE_STATE: IMainPageState = {
-	currentChatId: '',
-	chatsSearchForm: INIT_SEARCH_STATE,
-	newMessageForm: INIT_MESSAGE_STATE,
-	chats: [
-		{
-			id: 'chat_id_1',
-			title: 'title',
-			avatar: '',
-			unread_count: '12',
-			created_by: 'created_by',
-			last_message: {
-				time: 'time',
-				content: 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentc3',
-				user: {
-					id: 'user_id_1',
-					first_name: 'first_name',
-					second_name: 'second_name',
-					display_name: 'display_name',
-					avatar: 'user_avatar',
-					login: 'login',
-					email: 'email',
-					phone: 'phone',
-				},
-			},
-		},
-		{
-			id: 'chat_id_2',
-			title: 'title',
-			avatar: '',
-			unread_count: '2',
-			created_by: 'created_by',
-			last_message: {
-				time: 'time',
-				content: 'content content content content content content content content content content content',
-				user: {
-					id: 'user_id_2',
-					first_name: 'first_name',
-					second_name: 'second_name',
-					display_name: 'display_name',
-					avatar: 'user_avatar',
-					login: 'login',
-					email: 'email',
-					phone: 'phone',
-				},
-			},
-		},
-	],
-	messages: [
-		{
-			id: 'msg_1',
-			title: 'title',
-			avatar: '',
-			unread_count: '12',
-			created_by: 'user_id_1',
-			last_message: {
-				time: '12:45',
-				content: 'contentcon tentcontentco ntentc on tent conten tconte ntcon tentco n tentcon tentcon tentc3',
-				user: {
-					id: 'user_id_1',
-					first_name: 'first_name',
-					second_name: 'second_name',
-					display_name: 'display_name',
-					avatar: 'user_avatar',
-					login: 'login',
-					email: 'email',
-					phone: 'phone',
-				},
-			},
-		},
-		{
-			id: 'msg_2',
-			title: 'title',
-			avatar: '',
-			unread_count: '12',
-			created_by: 'logged_user',
-			last_message: {
-				time: '16:55',
-				content: 'content ont en',
-				user: {
-					id: 'logged_user',
-					first_name: 'Иван',
-					second_name: 'Иванов',
-					display_name: 'Иван',
-					avatar: 'user_avatar',
-					login: 'login',
-					email: 'email',
-					phone: 'phone',
-				},
-			},
-		},
-	],
 };

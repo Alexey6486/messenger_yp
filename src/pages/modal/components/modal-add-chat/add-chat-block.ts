@@ -162,7 +162,10 @@ export class ModalAddChatBlock extends Block {
 							} else {
 								console.log('Add chat form submit: ', this.props?.modalAddChatForm?.fields ?? '');
 								this.props?.onCloseModal?.();
-								this.props?.onSubmit?.(event, this.props?.modalAddChatForm?.fields);
+								this.props?.onSubmit?.(
+									event,
+									this.props?.modalAddChatForm?.fields,
+								);
 							}
 						}
 					},

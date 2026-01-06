@@ -108,7 +108,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		REGISTRATION_FORM: 'registrationForm',
 		PROFILE_USER_DATA_FORM: 'userForm',
 		PROFILE_USER_PSW_FORM: 'passwordForm',
-		MODAL_ADD_USER_FORM: 'modalAddUserForm',
+		MODAL_ADD_USERS_FORM: 'modalAddUsersForm',
 		MODAL_ADD_CHAT_FORM: 'modalAddChatForm',
 		MAIN_CHAT_SEARCH_FORM: 'chatsSearchForm',
 		MAIN_NEW_MESSAGE_FORM: 'newMessageForm',

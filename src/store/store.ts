@@ -7,7 +7,7 @@ import { StoreEvents } from '@/store/types';
 import type {
 	BlockProps,
 	IAddChatModalForm,
-	IAddUserModalForm,
+	IAddUsersModalForm,
 	IFormState,
 	ILoginForm,
 	IMessageForm,
@@ -19,7 +19,7 @@ import type {
 } from '@/types';
 import {
 	INIT_ADD_CHAT_STATE,
-	INIT_ADD_USER_STATE,
+	INIT_ADD_USERS_STATE,
 	INIT_LOGIN_STATE,
 	INIT_MESSAGE_STATE,
 	INIT_PROFILE_USER_DATA_STATE,
@@ -40,13 +40,13 @@ class Store extends EventBus {
 		isDataEdit: false,
 		isPasswordEdit: false,
 		modalError: null,
-		currentChatId: null,
 		chatsSearchForm: cloneDeep(INIT_SEARCH_STATE) as IFormState<ISearchForm>,
 		newMessageForm: cloneDeep(INIT_MESSAGE_STATE) as IFormState<IMessageForm>,
 		chats: null,
 		messages: [],
 		modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm>,
-		modalAddUserForm: cloneDeep(INIT_ADD_USER_STATE) as IFormState<IAddUserModalForm>,
+		modalAddUsersForm: cloneDeep(INIT_ADD_USERS_STATE) as IFormState<IAddUsersModalForm>,
+		currentChatData: null,
 	};
 
 	public getState() {

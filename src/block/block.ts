@@ -6,7 +6,6 @@ import type {
 	BlockProps,
 	IChildren,
 	IFormState,
-	IInputChangeParams,
 	TNullable,
 } from '@/types';
 import { IEbEvents } from '@/types';
@@ -259,7 +258,7 @@ export abstract class Block {
 				return target[p];
 			},
 			set(target: IChildren<Block>, p: string, newValue: Block) {
-				console.log({ target, newValue });
+				console.log('_makeChildrenListProxy set: ', { target, newValue });
 				const oldTarget = { ...target };
 
 				target[p] = newValue;
@@ -293,7 +292,7 @@ export abstract class Block {
 					|| p === 'userForm'
 					|| p === 'chatsSearchForm'
 					|| p === 'newMessageForm'
-					|| p === 'modalAddUserForm'
+					|| p === 'modalAddUsersForm'
 					|| p === 'modalAddChatForm'
 				) {
 					const errors = target[p]?.errors ?? {};
@@ -340,14 +339,6 @@ export abstract class Block {
 		}
 	}
 
-	setAttributes(attr: Record<string, string | boolean>): void {
-		Object.entries(attr).forEach(([key, value]) => {
-			if (this._element) {
-				this._element.setAttribute(key, value as string);
-			}
-		});
-	}
-
 	toggleClassList(className: string, elementId?: string): void {
 		const target = this._element;
 
@@ -368,113 +359,11 @@ export abstract class Block {
 		}
 	}
 
-	removeAttributes(attrName: string): void {
-		if (this._element && attrName) {
-			this._element.removeAttribute(attrName);
-		}
-	}
-
-	show() {
-		const content = this.getContent();
-		if (content && 'style' in content) {
-			content.style.display = 'block';
-		}
-	}
-
-	hide() {
-		const content = this.getContent();
-		if (content && 'style' in content) {
-			content.style.display = 'none';
-		}
-	}
-
-	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
-	 * @param {IChildren<Block>} children
-	 * @param {string[]} idsList
-	 * @param {IChildren<Block>} childrenBlocks
-	 *
-	 * @returns {IChildren<Block>}
-	 */
-	private _getChildrenToUpdate(
-		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
-	): IChildren<Block> {
-		const targetChildren: IChildren<Block> = childrenBlocks || {};
-
-		Object.entries(children).forEach(([id, instance]) => {
-			if (idsList.includes(id)) {
-				targetChildren[id] = instance;
-
-				if (instance.allInstances) {
-					return this._getChildrenToUpdate(instance.allInstances, idsList, targetChildren);
-				}
-			}
-		});
-
-		return targetChildren;
-	}
-
-	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
-	 * к общей компоненте страницы) вызывает обновление пропсов setProps у целевых компонент,
-	 * зависящих/использующих эти данные (childrenIdList).
-	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
-	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
-	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
-	 * @param {string[]} childrenIdList список id компонент, которые используют данные input
-	 * @param {IInputChangeParams} params данные от компоненты input
-	 * @param {string} fieldName имя поля формы
-	 * @param {string} formName имя формы
-	 *
-	 * @returns {void}
-	 */
-	onFormInputChange(
-		params: IInputChangeParams,
-		childrenIdList: string[],
-		fieldName: string,
-		formName: string,
-	): void {
-		const { data } = params;
-
-		const targetChildren = this._getChildrenToUpdate(
-			this.allInstances,
-			childrenIdList,
-		);
-
-		childrenIdList.forEach((childId) => {
-			targetChildren[childId].setProps({
-				input_data: {
-					value: data.value ?? '',
-					error: data.error ?? '',
-				},
-			});
-		});
-
-		this.setProps({
-			[formName]: {
-				fields: { [fieldName]: data.value },
-				errors: { [fieldName]: data.error ?? '' },
-			},
-		} as BlockProps);
-	}
-
-	protected toggleInputsDisable() {
-		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field')) {
-				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-					if (inputId.includes('input')) {
-						inputInstance.setProps({
-							isDisabled: !inputInstance.props.isDisabled,
-						});
-					}
-				});
-			}
-		});
-	}
-
 	createModal<T>(
 		contentId: keyof BlockProps,
 		title: string,
 		contentForms?: Record<string, IFormState<T>>,
-		onSubmit?: (event?: Event, data?: Partial<BlockProps>) => void,
+		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {
 		const modal = new Pages.ModalBlock<T>({
 			contentId,
