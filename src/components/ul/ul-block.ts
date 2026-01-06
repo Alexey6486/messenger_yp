@@ -38,6 +38,13 @@ export class UlBlock extends Block {
 					if (props?.onSetChildrenList) {
 						const blocks = props?.onSetChildrenList(newState);
 						if (blocks) {
+							if (props?.clearChildrenList) {
+								Object.entries(this.childrenList).forEach((entry) => {
+									const [key] = entry;
+									delete this.childrenList[key];
+								});
+							}
+
 							this.setChildrenList(blocks);
 						}
 					} else {

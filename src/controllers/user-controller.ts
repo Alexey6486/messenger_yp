@@ -47,6 +47,17 @@ class UserController {
 			handleRequestError(e, instance);
 		}
 	}
+
+	public async searchUser(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
+		try {
+			const result = await api.search(options);
+			console.log('UserController.searchUser: ', { result });
+			Store.set('searchUsersList', result, 'searchUsersList' as BlockProps);
+		} catch (e: unknown) {
+			console.log('UserController.searchUser Error: ', { e });
+			handleRequestError(e, instance);
+		}
+	}
 }
 
 export default new UserController();

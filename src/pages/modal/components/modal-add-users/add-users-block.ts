@@ -1,5 +1,6 @@
 import { Block } from '@/block';
 import { Store } from '@/store';
+import { UserController } from '@/controllers';
 import {
 	FocusManager,
 	getFocusData,
@@ -8,10 +9,13 @@ import { IDS } from '@/constants';
 import {
 	compile,
 	fieldsValidator,
+	getInputStateSlice,
+	isArray,
 } from '@/utils';
 import type {
 	BlockProps,
 	IAddUsersModalForm,
+	IChatUserResponse,
 	IFormState,
 	IInputChangeParams,
 	TNullable,
@@ -20,6 +24,8 @@ import { E_FORM_FIELDS_NAME } from '@/types';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import { ButtonBlock } from '@/components/button/button-block';
+import { UlBlock } from '@/components/ul/ul-block';
+import { ChatUserBlock } from '@/components/chat-user/chat-user-block';
 import template from './add-users-template';
 import styles from '../styles.module.pcss';
 
@@ -37,6 +43,7 @@ export class ModalAddUsersBlock extends Block {
 			markup: {
 				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${ IDS.MODAL.ADD_USER_FIELD }"></div>`,
 				[IDS.MODAL.ADD_USER_SUBMIT]: `<div id="${ IDS.MODAL.ADD_USER_SUBMIT }"></div>`,
+				[IDS.MODAL.ADD_USER_LIST]: `<div id="${ IDS.MODAL.ADD_USER_LIST }"></div>`,
 			},
 			children: {
 				[IDS.MODAL.ADD_USER_FIELD]: new FieldBlock({
@@ -46,6 +53,9 @@ export class ModalAddUsersBlock extends Block {
 						value: props.modalAddUsersForm?.fields?.login ?? '',
 						error: props.modalAddUsersForm?.errors?.login ?? '',
 					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.modalAddUsersForm, 'login');
+					},
 					label: 'Логин',
 					isRequired: true,
 					children: {
@@ -54,6 +64,13 @@ export class ModalAddUsersBlock extends Block {
 							input_data: {
 								value: props.modalAddUsersForm?.fields?.login ?? '',
 								error: props.modalAddUsersForm?.errors?.login ?? '',
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								const fieldData = getInputStateSlice(data?.modalAddUsersForm, 'login');
+								return {
+									...fieldData,
+									searchUsersList: data?.searchUsersList,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -85,12 +102,55 @@ export class ModalAddUsersBlock extends Block {
 											login: data?.data?.error ?? '',
 										},
 									},
+									'modalAddUsersForm' as BlockProps,
 								);
+
+								if (params.info.event !== 'blur' && data?.data?.value && data.data.value.length > 2) {
+									UserController.searchUser({ data: JSON.stringify({ login: data.data.value }) });
+								} else {
+									Store.set('searchUsersList', null, 'searchUsersList' as BlockProps);
+								}
 							},
 						}),
 					},
 					markup: {
 						[IDS.COMMON.INPUT]: `<div id="${ IDS.MODAL.ADD_USER_INPUT }"></div>`,
+					},
+				}),
+				[IDS.MODAL.ADD_USER_LIST]: new UlBlock({
+					id: IDS.MODAL.ADD_USER_LIST,
+					clearChildrenList: true,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							searchUsersList: data?.searchUsersList,
+						};
+					},
+					onSetChildrenList: (data: Partial<BlockProps>) => {
+						const childrenList: { [key: string]: Block } = {};
+						if (isArray(data?.searchUsersList) && data?.searchUsersList.length) {
+							console.log({ data });
+							data.searchUsersList.forEach((user: IChatUserResponse) => {
+								const { login, id, avatar } = user;
+								childrenList[id] = new ChatUserBlock({
+									id,
+									avatar,
+									name: login,
+									text: login.substring(0, 1).toUpperCase(),
+									isAdd: true,
+									onClick: (event: Event, data) => {
+										event.preventDefault();
+										event.stopPropagation();
+
+										console.log('ModalAddUsersBlock onClick: ', { data });
+										// if (data === IDS.CHAT_USER.ADD) {
+										//
+										// }
+									},
+								});
+							});
+						}
+
+						return childrenList;
 					},
 				}),
 				[IDS.MODAL.ADD_USER_SUBMIT]: new ButtonBlock({
@@ -167,6 +227,6 @@ export class ModalAddUsersBlock extends Block {
 	}
 
 	override render(): string {
-		return compile(template, { ...this.props, class: styles['add-modal-form'] });
+		return compile(template, { ...this.props, styles });
 	}
 }

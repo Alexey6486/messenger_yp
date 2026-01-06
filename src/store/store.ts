@@ -47,6 +47,8 @@ class Store extends EventBus {
 		modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm>,
 		modalAddUsersForm: cloneDeep(INIT_ADD_USERS_STATE) as IFormState<IAddUsersModalForm>,
 		currentChatData: null,
+		searchUsersList: null,
+		addUsersList: null,
 	};
 
 	public getState() {

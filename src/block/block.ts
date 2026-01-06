@@ -266,9 +266,14 @@ export abstract class Block {
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;
 			},
-			deleteProperty() {
-				// throw new Error('No access');
-				return false;
+			deleteProperty(target: IChildren<Block>, p: string) {
+				if (!(p in target)) {
+					throw new Error('Property not found');
+				}
+
+				target[p].eventBus().emit(Block.EVENTS.FLOW_CWU);
+				delete target[p];
+				return true;
 			},
 		});
 	}

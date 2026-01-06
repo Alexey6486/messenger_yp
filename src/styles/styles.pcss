@@ -339,6 +339,7 @@ input {
 		}
 
 		& > .modal-content {
+			position: relative;
 			display: grid;
 			grid-template-rows: 1fr;
 			min-height: 190px;
@@ -366,5 +367,51 @@ input {
 			color: var(--color-er);
 			margin-top: 20px;
 		}
+	}
+}
+
+.chat-user {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	background-color: white;
+	padding: 5px;
+
+	& > div,
+	& > img {
+		margin-right: 10px;
+		width: 30px;
+		height: 30px;
+		border: 1px solid var(--color-gl);
+		border-radius: 50%;
+	}
+
+	& > div {
+		background-color: var(--color-sh);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	& > span {
+		margin-right: 10px;
+		display: flex;
+		flex-grow: 1;
+		cursor: default;
+	}
+
+	& > button {
+		&:not(:last-child) {
+			margin-right: 10px;
+		}
+	}
+
+	&:hover {
+		background-color: var(--color-gl);
+	}
+
+	&:not(:last-child) {
+		border-bottom: 1px solid var(--color-gl);
 	}
 }

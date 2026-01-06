@@ -2,6 +2,7 @@ import type {
 	IAddChatModalForm,
 	IAddUsersModalForm,
 	IChat,
+	IChatUserResponse,
 	IChildren,
 	ICurrentChatData,
 	IErrorPageState,
@@ -38,6 +39,9 @@ export interface BlockProps {
 	isDisabled?: boolean;
 	isDataEdit?: boolean;
 	isPasswordEdit?: boolean;
+	isRemove?: boolean;
+	isAdd?: boolean;
+	clearChildrenList?: boolean;
 
 	id?: string;
 	type?: string;
@@ -67,6 +71,8 @@ export interface BlockProps {
 	error?: TNullable<IErrorPageState>;
 	modalError?: TNullable<IErrorPageState>;
 	currentChatData?: TNullable<ICurrentChatData>;
+	searchUsersList?: TNullable<IChatUserResponse[]>;
+	addUsersList?: TNullable<number[]>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;
@@ -74,7 +80,7 @@ export interface BlockProps {
 	userData?: TNullable<IUserResponse>;
 	userName?: string;
 
-	onClick?: (event: Event) => void;
+	onClick?: (event: Event, data?: unknown) => void;
 	onSubmit?: (event?: Event, data?: unknown) => void;
 	onChangePage?: () => void;
 	onInputChange?: (params: IInputChangeParams) => void;
