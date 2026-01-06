@@ -67,12 +67,13 @@ export interface BlockProps {
 	parentFormId?: string;
 	contentId?: keyof BlockProps;
 	buttonText?: string;
+	storeEvent?: string;
 	page?: TPages;
 	error?: TNullable<IErrorPageState>;
 	modalError?: TNullable<IErrorPageState>;
 	currentChatData?: TNullable<ICurrentChatData>;
 	searchUsersList?: TNullable<IChatUserResponse[]>;
-	addUsersList?: TNullable<number[]>;
+	addUsersList?: TNullable<IChatUserResponse[]>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;

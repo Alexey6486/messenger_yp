@@ -1,7 +1,7 @@
 import { LoginBlock } from './login-block';
 import { connect } from '@/hoc';
-import type { BlockProps } from '@/types';
 import type {
+	BlockProps,
 	IFormState,
 	ILoginForm,
 	TNullable,

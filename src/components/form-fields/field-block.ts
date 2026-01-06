@@ -12,6 +12,7 @@ import template from './field-template';
 
 export class FieldBlock extends Block {
 	constructor(props: BlockProps) {
+		const storeEvent = props?.storeEvent ? props.storeEvent as StoreEvents : StoreEvents.Updated;
 		let state = props?.mapStateToProps?.(Store.getState());
 
 		super({
@@ -19,7 +20,7 @@ export class FieldBlock extends Block {
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 		});
 
-		Store.on(StoreEvents.Updated, () => {
+		Store.on(storeEvent, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
 
 			if (props.mapStateToProps && state && newState) {

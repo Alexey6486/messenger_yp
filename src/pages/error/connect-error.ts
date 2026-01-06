@@ -1,7 +1,7 @@
 import { ErrorBlock } from './error-block';
 import { connect } from '@/hoc';
-import type { BlockProps } from '@/types';
 import type {
+	BlockProps,
 	IErrorPageState,
 	TNullable,
 } from '@/types';

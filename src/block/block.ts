@@ -232,6 +232,13 @@ export abstract class Block {
 		return this.element;
 	}
 
+	clearChildrenList() {
+		Object.entries(this.childrenList).forEach((entry) => {
+			const [key] = entry;
+			delete this.childrenList[key];
+		});
+	}
+
 	setChildrenList(childrenList: IChildren<Block>) {
 		console.log(childrenList);
 		if (!childrenList) {
@@ -242,7 +249,7 @@ export abstract class Block {
 	}
 
 	setProps(nextProps: BlockProps) {
-		console.log(nextProps);
+		console.log('Block setProps: ', nextProps);
 		if (!nextProps) {
 			return;
 		}
@@ -287,7 +294,7 @@ export abstract class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
-				console.log({ target, p, newValue });
+				console.log('Block setProps: ', { target, p, newValue });
 				const oldTarget = { ...target };
 
 				if (

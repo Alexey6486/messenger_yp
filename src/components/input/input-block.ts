@@ -12,6 +12,7 @@ import template from './input-template';
 
 export class InputBlock extends Block {
 	constructor(props: BlockProps) {
+		const storeEvent = props?.storeEvent ? props.storeEvent as StoreEvents : StoreEvents.Updated;
 		let state = props?.mapStateToProps?.(Store.getState());
 
 		super({
@@ -57,7 +58,7 @@ export class InputBlock extends Block {
 			},
 		});
 
-		Store.on(StoreEvents.Updated, () => {
+		Store.on(storeEvent, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
 
 			if (props.mapStateToProps && state && newState) {

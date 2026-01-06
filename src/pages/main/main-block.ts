@@ -204,7 +204,7 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						Store.clearSubs();
+						Store.clearAllSubs();
 						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),

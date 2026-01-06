@@ -9,6 +9,10 @@ import type {
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgCross } from '@/components/icons';
 import template from './modal-template.hbs?raw';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 
 interface IModalBlock<T = unknown> extends Omit<BlockProps, 'contentForms'> {
 	contentForms?: Record<string, IFormState<T>>;
@@ -27,7 +31,12 @@ export class ModalBlock<T> extends Block {
 				[IDS.MODAL.CONTENT]: getModalContentBlock<T>(
 					props?.contentId,
 					props.contentForms,
-					() => this.eventBus().emit(Block.EVENTS.FLOW_CWU),
+					() => {
+						console.log(Store);
+						// TODO clear events that belong to modal
+						Store.clearTargetSubs(StoreEvents.Updated_modal);
+						this.eventBus().emit(Block.EVENTS.FLOW_CWU);
+					},
 					props?.onSubmit,
 				),
 				[IDS.MODAL.CLOSE]: new ButtonRoundBlock({
@@ -37,7 +46,9 @@ export class ModalBlock<T> extends Block {
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
-
+						console.log(Store);
+						// TODO clear events that belong to modal
+						Store.clearTargetSubs(StoreEvents.Updated_modal);
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 					},
 				}),

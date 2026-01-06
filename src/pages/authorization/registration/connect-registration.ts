@@ -1,7 +1,7 @@
 import { RegistrationBlock } from './registration-block';
 import { connect } from '@/hoc';
-import type { BlockProps } from '@/types';
 import type {
+	BlockProps,
 	IFormState,
 	IRegistrationFormUi,
 	TNullable,

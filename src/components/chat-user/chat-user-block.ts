@@ -24,7 +24,7 @@ export class ChatUserBlock extends Block {
 					icon: SvgPlus,
 					onClick: (event: Event) => {
 						event.preventDefault();
-						event.stopPropagation();
+						event.stopImmediatePropagation();
 
 						props?.onClick?.(event, IDS.CHAT_USER.ADD);
 					},
@@ -35,7 +35,7 @@ export class ChatUserBlock extends Block {
 					icon: SvgCross,
 					onClick: (event: Event) => {
 						event.preventDefault();
-						event.stopPropagation();
+						event.stopImmediatePropagation();
 
 						props?.onClick?.(event, IDS.CHAT_USER.REMOVE);
 					},

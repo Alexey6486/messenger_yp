@@ -1,5 +1,8 @@
 import { UserAPI } from '@/api';
-import { Store } from '@/store';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 import { STORAGE_KEY } from '@/constants';
 import type { RequestOptions } from 'http';
 import type { IRequestOptions } from '@/http';
@@ -52,7 +55,13 @@ class UserController {
 		try {
 			const result = await api.search(options);
 			console.log('UserController.searchUser: ', { result });
-			Store.set('searchUsersList', result, 'searchUsersList' as BlockProps);
+			Store.set(
+				'searchUsersList',
+				result,
+				'searchUsersList' as BlockProps,
+				false,
+				StoreEvents.Updated_modal,
+			);
 		} catch (e: unknown) {
 			console.log('UserController.searchUser Error: ', { e });
 			handleRequestError(e, instance);

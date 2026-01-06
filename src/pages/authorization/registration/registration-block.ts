@@ -23,9 +23,7 @@ import type {
 	IRegistrationFormUi,
 	TNullable,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -549,7 +547,7 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						Store.clearSubs();
+						Store.clearAllSubs();
 						Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
 						this?.props?.router?.go?.(PAGES_URL.AUTHORIZATION);
 					},

@@ -17,6 +17,7 @@ interface IUlBlockProps extends BlockProps {
 
 export class UlBlock extends Block {
 	constructor(props: IUlBlockProps) {
+		const storeEvent = props?.storeEvent ? props.storeEvent as StoreEvents : StoreEvents.Updated;
 		let state = props?.mapStateToProps?.(Store.getState());
 
 		super({
@@ -27,7 +28,7 @@ export class UlBlock extends Block {
 			},
 		});
 
-		Store.on(StoreEvents.Updated, () => {
+		Store.on(storeEvent, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
 
 			if (props.mapStateToProps && state && newState) {
@@ -39,10 +40,7 @@ export class UlBlock extends Block {
 						const blocks = props?.onSetChildrenList(newState);
 						if (blocks) {
 							if (props?.clearChildrenList) {
-								Object.entries(this.childrenList).forEach((entry) => {
-									const [key] = entry;
-									delete this.childrenList[key];
-								});
+								this.clearChildrenList();
 							}
 
 							this.setChildrenList(blocks);

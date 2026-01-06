@@ -9,7 +9,10 @@ import {
 	isEqual,
 } from '@/utils';
 
-export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial<BlockProps>) {
+export function connect(
+	mapStateToProps: (state: Partial<BlockProps>) => Partial<BlockProps>,
+	storeEvent = StoreEvents.Updated,
+) {
 	return function (Component: typeof Block) {
 		return class extends Component {
 			constructor(props: BlockProps) {
@@ -20,7 +23,7 @@ export function connect(mapStateToProps: (state: Partial<BlockProps>) => Partial
 					...mapStateToProps(Store.getState()),
 				});
 
-				Store.on(StoreEvents.Updated, (...args) => {
+				Store.on(storeEvent, (...args) => {
 					console.log('ARGS', args);
 					const newState = mapStateToProps(Store.getState());
 					const isEqualCheck = isEqual(state, newState);

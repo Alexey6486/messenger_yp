@@ -27,7 +27,7 @@ class AuthController {
 			Store.set('userData', result, undefined, true);
 
 			if (router) {
-				Store.clearSubs();
+				Store.clearAllSubs();
 				Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
 				router.go(PAGES_URL.MAIN);
 			}
@@ -43,7 +43,7 @@ class AuthController {
 			console.log('AuthController.signup: ', { result });
 
 			if (router) {
-				Store.clearSubs();
+				Store.clearAllSubs();
 				Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
@@ -63,7 +63,7 @@ class AuthController {
 			}
 
 			if (router) {
-				Store.clearSubs();
+				Store.clearAllSubs();
 				router.go(PAGES_URL.AUTHORIZATION);
 			}
 		} catch (e: unknown) {

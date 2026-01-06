@@ -38,7 +38,11 @@ export class EventBus {
 		}
 	}
 
-	clearSubs() {
+	clearAllSubs() {
 		this.listeners = {};
+	}
+
+	clearTargetSubs(storeEvent: string) {
+		delete this.listeners[storeEvent];
 	}
 }
