@@ -8,8 +8,12 @@ import {
 	FocusManager,
 	getFocusData,
 } from '@/focus-manager';
-import { IDS } from '@/constants';
 import {
+	IDS,
+	INIT_ADD_USERS_STATE,
+} from '@/constants';
+import {
+	cloneDeep,
 	compile,
 	getInputStateSlice,
 	isArray,
@@ -114,11 +118,12 @@ export class ModalAddUsersBlock extends Block {
 				}),
 				[IDS.MODAL.ADD_USER_LIST]: new UlBlock({
 					id: IDS.MODAL.ADD_USER_LIST,
-					clearChildrenList: true,
+					clearChildrenListOnStateChange: true,
 					storeEvent: StoreEvents.Updated_modal,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							searchUsersList: data?.searchUsersList,
+							addUsersList: data?.addUsersList,
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
@@ -169,22 +174,27 @@ export class ModalAddUsersBlock extends Block {
 						event.stopPropagation();
 
 						console.log('Add users form submit: ', this.props?.modalAddUsersForm?.fields ?? '');
-						this.props?.onCloseModal?.();
 						this.props?.onSubmit?.(
 							event,
 							{ modalAddUsersForm: props?.modalAddUsersForm },
 						);
+						this.props?.onCloseModal?.();
 					},
 				}),
 			},
 		});
 	}
 
-	// override dispatchComponentWillUnmount() {
-	// 	this.eventBus().emit(Block.EVENTS.FLOW_CWU);
-	// }
+	override componentWillUnmount() {
+		console.log(this);
+		Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, true);
+		Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, true);
+		Store.set('addUsersList', null, 'addUsersList' as BlockProps, true);
+		Store.clearTargetSubs(StoreEvents.Updated_modal);
+	}
 
 	override render(): string {
+		console.log('Render ModalAddUsersBlock', this, Store);
 		return compile(template, { ...this.props, styles });
 	}
 }

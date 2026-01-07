@@ -41,7 +41,7 @@ export interface BlockProps {
 	isPasswordEdit?: boolean;
 	isRemove?: boolean;
 	isAdd?: boolean;
-	clearChildrenList?: boolean;
+	clearChildrenListOnStateChange?: boolean;
 
 	id?: string;
 	type?: string;

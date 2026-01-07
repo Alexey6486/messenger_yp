@@ -6,10 +6,6 @@ import type { BlockProps } from '@/types';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { SvgCross } from '@/components/icons';
 import template from './modal-template.hbs?raw';
-import {
-	Store,
-	StoreEvents,
-} from '@/store';
 
 export class ModalBlock extends Block {
 	constructor(props: BlockProps) {
@@ -24,9 +20,15 @@ export class ModalBlock extends Block {
 				[IDS.MODAL.CONTENT]: getModalContentBlock(
 					props?.contentId,
 					() => {
-						console.log(Store);
-						// TODO clear events that belong to modal
-						Store.clearTargetSubs(StoreEvents.Updated_modal);
+						// if (props?.contentId !== IDS.MODAL.MODAL_ERROR) {
+						// 	// При переходе между станицами очищаеются подписки на события стора, но
+						// 	// при закрытии модального окна, в подписках на стор остаются колбэки, что
+						// 	// приводит к ошибкам при повторном открытии модального окна.
+						// 	// Для этого модальные окна подписываются на другое название события, чтобы
+						// 	// при закрытии можно было очистить только подписки модального окна, при этом
+						// 	// для модального окна ошибки, эта очистка не нужна, т.к. там нет подписок.
+						// 	Store.clearTargetSubs(StoreEvents.Updated_modal);
+						// }
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 					},
 					props?.onSubmit,
@@ -38,9 +40,9 @@ export class ModalBlock extends Block {
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
-						console.log(Store);
-						// TODO clear events that belong to modal
-						Store.clearTargetSubs(StoreEvents.Updated_modal);
+						// if (props?.contentId !== IDS.MODAL.MODAL_ERROR) {
+						// 	Store.clearTargetSubs(StoreEvents.Updated_modal);
+						// }
 						this.eventBus().emit(Block.EVENTS.FLOW_CWU);
 					},
 				}),

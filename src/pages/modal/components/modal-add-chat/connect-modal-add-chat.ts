@@ -6,6 +6,7 @@ import type {
 	IFormState,
 	TNullable,
 } from '@/types';
+import { StoreEvents } from '@/store';
 
 export function mapUserToPropsAddChat(state: Partial<BlockProps>): { modalAddChatForm: TNullable<IFormState<IAddChatModalForm>> | undefined } {
 	return {
@@ -13,5 +14,5 @@ export function mapUserToPropsAddChat(state: Partial<BlockProps>): { modalAddCha
 	};
 }
 
-const connectAddChat = connect(mapUserToPropsAddChat);
+const connectAddChat = connect(mapUserToPropsAddChat, StoreEvents.Updated_modal);
 export const ModalAddChat = connectAddChat(ModalAddChatBlock);

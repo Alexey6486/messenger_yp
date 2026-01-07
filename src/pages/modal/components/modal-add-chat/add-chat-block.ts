@@ -1,11 +1,18 @@
 import { Block } from '@/block';
-import { Store } from '@/store';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 import {
 	FocusManager,
 	getFocusData,
 } from '@/focus-manager';
-import { IDS } from '@/constants';
 import {
+	IDS,
+	INIT_ADD_CHAT_STATE,
+} from '@/constants';
+import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -52,6 +59,7 @@ export class ModalAddChatBlock extends Block {
 					},
 					label: 'Название чата',
 					isRequired: true,
+					storeEvent: StoreEvents.Updated_modal,
 					children: {
 						[IDS.MODAL.ADD_CHAT_INPUT]: new InputBlock({
 							id: IDS.MODAL.ADD_CHAT_INPUT,
@@ -66,6 +74,7 @@ export class ModalAddChatBlock extends Block {
 							name: E_FORM_FIELDS_NAME.title,
 							placeholder: '',
 							type: 'text',
+							storeEvent: StoreEvents.Updated_modal,
 							onInputChange: (params: IInputChangeParams) => {
 								const data = {
 									...params,
@@ -161,17 +170,23 @@ export class ModalAddChatBlock extends Block {
 								);
 							} else {
 								console.log('Add chat form submit: ', this.props?.modalAddChatForm?.fields ?? '');
-								this.props?.onCloseModal?.();
 								this.props?.onSubmit?.(
 									event,
 									this.props?.modalAddChatForm?.fields,
 								);
+								this.props?.onCloseModal?.();
 							}
 						}
 					},
 				}),
 			},
 		});
+	}
+
+	override componentWillUnmount() {
+		console.log(this);
+		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true);
+		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
 	override render(): string {

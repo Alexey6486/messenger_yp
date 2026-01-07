@@ -8,6 +8,7 @@ import type {
 	TNullable,
 } from '@/types';
 import { IEbEvents } from '@/types';
+import { isEmpty } from '@/utils';
 
 export abstract class Block {
 	static EVENTS = {
@@ -140,16 +141,30 @@ export abstract class Block {
 		return true;
 	}
 
+	componentWillUnmount(): void {
+	}
+
 	private _componentWillUnmount() {
+		this.componentWillUnmount();
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
 			this._element = null;
 		}
 
-		if (this.allInstances) {
-			const childrenInstancesList = Object.values(this.allInstances);
+		if (!isEmpty(this.children)) {
+			const childrenInstancesList = Object.values(this.children);
 
+			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
+				childrenInstancesList.forEach(child => {
+					child.dispatchComponentWillUnmount();
+				});
+			}
+		}
+
+		if (!isEmpty(this.childrenList)) {
+			const childrenInstancesList = Object.values(this.childrenList);
+			console.log({ childrenInstancesList });
 			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
 				childrenInstancesList.forEach(child => {
 					child.dispatchComponentWillUnmount();

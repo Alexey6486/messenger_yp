@@ -39,7 +39,7 @@ export class UlBlock extends Block {
 					if (props?.onSetChildrenList) {
 						const blocks = props?.onSetChildrenList(newState);
 						if (blocks) {
-							if (props?.clearChildrenList) {
+							if (props?.clearChildrenListOnStateChange) {
 								this.clearChildrenList();
 							}
 
@@ -53,6 +53,10 @@ export class UlBlock extends Block {
 
 			state = newState;
 		});
+	}
+
+	override componentWillUnmount() {
+		this.clearChildrenList();
 	}
 
 	override render(): string {
