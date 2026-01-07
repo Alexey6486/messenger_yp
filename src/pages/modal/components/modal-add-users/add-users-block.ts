@@ -246,7 +246,7 @@ export class ModalAddUsersBlock extends Block {
 	}
 
 	override componentWillUnmount() {
-		console.log(this);
+		console.log('ModalAddUsersBlock componentWillUnmount: ', this);
 		Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, true);
 		Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, true);
 		Store.set('addUsersList', null, 'addUsersList' as BlockProps, true);

@@ -53,7 +53,7 @@ export class ChatAPI {
 		});
 	}
 
-	public deleteUser(options?: Partial<RequestOptions & IRequestOptions>) {
+	public deleteUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.delete(
 			`${ baseChatApi }users`,
 			{
@@ -64,7 +64,7 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.deleteUser resolve: ', { resolve });
+			console.log('ChatAPI.deleteUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}

@@ -151,7 +151,7 @@ export class MainBlock extends Block {
 										event.preventDefault();
 										event.stopPropagation();
 
-										ChatsController.getChatUsers({ data: JSON.stringify(chat) });
+										ChatsController.getChatUsers(chat, this);
 									},
 								});
 							});

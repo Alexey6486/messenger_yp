@@ -4,6 +4,7 @@ import {
 	ModalAddChat,
 	ModalAddUsers,
 	ModalErrorBlock,
+	ModalRemoveUsers,
 } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
 
@@ -26,6 +27,12 @@ export const getModalContentBlock = (
 		}
 		case IDS.FORMS.MODAL_ADD_CHAT_FORM: {
 			return new ModalAddChat({
+				onCloseModal,
+				onSubmit,
+			});
+		}
+		case IDS.MODAL.MODAL_REMOVE_USERS: {
+			return new ModalRemoveUsers({
 				onCloseModal,
 				onSubmit,
 			});

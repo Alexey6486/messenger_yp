@@ -64,7 +64,9 @@ export abstract class Block {
 					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
+				console.log({ value });
 				value.forEach((instance) => {
+					console.log({ instance });
 					if (instance.props.id) {
 						children_list_part[instance.props.id] = instance;
 						all_instances_part[instance.props.id] = instance;
@@ -387,7 +389,7 @@ export abstract class Block {
 	}
 
 	createModal(
-		contentId: keyof BlockProps,
+		contentId: string,
 		title: string,
 		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {

@@ -1,10 +1,7 @@
 import type { Block } from '@/block';
 import { Store } from '@/store';
 import { ChatAPI } from '@/api';
-import {
-	handleRequestError,
-	isJsonString,
-} from '@/utils';
+import { handleRequestError } from '@/utils';
 import type {
 	BlockProps,
 	IChat,
@@ -38,37 +35,43 @@ class ChatsController {
 		}
 	}
 
-	public async getChatUsers(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
+	public async getChatUsers(chat: IChat, instance?: Block) {
 		try {
-			if (options.data && isJsonString(options.data)) {
-				const chatData: IChat = JSON.parse(options.data as string);
-				if (chatData.id) {
-					const result = await api.getChatUsers(chatData.id) as IChatUserResponse[];
-					console.log('ChatController.getChatUsers result: ', { result });
-					Store.set(
-						'currentChatData',
-						{
-							users: result,
-							info: chatData,
-							owner: result.find((el) => el.id === chatData.created_by),
-						},
-						'currentChatData' as BlockProps,
-					);
-				}
-			}
+			const result = await api.getChatUsers(chat.id) as IChatUserResponse[];
+			console.log('ChatController.getChatUsers result: ', { result });
+			Store.set(
+				'currentChatData',
+				{
+					users: result,
+					info: chat,
+					owner: result.find((el) => el.id === chat.created_by),
+				},
+				'currentChatData' as BlockProps,
+			);
 		} catch (e: unknown) {
 			console.log('ChatController.getChatUsers Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
 
-	public async addUsers(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
+	public async addUsers(users: number[], chat: IChat, instance?: Block) {
 		try {
-			console.log('ChatsController addUsers: ', options);
-			const result = await api.addUsers(options);
-			console.log('ChatController.addUsers result: ', { result });
+			console.log('ChatsController addUsers: ', { users, chat });
+			await api.addUsers({ data: JSON.stringify({ users, chatId: chat.id }) });
+			await this.getChatUsers(chat, instance);
 		} catch (e: unknown) {
 			console.log('ChatController.addUsers Error: ', { e });
+			handleRequestError(e, instance);
+		}
+	}
+
+	public async removeUsers(users: number[], chat: IChat, instance?: Block) {
+		try {
+			console.log('ChatsController removeUsers: ', { users, chat });
+			await api.deleteUsers({ data: JSON.stringify({ users, chatId: chat.id }) });
+			await this.getChatUsers(chat, instance);
+		} catch (e: unknown) {
+			console.log('ChatController.removeUsers Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}

@@ -52,14 +52,13 @@ export class MessagingHeaderBlock extends Block {
 									'modalAddUsersForm',
 									'Добавление пользователей',
 									(event, data) => {
-										console.log('Add users submit: ', { event, data });
-										if (data) {
-											const payload = {
-												users: data,
-												chatId: state?.currentChatData?.info.id,
-											};
-											console.log('Add users submit payload: ', { payload, props, state });
-											ChatsController.addUsers({ data: JSON.stringify(payload) }, this);
+										console.log('Add users submit: ', { data, event, props, state });
+										if (data && state?.currentChatData?.info) {
+											ChatsController.addUsers(
+												data as number[],
+												state.currentChatData.info,
+												this,
+											);
 										}
 									},
 								);
@@ -74,6 +73,21 @@ export class MessagingHeaderBlock extends Block {
 								event.stopPropagation();
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
+
+								this.createModal(
+									'modal-remove-users',
+									'Удаление пользователей',
+									(event, data) => {
+										console.log('Remove users submit: ', { data, event, props, state });
+										if (data && state?.currentChatData?.info) {
+											ChatsController.removeUsers(
+												data as number[],
+												state.currentChatData.info,
+												this,
+											);
+										}
+									},
+								);
 							},
 						}),
 					],

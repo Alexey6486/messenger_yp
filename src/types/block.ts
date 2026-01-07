@@ -65,7 +65,7 @@ export interface BlockProps {
 	author?: string;
 	fieldName?: string;
 	parentFormId?: string;
-	contentId?: keyof BlockProps;
+	contentId?: string;
 	buttonText?: string;
 	storeEvent?: string;
 	page?: TPages;
