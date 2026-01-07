@@ -42,7 +42,7 @@ export class UlBlock extends Block {
 							if (props?.clearChildrenListOnStateChange) {
 								this.clearChildrenList();
 							}
-
+							console.log('State UlBlock blocks: ', { blocks });
 							this.setChildrenList(blocks);
 						}
 					} else {

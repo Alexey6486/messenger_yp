@@ -191,7 +191,8 @@ export abstract class Block {
 
 		if (this.childrenList) {
 			const element = temp.content.getElementById(IDS.COMMON.COMPONENTS_LIST);
-			console.log({ element, t: this });
+			console.log('Block _render childrenList: ', { element, t: this });
+
 			if (element) {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
@@ -254,7 +255,7 @@ export abstract class Block {
 	}
 
 	setChildrenList(childrenList: IChildren<Block>) {
-		console.log(childrenList);
+		console.log('Block setChildrenList: ', childrenList);
 		if (!childrenList) {
 			return;
 		}

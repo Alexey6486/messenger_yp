@@ -47,6 +47,7 @@ export class ModalAddUsersBlock extends Block {
 				[IDS.MODAL.ADD_USER_FIELD]: `<div id="${ IDS.MODAL.ADD_USER_FIELD }"></div>`,
 				[IDS.MODAL.ADD_USER_LIST]: `<div id="${ IDS.MODAL.ADD_USER_LIST }"></div>`,
 				[IDS.MODAL.ADD_USER_SUBMIT]: `<div id="${ IDS.MODAL.ADD_USER_SUBMIT }"></div>`,
+				[IDS.MODAL.NEW_USERS_LIST]: `<div id="${ IDS.MODAL.NEW_USERS_LIST }"></div>`,
 			},
 			children: {
 				[IDS.MODAL.ADD_USER_FIELD]: new FieldBlock({
@@ -105,7 +106,8 @@ export class ModalAddUsersBlock extends Block {
 											'searchUsersList',
 											null,
 											'searchUsersList' as BlockProps,
-											false, StoreEvents.Updated_modal,
+											false,
+											StoreEvents.Updated_modal,
 										);
 									}
 								}
@@ -140,25 +142,81 @@ export class ModalAddUsersBlock extends Block {
 										avatar,
 										name: login,
 										text: login.substring(0, 1).toUpperCase(),
-										isAdd: !props?.addUsersList
-											|| (props.addUsersList && !props.addUsersList.find((el) => el.id === id)),
-										onClick: (event: Event, data) => {
+										isAdd: true,
+										storeEvent: StoreEvents.Updated_modal,
+										// mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+										// 	return {
+										// 		isAdd: !data?.addUsersList
+										// 			|| (data.addUsersList && !data.addUsersList.find((el) => el.id === id)),
+										// 	};
+										// },
+										onClick: (event: Event, actionId) => {
 											event.preventDefault();
 											event.stopImmediatePropagation();
 
-											console.log('ModalAddUsersBlock onClick: ', { data });
-											if (data === IDS.CHAT_USER.ADD) {
+											console.log('ModalAddUsersBlock onClick: ', { actionId, props });
+											if (actionId === IDS.CHAT_USER.ADD) {
 												Store.set(
 													'addUsersList',
-													[user],
+													isArray(data?.addUsersList) ? [...data.addUsersList, user] : [user],
 													'addUsersList' as BlockProps,
 													false,
 													StoreEvents.Updated_modal,
 												);
+												// Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, false, StoreEvents.Updated_modal);
+												// Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
 											}
 										},
 									});
 								}
+							});
+						}
+
+						return childrenList;
+					},
+				}),
+				[IDS.MODAL.NEW_USERS_LIST]: new UlBlock({
+					id: IDS.MODAL.NEW_USERS_LIST,
+					clearChildrenListOnStateChange: true,
+					storeEvent: StoreEvents.Updated_modal,
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return {
+							addUsersList: data?.addUsersList,
+						};
+					},
+					onSetChildrenList: (data: Partial<BlockProps>) => {
+						const childrenList: { [key: string]: Block } = {};
+						if (isArray(data?.addUsersList) && data?.addUsersList.length) {
+							data.addUsersList.forEach((user: IChatUserResponse) => {
+								const { login, id, avatar } = user;
+								childrenList[id] = new ChatUserBlock({
+									id,
+									avatar,
+									name: login,
+									text: login.substring(0, 1).toUpperCase(),
+									isRemove: true,
+									storeEvent: StoreEvents.Updated_modal,
+									// mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+									// 	return {
+									// 		addUsersList: data?.addUsersList,
+									// 	};
+									// },
+									onClick: (event: Event, actionId) => {
+										event.preventDefault();
+										event.stopImmediatePropagation();
+
+										console.log('ModalAddUsersBlock onClick: ', { actionId });
+										if (actionId === IDS.CHAT_USER.REMOVE && data.addUsersList) {
+											Store.set(
+												'addUsersList',
+												data.addUsersList.filter((el) => el.id !== id),
+												'addUsersList' as BlockProps,
+												false,
+												StoreEvents.Updated_modal,
+											);
+										}
+									},
+								});
 							});
 						}
 
@@ -173,10 +231,12 @@ export class ModalAddUsersBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Add users form submit: ', this.props?.modalAddUsersForm?.fields ?? '');
+						console.log('Add users form submit: ', this.props);
 						this.props?.onSubmit?.(
 							event,
-							{ modalAddUsersForm: props?.modalAddUsersForm },
+							isArray(this.props.addUsersList)
+								? this.props.addUsersList.map((el: IChatUserResponse) => el.id)
+								: [],
 						);
 						this.props?.onCloseModal?.();
 					},

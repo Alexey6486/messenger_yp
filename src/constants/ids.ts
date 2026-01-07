@@ -92,6 +92,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		ADD_USER_INPUT: 'modal-add-user-input',
 		ADD_USER_SUBMIT: 'modal-add-user-submit',
 		ADD_USER_LIST: 'modal-add-user-list',
+		NEW_USERS_LIST: 'modal-new-users-list',
 		MODAL_ERROR: 'modalError',
 		MODAL_ERROR_BTN: 'modal-error-btn',
 		ADD_CHAT_FIELD: 'modal-add-chat-field',

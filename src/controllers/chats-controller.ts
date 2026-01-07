@@ -64,6 +64,7 @@ class ChatsController {
 
 	public async addUsers(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
+			console.log('ChatsController addUsers: ', options);
 			const result = await api.addUsers(options);
 			console.log('ChatController.addUsers result: ', { result });
 		} catch (e: unknown) {

@@ -56,8 +56,9 @@ export class MessagingHeaderBlock extends Block {
 										if (data) {
 											const payload = {
 												users: data,
-												chatId: props?.currentChatData?.info.id,
+												chatId: state?.currentChatData?.info.id,
 											};
+											console.log('Add users submit payload: ', { payload, props, state });
 											ChatsController.addUsers({ data: JSON.stringify(payload) }, this);
 										}
 									},
