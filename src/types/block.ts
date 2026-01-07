@@ -108,5 +108,4 @@ export interface BlockProps {
 	modalAddUsersForm?: TNullable<IFormState<IAddUsersModalForm>>;
 	modalAddChatForm?: TNullable<IFormState<IAddChatModalForm>>;
 	modalErrorForm?: TNullable<IFormState<IErrorPageState>>;
-	contentForms?: Record<string, IFormState<unknown>>;
 }

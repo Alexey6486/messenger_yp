@@ -7,11 +7,9 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
-	INIT_ADD_CHAT_STATE,
 	PAGES_URL,
 } from '@/constants';
 import {
-	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -19,9 +17,7 @@ import {
 } from '@/utils';
 import type {
 	BlockProps,
-	IAddChatModalForm,
 	IChat,
-	IFormState,
 	IInputChangeParams,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
@@ -62,7 +58,6 @@ export class MainBlock extends Block {
 						this.createModal(
 							'modalAddChatForm',
 							'Создание чата',
-							{ modalAddChatForm: cloneDeep(INIT_ADD_CHAT_STATE) as IFormState<IAddChatModalForm> },
 							(event, data) => {
 								console.log('Add chat submit: ', { event, data });
 								if (data) {

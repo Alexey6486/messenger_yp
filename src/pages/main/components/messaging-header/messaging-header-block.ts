@@ -7,18 +7,12 @@ import { ChatsController } from '@/controllers';
 import {
 	CLASSES,
 	IDS,
-	INIT_ADD_USERS_STATE,
 } from '@/constants';
 import {
-	cloneDeep,
 	compile,
 	isEqual,
 } from '@/utils';
-import type {
-	BlockProps,
-	IAddUsersModalForm,
-	IFormState,
-} from '@/types';
+import type { BlockProps } from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down-block';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { LinkBlock } from '@/components/link/link-block';
@@ -57,7 +51,6 @@ export class MessagingHeaderBlock extends Block {
 								this.createModal(
 									'modalAddUsersForm',
 									'Добавление пользователей',
-									{ modalAddUsersForm: cloneDeep(INIT_ADD_USERS_STATE) as IFormState<IAddUsersModalForm> },
 									(event, data) => {
 										console.log('Add users submit: ', { event, data });
 										if (data) {
@@ -66,7 +59,6 @@ export class MessagingHeaderBlock extends Block {
 												chatId: props?.currentChatData?.info.id,
 											};
 											ChatsController.addUsers({ data: JSON.stringify(payload) }, this);
-
 										}
 									},
 								);

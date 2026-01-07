@@ -93,10 +93,17 @@ export class ModalAddUsersBlock extends Block {
 									StoreEvents.Updated_modal,
 								);
 
-								if (params.info.event !== 'blur' && params?.data?.value && params.data.value.length > 2) {
-									UserController.searchUser({ data: JSON.stringify({ login: params.data.value }) });
-								} else {
-									Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
+								if (params.info.event !== 'blur') {
+									if (params?.data?.value && params.data.value.length > 2) {
+										UserController.searchUser({ data: JSON.stringify({ login: params.data.value }) });
+									} else {
+										Store.set(
+											'searchUsersList',
+											null,
+											'searchUsersList' as BlockProps,
+											false, StoreEvents.Updated_modal,
+										);
+									}
 								}
 							},
 						}),

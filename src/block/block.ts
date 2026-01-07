@@ -5,7 +5,6 @@ import { IDS } from '@/constants';
 import type {
 	BlockProps,
 	IChildren,
-	IFormState,
 	TNullable,
 } from '@/types';
 import { IEbEvents } from '@/types';
@@ -371,19 +370,17 @@ export abstract class Block {
 		}
 	}
 
-	createModal<T>(
+	createModal(
 		contentId: keyof BlockProps,
 		title: string,
-		contentForms?: Record<string, IFormState<T>>,
 		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {
-		const modal = new Pages.ModalBlock<T>({
+		const modal = new Pages.ModalBlock({
 			contentId,
 			title,
-			contentForms,
 			onSubmit,
 		});
-		console.log('Block createModal: ', { contentId, contentForms, title, modal, t: this });
+		console.log('Block createModal: ', { contentId, title, modal, t: this });
 
 		if (this?.props?.container) {
 			const content = modal.getContent();

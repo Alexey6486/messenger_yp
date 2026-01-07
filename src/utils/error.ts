@@ -1,6 +1,5 @@
 import { isJsonString } from '@/utils';
 import { Store } from '@/store';
-import type { IErrorPageState } from '@/types';
 import type { Block } from '@/block';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
@@ -49,7 +48,7 @@ export function handleRequestError(e: unknown, instance?: Block) {
 
 		if (instance) {
 			Store.set('modalError', { ...error });
-			instance.createModal<IErrorPageState>(
+			instance.createModal(
 				'modalError',
 				'Ошибка',
 			);
