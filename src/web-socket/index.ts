@@ -1,1 +1,1 @@
-export { default as Socket } from './socket';
+export { WebSocketService } from './socket';

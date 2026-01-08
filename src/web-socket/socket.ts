@@ -97,5 +97,3 @@ export class WebSocketService {
 		}
 	}
 }
-
-export default new WebSocketService();

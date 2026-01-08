@@ -1,7 +1,7 @@
 import type { Block } from '@/block';
 import { Store } from '@/store';
 import { ChatAPI } from '@/api';
-import { Socket } from '@/web-socket';
+import { WebSocketService } from '@/web-socket';
 import {
 	handleRequestError,
 	isArray,
@@ -36,11 +36,10 @@ class ChatsController {
 				const chatsTokens: Map<string, string> = new Map();
 				promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
 					console.log('successfulPromises forEach', { el, idx });
-					if (el.status === 'fulfilled') {
+					if (el.status === 'fulfilled' && userId) {
 						chatsTokens.set(el.value.chatId, el.value.token);
-						if (idx === 0 && userId) {
-							Socket.connect(userId, el.value.chatId, el.value.token);
-						}
+						const socket = new WebSocketService();
+						socket.connect(userId, el.value.chatId, el.value.token);
 					}
 				});
 
