@@ -33,6 +33,8 @@ export type {
 	IInputInfo,
 	IAddChatModalForm,
 	ICurrentChatData,
+	IChatToken,
+	IChatsTokens,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';
@@ -43,3 +45,6 @@ export type {
 export {
 	IEbEvents,
 } from './event-bus';
+export type {
+	TChatTokenPromiseResponse,
+} from './api';

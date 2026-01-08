@@ -8,6 +8,7 @@ import {
 import {
 	IDS,
 	PAGES_URL,
+	STORAGE_KEY,
 } from '@/constants';
 import {
 	compile,
@@ -19,6 +20,7 @@ import type {
 	BlockProps,
 	IChat,
 	IInputChangeParams,
+	IUserResponse,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
@@ -209,7 +211,8 @@ export class MainBlock extends Block {
 
 	override componentDidMount() {
 		console.log('ProfileBlock componentDidMount override', this);
-		ChatsController.getChats(this);
+		const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
+		ChatsController.getChats(user.id, this);
 	}
 
 	override render(): string {

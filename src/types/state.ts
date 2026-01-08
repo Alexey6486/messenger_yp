@@ -153,3 +153,12 @@ export interface ICurrentChatData {
 	info: IChat;
 	owner: IChatUserResponse;
 }
+
+export interface IChatToken {
+	chatId: number;
+	token: string;
+}
+
+export interface IChatsTokens {
+	chatsTokens: Map<number, string>;
+}

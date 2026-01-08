@@ -14,6 +14,13 @@ export class ChatAPI {
 		});
 	}
 
+	public getChatToken(id: string): unknown {
+		return chatAPIInstance.post(`${ baseChatApi }token/${ id }`).then(resolve => {
+			console.log('ChatAPI.getChatToken resolve: ', { resolve });
+			return responseHandler(resolve);
+		});
+	}
+
 	public createChat(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.post(
 			`${ baseChatApi }`,

@@ -17,6 +17,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	newMessageForm: TNullable<IFormState<IMessageForm>> | undefined,
 	chats: TNullable<IChat[]> | undefined,
 	messages: TNullable<IChat[]> | undefined,
+	chatsTokens: TNullable<Map<number, string>> | undefined,
 } {
 	return {
 		currentChatData: state?.currentChatData,
@@ -24,6 +25,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 		newMessageForm: state?.newMessageForm,
 		chats: state?.chats,
 		messages: state?.messages,
+		chatsTokens: state?.chatsTokens,
 	};
 }
 
