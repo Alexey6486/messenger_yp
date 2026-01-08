@@ -155,10 +155,10 @@ export interface ICurrentChatData {
 }
 
 export interface IChatToken {
-	chatId: number;
+	chatId: string;
 	token: string;
 }
 
 export interface IChatsTokens {
-	chatsTokens: Map<number, string>;
+	chatsTokens: Map<string, string>;
 }

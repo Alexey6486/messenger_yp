@@ -9,6 +9,7 @@ import {
 import type {
 	BlockProps,
 	IChat,
+	IChatToken,
 	IChatUserResponse,
 	TChatTokenPromiseResponse,
 } from '@/types';
@@ -23,23 +24,23 @@ class ChatsController {
 			const chatsListResult: IChat[] = await api.getChats() as IChat[];
 			console.log('ChatController.getChats result: ', { chatsListResult });
 
-			const promiseList = chatsListResult.map((chat: IChat) => {
+			const promiseList: Promise<IChatToken>[] = chatsListResult.map((chat: IChat) => {
 				return this.getChatToken(chat.id, instance);
-			});
+			}) as Promise<IChatToken>[];
 			console.log('ChatController.getChats promiseList: ', { promiseList });
 
-			const promiseListResult = await Promise.allSettled<TChatTokenPromiseResponse[]>(promiseList);
+			const promiseListResult: PromiseSettledResult<Awaited<Promise<IChatToken>>>[] = await Promise.allSettled(promiseList);
 			console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
 
-			const successfulPromises: PromiseSettledResult<Awaited<TChatTokenPromiseResponse>>[] = promiseListResult.filter(result => result.status === 'fulfilled');
-
-			if (isArray(successfulPromises) && successfulPromises.length) {
-				const chatsTokens: Map<number, string> = new Map();
-				successfulPromises.forEach((el: TChatTokenPromiseResponse, idx) => {
+			if (isArray(promiseListResult) && promiseListResult.length) {
+				const chatsTokens: Map<string, string> = new Map();
+				promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
 					console.log('successfulPromises forEach', { el, idx });
-					chatsTokens.set(el.value.chatId, el.value.token);
-					if (idx === 0 && userId) {
-						Socket.connect(userId, el.value.chatId, el.value.token);
+					if (el.status === 'fulfilled') {
+						chatsTokens.set(el.value.chatId, el.value.token);
+						if (idx === 0 && userId) {
+							Socket.connect(userId, el.value.chatId, el.value.token);
+						}
 					}
 				});
 

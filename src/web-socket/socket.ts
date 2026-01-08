@@ -2,7 +2,7 @@ export class WebSocketService {
 	private socket: WebSocket | null = null;
 	private pingInterval: NodeJS.Timeout | null = null;
 
-	connect(userId: string, chatId: number, token: string) {
+	connect(userId: string, chatId: string, token: string) {
 		console.log('socket connect', { userId, chatId, token });
 		if (!userId || !chatId || !token) return;
 
