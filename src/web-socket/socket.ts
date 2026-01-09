@@ -62,8 +62,9 @@ export class WebSocketService {
 
 	private handleMessage(data: string) {
 		try {
-			const message = JSON.parse(data);
-			console.log('socket handleMessage', { message });
+			console.log('socket handleMessage', { data });
+			// const message = JSON.parse(data);
+
 			// if (Array.isArray(message)) {
 			// store.setState({
 			// 	messages: {
