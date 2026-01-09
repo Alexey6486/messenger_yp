@@ -1,3 +1,4 @@
+import type { WebSocketService } from '@/web-socket';
 import type {
 	IAddChatModalForm,
 	IAddUsersModalForm,
@@ -74,7 +75,7 @@ export interface BlockProps {
 	currentChatData?: TNullable<ICurrentChatData>;
 	searchUsersList?: TNullable<IChatUserResponse[]>;
 	addUsersList?: TNullable<IChatUserResponse[]>;
-	chatsTokens?: TNullable<Map<number, string>>;
+	chatsSockets?: TNullable<Map<number, WebSocketService>>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;

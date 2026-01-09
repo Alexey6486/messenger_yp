@@ -34,7 +34,7 @@ export type {
 	IAddChatModalForm,
 	ICurrentChatData,
 	IChatToken,
-	IChatsTokens,
+	IChatsSockets,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';

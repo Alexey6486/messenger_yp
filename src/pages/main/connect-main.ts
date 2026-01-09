@@ -1,5 +1,6 @@
 import { MainBlock } from './main-block';
 import { connect } from '@/hoc';
+import type { WebSocketService } from '@/web-socket';
 import type {
 	BlockProps,
 	IChat,
@@ -17,7 +18,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	newMessageForm: TNullable<IFormState<IMessageForm>> | undefined,
 	chats: TNullable<IChat[]> | undefined,
 	messages: TNullable<IChat[]> | undefined,
-	chatsTokens: TNullable<Map<number, string>> | undefined,
+	chatsSockets: TNullable<Map<number, WebSocketService>> | undefined,
 } {
 	return {
 		currentChatData: state?.currentChatData,
@@ -25,7 +26,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 		newMessageForm: state?.newMessageForm,
 		chats: state?.chats,
 		messages: state?.messages,
-		chatsTokens: state?.chatsTokens,
+		chatsSockets: state?.chatsSockets,
 	};
 }
 

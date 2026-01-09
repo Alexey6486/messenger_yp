@@ -13,6 +13,7 @@ import type {
 	IChatUserResponse,
 	TChatTokenPromiseResponse,
 } from '@/types';
+import { PROMISE_STATUS } from '@/constants';
 import type { RequestOptions } from 'http';
 import type { IRequestOptions } from '@/http';
 
@@ -33,19 +34,20 @@ class ChatsController {
 			console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
 
 			if (isArray(promiseListResult) && promiseListResult.length) {
-				const chatsTokens: Map<string, string> = new Map();
+				const chatsSockets: Map<string, WebSocketService> = new Map();
 				promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
 					console.log('successfulPromises forEach', { el, idx });
-					if (el.status === 'fulfilled' && userId) {
-						chatsTokens.set(el.value.chatId, el.value.token);
-						const socket = new WebSocketService();
+					if (el.status === PROMISE_STATUS.FULFILLED && userId) {
+
+						const socket: WebSocketService = new WebSocketService();
 						socket.connect(userId, el.value.chatId, el.value.token);
+						chatsSockets.set(el.value.chatId, socket);
 					}
 				});
 
-				console.log('ChatController.getChats chatsTokens: ', { chatsTokens });
+				console.log('ChatController.getChats chatsSockets: ', { chatsSockets });
 				Store.set('chats', chatsListResult, 'chats' as BlockProps);
-				Store.set('chatsTokens', chatsTokens, 'chatsTokens' as BlockProps);
+				Store.set('chatsSockets', chatsSockets, 'chatsSockets' as BlockProps);
 			}
 
 		} catch (e: unknown) {

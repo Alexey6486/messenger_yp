@@ -49,7 +49,7 @@ class Store extends EventBus {
 		currentChatData: null,
 		searchUsersList: null,
 		addUsersList: null,
-		chatsTokens: null,
+		chatsSockets: null,
 	};
 
 	public getState() {
