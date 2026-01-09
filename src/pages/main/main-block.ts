@@ -174,6 +174,7 @@ export class MainBlock extends Block {
 							messages: data.messages,
 							newMessageForm: data.newMessageForm,
 							currentChatData: data.currentChatData,
+							chatsSockets: data.chatsSockets,
 						};
 					},
 					// childrenList: Array.isArray(props?.messages)

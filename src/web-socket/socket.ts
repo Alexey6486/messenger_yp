@@ -21,7 +21,7 @@ export class WebSocketService {
 
 		this.socket.addEventListener('message', (event) => {
 			console.log('socket message', { event });
-			// this.handleMessage(event.data);
+			this.handleMessage(event.data);
 		});
 
 		this.socket.addEventListener('close', (event) => {
@@ -37,6 +37,7 @@ export class WebSocketService {
 	}
 
 	sendMessage(content: string) {
+		console.log('socket sendMessage: ', { content, s: this.socket });
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.send({
 				type: 'message',
@@ -53,38 +54,39 @@ export class WebSocketService {
 	}
 
 	private send(data: unknown) {
+		console.log('socket send: ', { data, s: this.socket });
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.send(JSON.stringify(data));
 		}
 	}
 
-	// private handleMessage(data: string) {
-	// 	try {
-	// 		const message = JSON.parse(data);
-	//
-	// 		if (Array.isArray(message)) {
-	// 			store.setState({
-	// 				messages: {
-	// 					...store.getState().messages,
-	// 					[store.getState().activeChatId!]: message.reverse(),
-	// 				},
-	// 			});
-	// 		} else if (message.type === 'message') {
-	// 			const activeChatId = store.getState().activeChatId;
-	// 			if (activeChatId) {
-	// 				const currentMessages = store.getState().messages[activeChatId] || [];
-	// 				store.setState({
-	// 					messages: {
-	// 						...store.getState().messages,
-	// 						[activeChatId]: [...currentMessages, message],
-	// 					},
-	// 				});
-	// 			}
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Error parsing message:', error);
-	// 	}
-	// }
+	private handleMessage(data: string) {
+		try {
+			const message = JSON.parse(data);
+			console.log('socket handleMessage', { message });
+			// if (Array.isArray(message)) {
+			// store.setState({
+			// 	messages: {
+			// 		...store.getState().messages,
+			// 		[store.getState().activeChatId!]: message.reverse(),
+			// 	},
+			// });
+			// } else if (message.type === 'message') {
+			// const activeChatId = Store.getState().activeChatId;
+			// if (activeChatId) {
+			// const currentMessages = store.getState().messages[activeChatId] || [];
+			// store.setState({
+			// 	messages: {
+			// 		...store.getState().messages,
+			// 		[activeChatId]: [...currentMessages, message],
+			// 	},
+			// });
+			// }
+			// }
+		} catch (error) {
+			console.error('socket handleMessage error:', error);
+		}
+	}
 
 	disconnect() {
 		console.log('socket disconnect');

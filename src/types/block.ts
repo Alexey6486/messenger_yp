@@ -75,7 +75,7 @@ export interface BlockProps {
 	currentChatData?: TNullable<ICurrentChatData>;
 	searchUsersList?: TNullable<IChatUserResponse[]>;
 	addUsersList?: TNullable<IChatUserResponse[]>;
-	chatsSockets?: TNullable<Map<number, WebSocketService>>;
+	chatsSockets?: TNullable<Map<string, WebSocketService>>;
 
 	input_data?: TNullable<IInputState>;
 	messages?: TNullable<IChat[]>;

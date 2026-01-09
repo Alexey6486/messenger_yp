@@ -18,7 +18,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	newMessageForm: TNullable<IFormState<IMessageForm>> | undefined,
 	chats: TNullable<IChat[]> | undefined,
 	messages: TNullable<IChat[]> | undefined,
-	chatsSockets: TNullable<Map<number, WebSocketService>> | undefined,
+	chatsSockets: TNullable<Map<string, WebSocketService>> | undefined,
 } {
 	return {
 		currentChatData: state?.currentChatData,

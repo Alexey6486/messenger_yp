@@ -1,5 +1,8 @@
 import { Block } from '@/block';
-import { Store } from '@/store';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 import {
 	FocusManager,
 	getFocusData,
@@ -12,6 +15,8 @@ import {
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
+	isArray,
+	isEqual,
 } from '@/utils';
 import type {
 	BlockProps,
@@ -32,8 +37,11 @@ import template from './messaging-footer-template';
 
 export class MessagingFooterBlock extends Block {
 	constructor(props: BlockProps) {
+		let state = props?.mapStateToProps?.(Store.getState());
+
 		super({
 			...props,
+			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			markup: {
 				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_DD_FOOTER }"></div>`,
 				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${ IDS.MAIN.SEND_MESSAGE_BTN }"></div>`,
@@ -91,7 +99,18 @@ export class MessagingFooterBlock extends Block {
 							typeof this.props?.newMessageForm?.fields?.message === 'string'
 							&& this.props?.newMessageForm?.fields?.message.trim().length
 						) {
-							console.log('New message submit', this.props?.newMessageForm?.fields ?? '');
+							console.log(
+								'New message submit',
+								{
+									message: this.props?.newMessageForm?.fields,
+									socket: this.props?.chatsSockets?.get?.(this.props?.currentChatData?.info?.id ?? ''),
+								},
+							);
+							const socket = this.props?.chatsSockets?.get?.(this.props?.currentChatData?.info?.id ?? '');
+							console.log('MessagingFooterBlock socket', { socket });
+							if (socket) {
+								socket.sendMessage(this.props?.newMessageForm?.fields.message ?? '');
+							}
 						}
 					},
 				}),
@@ -140,6 +159,35 @@ export class MessagingFooterBlock extends Block {
 					},
 				}),
 			},
+		});
+
+		Store.on(StoreEvents.Updated, (...args) => {
+			const newState = props?.mapStateToProps?.(Store.getState());
+
+			if (props.mapStateToProps && state && newState) {
+				const isEqualCheck = isEqual(state, newState);
+				console.log('State MessagingFooterBlock: ', { isEqualCheck, state, newState, t: this });
+
+				if (!isEqualCheck) {
+					if (isArray(args) && (args as BlockProps[]).length) {
+						const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
+						console.log('Store Updated MessagingFooterBlock check: ', {
+							stateKey,
+							c: stateKey in newState,
+						});
+						if (stateKey && stateKey in newState) {
+							const targetField = newState[stateKey];
+							this.setProps({ [stateKey]: targetField });
+						} else {
+							this.setProps({ ...newState });
+						}
+					} else {
+						this.setProps({ ...newState });
+					}
+				}
+			}
+
+			state = newState;
 		});
 	}
 

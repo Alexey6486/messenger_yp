@@ -47,9 +47,13 @@ export class MessagingBlock extends Block {
 					id: IDS.MAIN.MESSAGING_FOOTER,
 					styles,
 					newMessageForm: props.newMessageForm,
+					chatsSockets: props.chatsSockets,
+					currentChatData: props.currentChatData,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							newMessageForm: data.newMessageForm,
+							currentChatData: data.currentChatData,
+							chatsSockets: data.chatsSockets,
 						};
 					},
 				}),
