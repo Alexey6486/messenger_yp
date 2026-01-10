@@ -217,12 +217,12 @@
 			display: flex;
 			justify-content: space-between;
 
-			& > .user {
+			& > .chat-info {
 				display: flex;
 				align-items: center;
 				cursor: pointer;
 
-				& > .user-icon {
+				& > div {
 					margin-right: 15px;
 					width: 40px;
 					min-width: 40px;
@@ -232,12 +232,12 @@
 					background-color: var(--color-g);
 				}
 
-				& > .user-name {
+				& > span {
 					transition: color var(--trns);
 					text-decoration: none;
 				}
 
-				&:hover > .user-name {
+				&:hover > span {
 					color: var(--color-hv);
 				}
 			}

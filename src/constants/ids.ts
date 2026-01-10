@@ -18,6 +18,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		HEADER_PROFILE_LINK: 'messaging-header-profile-link',
 		NEW_MESSAGE_INPUT: 'main-new-message-input',
 		ADD_CHAT: 'main-add-chat',
+		CHAT_INFO: 'messaging-chat-info',
 	},
 	PROFILE: {
 		FORM: 'profile-form',
@@ -100,6 +101,8 @@ export const IDS: Record<string, Record<string, string>> = {
 		ADD_CHAT_FIELD: 'modal-add-chat-field',
 		ADD_CHAT_INPUT: 'modal-add-chat-input',
 		ADD_CHAT_SUBMIT: 'modal-add-chat-submit',
+		CHAT_INFO: 'modal-chat-info',
+		CHAT_INFO_USERS: 'modal-chat-info-users',
 	},
 	COMMON: {
 		INPUT: 'input',

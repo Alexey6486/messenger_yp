@@ -15,7 +15,7 @@ import {
 import type { BlockProps } from '@/types';
 import { DropDownBlock } from '@/components/drop-down/drop-down-block';
 import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
-import { LinkBlock } from '@/components/link/link-block';
+import { ChatInfoBlock } from '@/pages/main/components/chat-info/chat-info-block';
 import {
 	SvgCross,
 	SvgPlus,
@@ -31,7 +31,7 @@ export class MessagingHeaderBlock extends Block {
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			markup: {
 				[IDS.MAIN.MESSAGING_DD_HEADER]: `<div id="${ IDS.MAIN.MESSAGING_DD_HEADER }"></div>`,
-				[IDS.MAIN.HEADER_PROFILE_LINK]: `<div id="${ IDS.MAIN.HEADER_PROFILE_LINK }"></div>`,
+				[IDS.MAIN.CHAT_INFO]: `<div id="${ IDS.MAIN.CHAT_INFO }"></div>`,
 			},
 			children: {
 				[IDS.MAIN.MESSAGING_DD_HEADER]: new DropDownBlock({
@@ -92,23 +92,25 @@ export class MessagingHeaderBlock extends Block {
 						}),
 					],
 				}),
-				[IDS.MAIN.HEADER_PROFILE_LINK]: new LinkBlock({
-					id: IDS.MAIN.HEADER_PROFILE_LINK,
-					class: props?.styles?.['user-name'] ?? '',
-					href: '#',
-					ariaLabel: 'profile link',
-					tooltip: 'Информация о группе',
-					target: '_self',
-					text: props?.currentChatData?.owner.display_name ?? '',
+				[IDS.MAIN.CHAT_INFO]: new ChatInfoBlock({
+					id: IDS.MAIN.CHAT_INFO,
+					styles: props?.styles,
+					text: props?.currentChatData?.info.title ?? '',
+					avatar: props?.currentChatData?.info.title ?? '',
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							text: data?.currentChatData?.info.title ?? '',
+							avatar: data?.currentChatData?.info.avatar ?? '',
 						};
 					},
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();
 
+						this.createModal(
+							IDS.MODAL.CHAT_INFO as string,
+							'Информация о чате',
+						);
 					},
 				}),
 			},

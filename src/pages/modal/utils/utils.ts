@@ -5,6 +5,7 @@ import {
 	ModalAddUsers,
 	ModalErrorBlock,
 	ModalRemoveUsers,
+	ModalChatInfo,
 } from '@/pages/modal/components';
 import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
 
@@ -35,6 +36,11 @@ export const getModalContentBlock = (
 			return new ModalRemoveUsers({
 				onCloseModal,
 				onSubmit,
+			});
+		}
+		case IDS.MODAL.CHAT_INFO: {
+			return new ModalChatInfo({
+				onCloseModal,
 			});
 		}
 		default: {
