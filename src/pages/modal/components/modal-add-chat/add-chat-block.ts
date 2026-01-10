@@ -191,7 +191,7 @@ export class ModalAddChatBlock extends Block {
 
 	override componentWillUnmount() {
 		console.log(this);
-		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true, StoreEvents.Updated_modal);
+		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true);
 		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
