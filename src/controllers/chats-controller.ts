@@ -24,36 +24,45 @@ import type { IRequestOptions } from '@/http';
 const api = new ChatAPI();
 
 class ChatsController {
-	public async getChats(userId?: string, instance?: Block) {
+	public async getChats(userId?: string, instance?: Block, options?: Partial<RequestOptions & IRequestOptions>) {
 		try {
-			const chatsListResult: IChat[] = await api.getChats() as IChat[];
+			const chatsListResult: IChat[] = await api.getChats(options) as IChat[];
 			console.log('ChatController.getChats result: ', { chatsListResult });
 
-			const promiseList: Promise<IChatToken>[] = chatsListResult.map((chat: IChat) => {
-				return this.getChatToken(chat.id, instance);
-			}) as Promise<IChatToken>[];
-			console.log('ChatController.getChats promiseList: ', { promiseList });
-
-			const promiseListResult: PromiseSettledResult<Awaited<Promise<IChatToken>>>[] = await Promise.allSettled(promiseList);
-			console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
-
-			if (isArray(promiseListResult) && promiseListResult.length) {
-				const chatsSockets: Map<string, WebSocketService> = new Map();
-				promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
-					console.log('successfulPromises forEach', { el, idx });
-					if (el.status === PROMISE_STATUS.FULFILLED && userId) {
-
-						const socket: WebSocketService = new WebSocketService();
-						socket.connect(userId, el.value.chatId, el.value.token);
-						chatsSockets.set(el.value.chatId, socket);
-					}
-				});
-
-				console.log('ChatController.getChats chatsSockets: ', { chatsSockets });
-				Store.set('chats', chatsListResult, 'chats' as BlockProps);
-				Store.set('chatsSockets', chatsSockets, 'chatsSockets' as BlockProps);
+			const sockets = Store.getState().chatsSockets;
+			if (sockets && sockets.size > 0) {
+				sockets.forEach((s) => s.disconnect());
 			}
 
+			if (chatsListResult.length) {
+				const promiseList: Promise<IChatToken>[] = chatsListResult.map((chat: IChat) => {
+					return this.getChatToken(chat.id, instance);
+				}) as Promise<IChatToken>[];
+				console.log('ChatController.getChats promiseList: ', { promiseList });
+
+				const promiseListResult: PromiseSettledResult<Awaited<Promise<IChatToken>>>[] = await Promise.allSettled(promiseList);
+				console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
+
+				if (isArray(promiseListResult) && promiseListResult.length) {
+					const chatsSockets: Map<string, WebSocketService> = new Map();
+					promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
+						console.log('successfulPromises forEach', { el, idx });
+						if (el.status === PROMISE_STATUS.FULFILLED && userId) {
+
+							const socket: WebSocketService = new WebSocketService();
+							socket.connect(userId, el.value.chatId, el.value.token);
+							chatsSockets.set(el.value.chatId, socket);
+						}
+					});
+
+					console.log('ChatController.getChats chatsSockets: ', { chatsSockets });
+					Store.set('chats', chatsListResult, 'chats' as BlockProps);
+					Store.set('chatsSockets', chatsSockets, 'chatsSockets' as BlockProps);
+				}
+			} else {
+				Store.set('chats', null, 'chats' as BlockProps);
+				Store.set('chatsSockets', null, 'chatsSockets' as BlockProps);
+			}
 		} catch (e: unknown) {
 			console.log('ChatController.getChats Error: ', { e });
 			handleRequestError(e, instance);

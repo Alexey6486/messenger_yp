@@ -96,7 +96,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		NEW_USERS_LIST: 'modal-new-users-list',
 		MODAL_REMOVE_USERS: 'modal-remove-users',
 		CHAT_USERS_LIST: 'modal-chat-users-list',
-		MODAL_ERROR: 'modalError',
+		MODAL_ERROR: 'modal-error',
 		MODAL_ERROR_BTN: 'modal-error-btn',
 		ADD_CHAT_FIELD: 'modal-add-chat-field',
 		ADD_CHAT_INPUT: 'modal-add-chat-input',

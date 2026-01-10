@@ -5,6 +5,9 @@ import type { RequestOptions } from 'http';
 
 function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
+	if (typeof data === 'string') {
+		data = JSON.parse(data);
+	}
 
 	if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
 		const dataList = Object.entries(data);

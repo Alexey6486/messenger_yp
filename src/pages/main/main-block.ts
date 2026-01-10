@@ -86,7 +86,11 @@ export class MainBlock extends Block {
 								error: props?.chatsSearchForm?.errors?.login ?? '',
 							},
 							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-								return getInputStateSlice(data?.chatsSearchForm, 'login');
+								return {
+									...getInputStateSlice(data?.chatsSearchForm, 'login'),
+									chats: data?.chats,
+									chatsSockets: data?.chatsSockets,
+								};
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
@@ -120,12 +124,24 @@ export class MainBlock extends Block {
 									},
 									'chatsSearchForm' as BlockProps,
 								);
+
+								if (params.info.event !== 'blur') {
+									const stateUser = Store.getState().userData;
+									if (stateUser && stateUser.id) {
+										ChatsController.getChats(
+											stateUser.id,
+											this,
+											{ data: JSON.stringify({ title: params?.data?.value ?? '' }) },
+										);
+									}
+								}
 							},
 						}),
 					],
 				}),
 				[IDS.MAIN.CHAT_LIST]: new UlBlock({
 					id: IDS.MAIN.CHAT_LIST,
+					clearChildrenListOnStateChange: true,
 					class: styles.chats,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
@@ -215,8 +231,15 @@ export class MainBlock extends Block {
 
 	override componentDidMount() {
 		console.log('ProfileBlock componentDidMount override', this);
-		const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
-		ChatsController.getChats(user.id, this);
+
+		const stateUser = Store.getState().userData;
+		if (!stateUser || (stateUser && !stateUser.id)) {
+			const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
+			ChatsController.getChats(user.id, this);
+			Store.set('userData', user, 'userData' as BlockProps);
+		} else {
+			ChatsController.getChats(stateUser.id, this);
+		}
 	}
 
 	override componentWillUnmount() {

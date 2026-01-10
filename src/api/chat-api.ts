@@ -4,18 +4,21 @@ import type { RequestOptions } from 'http';
 import { responseHandler } from '@/utils';
 
 const chatAPIInstance = new HTTPTransport();
-const baseChatApi = '/api/v2/chats/';
+const baseChatApi = '/api/v2/chats';
 
 export class ChatAPI {
-	public getChats() {
-		return chatAPIInstance.get(`${ baseChatApi }`).then(resolve => {
+	public getChats(options?: Partial<RequestOptions & IRequestOptions>) {
+		return chatAPIInstance.get(
+			`${ baseChatApi }`,
+			{ ...options },
+		).then(resolve => {
 			console.log('ChatAPI.getChats resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public getChatToken(id: string): unknown {
-		return chatAPIInstance.post(`${ baseChatApi }token/${ id }`).then(resolve => {
+		return chatAPIInstance.post(`${ baseChatApi }/token/${ id }`).then(resolve => {
 			console.log('ChatAPI.getChatToken resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
@@ -39,7 +42,7 @@ export class ChatAPI {
 
 	public addUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.put(
-			`${ baseChatApi }users`,
+			`${ baseChatApi }/users`,
 			{
 				...options,
 				headers: {
@@ -54,7 +57,7 @@ export class ChatAPI {
 	}
 
 	public getChatUsers(chatId: string) {
-		return chatAPIInstance.get(`${ baseChatApi }${ chatId }/users`).then(resolve => {
+		return chatAPIInstance.get(`${ baseChatApi }/${ chatId }/users`).then(resolve => {
 			console.log('ChatAPI.getChatUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
@@ -62,7 +65,7 @@ export class ChatAPI {
 
 	public deleteUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.delete(
-			`${ baseChatApi }users`,
+			`${ baseChatApi }/users`,
 			{
 				...options,
 				headers: {
@@ -80,7 +83,7 @@ export class ChatAPI {
 		console.log('ChatAPI.avatar options: ', { options });
 
 		return chatAPIInstance.put(
-			`${ baseChatApi }avatar`,
+			`${ baseChatApi }/avatar`,
 			{
 				...options,
 				credentials: 'include',
