@@ -21,10 +21,7 @@ class AuthController {
 	public async signin(options: Partial<RequestOptions & IRequestOptions>, router?: Router, instance?: Block) {
 		try {
 			await api.signin(options);
-
-			const result = await api.user();
-			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
-			Store.set('userData', result, undefined, true);
+			await this.getMe();
 
 			if (router) {
 				Store.clearAllSubs();
@@ -39,13 +36,14 @@ class AuthController {
 
 	public async signup(options: Partial<RequestOptions & IRequestOptions>, router?: Router, instance?: Block) {
 		try {
-			const result = await api.signup(options);
-			console.log('AuthController.signup: ', { result });
+			console.log('AuthController.signup: ', { options });
+			await api.signup(options);
+			await this.getMe(instance);
 
 			if (router) {
 				Store.clearAllSubs();
 				Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
-				router.go(PAGES_URL.AUTHORIZATION);
+				router.go(PAGES_URL.MAIN);
 			}
 		} catch (e: unknown) {
 			console.log('AuthController.signup Error: ', { e });
@@ -71,6 +69,18 @@ class AuthController {
 			if (sessionStorage.getItem(STORAGE_KEY)) {
 				sessionStorage.removeItem(STORAGE_KEY);
 			}
+			handleRequestError(e, instance);
+		}
+	}
+
+	public async getMe(instance?: Block) {
+		try {
+			const result = await api.user();
+			console.log('AuthController.getMe result: ', { result });
+			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			Store.set('userData', result, undefined, true);
+		} catch (e: unknown) {
+			console.log('AuthController.getMe Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}

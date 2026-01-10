@@ -53,7 +53,7 @@ export class AuthAPI {
 			},
 		).then(resolve => {
 			console.log('AuthAPI.signup resolve: ', { options, resolve });
-			responseHandler(resolve);
+			return responseHandler(resolve);
 		});
 	}
 }
