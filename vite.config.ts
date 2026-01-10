@@ -51,6 +51,27 @@ export default defineConfig({
 				},
 				rewrite: (path) => path.replace(/^\/api/, ''),
 			},
+			'/ws': {
+				target: 'wss://ya-praktikum.tech/ws',
+				ws: true,
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/ws/, ''),
+				// secure: true,
+				// configure: (proxy, options) => {
+				// 	console.log('WS Proxy:', { proxy, options });
+				// 	proxy.on('proxyReqWs', (proxyReq, req, socket, options, head) => {
+				// 		console.log('WS proxyReqWs:', { req, proxyReq, options, socket, head });
+				// 		const setCookie = req.headers['set-cookie'];
+				// 		if (setCookie) {
+				// 			req.headers['set-cookie'] = setCookie.map(cookie =>
+				// 				cookie
+				// 					.replace(/Domain=([^;,]+)/i, 'Domain=localhost')
+				// 					.replace(/SameSite=None/i, 'SameSite=Lax'), // Для localhost
+				// 			);
+				// 		}
+				// 	});
+				// },
+			},
 		},
 	},
 	base: process.env.VITE_BASE || '/',

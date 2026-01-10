@@ -6,7 +6,13 @@ export class WebSocketService {
 		console.log('socket connect', { userId, chatId, token });
 		if (!userId || !chatId || !token) return;
 
-		this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
+		// this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
+		const protocol = window.location.protocol;
+		const host = window.location.host;
+		const setProtocol = protocol === 'https' ? 'wss' : 'ws';
+		const wsUrl = `${ setProtocol }://${ host }/ws/chats/${ userId }/${ chatId }/${ token }`;
+		console.log('!!!', { protocol, host, setProtocol, wsUrl, location: window.location });
+		this.socket = new WebSocket(wsUrl) as WebSocket | null;
 
 		if (!this.socket) return;
 
