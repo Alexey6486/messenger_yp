@@ -251,7 +251,7 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						AuthController.logout(this.props.router, this);
+						AuthController.logout(undefined, this);
 					},
 				}),
 			},
