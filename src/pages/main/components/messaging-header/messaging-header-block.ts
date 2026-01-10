@@ -49,7 +49,7 @@ export class MessagingHeaderBlock extends Block {
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
 
 								this.createModal(
-									'modalAddUsersForm',
+									IDS.FORMS.MODAL_ADD_USERS_FORM,
 									'Добавление пользователей',
 									(event, data) => {
 										console.log('Add users submit: ', { data, event, props, state });
@@ -75,7 +75,7 @@ export class MessagingHeaderBlock extends Block {
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
 
 								this.createModal(
-									'modal-remove-users',
+									IDS.MODAL.MODAL_REMOVE_USERS,
 									'Удаление пользователей',
 									(event, data) => {
 										console.log('Remove users submit: ', { data, event, props, state });
@@ -108,7 +108,7 @@ export class MessagingHeaderBlock extends Block {
 						event.stopPropagation();
 
 						this.createModal(
-							IDS.MODAL.CHAT_INFO as string,
+							IDS.MODAL.CHAT_INFO,
 							'Информация о чате',
 						);
 					},

@@ -61,7 +61,7 @@ export class MainBlock extends Block {
 						event.stopPropagation();
 
 						this.createModal(
-							'modalAddChatForm',
+							IDS.FORMS.MODAL_ADD_CHAT_FORM,
 							'Создание чата',
 							(event, data) => {
 								console.log('Add chat submit: ', { event, data });
@@ -206,13 +206,6 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						Store.set('chats', null, 'chats' as BlockProps, true);
-						Store.set('chatsSockets', null, 'chatsSockets' as BlockProps, true);
-						Store.set('messages', null, 'messages' as BlockProps, true);
-						Store.set('newMessageForm', cloneDeep(INIT_MESSAGE_STATE), 'newMessageForm' as BlockProps, true);
-						Store.set('currentChatData', null, 'currentChatData' as BlockProps, true);
-						Store.set('chatsSearchForm', cloneDeep(INIT_SEARCH_STATE), 'chatsSearchForm' as BlockProps, true);
-						Store.clearAllSubs();
 						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},
 				}),
@@ -224,6 +217,16 @@ export class MainBlock extends Block {
 		console.log('ProfileBlock componentDidMount override', this);
 		const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
 		ChatsController.getChats(user.id, this);
+	}
+
+	override componentWillUnmount() {
+		Store.set('chats', null, 'chats' as BlockProps, true);
+		Store.set('chatsSockets', null, 'chatsSockets' as BlockProps, true);
+		Store.set('messages', null, 'messages' as BlockProps, true);
+		Store.set('newMessageForm', cloneDeep(INIT_MESSAGE_STATE), 'newMessageForm' as BlockProps, true);
+		Store.set('currentChatData', null, 'currentChatData' as BlockProps, true);
+		Store.set('chatsSearchForm', cloneDeep(INIT_SEARCH_STATE), 'chatsSearchForm' as BlockProps, true);
+		Store.clearAllSubs();
 	}
 
 	override render(): string {

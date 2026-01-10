@@ -1,6 +1,7 @@
 import { isJsonString } from '@/utils';
 import { Store } from '@/store';
 import type { Block } from '@/block';
+import { IDS } from '@/constants';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (
@@ -49,7 +50,7 @@ export function handleRequestError(e: unknown, instance?: Block) {
 		if (instance) {
 			Store.set('modalError', { ...error });
 			instance.createModal(
-				'modalError',
+				IDS.MODAL.MODAL_ERROR,
 				'Ошибка',
 			);
 		}
