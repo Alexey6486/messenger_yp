@@ -1,5 +1,8 @@
 import type { Block } from '@/block';
-import { Store } from '@/store';
+import {
+	Store,
+	StoreEvents,
+} from '@/store';
 import { ChatAPI } from '@/api';
 import { WebSocketService } from '@/web-socket';
 import {
@@ -116,6 +119,35 @@ class ChatsController {
 			await this.getChatUsers(chat, instance);
 		} catch (e: unknown) {
 			console.log('ChatController.removeUsers Error: ', { e });
+			handleRequestError(e, instance);
+		}
+	}
+
+	public async changeAvatar(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
+		try {
+			const result: IChat = await api.avatar(options) as IChat;
+			console.log('ChatController.changeAvatar: ', { result });
+			const chats = Store.getState().chats;
+			Store.set('currentChatData.info', result, 'currentChatData' as BlockProps, false, StoreEvents.Updated_modal);
+			Store.set('currentChatData.info', result, 'currentChatData' as BlockProps);
+			if (chats) {
+				Store.set(
+					'chats',
+					chats.map((el) => {
+						if (el.id === result.id) {
+							return {
+								...el,
+								avatar: result.avatar,
+							};
+						}
+						return el;
+					}),
+					'chats' as BlockProps,
+				);
+			}
+
+		} catch (e: unknown) {
+			console.log('ChatController.changeAvatar Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}

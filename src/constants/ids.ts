@@ -103,6 +103,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		ADD_CHAT_SUBMIT: 'modal-add-chat-submit',
 		CHAT_INFO: 'modal-chat-info',
 		CHAT_INFO_USERS: 'modal-chat-info-users',
+		CHAT_AVATAR: 'modal-chat-avatar',
 	},
 	COMMON: {
 		INPUT: 'input',

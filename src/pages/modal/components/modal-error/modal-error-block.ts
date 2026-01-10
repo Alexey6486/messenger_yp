@@ -17,7 +17,7 @@ export class ModalErrorBlock extends Block {
 			class: styles['modal-error'],
 			id: IDS.MODAL.CONTENT,
 			markup: {
-				[IDS.MODAL.MODAL_ERROR_BTN]: `<div id="${IDS.MODAL.MODAL_ERROR_BTN}"></div>`,
+				[IDS.MODAL.MODAL_ERROR_BTN]: `<div id="${ IDS.MODAL.MODAL_ERROR_BTN }"></div>`,
 			},
 			children: {
 				[IDS.MODAL.MODAL_ERROR_BTN]: new ButtonBlock({
@@ -29,10 +29,9 @@ export class ModalErrorBlock extends Block {
 						event.stopPropagation();
 
 						this.props?.onCloseModal?.();
-						// Store.set('modalError', null);
 					},
 				}),
-			}
+			},
 		});
 	}
 

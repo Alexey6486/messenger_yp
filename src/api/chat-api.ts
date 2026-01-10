@@ -75,4 +75,19 @@ export class ChatAPI {
 			return responseHandler(resolve);
 		});
 	}
+
+	public avatar(options?: Partial<RequestOptions & IRequestOptions>) {
+		console.log('ChatAPI.avatar options: ', { options });
+
+		return chatAPIInstance.put(
+			`${ baseChatApi }avatar`,
+			{
+				...options,
+				credentials: 'include',
+			},
+		).then(resolve => {
+			console.log('ChatAPI.avatar resolve: ', { resolve });
+			return responseHandler(resolve);
+		});
+	}
 }
