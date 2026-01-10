@@ -5,7 +5,7 @@ export default `
 
 <div>{{currentChatData.info.title}}</div>
 
-<div class="{{styles.modal-ul-list}}" id="{{id}}">
+<div class="{{styles.modal-ul-list}}">
 {{{ markup.modal-chat-info-users }}}
 </div>
 
