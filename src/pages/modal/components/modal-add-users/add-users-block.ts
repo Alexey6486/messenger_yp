@@ -16,6 +16,7 @@ import {
 	cloneDeep,
 	compile,
 	getInputStateSlice,
+	hasTargetParent,
 	isArray,
 } from '@/utils';
 import type {
@@ -122,6 +123,7 @@ export class ModalAddUsersBlock extends Block {
 					id: IDS.MODAL.ADD_USER_LIST,
 					clearChildrenListOnStateChange: true,
 					storeEvent: StoreEvents.Updated_modal,
+					dataset: IDS.MODAL.ADD_USER_LIST,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							searchUsersList: data?.searchUsersList,
@@ -144,12 +146,6 @@ export class ModalAddUsersBlock extends Block {
 										text: login.substring(0, 1).toUpperCase(),
 										isAdd: true,
 										storeEvent: StoreEvents.Updated_modal,
-										// mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-										// 	return {
-										// 		isAdd: !data?.addUsersList
-										// 			|| (data.addUsersList && !data.addUsersList.find((el) => el.id === id)),
-										// 	};
-										// },
 										onClick: (event: Event, actionId) => {
 											event.preventDefault();
 											event.stopImmediatePropagation();
@@ -163,8 +159,6 @@ export class ModalAddUsersBlock extends Block {
 													false,
 													StoreEvents.Updated_modal,
 												);
-												// Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, false, StoreEvents.Updated_modal);
-												// Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
 											}
 										},
 									});
@@ -196,11 +190,6 @@ export class ModalAddUsersBlock extends Block {
 									text: login.substring(0, 1).toUpperCase(),
 									isRemove: true,
 									storeEvent: StoreEvents.Updated_modal,
-									// mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
-									// 	return {
-									// 		addUsersList: data?.addUsersList,
-									// 	};
-									// },
 									onClick: (event: Event, actionId) => {
 										event.preventDefault();
 										event.stopImmediatePropagation();
@@ -245,11 +234,27 @@ export class ModalAddUsersBlock extends Block {
 		});
 	}
 
+	resetSearchedUserList(e: MouseEvent) {
+		const target = e.target as HTMLElement | null;
+		if (target && target.id !== IDS.MODAL.ADD_USER_INPUT) {
+			const check = hasTargetParent(target, 'ul', IDS.MODAL.ADD_USER_LIST);
+
+			if (!check) {
+				Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
+			}
+		}
+	}
+
+	override componentDidMount() {
+		document.addEventListener('click', this.resetSearchedUserList);
+	}
+
 	override componentWillUnmount() {
 		console.log('ModalAddUsersBlock componentWillUnmount: ', this);
 		Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, true);
 		Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, true);
 		Store.set('addUsersList', null, 'addUsersList' as BlockProps, true);
+		document.removeEventListener('click', this.resetSearchedUserList);
 		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
