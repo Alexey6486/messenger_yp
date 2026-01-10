@@ -69,8 +69,8 @@ export class HTTPTransport {
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${ url }${ queryStringify(data) }`
-					: url,
+					? `https://ya-praktikum.tech${ url }${ queryStringify(data) }`
+					: `https://ya-praktikum.tech${ url }`,
 			);
 
 			Object.keys(headers).forEach(key => {
