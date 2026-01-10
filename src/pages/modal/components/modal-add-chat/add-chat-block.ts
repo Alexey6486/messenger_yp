@@ -101,6 +101,9 @@ export class ModalAddChatBlock extends Block {
 											title: data?.data?.error ?? '',
 										},
 									},
+									'modalAddChatForm' as BlockProps,
+									false,
+									StoreEvents.Updated_modal,
 								);
 							},
 						}),
@@ -167,6 +170,9 @@ export class ModalAddChatBlock extends Block {
 								Store.set(
 									'modalAddChatForm',
 									{ fields, errors },
+									'modalAddChatForm' as BlockProps,
+									false,
+									StoreEvents.Updated_modal,
 								);
 							} else {
 								console.log('Add chat form submit: ', this.props?.modalAddChatForm?.fields ?? '');
@@ -185,7 +191,7 @@ export class ModalAddChatBlock extends Block {
 
 	override componentWillUnmount() {
 		console.log(this);
-		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true);
+		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true, StoreEvents.Updated_modal);
 		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
