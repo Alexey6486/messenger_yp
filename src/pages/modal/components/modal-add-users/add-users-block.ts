@@ -246,8 +246,9 @@ export class ModalAddUsersBlock extends Block {
 		const target = e.target as HTMLElement | null;
 		if (target && target.id !== IDS.MODAL.ADD_USER_INPUT) {
 			const check = hasTargetParent(target, 'ul', IDS.MODAL.ADD_USER_LIST);
+			const list = Store.getState().searchUsersList;
 
-			if (!check) {
+			if (!check && isArray(list) && list.length) {
 				Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
 			}
 		}

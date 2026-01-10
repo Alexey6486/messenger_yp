@@ -6,7 +6,7 @@ export default `
 </form>
 
 {{#if addUsersList.length}}
-<div class="{{styles.new-users-list}}">
+<div class="{{styles.new-users-list}} {{styles.modal-ul-list}}">
 {{{ markup.modal-new-users-list }}}
 </div>
 {{/if}}

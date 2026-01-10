@@ -114,7 +114,9 @@
 
 	& > .chats {
 		width: 100%;
-		padding: 10px 0;
+		padding: 10px 2px;
+		max-height: calc(100vh - 155px);
+		overflow: auto;
 
 		& > .chat {
 			display: flex;
@@ -244,6 +246,8 @@
 		}
 
 		& > .main {
+			max-height: calc(100vh - 160px);
+			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
