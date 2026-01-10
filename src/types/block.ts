@@ -81,7 +81,6 @@ export interface BlockProps {
 	messages?: TNullable<IChat[]>;
 	chats?: TNullable<IChat[]>;
 	userData?: TNullable<IUserResponse>;
-	userName?: string;
 
 	onClick?: (event: Event, data?: unknown) => void;
 	onSubmit?: (event?: Event, data?: unknown) => void;

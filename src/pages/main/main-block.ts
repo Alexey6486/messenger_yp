@@ -7,10 +7,13 @@ import {
 } from '@/focus-manager';
 import {
 	IDS,
+	INIT_MESSAGE_STATE,
+	INIT_SEARCH_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
@@ -202,6 +205,12 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
+						Store.set('chats', null, 'chats' as BlockProps, true);
+						Store.set('chatsSockets', null, 'chatsSockets' as BlockProps, true);
+						Store.set('messages', null, 'messages' as BlockProps, true);
+						Store.set('newMessageForm', cloneDeep(INIT_MESSAGE_STATE), 'newMessageForm' as BlockProps, true);
+						Store.set('currentChatData', null, 'currentChatData' as BlockProps, true);
+						Store.set('chatsSearchForm', cloneDeep(INIT_SEARCH_STATE), 'chatsSearchForm' as BlockProps, true);
 						Store.clearAllSubs();
 						this?.props?.router?.go?.(PAGES_URL.PROFILE);
 					},

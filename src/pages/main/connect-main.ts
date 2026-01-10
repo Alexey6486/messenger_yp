@@ -24,7 +24,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 		currentChatData: state?.currentChatData,
 		chatsSearchForm: cloneDeep(state?.chatsSearchForm),
 		newMessageForm: state?.newMessageForm,
-		chats: state?.chats,
+		chats: cloneDeep(state?.chats),
 		messages: state?.messages,
 		chatsSockets: state?.chatsSockets,
 	};
