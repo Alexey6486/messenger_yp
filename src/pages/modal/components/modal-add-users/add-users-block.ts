@@ -133,11 +133,15 @@ export class ModalAddUsersBlock extends Block {
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
 						if (isArray(data?.searchUsersList) && data?.searchUsersList.length) {
-							data.searchUsersList.forEach((user: IChatUserResponse) => {
+							const res = data.searchUsersList.filter((n: IChatUserResponse) => {
+								return (!props.currentChatData || (props.currentChatData && !props.currentChatData?.users.find((el) => el.id === n.id)))
+									&& (!data.addUsersList || (data.addUsersList && !data.addUsersList?.find((el) => el.id === n.id)));
+							});
+							res.forEach((user: IChatUserResponse) => {
 								const { login, id, avatar } = user;
 								if (
-									props.currentChatData
-									&& !props.currentChatData?.users.find((el) => el.id === id)
+									(!props.currentChatData || (props.currentChatData && !props.currentChatData?.users.find((el) => el.id === id)))
+									&& (!data.addUsersList || (data.addUsersList && !data.addUsersList?.find((el) => el.id === id)))
 								) {
 									childrenList[id] = new ChatUserBlock({
 										id,
@@ -159,6 +163,10 @@ export class ModalAddUsersBlock extends Block {
 													false,
 													StoreEvents.Updated_modal,
 												);
+
+												if (res.length === 1) {
+													Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
+												}
 											}
 										},
 									});
