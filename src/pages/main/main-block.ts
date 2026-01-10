@@ -130,6 +130,7 @@ export class MainBlock extends Block {
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							chats: data?.chats,
+							currentChatData: data?.currentChatData,
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {

@@ -54,7 +54,7 @@ export class ChatAPI {
 	}
 
 	public getChatUsers(chatId: string) {
-		return chatAPIInstance.get(`${ baseChatApi }/${ chatId }/users`).then(resolve => {
+		return chatAPIInstance.get(`${ baseChatApi }${ chatId }/users`).then(resolve => {
 			console.log('ChatAPI.getChatUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});

@@ -3,6 +3,7 @@ import { Store } from '@/store';
 import { ChatAPI } from '@/api';
 import { WebSocketService } from '@/web-socket';
 import {
+	cloneDeep,
 	handleRequestError,
 	isArray,
 } from '@/utils';
@@ -86,7 +87,7 @@ class ChatsController {
 				'currentChatData',
 				{
 					users: result,
-					info: chat,
+					info: cloneDeep(chat),
 					owner: result.find((el) => el.id === chat.created_by),
 				},
 				'currentChatData' as BlockProps,
