@@ -112,14 +112,26 @@ export interface IChat {
 	last_message: IChatLastMessage;
 }
 
+export type TSocketChatDataType = 'message' | 'file';
+
+export interface ISocketChatFile {
+	id: string;
+	user_id: string;
+	path: string;
+	filename: string;
+	content_type: string;
+	content_size: string;
+	upload_date: string;
+}
+
 export interface ISocketChatMessage {
 	chat_id: string;
 	content: string;
-	file: TNullable<string>;
+	file: ISocketChatFile;
 	id:	string;
 	is_read: boolean;
 	time: string;
-	type: string;
+	type: TSocketChatDataType;
 	user_id: string;
 }
 
