@@ -8,7 +8,7 @@ export default `
 Поменять аватар
 </div>
 {{#if currentChatData.info.avatar.length}}
-<img src="/api/v2/resources{{currentChatData.info.avatar}}" alt="avatar"/>
+<img src="https://ya-praktikum.tech/api/v2/resources{{currentChatData.info.avatar}}" alt="avatar"/>
 {{/if}}
 </div>
 </div>

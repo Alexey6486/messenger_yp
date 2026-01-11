@@ -238,6 +238,11 @@ export class MainBlock extends Block {
 	}
 
 	override componentWillUnmount() {
+		const sockets = Store.getState().chatsSockets;
+		if (sockets && sockets.size > 0) {
+			sockets.forEach((s) => s.disconnect());
+		}
+
 		Store.set('chats', null, 'chats' as BlockProps, true);
 		Store.set('chatsSockets', null, 'chatsSockets' as BlockProps, true);
 		Store.set('messages', null, 'messages' as BlockProps, true);

@@ -2,7 +2,7 @@ export default `
 <div id="{{id}}" class="chat-user{{#if class}} {{class}}{{/if}}">
 
 {{#if avatar}}
-<img src="/api/v2/resources{{avatar}}" alt="user avatar">
+<img src="https://ya-praktikum.tech/api/v2/resources{{avatar}}" alt="user avatar">
 {{/if}}
 
 {{#unless avatar}}
