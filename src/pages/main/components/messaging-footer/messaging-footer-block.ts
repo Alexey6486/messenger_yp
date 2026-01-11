@@ -13,6 +13,7 @@ import {
 } from '@/constants';
 import {
 	compile,
+	escapeHTML,
 	fieldsValidator,
 	getInputStateSlice,
 	isArray,
@@ -109,7 +110,7 @@ export class MessagingFooterBlock extends Block {
 							const socket = this.props?.chatsSockets?.get?.(this.props?.currentChatData?.info?.id ?? '');
 							console.log('MessagingFooterBlock socket', { socket });
 							if (socket) {
-								socket.sendMessage(this.props?.newMessageForm?.fields.message ?? '');
+								socket.sendMessage(escapeHTML(this.props?.newMessageForm?.fields.message));
 								FocusManager.set(getFocusData());
 								Store.set(
 									'newMessageForm',

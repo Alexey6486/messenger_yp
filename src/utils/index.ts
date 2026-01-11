@@ -21,3 +21,4 @@ export { getInputStateSlice } from './state-slice';
 export { isEmpty } from './is-empty';
 export { hasTargetParent } from './search-element';
 export { formatDate } from './date';
+export { escapeHTML } from './xss';

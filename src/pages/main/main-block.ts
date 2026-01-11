@@ -15,6 +15,7 @@ import {
 import {
 	cloneDeep,
 	compile,
+	escapeHTML,
 	fieldsValidator,
 	formatDate,
 	getInputStateSlice,
@@ -132,7 +133,7 @@ export class MainBlock extends Block {
 										ChatsController.getChats(
 											stateUser.id,
 											this,
-											{ data: JSON.stringify({ title: params?.data?.value ?? '' }) },
+											{ data: JSON.stringify({ title: escapeHTML(params?.data?.value) }) },
 										);
 									}
 								}
