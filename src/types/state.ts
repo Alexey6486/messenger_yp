@@ -128,7 +128,7 @@ export interface ISocketChatMessage {
 	chat_id: string;
 	content: string;
 	file: ISocketChatFile;
-	id:	string;
+	id: string;
 	is_read: boolean;
 	time: string;
 	type: TSocketChatDataType;
@@ -185,4 +185,13 @@ export interface IChatToken {
 
 export interface IChatsSockets {
 	chatsSockets: Map<string, WebSocketService>;
+}
+
+export interface IChatUnreadCounterResponse {
+	unread_count: string;
+}
+
+export interface IChatUnreadCounter {
+	chatId: string;
+	unread_count: string;
 }

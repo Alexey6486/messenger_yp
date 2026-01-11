@@ -202,7 +202,6 @@ export abstract class Block {
 					console.log('Block render childrenList instance: ', { instance });
 					children = [...children, instance.getContent()];
 				});
-				console.log('!!!', {children, cl: this.childrenList, clv: Object.entries(this.childrenList)});
 				element.replaceWith(...children);
 			}
 		}

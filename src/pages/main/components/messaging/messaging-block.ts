@@ -10,7 +10,10 @@ import {
 	isArray,
 	isEqual,
 } from '@/utils';
-import type { BlockProps, ISocketChatMessage } from '@/types';
+import type {
+	BlockProps,
+	ISocketChatMessage,
+} from '@/types';
 import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
 import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
 import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';

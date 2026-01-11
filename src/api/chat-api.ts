@@ -24,6 +24,13 @@ export class ChatAPI {
 		});
 	}
 
+	public unreadCounter(id: string): unknown {
+		return chatAPIInstance.get(`${ baseChatApi }/new/${ id }`).then(resolve => {
+			console.log('ChatAPI.unreadCounter resolve: ', { resolve });
+			return responseHandler(resolve);
+		});
+	}
+
 	public createChat(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.post(
 			`${ baseChatApi }`,

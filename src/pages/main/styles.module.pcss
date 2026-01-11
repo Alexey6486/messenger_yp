@@ -260,7 +260,7 @@
 			flex-direction: column;
 			justify-content: flex-end;
 			flex-grow: 1;
-			padding: 20px;
+			padding: 3px 0;
 			box-shadow: inset 1px 1px 3px 2px var(--color-bp),
 			inset 0 -1px 3px 1px var(--color-bp);
 
@@ -275,6 +275,9 @@
 			& > ul {
 				display: flex;
 				flex-direction: column;
+				height: calc(100vh - 160px);
+				overflow: auto;
+				padding: 0 20px;
 
 				& > .message {
 					display: flex;

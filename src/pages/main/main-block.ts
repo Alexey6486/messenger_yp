@@ -1,7 +1,5 @@
 import { Block } from '@/block';
-import {
-	Store,
-} from '@/store';
+import { Store } from '@/store';
 import { ChatsController } from '@/controllers';
 import {
 	FocusManager,
@@ -28,9 +26,7 @@ import type {
 	IInputChangeParams,
 	IUserResponse,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
@@ -228,13 +224,13 @@ export class MainBlock extends Block {
 		console.log('ProfileBlock componentDidMount override', this);
 
 		const stateUser = Store.getState().userData;
+		let userId = stateUser?.id;
 		if (!stateUser || (stateUser && !stateUser.id)) {
 			const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
-			ChatsController.getChats(user.id, this);
+			userId = user.id;
 			Store.set('userData', user, 'userData' as BlockProps);
-		} else {
-			ChatsController.getChats(stateUser.id, this);
 		}
+		ChatsController.getChats(userId, this);
 	}
 
 	override componentWillUnmount() {

@@ -14,8 +14,10 @@ import type {
 	BlockProps,
 	IChat,
 	IChatToken,
+	IChatUnreadCounter,
+	IChatUnreadCounterResponse,
 	IChatUserResponse,
-	TChatTokenPromiseResponse,
+	TPromiseResponse,
 } from '@/types';
 import { PROMISE_STATUS } from '@/constants';
 import type { RequestOptions } from 'http';
@@ -35,20 +37,24 @@ class ChatsController {
 			}
 
 			if (chatsListResult.length) {
-				const promiseList: Promise<IChatToken>[] = chatsListResult.map((chat: IChat) => {
-					return this.getChatToken(chat.id, instance);
-				}) as Promise<IChatToken>[];
-				console.log('ChatController.getChats promiseList: ', { promiseList });
+				const promiseTokensList: Promise<IChatToken | undefined>[] = [];
+				const promiseChatUnreadCounterList: Promise<IChatUnreadCounter | undefined>[] = [];
+				chatsListResult.forEach((chat: IChat) => {
+					promiseTokensList.push(this.getChatToken(chat.id, instance));
+					promiseChatUnreadCounterList.push(this.getChatUnreadCounter(chat.id, instance));
+				});
 
-				const promiseListResult: PromiseSettledResult<Awaited<Promise<IChatToken>>>[] = await Promise.allSettled(promiseList);
-				console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
+				const promiseTokensListResult: PromiseSettledResult<Awaited<Promise<IChatToken | undefined>>>[] = await Promise.allSettled(promiseTokensList);
+				console.log('ChatController.getChats allSettled promiseTokensListResult: ', { promiseTokensListResult });
 
-				if (isArray(promiseListResult, true)) {
+				const promiseChatUnreadCounterListResult: PromiseSettledResult<Awaited<Promise<IChatUnreadCounter | undefined>>>[] = await Promise.allSettled(promiseChatUnreadCounterList);
+				console.log('ChatController.getChats allSettled promiseChatUnreadCounterListResult: ', { promiseChatUnreadCounterListResult });
+
+				if (isArray(promiseTokensListResult, true)) {
 					const chatsSockets: Map<string, WebSocketService> = new Map();
-					promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
-						console.log('successfulPromises forEach', { el, idx });
+					promiseTokensListResult.forEach((el: TPromiseResponse<IChatToken>) => {
+						console.log('successfulPromises forEach', { el });
 						if (el.status === PROMISE_STATUS.FULFILLED && userId) {
-
 							const socket: WebSocketService = new WebSocketService();
 							socket.connect(userId, el.value.chatId, el.value.token);
 							chatsSockets.set(el.value.chatId, socket);
@@ -56,7 +62,30 @@ class ChatsController {
 					});
 
 					console.log('ChatController.getChats chatsSockets: ', { chatsSockets });
-					Store.set('chats', chatsListResult, 'chats' as BlockProps);
+					Store.set(
+						'chats',
+						chatsListResult.map((ch) => {
+							let unread_count = '';
+							if (isArray(promiseChatUnreadCounterListResult, true)) {
+								promiseChatUnreadCounterListResult.forEach((el: TPromiseResponse<IChatUnreadCounter>) => {
+									console.log('successfulPromises forEach', { el });
+									if (el.status === PROMISE_STATUS.FULFILLED && el.value.chatId === ch.id) {
+										unread_count = el.value.unread_count;
+									}
+								});
+
+								if (unread_count) {
+									return {
+										...ch,
+										unread_count,
+									};
+								}
+							}
+
+							return ch;
+						}),
+						'chats' as BlockProps,
+					);
 					Store.set('chatsSockets', chatsSockets, 'chatsSockets' as BlockProps);
 				}
 			} else {
@@ -69,13 +98,24 @@ class ChatsController {
 		}
 	}
 
-	public async getChatToken(chatId: string, instance?: Block) {
+	public async getChatToken(chatId: string, instance?: Block): Promise<IChatToken | undefined> {
 		try {
 			const result: { token: string } = await api.getChatToken(chatId) as { token: string };
 			console.log('ChatController.getChatToken result: ', { result });
 			return { chatId, token: result.token };
 		} catch (e: unknown) {
 			console.log('ChatController.getChatToken Error: ', { e });
+			handleRequestError(e, instance);
+		}
+	}
+
+	public async getChatUnreadCounter(chatId: string, instance?: Block): Promise<IChatUnreadCounter | undefined> {
+		try {
+			const result: IChatUnreadCounterResponse = await api.unreadCounter(chatId) as IChatUnreadCounterResponse;
+			console.log('ChatController.getChatUnreadCounter result: ', { result });
+			return { chatId, unread_count: result.unread_count };
+		} catch (e: unknown) {
+			console.log('ChatController.getChatUnreadCounter Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
@@ -103,6 +143,19 @@ class ChatsController {
 					owner: result.find((el) => el.id === chat.created_by),
 				},
 				'currentChatData' as BlockProps,
+			);
+			Store.set(
+				'chats',
+				Store.getState().chats?.map((el) => {
+					if (el.id === chat.id) {
+						return {
+							...el,
+							unread_count: 0,
+						};
+					}
+					return el;
+				}),
+				'chats' as BlockProps,
 			);
 		} catch (e: unknown) {
 			console.log('ChatController.getChatUsers Error: ', { e });

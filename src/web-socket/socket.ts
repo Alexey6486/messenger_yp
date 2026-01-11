@@ -1,7 +1,6 @@
 import { Store } from '@/store';
 import type { BlockProps } from '@/types';
 import {
-	cloneDeep,
 	isArray,
 	isPlainObject,
 } from '@/utils';
@@ -73,12 +72,12 @@ export class WebSocketService {
 			console.log('socket handleMessage data', { data });
 			const newMessages = JSON.parse(data);
 			console.log('socket handleMessage message', { newMessages });
-			const storeMessages =  Store.getState().messages;
+			const storeMessages = Store.getState().messages;
 
 			if (isArray(newMessages, true)) {
 				Store.set(
 					'messages',
-				[
+					[
 						...(isArray(storeMessages, true) ? storeMessages : []),
 						...newMessages.reverse(),
 					],

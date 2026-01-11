@@ -3,7 +3,7 @@ export default `
 {{{ markup.main-messaging-header }}}
 <main class="{{styles.main}}">
 {{#if messages.length}}
-{{{ markup.main-messaging-main }}}
+{{{ markup.main-messaging-block }}}
 {{else}}
 Сообщений пока нет...
 {{/if}}

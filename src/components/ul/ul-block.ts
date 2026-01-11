@@ -59,6 +59,7 @@ export class UlBlock extends Block {
 		this.clearChildrenList();
 	}
 
+
 	override render(): string {
 		console.log('Render UlBlock', this);
 		return compile(template, this.props);

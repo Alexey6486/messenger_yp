@@ -38,6 +38,8 @@ export type {
 	TSocketChatDataType,
 	ISocketChatFile,
 	ISocketChatMessage,
+	IChatUnreadCounterResponse,
+	IChatUnreadCounter,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';
@@ -49,5 +51,5 @@ export {
 	IEbEvents,
 } from './event-bus';
 export type {
-	TChatTokenPromiseResponse,
+	TPromiseResponse,
 } from './api';
