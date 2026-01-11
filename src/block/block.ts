@@ -22,7 +22,7 @@ export abstract class Block {
 	_element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
 	props: BlockProps;
 	children: IChildren<Block>;
-	childrenList: IChildren<Block>;
+	childrenList: IChildren<Block[]>;
 	allInstances: IChildren<Block>;
 	eventBus: () => EventBus;
 
@@ -51,7 +51,7 @@ export abstract class Block {
 
 	private _getPropsParts(props: BlockProps) {
 		const children_part: Record<string, Block> = {};
-		const children_list_part: Record<string, Block> = {};
+		const children_list_part: Record<string, Block[]> = {};
 		const all_instances_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
 
@@ -64,14 +64,7 @@ export abstract class Block {
 					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
-				console.log({ value });
-				value.forEach((instance) => {
-					console.log({ instance });
-					if (instance.props.id) {
-						children_list_part[instance.props.id] = instance;
-						all_instances_part[instance.props.id] = instance;
-					}
-				});
+				children_list_part[props_name] = value;
 			} else {
 				props_part[props_name as keyof BlockProps] = value;
 			}
@@ -166,10 +159,9 @@ export abstract class Block {
 
 		if (!isEmpty(this.childrenList)) {
 			const childrenInstancesList = Object.values(this.childrenList);
-			console.log({ childrenInstancesList });
 			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
 				childrenInstancesList.forEach(child => {
-					child.dispatchComponentWillUnmount();
+					child.forEach((el) => el.dispatchComponentWillUnmount());
 				});
 			}
 		}
@@ -200,7 +192,10 @@ export abstract class Block {
 
 				Object.values(this.childrenList).forEach((instance) => {
 					console.log('Block render childrenList instance: ', { instance });
-					children = [...children, instance.getContent()];
+
+					instance.forEach(item => {
+						children = [...children, item.getContent()];
+					});
 				});
 				element.replaceWith(...children);
 			}
@@ -261,7 +256,7 @@ export abstract class Block {
 		});
 	}
 
-	setChildrenList(childrenList: IChildren<Block>) {
+	setChildrenList(childrenList: IChildren<Block[]>) {
 		console.log('Block setChildrenList: ', childrenList);
 		if (!childrenList) {
 			return;
@@ -279,14 +274,14 @@ export abstract class Block {
 		Object.assign(this.props, nextProps);
 	}
 
-	private _makeChildrenListProxy(props: IChildren<Block>) {
+	private _makeChildrenListProxy(props: IChildren<Block[]>) {
 		const self = this;
 
-		return new Proxy<IChildren<Block>>(props, {
-			get(target: IChildren<Block>, p: string) {
+		return new Proxy<IChildren<Block[]>>(props, {
+			get(target: IChildren<Block[]>, p: string) {
 				return target[p];
 			},
-			set(target: IChildren<Block>, p: string, newValue: Block) {
+			set(target: IChildren<Block[]>, p: string, newValue: Block[]) {
 				console.log('_makeChildrenListProxy set: ', { target, p, newValue });
 				const oldTarget = { ...target };
 
@@ -295,12 +290,12 @@ export abstract class Block {
 				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 				return true;
 			},
-			deleteProperty(target: IChildren<Block>, p: string) {
+			deleteProperty(target: IChildren<Block[]>, p: string) {
 				if (!(p in target)) {
 					throw new Error('Property not found');
 				}
 
-				target[p].eventBus().emit(Block.EVENTS.FLOW_CWU);
+				target[p].forEach((el) => el.eventBus().emit(Block.EVENTS.FLOW_CWU));
 				delete target[p];
 				return true;
 			},

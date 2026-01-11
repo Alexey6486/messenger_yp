@@ -53,19 +53,18 @@ export class MessagingBlock extends Block {
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
-						const childrenList: { [key: string]: Block } = {};
+						const childrenList: Block[] = [];
 
 						if (isArray(data?.messagesList, true)) {
 							data.messagesList.forEach(({ id, user_id, content, time }: ISocketChatMessage) => {
-								const ts = new Date(time).getTime();
-								childrenList[ts] = new MessagingMainBlock({
+								childrenList.push(new MessagingMainBlock({
 									id,
 									styles,
 									author: user_id,
 									text: content,
 									date: formatDate(time),
 									isMe: user_id === this.props?.userData?.id,
-								});
+								}));
 							});
 						}
 

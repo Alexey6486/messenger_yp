@@ -152,12 +152,12 @@ export class MainBlock extends Block {
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
-						const childrenList: { [key: string]: Block } = {};
+						const childrenList: Block[] = [];
 
 						if (isArray(data?.chats, true)) {
 							data.chats.forEach((chat: IChat) => {
 								const { id, avatar, title, unread_count, last_message } = chat;
-								childrenList[id] = new ChatBlock({
+								childrenList.push(new ChatBlock({
 									id: id,
 									styles,
 									avatar: avatar,
@@ -177,7 +177,7 @@ export class MainBlock extends Block {
 
 										ChatsController.getChatUsers(chat, this);
 									},
-								});
+								}));
 							});
 						}
 

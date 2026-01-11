@@ -93,7 +93,7 @@ export interface BlockProps {
 	onCloseModal?: () => void;
 	mapStateToProps?: (data: Partial<BlockProps>) => Partial<BlockProps>
 	mapStateListToProps?: (data: Partial<BlockProps>) => unknown[]
-	onSetChildrenList?: (data: Partial<unknown>) => IChildren<Block>
+	onSetChildrenList?: (data: Partial<unknown>) => Block[]
 
 	class?: string;
 	styles?: { [key: string]: string };

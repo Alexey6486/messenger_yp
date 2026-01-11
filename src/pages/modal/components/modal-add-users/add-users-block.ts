@@ -131,7 +131,7 @@ export class ModalAddUsersBlock extends Block {
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
-						const childrenList: { [key: string]: Block } = {};
+						const childrenList: Block[] = [];
 						if (isArray(data?.searchUsersList, true)) {
 							const res = data.searchUsersList.filter((n: IChatUserResponse) => {
 								return (!props.currentChatData || (props.currentChatData && !props.currentChatData?.users.find((el) => el.id === n.id)))
@@ -143,7 +143,7 @@ export class ModalAddUsersBlock extends Block {
 									(!props.currentChatData || (props.currentChatData && !props.currentChatData?.users.find((el) => el.id === id)))
 									&& (!data.addUsersList || (data.addUsersList && !data.addUsersList?.find((el) => el.id === id)))
 								) {
-									childrenList[id] = new ChatUserBlock({
+									childrenList.push(new ChatUserBlock({
 										id,
 										avatar,
 										name: login,
@@ -171,7 +171,7 @@ export class ModalAddUsersBlock extends Block {
 												}
 											}
 										},
-									});
+									}));
 								}
 							});
 						}
@@ -189,11 +189,12 @@ export class ModalAddUsersBlock extends Block {
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
-						const childrenList: { [key: string]: Block } = {};
+						const childrenList: Block[] = [];
+
 						if (isArray(data?.addUsersList, true)) {
 							data.addUsersList.forEach((user: IChatUserResponse) => {
 								const { login, id, avatar } = user;
-								childrenList[id] = new ChatUserBlock({
+								childrenList.push(new ChatUserBlock({
 									id,
 									avatar,
 									name: login,
@@ -215,7 +216,7 @@ export class ModalAddUsersBlock extends Block {
 											);
 										}
 									},
-								});
+								}));
 							});
 						}
 

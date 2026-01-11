@@ -43,12 +43,13 @@ export class ModalRemoveUsersBlock extends Block {
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
-						const childrenList: { [key: string]: Block } = {};
+						const childrenList: Block[] = [];
+
 						if (isArray(data?.currentChatData?.users, true)) {
 							data.currentChatData.users.forEach((user: IChatUserResponse) => {
 								const { login, id, avatar } = user;
 								if (id !== props?.currentChatData?.owner.id) {
-									childrenList[id] = new ChatUserBlock({
+									childrenList.push(new ChatUserBlock({
 										id,
 										avatar,
 										name: login,
@@ -81,7 +82,7 @@ export class ModalRemoveUsersBlock extends Block {
 												);
 											}
 										},
-									});
+									}));
 								}
 							});
 						}

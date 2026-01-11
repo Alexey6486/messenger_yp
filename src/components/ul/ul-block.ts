@@ -44,7 +44,7 @@ export class UlBlock extends Block {
 								this.clearChildrenList();
 							}
 							console.log('State UlBlock blocks: ', { blocks });
-							this.setChildrenList(blocks);
+							this.setChildrenList({ childrenList: blocks });
 						}
 					} else {
 						this.setProps(newState);
@@ -62,7 +62,7 @@ export class UlBlock extends Block {
 
 
 	override render(): string {
-		console.log('Render UlBlock', this);
+		console.log('Render UlBlock!', this);
 		return compile(template, this.props);
 	}
 }
