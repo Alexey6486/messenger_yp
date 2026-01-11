@@ -1,3 +1,11 @@
+import { Store } from '@/store';
+import type { BlockProps } from '@/types';
+import {
+	cloneDeep,
+	isArray,
+	isPlainObject,
+} from '@/utils';
+
 export class WebSocketService {
 	private socket: WebSocket | null = null;
 	private pingInterval: NodeJS.Timeout | null = null;
@@ -16,7 +24,7 @@ export class WebSocketService {
 
 			this.pingInterval = setInterval(() => {
 				this.send({ type: 'ping' });
-			}, 10000);
+			}, 30000);
 		});
 
 		this.socket.addEventListener('message', (event) => {
@@ -62,28 +70,30 @@ export class WebSocketService {
 
 	private handleMessage(data: string) {
 		try {
-			console.log('socket handleMessage', { data });
-			// const message = JSON.parse(data);
+			console.log('socket handleMessage data', { data });
+			const newMessages = JSON.parse(data);
+			console.log('socket handleMessage message', { newMessages });
+			const storeMessages =  Store.getState().messages;
 
-			// if (Array.isArray(message)) {
-			// store.setState({
-			// 	messages: {
-			// 		...store.getState().messages,
-			// 		[store.getState().activeChatId!]: message.reverse(),
-			// 	},
-			// });
-			// } else if (message.type === 'message') {
-			// const activeChatId = Store.getState().activeChatId;
-			// if (activeChatId) {
-			// const currentMessages = store.getState().messages[activeChatId] || [];
-			// store.setState({
-			// 	messages: {
-			// 		...store.getState().messages,
-			// 		[activeChatId]: [...currentMessages, message],
-			// 	},
-			// });
-			// }
-			// }
+			if (isArray(newMessages, true)) {
+				Store.set(
+					'messages',
+				[
+						...(isArray(storeMessages, true) ? storeMessages : []),
+						...cloneDeep(newMessages),
+					],
+					'messages' as BlockProps,
+				);
+			} else if (isPlainObject(newMessages) && newMessages.type === 'message') {
+				Store.set(
+					'messages',
+					[
+						...(isArray(storeMessages, true) ? storeMessages : []),
+						newMessages,
+					],
+					'messages' as BlockProps,
+				);
+			}
 		} catch (error) {
 			console.error('socket handleMessage error:', error);
 		}

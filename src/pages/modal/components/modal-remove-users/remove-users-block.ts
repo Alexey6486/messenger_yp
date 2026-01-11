@@ -44,7 +44,7 @@ export class ModalRemoveUsersBlock extends Block {
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
-						if (isArray(data?.currentChatData?.users) && data?.currentChatData?.users.length) {
+						if (isArray(data?.currentChatData?.users, true)) {
 							data.currentChatData.users.forEach((user: IChatUserResponse) => {
 								const { login, id, avatar } = user;
 								if (id !== props?.currentChatData?.owner.id) {
@@ -67,7 +67,7 @@ export class ModalRemoveUsersBlock extends Block {
 													{
 														owner: cloneDeep(data.currentChatData?.owner),
 														info: cloneDeep(data.currentChatData?.info),
-														users: isArray(data?.currentChatData?.users)
+														users: isArray(data?.currentChatData?.users, true)
 															? cloneDeep(data?.currentChatData?.users.filter((el: IChatUserResponse) => el.id !== id))
 															: [],
 													},
@@ -110,7 +110,7 @@ export class ModalRemoveUsersBlock extends Block {
 											{
 												owner: cloneDeep(props.currentChatData?.owner),
 												info: cloneDeep(props.currentChatData?.info),
-												users: isArray(props?.currentChatData?.users)
+												users: isArray(props?.currentChatData?.users, true)
 													? cloneDeep(props?.currentChatData?.users.filter((el: IChatUserResponse) => el.id !== id))
 													: [],
 											},

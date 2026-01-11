@@ -10,7 +10,10 @@ export function isPlainObject(value: unknown): boolean {
 		&& Object.prototype.toString.call(value) === '[object Object]';
 }
 
-export function isArray(value: unknown): value is [] {
+export function isArray(value: unknown, checkLength?: boolean): value is [] {
+	if (checkLength) {
+		return Array.isArray(value) && value.length > 0;
+	}
 	return Array.isArray(value);
 }
 

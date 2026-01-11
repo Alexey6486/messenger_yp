@@ -110,6 +110,21 @@ export class MessagingFooterBlock extends Block {
 							console.log('MessagingFooterBlock socket', { socket });
 							if (socket) {
 								socket.sendMessage(this.props?.newMessageForm?.fields.message ?? '');
+								FocusManager.set(getFocusData());
+								Store.set(
+									'newMessageForm',
+									{
+										fields: {
+											...props?.newMessageForm?.fields,
+											message: '',
+										},
+										errors: {
+											...props?.newMessageForm?.errors,
+											message: '',
+										},
+									},
+									'newMessageForm' as BlockProps,
+								);
 							}
 						}
 					},
@@ -146,11 +161,11 @@ export class MessagingFooterBlock extends Block {
 							'newMessageForm',
 							{
 								fields: {
-									...props?.userForm?.fields,
+									...props?.newMessageForm?.fields,
 									message: data?.data?.value ?? '',
 								},
 								errors: {
-									...props?.userForm?.errors,
+									...props?.newMessageForm?.errors,
 									message: data?.data?.error ?? '',
 								},
 							},
@@ -169,7 +184,7 @@ export class MessagingFooterBlock extends Block {
 				console.log('State MessagingFooterBlock: ', { isEqualCheck, state, newState, t: this });
 
 				if (!isEqualCheck) {
-					if (isArray(args) && (args as BlockProps[]).length) {
+					if (isArray(args, true)) {
 						const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
 						console.log('Store Updated MessagingFooterBlock check: ', {
 							stateKey,

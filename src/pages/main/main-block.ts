@@ -1,5 +1,7 @@
 import { Block } from '@/block';
-import { Store } from '@/store';
+import {
+	Store,
+} from '@/store';
 import { ChatsController } from '@/controllers';
 import {
 	FocusManager,
@@ -16,6 +18,7 @@ import {
 	cloneDeep,
 	compile,
 	fieldsValidator,
+	formatDate,
 	getInputStateSlice,
 	isArray,
 } from '@/utils';
@@ -25,7 +28,9 @@ import type {
 	IInputChangeParams,
 	IUserResponse,
 } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import {
+	E_FORM_FIELDS_NAME,
+} from '@/types';
 import { FormBlock } from '@/components/form/form-block';
 import { InputBlock } from '@/components/input/input-block';
 import { UlBlock } from '@/components/ul/ul-block';
@@ -152,7 +157,7 @@ export class MainBlock extends Block {
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
 
-						if (isArray(data?.chats) && data?.chats.length) {
+						if (isArray(data?.chats, true)) {
 							data.chats.forEach((chat: IChat) => {
 								const { id, avatar, title, unread_count, last_message } = chat;
 								childrenList[id] = new ChatBlock({
@@ -160,7 +165,7 @@ export class MainBlock extends Block {
 									styles,
 									avatar: avatar,
 									title: title,
-									date: last_message?.time,
+									date: formatDate(last_message?.time ?? ''),
 									text: formatContentLength(last_message?.content),
 									counter: unread_count,
 									isActive: props.currentChatData?.info?.id === id,
@@ -189,26 +194,16 @@ export class MainBlock extends Block {
 					newMessageForm: props.newMessageForm,
 					currentChatData: props.currentChatData,
 					container: props.container,
+					clearChildrenListOnStateChange: true,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
 							messages: data.messages,
 							newMessageForm: data.newMessageForm,
 							currentChatData: data.currentChatData,
 							chatsSockets: data.chatsSockets,
+							userData: data.userData,
 						};
 					},
-					// childrenList: Array.isArray(props?.messages)
-					// 	? props?.messages?.map?.(({ id, last_message }: IChat) => {
-					// 		return new MessagingMainBlock({
-					// 			id,
-					// 			styles,
-					// 			author: last_message.user.display_name,
-					// 			text: last_message.content,
-					// 			date: last_message.time,
-					// 			isMe: last_message.user.id === props?.userData?.id,
-					// 		});
-					// 	})
-					// 	: [],
 				}),
 				[IDS.MAIN.PROFILE_LINK]: new LinkBlock({
 					id: IDS.MAIN.PROFILE_LINK,

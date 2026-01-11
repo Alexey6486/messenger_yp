@@ -5,6 +5,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		CHAT_LIST: 'main-chat-list',
 		MESSAGING: 'main-messaging',
 		MESSAGING_HEADER: 'main-messaging-header',
+		MESSAGING_MAIN: 'main-messaging-main',
 		MESSAGING_FOOTER: 'main-messaging-footer',
 		MESSAGING_DD_HEADER: 'messaging-header-drop-down',
 		MESSAGING_DD_FOOTER: 'messaging-footer-drop-down',

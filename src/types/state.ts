@@ -112,6 +112,17 @@ export interface IChat {
 	last_message: IChatLastMessage;
 }
 
+export interface ISocketChatMessage {
+	chat_id: string;
+	content: string;
+	file: TNullable<string>;
+	id:	string;
+	is_read: boolean;
+	time: string;
+	type: string;
+	user_id: string;
+}
+
 export interface IErrorPageState {
 	text: string;
 	code: string;

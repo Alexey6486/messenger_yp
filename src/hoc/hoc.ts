@@ -30,7 +30,7 @@ export function connect(
 					console.log('State Connect: ', { isEqualCheck, state, newState, t: this });
 
 					if (!isEqualCheck) {
-						if (isArray(args) && (args as BlockProps[]).length) {
+						if (isArray(args, true)) {
 							const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
 							console.log('Connect check: ', { stateKey, c: stateKey in newState });
 							if (stateKey && stateKey in newState) {

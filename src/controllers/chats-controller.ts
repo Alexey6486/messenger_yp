@@ -43,7 +43,7 @@ class ChatsController {
 				const promiseListResult: PromiseSettledResult<Awaited<Promise<IChatToken>>>[] = await Promise.allSettled(promiseList);
 				console.log('ChatController.getChats allSettled promiseListResult: ', { promiseListResult });
 
-				if (isArray(promiseListResult) && promiseListResult.length) {
+				if (isArray(promiseListResult, true)) {
 					const chatsSockets: Map<string, WebSocketService> = new Map();
 					promiseListResult.forEach((el: TChatTokenPromiseResponse, idx) => {
 						console.log('successfulPromises forEach', { el, idx });

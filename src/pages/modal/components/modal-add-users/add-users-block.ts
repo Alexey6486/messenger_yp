@@ -132,7 +132,7 @@ export class ModalAddUsersBlock extends Block {
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
-						if (isArray(data?.searchUsersList) && data?.searchUsersList.length) {
+						if (isArray(data?.searchUsersList, true)) {
 							const res = data.searchUsersList.filter((n: IChatUserResponse) => {
 								return (!props.currentChatData || (props.currentChatData && !props.currentChatData?.users.find((el) => el.id === n.id)))
 									&& (!data.addUsersList || (data.addUsersList && !data.addUsersList?.find((el) => el.id === n.id)));
@@ -158,7 +158,9 @@ export class ModalAddUsersBlock extends Block {
 											if (actionId === IDS.CHAT_USER.ADD) {
 												Store.set(
 													'addUsersList',
-													isArray(data?.addUsersList) ? [...data.addUsersList, user] : [user],
+													isArray(data?.addUsersList, true)
+														? [...data.addUsersList, user]
+														: [user],
 													'addUsersList' as BlockProps,
 													false,
 													StoreEvents.Updated_modal,
@@ -188,7 +190,7 @@ export class ModalAddUsersBlock extends Block {
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
-						if (isArray(data?.addUsersList) && data?.addUsersList.length) {
+						if (isArray(data?.addUsersList, true)) {
 							data.addUsersList.forEach((user: IChatUserResponse) => {
 								const { login, id, avatar } = user;
 								childrenList[id] = new ChatUserBlock({
@@ -231,7 +233,7 @@ export class ModalAddUsersBlock extends Block {
 						console.log('Add users form submit: ', this.props);
 						this.props?.onSubmit?.(
 							event,
-							isArray(this.props.addUsersList)
+							isArray(this.props.addUsersList, true)
 								? this.props.addUsersList.map((el: IChatUserResponse) => el.id)
 								: [],
 						);
@@ -248,7 +250,7 @@ export class ModalAddUsersBlock extends Block {
 			const check = hasTargetParent(target, 'ul', IDS.MODAL.ADD_USER_LIST);
 			const list = Store.getState().searchUsersList;
 
-			if (!check && isArray(list) && list.length) {
+			if (!check && isArray(list, true)) {
 				Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, false, StoreEvents.Updated_modal);
 			}
 		}

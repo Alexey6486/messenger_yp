@@ -35,6 +35,7 @@ export type {
 	ICurrentChatData,
 	IChatToken,
 	IChatsSockets,
+	ISocketChatMessage,
 } from './state';
 export { E_FORM_FIELDS_NAME } from './state';
 export type * from './block';
