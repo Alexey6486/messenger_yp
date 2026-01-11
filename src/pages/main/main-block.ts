@@ -190,6 +190,7 @@ export class MainBlock extends Block {
 					messages: props.messages,
 					newMessageForm: props.newMessageForm,
 					currentChatData: props.currentChatData,
+					messagesList: props.messagesList,
 					container: props.container,
 					clearChildrenListOnStateChange: true,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
@@ -199,6 +200,7 @@ export class MainBlock extends Block {
 							currentChatData: data.currentChatData,
 							chatsSockets: data.chatsSockets,
 							userData: data.userData,
+							messagesList: data.messagesList,
 						};
 					},
 				}),

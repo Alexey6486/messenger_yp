@@ -1,12 +1,17 @@
 import { Store } from '@/store';
-import type { BlockProps } from '@/types';
+import type {
+	BlockProps,
+	IChat,
+} from '@/types';
 import {
+	cloneDeep,
 	isArray,
 	isPlainObject,
 } from '@/utils';
 
 export class WebSocketService {
 	private socket: WebSocket | null = null;
+	private chatId: string | null = null;
 	private pingInterval: NodeJS.Timeout | null = null;
 
 	connect(userId: string, chatId: string, token: string) {
@@ -14,6 +19,7 @@ export class WebSocketService {
 		if (!userId || !chatId || !token) return;
 
 		this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
+		this.chatId = chatId;
 
 		if (!this.socket) return;
 
@@ -61,7 +67,7 @@ export class WebSocketService {
 	}
 
 	private send(data: unknown) {
-		console.log('socket send: ', { data, s: this.socket });
+		// console.log('socket send: ', { data, s: this.socket });
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.send(JSON.stringify(data));
 		}
@@ -71,27 +77,76 @@ export class WebSocketService {
 		try {
 			console.log('socket handleMessage data', { data });
 			const newMessages = JSON.parse(data);
-			console.log('socket handleMessage message', { newMessages });
+			console.log('socket handleMessage message', { newMessages, chatId: this.chatId });
 			const storeMessages = Store.getState().messages;
 
 			if (isArray(newMessages, true)) {
+				let result = new Map();
+				if (storeMessages) {
+					result = cloneDeep(storeMessages);
+					console.log('socket handleMessage messages 1', { result, storeMessages });
+					const oldMessages: IChat[] = result.get(this.chatId);
+					const newMessagesList = [
+						...(isArray(oldMessages, true) ? oldMessages : []),
+						...newMessages.reverse(),
+					];
+					result.set(this.chatId, newMessagesList);
+				} else {
+					result.set(this.chatId, newMessages.reverse());
+				}
+				console.log('socket handleMessage messages 2', { result });
 				Store.set(
 					'messages',
-					[
-						...(isArray(storeMessages, true) ? storeMessages : []),
-						...newMessages.reverse(),
-					],
+					result,
 					'messages' as BlockProps,
 				);
 			} else if (isPlainObject(newMessages) && newMessages.type === 'message') {
-				Store.set(
-					'messages',
-					[
-						...(isArray(storeMessages, true) ? storeMessages.reverse() : []),
+				const storeChats = Store.getState().chats;
+				const currentChatData = Store.getState().currentChatData;
+				const storeMessages = Store.getState().messages;
+				let result = new Map();
+				if (storeMessages) {
+					result = cloneDeep(storeMessages);
+					console.log('socket handleMessage messages 21', { result, storeMessages });
+					const oldMessages: IChat[] = result.get(this.chatId);
+					const newMessagesList = [
+						...(isArray(oldMessages, true) ? oldMessages.reverse() : []),
 						newMessages,
-					],
-					'messages' as BlockProps,
-				);
+					];
+					result.set(this.chatId, newMessagesList);
+					console.log('socket handleMessage messages 22', { result });
+					Store.set(
+						'messages',
+						result,
+						'messages' as BlockProps,
+					);
+					const messagesList = Store.getState().messagesList;
+					Store.set(
+						'messagesList',
+						isArray(messagesList, true) ? cloneDeep([...messagesList, newMessages]) : [newMessages],
+						'messagesList' as BlockProps,
+					);
+				}
+
+				if (isArray(storeChats, true) && this.chatId) {
+					Store.set(
+						'chats',
+						storeChats.map((el: IChat) => {
+							if (el.id === this.chatId) {
+								return {
+									...el,
+									...(currentChatData?.info?.id !== this.chatId && { unread_count: Number(el.unread_count) + 1 }),
+									last_message: {
+										time: newMessages.time,
+										content: newMessages.content,
+									},
+								};
+							}
+							return el;
+						}),
+						'chats' as BlockProps,
+					);
+				}
 			}
 		} catch (error) {
 			console.error('socket handleMessage error:', error);
@@ -103,6 +158,7 @@ export class WebSocketService {
 		if (this.socket) {
 			this.socket.close();
 			this.socket = null;
+			this.chatId = null;
 		}
 		if (this.pingInterval) {
 			clearInterval(this.pingInterval);

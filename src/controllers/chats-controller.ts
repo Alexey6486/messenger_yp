@@ -135,6 +135,7 @@ class ChatsController {
 		try {
 			const result = await api.getChatUsers(chat.id) as IChatUserResponse[];
 			console.log('ChatController.getChatUsers result: ', { result });
+
 			Store.set(
 				'currentChatData',
 				{
@@ -144,6 +145,7 @@ class ChatsController {
 				},
 				'currentChatData' as BlockProps,
 			);
+
 			Store.set(
 				'chats',
 				Store.getState().chats?.map((el) => {
@@ -157,6 +159,15 @@ class ChatsController {
 				}),
 				'chats' as BlockProps,
 			);
+
+			const messages = Store.getState().messages?.get(chat.id);
+			if (messages) {
+				Store.set(
+					'messagesList',
+					cloneDeep(messages),
+					'messagesList' as BlockProps,
+				);
+			}
 		} catch (e: unknown) {
 			console.log('ChatController.getChatUsers Error: ', { e });
 			handleRequestError(e, instance);

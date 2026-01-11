@@ -49,13 +49,14 @@ export class MessagingBlock extends Block {
 					clearChildrenListOnStateChange: true,
 					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
 						return {
-							messages: data.messages,
+							messagesList: data.messagesList,
 						};
 					},
 					onSetChildrenList: (data: Partial<BlockProps>) => {
 						const childrenList: { [key: string]: Block } = {};
-						if (isArray(data?.messages, true)) {
-							data.messages.forEach(({ id, user_id, content, time }: ISocketChatMessage) => {
+
+						if (isArray(data?.messagesList, true)) {
+							data.messagesList.forEach(({ id, user_id, content, time }: ISocketChatMessage) => {
 								const ts = new Date(time).getTime();
 								childrenList[ts] = new MessagingMainBlock({
 									id,

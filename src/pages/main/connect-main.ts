@@ -8,8 +8,8 @@ import type {
 	IFormState,
 	IMessageForm,
 	ISearchForm,
-	TNullable,
 	IUserResponse,
+	TNullable,
 } from '@/types';
 import { cloneDeep } from '@/utils';
 
@@ -18,7 +18,8 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	chatsSearchForm: TNullable<IFormState<ISearchForm>> | undefined,
 	newMessageForm: TNullable<IFormState<IMessageForm>> | undefined,
 	chats: TNullable<IChat[]> | undefined,
-	messages: TNullable<IChat[]> | undefined,
+	messages: TNullable<Map<string, IChat[]>> | undefined,
+	messagesList: TNullable<IChat[]> | undefined,
 	chatsSockets: TNullable<Map<string, WebSocketService>> | undefined,
 	userData: TNullable<IUserResponse> | undefined,
 } {
@@ -28,6 +29,7 @@ export function mapUserToPropsMain(state: Partial<BlockProps>): {
 		newMessageForm: state?.newMessageForm,
 		chats: cloneDeep(state?.chats),
 		messages: state?.messages,
+		messagesList: state?.messagesList,
 		chatsSockets: state?.chatsSockets,
 		userData: state?.userData,
 	};

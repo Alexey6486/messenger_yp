@@ -255,7 +255,6 @@
 
 		& > .main {
 			max-height: calc(100vh - 160px);
-			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
@@ -275,7 +274,7 @@
 			& > ul {
 				display: flex;
 				flex-direction: column;
-				height: calc(100vh - 160px);
+				height: 100%;
 				overflow: auto;
 				padding: 0 20px;
 
@@ -291,6 +290,11 @@
 					padding: 10px 0 30px;
 					position: relative;
 					margin-bottom: 20px;
+
+
+					&:first-child {
+						margin-top: auto;
+					}
 
 					&.right-side {
 						align-self: flex-end;

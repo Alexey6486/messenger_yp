@@ -219,6 +219,12 @@ export abstract class Block {
 		if (this.element === focusElement?.element) {
 			this._setFocus(selectionStart);
 		}
+
+		if (this.props.id === 'main-messaging-block') {
+			setTimeout(() => {
+				document?.getElementById?.('main-messaging-block')?.scroll?.({ top: document?.getElementById?.('main-messaging-block')?.scrollHeight });
+			}, 0);
+		}
 	}
 
 	private _setFocus(selectionStart: TNullable<number>) {

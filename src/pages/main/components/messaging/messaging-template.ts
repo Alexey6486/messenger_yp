@@ -2,7 +2,7 @@ export default `
 <div class="{{styles.messages}}">
 {{{ markup.main-messaging-header }}}
 <main class="{{styles.main}}">
-{{#if messages.length}}
+{{#if messagesList.length}}
 {{{ markup.main-messaging-block }}}
 {{else}}
 Сообщений пока нет...
