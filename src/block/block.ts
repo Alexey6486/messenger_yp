@@ -199,10 +199,10 @@ export abstract class Block {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
 				Object.values(this.childrenList).forEach((instance) => {
-					console.log({ instance });
+					console.log('Block render childrenList instance: ', { instance });
 					children = [...children, instance.getContent()];
 				});
-
+				console.log('!!!', {children, cl: this.childrenList, clv: Object.entries(this.childrenList)});
 				element.replaceWith(...children);
 			}
 		}
@@ -282,7 +282,7 @@ export abstract class Block {
 				return target[p];
 			},
 			set(target: IChildren<Block>, p: string, newValue: Block) {
-				console.log('_makeChildrenListProxy set: ', { target, newValue });
+				console.log('_makeChildrenListProxy set: ', { target, p, newValue });
 				const oldTarget = { ...target };
 
 				target[p] = newValue;

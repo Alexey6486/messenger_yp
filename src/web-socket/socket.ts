@@ -80,7 +80,7 @@ export class WebSocketService {
 					'messages',
 				[
 						...(isArray(storeMessages, true) ? storeMessages : []),
-						...cloneDeep(newMessages),
+						...newMessages.reverse(),
 					],
 					'messages' as BlockProps,
 				);
@@ -88,7 +88,7 @@ export class WebSocketService {
 				Store.set(
 					'messages',
 					[
-						...(isArray(storeMessages, true) ? storeMessages : []),
+						...(isArray(storeMessages, true) ? storeMessages.reverse() : []),
 						newMessages,
 					],
 					'messages' as BlockProps,

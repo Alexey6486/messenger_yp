@@ -53,7 +53,8 @@ export class MessagingBlock extends Block {
 						const childrenList: { [key: string]: Block } = {};
 						if (isArray(data?.messages, true)) {
 							data.messages.forEach(({ id, user_id, content, time }: ISocketChatMessage) => {
-								childrenList[id] = new MessagingMainBlock({
+								const ts = new Date(time).getTime();
+								childrenList[ts] = new MessagingMainBlock({
 									id,
 									styles,
 									author: user_id,
