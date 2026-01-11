@@ -17,6 +17,7 @@ import type {
 	IChatUnreadCounter,
 	IChatUnreadCounterResponse,
 	IChatUserResponse,
+	ISocketChatMessage,
 	TPromiseResponse,
 } from '@/types';
 import { PROMISE_STATUS } from '@/constants';
@@ -161,13 +162,16 @@ class ChatsController {
 			);
 
 			const messages = Store.getState().messages?.get(chat.id);
-			if (messages) {
-				Store.set(
-					'messagesList',
-					cloneDeep(messages),
-					'messagesList' as BlockProps,
-				);
-			}
+			Store.set(
+				'messagesList',
+				isArray(messages, true)
+					? cloneDeep(messages.map((el: ISocketChatMessage) => {
+						const target = result.find((usr) => usr.id === el.user_id);
+						return { ...el, login: target ? target.login : el.user_id };
+					}))
+					: [],
+				'messagesList' as BlockProps,
+			);
 		} catch (e: unknown) {
 			console.log('ChatController.getChatUsers Error: ', { e });
 			handleRequestError(e, instance);

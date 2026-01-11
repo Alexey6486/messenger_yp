@@ -5,7 +5,9 @@ export default `
 {{#if messagesList.length}}
 {{{ markup.main-messaging-block }}}
 {{else}}
+<div class="{{styles.main-no-msg}}">
 Сообщений пока нет...
+</div>
 {{/if}}
 </main>
 {{{ markup.main-messaging-footer }}}

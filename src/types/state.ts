@@ -133,6 +133,7 @@ export interface ISocketChatMessage {
 	time: string;
 	type: TSocketChatDataType;
 	user_id: string;
+	login: string;
 }
 
 export interface IErrorPageState {
