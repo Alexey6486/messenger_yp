@@ -15,8 +15,5 @@ export function setProps(object: TPlainObject | unknown, path: string, value: un
 	}
 
 	const newObject = prepData(path, value);
-	const result = merge(object as TPlainObject, newObject);
-	console.log('setProps merge result:', { result, path });
-
-	return result;
+	return merge(object as TPlainObject, newObject);
 }

@@ -63,8 +63,6 @@ export class InputBlock extends Block {
 
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State InputBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					this.setProps(newState);
 				}
@@ -75,7 +73,6 @@ export class InputBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render InputBlock', this);
 		return compile(template, this.props);
 	}
 }

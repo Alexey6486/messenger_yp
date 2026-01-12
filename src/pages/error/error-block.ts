@@ -31,11 +31,8 @@ export class ErrorBlock extends Block {
 					type: 'button',
 					text: 'Назад',
 					onClick: (event: Event) => {
-						console.log('ErrorBlock onClick back', this);
 						event.preventDefault();
 						event.stopPropagation();
-
-						// Store.set('error', { code: '', text: '' });
 						this?.props?.router?.back();
 					},
 				}),
@@ -44,12 +41,9 @@ export class ErrorBlock extends Block {
 
 		Store.on(StoreEvents.Updated, () => {
 			const newState = mapUserToPropsError(Store.getState());
-			console.log('State ErrorBlock: ', newState);
-
 			if (!isEqual(state, newState)) {
 				this.setProps({ ...newState });
 			}
-
 			state = newState;
 		});
 	}
@@ -63,7 +57,6 @@ export class ErrorBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ErrorBlock', this);
 		return compile(template, this.props);
 	}
 }

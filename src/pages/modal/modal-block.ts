@@ -40,7 +40,6 @@ export class ModalBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ModalBlock', this);
 		return compile(template, this.props);
 	}
 }

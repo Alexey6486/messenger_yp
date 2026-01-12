@@ -36,7 +36,6 @@ export class ModalErrorBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ModalErrorBlock', this);
 		return compile(template, this.props);
 	}
 }

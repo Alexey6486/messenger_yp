@@ -1,4 +1,9 @@
 import { Store } from '@/store';
+import {
+	SCK_PING,
+	MSG_OFFSET,
+	WS_BASE_URL,
+} from '@/constants';
 import type {
 	BlockProps,
 	IChat,
@@ -15,30 +20,25 @@ export class WebSocketService {
 	private pingInterval: NodeJS.Timeout | null = null;
 
 	connect(userId: string, chatId: string, token: string) {
-		console.log('socket connect', { userId, chatId, token });
 		if (!userId || !chatId || !token) return;
 
-		this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
+		this.socket = new WebSocket(`${WS_BASE_URL}/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
 		this.chatId = chatId;
 
 		if (!this.socket) return;
 
 		this.socket.addEventListener('open', () => {
-			console.log('socket open');
 			this.getOldMessages();
-
 			this.pingInterval = setInterval(() => {
 				this.send({ type: 'ping' });
-			}, 30000);
+			}, SCK_PING);
 		});
 
 		this.socket.addEventListener('message', (event) => {
-			console.log('socket message', { event });
 			this.handleMessage(event.data);
 		});
 
-		this.socket.addEventListener('close', (event) => {
-			console.log('socket closed', { event });
+		this.socket.addEventListener('close', () => {
 			if (this.pingInterval) {
 				clearInterval(this.pingInterval);
 			}
@@ -50,7 +50,6 @@ export class WebSocketService {
 	}
 
 	sendMessage(content: string) {
-		console.log('socket sendMessage: ', { content, s: this.socket });
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.send({
 				type: 'message',
@@ -59,7 +58,7 @@ export class WebSocketService {
 		}
 	}
 
-	getOldMessages(offset = 0) {
+	getOldMessages(offset = MSG_OFFSET) {
 		this.send({
 			type: 'get old',
 			content: offset.toString(),
@@ -67,7 +66,6 @@ export class WebSocketService {
 	}
 
 	private send(data: unknown) {
-		// console.log('socket send: ', { data, s: this.socket });
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.send(JSON.stringify(data));
 		}
@@ -75,16 +73,13 @@ export class WebSocketService {
 
 	private handleMessage(data: string) {
 		try {
-			console.log('socket handleMessage data', { data });
 			const newMessages = JSON.parse(data);
-			console.log('socket handleMessage message', { newMessages, chatId: this.chatId });
 			const storeMessages = Store.getState().messages;
 
 			if (isArray(newMessages, true)) {
 				let result = new Map();
 				if (storeMessages) {
 					result = cloneDeep(storeMessages);
-					console.log('socket handleMessage messages 1', { result, storeMessages });
 					const oldMessages: IChat[] = result.get(this.chatId);
 					const newMessagesList = [
 						...(isArray(oldMessages, true) ? oldMessages : []),
@@ -94,7 +89,7 @@ export class WebSocketService {
 				} else {
 					result.set(this.chatId, newMessages.reverse());
 				}
-				console.log('socket handleMessage messages 2', { result });
+
 				Store.set(
 					'messages',
 					result,
@@ -107,14 +102,12 @@ export class WebSocketService {
 				let result = new Map();
 				if (storeMessages) {
 					result = cloneDeep(storeMessages);
-					console.log('socket handleMessage messages 21', { result, storeMessages });
 					const oldMessages: IChat[] = result.get(this.chatId);
 					const newMessagesList = [
 						...(isArray(oldMessages, true) ? oldMessages.reverse() : []),
 						newMessages,
 					];
 					result.set(this.chatId, newMessagesList);
-					console.log('socket handleMessage messages 22', { result });
 					Store.set(
 						'messages',
 						result,
@@ -154,7 +147,6 @@ export class WebSocketService {
 	}
 
 	disconnect() {
-		console.log('socket disconnect');
 		if (this.socket) {
 			this.socket.close();
 			this.socket = null;

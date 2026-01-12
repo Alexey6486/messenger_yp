@@ -51,8 +51,7 @@ export class MessagingHeaderBlock extends Block {
 								this.createModal(
 									IDS.FORMS.MODAL_ADD_USERS_FORM,
 									'Добавление пользователей',
-									(event, data) => {
-										console.log('Add users submit: ', { data, event, props, state });
+									(_, data) => {
 										if (data && state?.currentChatData?.info) {
 											ChatsController.addUsers(
 												data as number[],
@@ -77,8 +76,7 @@ export class MessagingHeaderBlock extends Block {
 								this.createModal(
 									IDS.MODAL.MODAL_REMOVE_USERS,
 									'Удаление пользователей',
-									(event, data) => {
-										console.log('Remove users submit: ', { data, event, props, state });
+									(_, data) => {
 										if (data && state?.currentChatData?.info) {
 											ChatsController.removeUsers(
 												data as number[],
@@ -118,22 +116,17 @@ export class MessagingHeaderBlock extends Block {
 
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State MessagingHeaderBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					this.setProps(newState);
 				}
 			}
-
 			state = newState;
 		});
 	}
 
 	override render(): string {
-		console.log('Render MessagingHeaderBlock', this);
 		return compile(template, this.props);
 	}
 }

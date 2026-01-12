@@ -64,7 +64,6 @@ export class HTTPTransport {
 
 			const xhr = new XMLHttpRequest();
 			xhr.withCredentials = credentials === 'include';
-			console.log({ xhr, c: credentials === 'include', url, options });
 			const isGet = method === ERequestMethods.GET;
 
 			xhr.open(

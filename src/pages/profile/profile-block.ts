@@ -85,7 +85,6 @@ export class ProfileBlock extends Block {
 					accept: 'image/*',
 					input_data: null,
 					onFileChange: (fileList: FileList) => {
-						console.log('Avatar onInputChange: ', { fileList });
 						const formData = new FormData();
 						formData.append('avatar', fileList[0]);
 						UserController.changeAvatar({ data: formData as FormData }, this);
@@ -742,15 +741,9 @@ export class ProfileBlock extends Block {
 						});
 
 						const userForm: TNullable<IFormState<IUserDataForm>> | undefined = this.props?.userForm as BlockProps['userForm'];
-						console.log({ pageProps });
 
-						if (
-							userForm
-							&& userForm.errors
-						) {
+						if (userForm && userForm.errors) {
 							const errorsList = Object.values(userForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList });
-
 							if (errorsList.length) {
 								const { userForm: { errors, fields } } = pageProps;
 								Store.set(
@@ -759,7 +752,6 @@ export class ProfileBlock extends Block {
 									'userForm' as BlockProps,
 								);
 							} else {
-								console.log('Profile data form submit: ', this.props?.userForm?.fields ?? '');
 								if (this.props?.userData && this.props?.userForm?.fields) {
 									if (
 										!isEqual(
@@ -875,15 +867,8 @@ export class ProfileBlock extends Block {
 						});
 
 						const passwordForm: TNullable<IFormState<IUserPasswordForm>> | undefined = this.props?.passwordForm as BlockProps['passwordForm'];
-						console.log({ pageProps });
-
-						if (
-							passwordForm
-							&& passwordForm.errors
-						) {
+						if (passwordForm && passwordForm.errors) {
 							const errorsList = Object.values(passwordForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList });
-
 							if (errorsList.length) {
 								const { passwordForm: { errors, fields } } = pageProps;
 								Store.set(
@@ -892,7 +877,6 @@ export class ProfileBlock extends Block {
 									'passwordForm' as BlockProps,
 								);
 							} else {
-								console.log('Profile password form submit: ', this);
 								const fields = this.props?.passwordForm?.fields;
 								if (fields) {
 									const { oldPassword, newPassword } = fields;
@@ -960,7 +944,6 @@ export class ProfileBlock extends Block {
 	override componentDidMount() {
 		const userData: TNullable<IUserResponse> = mapUserToPropsUserData(Store.getState());
 		const { errors } = cloneDeep(INIT_PROFILE_USER_DATA_STATE) as IFormState<IUserDataForm>;
-		console.log('ProfileBlock componentDidMount override', { userData, t: this });
 
 		if (!isEmpty(userData) && userData?.id) {
 			Store.set(
@@ -992,7 +975,6 @@ export class ProfileBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ProfileBlock', this);
 		return compile(template, this.props);
 	}
 }

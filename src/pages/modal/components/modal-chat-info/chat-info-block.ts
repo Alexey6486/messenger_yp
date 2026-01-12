@@ -52,7 +52,6 @@ export class ModalChatInfoBlock extends Block {
 					accept: 'image/*',
 					input_data: null,
 					onFileChange: (fileList: FileList) => {
-						console.log('Avatar onInputChange: ', { fileList });
 						const formData = new FormData();
 						formData.append('avatar', fileList[0]);
 						formData.append('chatId', props.currentChatData?.info.id ?? '');
@@ -97,7 +96,6 @@ export class ModalChatInfoBlock extends Block {
 						const sockets = Store.getState().chatsSockets;
 						const messages = Store.getState().messages;
 						const chats = Store.getState().chats;
-						console.log('modal delete chat: ', { chatId, chats, sockets });
 
 						if (sockets && sockets.size > 0 && chatId) {
 							const socket = sockets.get(chatId);
@@ -138,7 +136,6 @@ export class ModalChatInfoBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ModalChatInfoBlock', this, Store);
 		return compile(template, this.props);
 	}
 }

@@ -54,15 +54,7 @@ export class MessagingFooterBlock extends Block {
 							typeof this.props?.newMessageForm?.fields?.message === 'string'
 							&& this.props?.newMessageForm?.fields?.message.trim().length
 						) {
-							console.log(
-								'New message submit',
-								{
-									message: this.props?.newMessageForm?.fields,
-									socket: this.props?.chatsSockets?.get?.(this.props?.currentChatData?.info?.id ?? ''),
-								},
-							);
 							const socket = this.props?.chatsSockets?.get?.(this.props?.currentChatData?.info?.id ?? '');
-							console.log('MessagingFooterBlock socket', { socket });
 							if (socket) {
 								socket.sendMessage(escapeHTML(this.props?.newMessageForm?.fields.message));
 								FocusManager.set(getFocusData());
@@ -133,18 +125,11 @@ export class MessagingFooterBlock extends Block {
 
 		Store.on(StoreEvents.Updated, (...args) => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State MessagingFooterBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					if (isArray(args, true)) {
 						const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
-						console.log('Store Updated MessagingFooterBlock check: ', {
-							stateKey,
-							c: stateKey in newState,
-						});
 						if (stateKey && stateKey in newState) {
 							const targetField = newState[stateKey];
 							this.setProps({ [stateKey]: targetField });
@@ -156,13 +141,11 @@ export class MessagingFooterBlock extends Block {
 					}
 				}
 			}
-
 			state = newState;
 		});
 	}
 
 	override render(): string {
-		console.log('Render MessagingFooterBlock', this);
 		return compile(template, this.props);
 	}
 }

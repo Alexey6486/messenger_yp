@@ -22,4 +22,7 @@ export {
 	PROMISE_STATUS,
 	BASE_API,
 	BASE_IMG_URL,
+	WS_BASE_URL,
+	MSG_OFFSET,
+	SCK_PING,
 } from './api';

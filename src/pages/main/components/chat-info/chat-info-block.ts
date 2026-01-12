@@ -31,22 +31,17 @@ export class ChatInfoBlock extends Block {
 
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State ChatInfoBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					this.setProps(newState);
 				}
 			}
-
 			state = newState;
 		});
 	}
 
 	override render(): string {
-		console.log('Render ChatInfoBlock', this);
 		return compile(template, this.props);
 	}
 }

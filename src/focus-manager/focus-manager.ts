@@ -13,7 +13,6 @@ class FocusManager {
 	}
 
 	public set(value: ICurrentFocus) {
-		console.log('FocusManager set: ', { value });
 		this.state = value;
 	}
 }

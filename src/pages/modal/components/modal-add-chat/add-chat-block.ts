@@ -157,15 +157,9 @@ export class ModalAddChatBlock extends Block {
 						});
 
 						const modalAddChatForm: TNullable<IFormState<IAddChatModalForm>> | undefined = pageProps?.modalAddChatForm as BlockProps['modalAddChatForm'];
-						console.log({ pageProps, t: this });
 
-						if (
-							modalAddChatForm
-							&& modalAddChatForm.errors
-						) {
+						if (modalAddChatForm && modalAddChatForm.errors) {
 							const errorsList = Object.values(modalAddChatForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList });
-
 							if (errorsList.length) {
 								const { modalAddChatForm: { errors, fields } } = pageProps;
 								Store.set(
@@ -176,7 +170,6 @@ export class ModalAddChatBlock extends Block {
 									StoreEvents.Updated_modal,
 								);
 							} else {
-								console.log('Add chat form submit: ', this.props?.modalAddChatForm?.fields ?? '');
 								this.props?.onSubmit?.(
 									event,
 									this.props?.modalAddChatForm?.fields,
@@ -191,13 +184,11 @@ export class ModalAddChatBlock extends Block {
 	}
 
 	override componentWillUnmount() {
-		console.log(this);
 		Store.set('modalAddChatForm', cloneDeep(INIT_ADD_CHAT_STATE), 'modalAddChatForm' as BlockProps, true);
 		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
 	override render(): string {
-		console.log('Render ModalAddChat', this);
 		return compile(template, this.props);
 	}
 }

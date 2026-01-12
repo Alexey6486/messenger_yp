@@ -185,14 +185,10 @@ export abstract class Block {
 
 		if (this.childrenList) {
 			const element = temp.content.getElementById(IDS.COMMON.COMPONENTS_LIST);
-			console.log('Block _render childrenList: ', { element, t: this });
-
 			if (element) {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
 				Object.values(this.childrenList).forEach((instance) => {
-					console.log('Block render childrenList instance: ', { instance });
-
 					instance.forEach(item => {
 						children = [...children, item.getContent()];
 					});
@@ -257,7 +253,6 @@ export abstract class Block {
 	}
 
 	setChildrenList(childrenList: IChildren<Block[]>) {
-		console.log('Block setChildrenList: ', childrenList);
 		if (!childrenList) {
 			return;
 		}
@@ -266,7 +261,6 @@ export abstract class Block {
 	}
 
 	setProps(nextProps: BlockProps) {
-		console.log('Block setProps: ', nextProps);
 		if (!nextProps) {
 			return;
 		}
@@ -282,7 +276,6 @@ export abstract class Block {
 				return target[p];
 			},
 			set(target: IChildren<Block[]>, p: string, newValue: Block[]) {
-				console.log('_makeChildrenListProxy set: ', { target, p, newValue });
 				const oldTarget = { ...target };
 
 				target[p] = newValue;
@@ -311,7 +304,6 @@ export abstract class Block {
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
 			set(target: BlockProps, p: keyof BlockProps, newValue) {
-				console.log('Block setProps: ', { target, p, newValue });
 				const oldTarget = { ...target };
 
 				if (
@@ -348,7 +340,6 @@ export abstract class Block {
 				return true;
 			},
 			deleteProperty() {
-				// throw new Error('No access');
 				return false;
 			},
 		});
@@ -398,7 +389,6 @@ export abstract class Block {
 			title,
 			onSubmit,
 		});
-		console.log('Block createModal: ', { contentId, title, modal, t: this });
 
 		if (this?.props?.container) {
 			const content = modal.getContent();

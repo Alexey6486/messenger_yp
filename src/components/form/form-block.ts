@@ -28,7 +28,6 @@ export class FormBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render FormBlock', this);
 		return compile(template, this.props);
 	}
 }

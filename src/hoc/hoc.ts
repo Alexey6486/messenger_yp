@@ -24,15 +24,11 @@ export function connect(
 				});
 
 				Store.on(storeEvent, (...args) => {
-					console.log('ARGS', args);
 					const newState = mapStateToProps(Store.getState());
 					const isEqualCheck = isEqual(state, newState);
-					console.log('State Connect: ', { isEqualCheck, state, newState, t: this });
-
 					if (!isEqualCheck) {
 						if (isArray(args, true)) {
 							const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
-							console.log('Connect check: ', { stateKey, c: stateKey in newState });
 							if (stateKey && stateKey in newState) {
 								const targetField = newState[stateKey];
 								this.setProps({ [stateKey]: targetField });

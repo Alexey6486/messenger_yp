@@ -60,8 +60,6 @@ export class ChatUserBlock extends Block {
 
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State ChatUserBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					this.setProps(newState);
 				}
@@ -72,7 +70,6 @@ export class ChatUserBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ChatUserBlock', this);
 		return compile(template, this.props);
 	}
 }

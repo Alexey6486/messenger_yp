@@ -8,8 +8,6 @@ const url = '/api/v2/user/';
 
 export class UserAPI {
 	public profile(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('UserAPI.profile options: ', { options });
-
 		return authAPIInstance.put(
 			`${ url }profile`,
 			{
@@ -20,14 +18,11 @@ export class UserAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('UserAPI.profile resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public avatar(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('UserAPI.avatar options: ', { options });
-
 		return authAPIInstance.put(
 			`${ url }profile/avatar`,
 			{
@@ -35,14 +30,11 @@ export class UserAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('UserAPI.avatar resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public password(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('UserAPI.password options: ', { options });
-
 		return authAPIInstance.put(
 			`${ url }password`,
 			{
@@ -53,14 +45,11 @@ export class UserAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('UserAPI.password resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public search(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('UserAPI.search options: ', { options });
-
 		return authAPIInstance.post(
 			`${ url }search`,
 			{
@@ -71,7 +60,6 @@ export class UserAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('UserAPI.search resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}

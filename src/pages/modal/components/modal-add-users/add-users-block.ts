@@ -155,7 +155,6 @@ export class ModalAddUsersBlock extends Block {
 											event.preventDefault();
 											event.stopImmediatePropagation();
 
-											console.log('ModalAddUsersBlock onClick: ', { actionId, props });
 											if (actionId === IDS.CHAT_USER.ADD) {
 												Store.set(
 													'addUsersList',
@@ -206,7 +205,6 @@ export class ModalAddUsersBlock extends Block {
 										event.preventDefault();
 										event.stopImmediatePropagation();
 
-										console.log('ModalAddUsersBlock onClick: ', { actionId });
 										if (actionId === IDS.CHAT_USER.REMOVE && data.addUsersList) {
 											Store.set(
 												'addUsersList',
@@ -232,7 +230,6 @@ export class ModalAddUsersBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						console.log('Add users form submit: ', this.props);
 						this.props?.onSubmit?.(
 							event,
 							isArray(this.props.addUsersList, true)
@@ -263,7 +260,6 @@ export class ModalAddUsersBlock extends Block {
 	}
 
 	override componentWillUnmount() {
-		console.log('ModalAddUsersBlock componentWillUnmount: ', this);
 		Store.set('modalAddUsersForm', cloneDeep(INIT_ADD_USERS_STATE), 'modalAddUsersForm' as BlockProps, true);
 		Store.set('searchUsersList', null, 'searchUsersList' as BlockProps, true);
 		Store.set('addUsersList', null, 'addUsersList' as BlockProps, true);
@@ -272,7 +268,6 @@ export class ModalAddUsersBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render ModalAddUsersBlock', this, Store);
 		return compile(template, this.props);
 	}
 }

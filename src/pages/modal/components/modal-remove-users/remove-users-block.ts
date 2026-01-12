@@ -62,7 +62,6 @@ export class ModalRemoveUsersBlock extends Block {
 											event.preventDefault();
 											event.stopImmediatePropagation();
 
-											console.log('ModalAddUsersBlock onClick: ', { actionId, props });
 											if (actionId === IDS.CHAT_USER.REMOVE) {
 												Store.set(
 													'currentChatData',
@@ -105,7 +104,6 @@ export class ModalRemoveUsersBlock extends Block {
 									event.preventDefault();
 									event.stopImmediatePropagation();
 
-									console.log('ModalAddUsersBlock onClick: ', { actionId, props });
 									if (actionId === IDS.CHAT_USER.REMOVE) {
 										Store.set(
 											'currentChatData',
@@ -135,12 +133,10 @@ export class ModalRemoveUsersBlock extends Block {
 	}
 
 	override componentWillUnmount() {
-		console.log('ModalRemoveUsersBlock componentWillUnmount: ', this);
 		Store.clearTargetSubs(StoreEvents.Updated_modal);
 	}
 
 	override render(): string {
-		console.log('Render ModalRemoveUsersBlock', this, Store);
 		return compile(template, this.props);
 	}
 }

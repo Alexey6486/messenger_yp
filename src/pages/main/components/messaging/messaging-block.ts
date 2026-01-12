@@ -90,11 +90,8 @@ export class MessagingBlock extends Block {
 
 		Store.on(StoreEvents.Updated, (...args) => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('Store MessagingBlock: ', { isEqualCheck, state, newState, t: this, args });
-
 				if (!isEqualCheck) {
 					if (isArray(args, true)) {
 						const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
@@ -111,7 +108,6 @@ export class MessagingBlock extends Block {
 					}
 				}
 			}
-
 			state = newState;
 		});
 	}
