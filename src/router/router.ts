@@ -97,7 +97,7 @@ export class Router {
 	start() {
 		window.onpopstate = ((event: PopStateEvent) => {
 			if (event.currentTarget instanceof Window) {
-				this._onRoute(event.currentTarget.location.hash);
+				this._onRoute(event.currentTarget.location.pathname);
 			}
 		}).bind(this);
 
@@ -105,7 +105,7 @@ export class Router {
 			AuthController.logout();
 		}).bind(this);
 
-		this._onRoute(window.location.hash);
+		this._onRoute(window.location.pathname);
 	}
 
 	_onRoute(pathname: string) {
