@@ -33,7 +33,7 @@ export default defineConfig({
 		port: 3000,
 		open: true,
 	},
-	base: '/messenger_yp/',
+	base: process.env.VITE_BASE || '/',
 	build: {
 		outDir: 'dist',
 		sourcemap: true,
