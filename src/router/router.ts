@@ -94,9 +94,14 @@ export class Router {
 		return this;
 	}
 
+// 	window.addEventListener('hashchange', () => {
+// 	const route = window.location.hash.slice(1); // Remove '#'
+// 	// Handle route: e.g., render 'about' page
+// });
 	start() {
 		window.onpopstate = ((event: PopStateEvent) => {
 			if (event.currentTarget instanceof Window) {
+				console.log(event.currentTarget.location);
 				this._onRoute(event.currentTarget.location.pathname);
 			}
 		}).bind(this);
@@ -104,7 +109,7 @@ export class Router {
 		window.onpagehide = (() => {
 			AuthController.logout();
 		}).bind(this);
-
+		console.log(window.location);
 		this._onRoute(window.location.pathname);
 	}
 
