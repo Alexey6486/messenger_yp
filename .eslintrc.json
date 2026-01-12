@@ -28,7 +28,8 @@
 					"UPPER_CASE",
 					"PascalCase",
 					"snake_case"
-				]
+				],
+				"leadingUnderscore": "allow"
 			},
 			{
 				"selector": "typeLike",

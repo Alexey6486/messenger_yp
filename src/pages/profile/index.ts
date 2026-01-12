@@ -1,1 +1,4 @@
-export { ProfileBlock } from './profile-block';
+export {
+	ProfilePage,
+	mapUserToPropsProfile,
+} from './connect-profile';

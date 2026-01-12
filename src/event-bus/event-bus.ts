@@ -1,5 +1,4 @@
 import type {
-	BlockProps,
 	TEbCallback,
 	TEbListener,
 } from '@/types';
@@ -21,7 +20,7 @@ export class EventBus {
 
 	off(event: string, callback: TEbCallback) {
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${event}`);
+			throw new Error(`Нет события: ${ event }`);
 		} else {
 			this.listeners[event] = this.listeners[event].filter(
 				listener => listener !== callback,
@@ -29,13 +28,21 @@ export class EventBus {
 		}
 	}
 
-	emit(event: string, ...args: BlockProps[]): void {
+	emit(event: string, ...args: unknown[]): void {
 		if (!Array.isArray(this.listeners[event])) {
-			throw new Error(`Нет события: ${event}`);
+			throw new Error(`Нет события: ${ event }`);
 		} else {
 			this.listeners[event].forEach((listener: TEbCallback) => {
 				listener(...args);
 			});
 		}
+	}
+
+	clearAllSubs() {
+		this.listeners = {};
+	}
+
+	clearTargetSubs(storeEvent: string) {
+		delete this.listeners[storeEvent];
 	}
 }

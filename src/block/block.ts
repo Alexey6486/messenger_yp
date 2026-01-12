@@ -1,16 +1,14 @@
 import { EventBus } from '@/event-bus';
+import { FocusManager } from '@/focus-manager';
 import * as Pages from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
 	IChildren,
-	IFormState,
-	IInputChangeParams,
-	Nullable,
+	TNullable,
 } from '@/types';
-import {
-	IEbEvents,
-} from '@/types';
+import { IEbEvents } from '@/types';
+import { isEmpty } from '@/utils';
 
 export abstract class Block {
 	static EVENTS = {
@@ -21,12 +19,12 @@ export abstract class Block {
 		FLOW_RENDER: IEbEvents.FLOW_RENDER,
 	} as const;
 
-	_element: Nullable<Element | HTMLElement | HTMLInputElement> = null;
+	_element: TNullable<Element | HTMLElement | HTMLInputElement> = null;
 	props: BlockProps;
 	children: IChildren<Block>;
-	childrenList: IChildren<Block>;
+	childrenList: IChildren<Block[]>;
 	allInstances: IChildren<Block>;
-	protected eventBus: () => EventBus;
+	eventBus: () => EventBus;
 
 	/** JSDoc
 	 * @param {BlockProps} props
@@ -37,8 +35,8 @@ export abstract class Block {
 		const { children_part, children_list_part, all_instances_part, props_part } = this._getPropsParts(props);
 
 		this.props = this._makePropsProxy({ ...props_part });
+		this.childrenList = this._makeChildrenListProxy({ ...children_list_part });
 		this.children = children_part;
-		this.childrenList = children_list_part;
 		this.allInstances = all_instances_part;
 
 		const eventBus = new EventBus();
@@ -53,7 +51,7 @@ export abstract class Block {
 
 	private _getPropsParts(props: BlockProps) {
 		const children_part: Record<string, Block> = {};
-		const children_list_part: Record<string, Block> = {};
+		const children_list_part: Record<string, Block[]> = {};
 		const all_instances_part: Record<string, Block> = {};
 		const props_part: BlockProps = {};
 
@@ -66,12 +64,7 @@ export abstract class Block {
 					}
 				});
 			} else if (props_name === 'childrenList' && Array.isArray(value)) {
-				value.forEach((instance) => {
-					if (instance.props.id) {
-						children_list_part[instance.props.id] = instance;
-						all_instances_part[instance.props.id] = instance;
-					}
-				});
+				children_list_part[props_name] = value;
 			} else {
 				props_part[props_name as keyof BlockProps] = value;
 			}
@@ -143,15 +136,19 @@ export abstract class Block {
 		return true;
 	}
 
-	private _componentWillUnmount(props: BlockProps) {
+	componentWillUnmount(): void {
+	}
+
+	private _componentWillUnmount() {
+		this.componentWillUnmount();
 		this._removeEvents();
 		if (this._element && this._element.parentNode && 'removeChild' in this._element.parentNode) {
 			this._element.parentNode.removeChild(this._element);
 			this._element = null;
 		}
 
-		if (this.allInstances) {
-			const childrenInstancesList = Object.values(this.allInstances);
+		if (!isEmpty(this.children)) {
+			const childrenInstancesList = Object.values(this.children);
 
 			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
 				childrenInstancesList.forEach(child => {
@@ -160,8 +157,13 @@ export abstract class Block {
 			}
 		}
 
-		if (props?.page) {
-			this?.props?.changePage?.(props.page);
+		if (!isEmpty(this.childrenList)) {
+			const childrenInstancesList = Object.values(this.childrenList);
+			if (Array.isArray(childrenInstancesList) && childrenInstancesList.length) {
+				childrenInstancesList.forEach(child => {
+					child.forEach((el) => el.dispatchComponentWillUnmount());
+				});
+			}
 		}
 	}
 
@@ -183,14 +185,14 @@ export abstract class Block {
 
 		if (this.childrenList) {
 			const element = temp.content.getElementById(IDS.COMMON.COMPONENTS_LIST);
-
 			if (element) {
 				let children: Array<Element | HTMLElement | HTMLInputElement> = [];
 
 				Object.values(this.childrenList).forEach((instance) => {
-					children = [...children, instance.getContent()];
+					instance.forEach(item => {
+						children = [...children, item.getContent()];
+					});
 				});
-
 				element.replaceWith(...children);
 			}
 		}
@@ -204,7 +206,32 @@ export abstract class Block {
 
 		this._addEvents();
 		this._addAttributes();
-		this._setFocus();
+		const { element: focusElement, selectionStart } = FocusManager.getState();
+		if (this.element === focusElement?.element) {
+			this._setFocus(selectionStart);
+		}
+
+		if (this.props.id === 'main-messaging-block') {
+			setTimeout(() => {
+				document?.getElementById?.('main-messaging-block')?.scroll?.({ top: document?.getElementById?.('main-messaging-block')?.scrollHeight });
+			}, 0);
+		}
+	}
+
+	private _setFocus(selectionStart: TNullable<number>) {
+		if (this._element instanceof HTMLInputElement) {
+			setTimeout(() => {
+				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
+					this._element.focus();
+					if (selectionStart !== null) {
+						this._element.setSelectionRange(
+							selectionStart,
+							selectionStart,
+						);
+					}
+				}
+			}, 0);
+		}
 	}
 
 	render(): string {
@@ -218,12 +245,54 @@ export abstract class Block {
 		return this.element;
 	}
 
+	clearChildrenList() {
+		Object.entries(this.childrenList).forEach((entry) => {
+			const [key] = entry;
+			delete this.childrenList[key];
+		});
+	}
+
+	setChildrenList(childrenList: IChildren<Block[]>) {
+		if (!childrenList) {
+			return;
+		}
+
+		Object.assign(this.childrenList, childrenList);
+	}
+
 	setProps(nextProps: BlockProps) {
 		if (!nextProps) {
 			return;
 		}
 
 		Object.assign(this.props, nextProps);
+	}
+
+	private _makeChildrenListProxy(props: IChildren<Block[]>) {
+		const self = this;
+
+		return new Proxy<IChildren<Block[]>>(props, {
+			get(target: IChildren<Block[]>, p: string) {
+				return target[p];
+			},
+			set(target: IChildren<Block[]>, p: string, newValue: Block[]) {
+				const oldTarget = { ...target };
+
+				target[p] = newValue;
+
+				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+				return true;
+			},
+			deleteProperty(target: IChildren<Block[]>, p: string) {
+				if (!(p in target)) {
+					throw new Error('Property not found');
+				}
+
+				target[p].forEach((el) => el.eventBus().emit(Block.EVENTS.FLOW_CWU));
+				delete target[p];
+				return true;
+			},
+		});
 	}
 
 	private _makePropsProxy(props: BlockProps) {
@@ -244,10 +313,11 @@ export abstract class Block {
 					|| p === 'userForm'
 					|| p === 'chatsSearchForm'
 					|| p === 'newMessageForm'
-					|| p === 'modalAddUserForm'
+					|| p === 'modalAddUsersForm'
+					|| p === 'modalAddChatForm'
 				) {
-					const errors = target[p]?.errors;
-					const fields = target[p]?.fields;
+					const errors = target[p]?.errors ?? {};
+					const fields = target[p]?.fields ?? {};
 
 					if (errors && fields) {
 						target[p] = {
@@ -270,14 +340,12 @@ export abstract class Block {
 				return true;
 			},
 			deleteProperty() {
-				// throw new Error('No access');
 				return false;
 			},
 		});
 	}
 
 	private _createDocumentElement(tagName: string) {
-		// Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
 		return document.createElement(tagName);
 	}
 
@@ -289,14 +357,6 @@ export abstract class Block {
 				(this._element as Element).setAttribute(key, value as string);
 			});
 		}
-	}
-
-	setAttributes(attr: Record<string, string | boolean>): void {
-		Object.entries(attr).forEach(([key, value]) => {
-			if (this._element) {
-				this._element.setAttribute(key, value as string);
-			}
-		});
 	}
 
 	toggleClassList(className: string, elementId?: string): void {
@@ -319,148 +379,23 @@ export abstract class Block {
 		}
 	}
 
-	removeAttributes(attrName: string): void {
-		if (this._element && attrName) {
-			this._element.removeAttribute(attrName);
-		}
-	}
-
-	show() {
-		const content = this.getContent();
-		if (content && 'style' in content) {
-			content.style.display = 'block';
-		}
-	}
-
-	hide() {
-		const content = this.getContent();
-		if (content && 'style' in content) {
-			content.style.display = 'none';
-		}
-	}
-
-	/** getChildrenToUpdate собирает для обновления все инстансы, указынных компонент
-	 * @param {IChildren<Block>} children
-	 * @param {string[]} idsList
-	 * @param {IChildren<Block>} childrenBlocks
-	 *
-	 * @returns {IChildren<Block>}
-	 */
-	private _getChildrenToUpdate(
-		children: IChildren<Block>, idsList: string[], childrenBlocks?: IChildren<Block>,
-	): IChildren<Block> {
-		const targetChildren: IChildren<Block> = childrenBlocks || {};
-
-		Object.entries(children).forEach(([id, instance]) => {
-			if (idsList.includes(id)) {
-				targetChildren[id] = instance;
-
-				if (instance.allInstances) {
-					return this._getChildrenToUpdate(instance.allInstances, idsList, targetChildren);
-				}
-			}
-		});
-
-		return targetChildren;
-	}
-
-	/** onFormInputChange функция для работы с полями форм, по id дочерних компонент (по отношению
-	 * к общей компоненте страницы) вызывает обновление пропсов setProps у целевых компонент,
-	 * зависящих/использующих эти данные (childrenIdList).
-	 * Последний вызов this.setProps, вызов обновления данных самой родительской компоненты.
-	 * (необходимо т.к. данные в пропсах дочерних компонент, которые пробрасываются от родителя, при изменении
-	 * только в самом родителе this.setProps не обновляются у дочерних компонент)
-	 * @param {string[]} childrenIdList список id компонент, которые используют данные input
-	 * @param {IInputChangeParams} params данные от компоненты input
-	 * @param {string} fieldName имя поля формы
-	 * @param {string} formName имя формы
-	 *
-	 * @returns {void}
-	 */
-	onFormInputChange(
-		params: IInputChangeParams,
-		childrenIdList: string[],
-		fieldName: string,
-		formName: string,
-	): void {
-		const { data, info } = params;
-		const { element, selectionStart = 0 } = info;
-
-		const targetChildren = this._getChildrenToUpdate(
-			this.allInstances,
-			childrenIdList,
-		);
-
-		childrenIdList.forEach((childId) => {
-			targetChildren[childId].setProps({
-				input_data: {
-					value: data.value ?? '',
-					error: data.error ?? '',
-					currentFocus: { element, selectionStart },
-				},
-			});
-		});
-
-		this.setProps({
-			[formName]: {
-				fields: { [fieldName]: data.value },
-				errors: { [fieldName]: data.error ?? '' },
-			},
-		} as BlockProps);
-	}
-
-	protected toggleInputsDisable() {
-		Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
-			if (fieldId.includes('field')) {
-				Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-					if (inputId.includes('input')) {
-						inputInstance.setProps({
-							isDisabled: !inputInstance.props.isDisabled,
-						});
-					}
-				});
-			}
-		});
-	}
-
-	private _setFocus() {
-		if (this.props?.input_data?.currentFocus?.element && this._element instanceof HTMLInputElement) {
-			setTimeout(() => {
-				if (this._element && 'focus' in this._element && 'setSelectionRange' in this._element) {
-					this._element.focus();
-					if (
-						this?.props?.input_data
-						&& this?.props?.input_data?.currentFocus
-						&& this.props.input_data.currentFocus?.selectionStart !== null
-					) {
-						this._element.setSelectionRange(
-							this.props.input_data.currentFocus.selectionStart,
-							this.props.input_data.currentFocus.selectionStart,
-						);
-					}
-				}
-			}, 0);
-		}
-	}
-
-	protected createModal<T>(
-		contentId: keyof BlockProps,
-		contentForms: Record<string, IFormState<T>>,
+	createModal(
+		contentId: string,
 		title: string,
+		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {
-		const modal = new Pages.ModalBlock<T>({
+		const modal = new Pages.ModalBlock({
 			contentId,
-			contentForms,
 			title,
-			error: '',
+			onSubmit,
 		});
 
-		if (this?.props?.appElement) {
+		if (this?.props?.container) {
 			const content = modal.getContent();
 
 			if (content) {
-				if (this?.props?.appElement?.parentNode) {
-					this.props.appElement.parentNode.appendChild(content);
+				if (this?.props?.container?.parentNode) {
+					this.props.container.parentNode.appendChild(content);
 					modal.dispatchComponentDidMount();
 				}
 			}

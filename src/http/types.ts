@@ -1,4 +1,4 @@
-import type { Nullable } from '@/types';
+import type { TNullable } from '@/types';
 
 export enum ERequestMethods {
 	GET = 'GET',
@@ -9,6 +9,7 @@ export enum ERequestMethods {
 
 export interface IRequestOptions {
 	method: ERequestMethods;
-	data?: Nullable<Document | XMLHttpRequestBodyInit>;
+	data?: TNullable<Document | XMLHttpRequestBodyInit>;
 	headers?: Record<string, string>;
+	credentials?: string;
 }

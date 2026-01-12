@@ -1,1 +1,4 @@
-export { ErrorBlock } from './error-block';
+export {
+	ErrorPage,
+	mapUserToPropsError,
+} from './connect-error';
