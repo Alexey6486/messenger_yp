@@ -36,8 +36,8 @@ export default defineConfig({
 	},
 	base: '/',
 	build: {
-		// outDir: 'dist',
-		// sourcemap: true,
+		outDir: 'dist',
+		sourcemap: true,
 		rollupOptions: {
 			input: {
 				main: resolve(__dirname, 'index.html'),
