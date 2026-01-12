@@ -9,9 +9,9 @@ export const PAGES: Record<string, TPages> = {
 };
 
 export const PAGES_URL: Record<string, string> = {
-	AUTHORIZATION: '/',
-	REGISTRATION: '/sign-up',
-	MAIN: '/messenger',
-	PROFILE: '/setting',
-	NOT_FOUND: '/404',
+	AUTHORIZATION: '/messenger_yp/',
+	REGISTRATION: '/messenger_yp/sign-up',
+	MAIN: '/messenger_yp/messenger',
+	PROFILE: '/messenger_yp/setting',
+	NOT_FOUND: '/messenger_yp/404',
 };
