@@ -110,7 +110,7 @@ export class Router {
 
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
-		const isAuthed = Boolean(sessionStorage.getItem(STORAGE_KEY));
+		const isAuthed = Boolean(localStorage.getItem(STORAGE_KEY));
 
 		if (
 			!isAuthed

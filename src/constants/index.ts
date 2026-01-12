@@ -25,4 +25,5 @@ export {
 	WS_BASE_URL,
 	MSG_OFFSET,
 	SCK_PING,
+	USER_LOGGED_IN,
 } from './api';

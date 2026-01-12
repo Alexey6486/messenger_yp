@@ -16,7 +16,7 @@ class UserController {
 	public async changeUserData(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
 			const result = await api.profile(options);
-			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
 			Store.set('userData', result, 'userData' as BlockProps);
 			Store.set('userForm.fields', result, 'userForm' as BlockProps);
 			Store.set('isDataEdit', false, 'isDataEdit' as BlockProps);
@@ -37,7 +37,7 @@ class UserController {
 	public async changeAvatar(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
 			const result = await api.avatar(options);
-			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
 			Store.set('userData', result, 'userData' as BlockProps);
 			Store.set('userForm.fields', result, 'userForm' as BlockProps);
 		} catch (e: unknown) {

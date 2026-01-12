@@ -549,6 +549,10 @@ export class RegistrationBlock extends Block {
 		});
 	}
 
+	override componentWillUnmount() {
+		Store.clearAllSubs();
+	}
+
 	override render(): string {
 		return compile(template, this.props);
 	}

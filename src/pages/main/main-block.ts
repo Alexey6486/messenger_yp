@@ -223,7 +223,7 @@ export class MainBlock extends Block {
 		const stateUser = Store.getState().userData;
 		let userId = stateUser?.id;
 		if (!stateUser || (stateUser && !stateUser.id)) {
-			const user: IUserResponse = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '');
+			const user: IUserResponse = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '');
 			userId = user.id;
 			Store.set('userData', user, 'userData' as BlockProps);
 		}
