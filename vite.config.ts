@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import * as path from 'path';
+import { resolve } from 'path';
 import postcssPresetEnv from 'postcss-preset-env';
 import handlebars from 'vite-plugin-handlebars';
 
@@ -37,5 +38,10 @@ export default defineConfig({
 	build: {
 		outDir: 'dist',
 		sourcemap: true,
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, 'index.html'),
+			},
+		},
 	},
 });
