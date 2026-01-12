@@ -23,8 +23,8 @@ class AuthController {
 			await api.signin(options);
 			await this.getMe();
 			if (router) {
-				Store.clearAllSubs();
 				Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
+				Store.clearAllSubs();
 				router.go(PAGES_URL.MAIN);
 			}
 		} catch (e: unknown) {
