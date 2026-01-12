@@ -34,10 +34,10 @@ export default defineConfig({
 		port: 3000,
 		open: true,
 	},
-	base: process.env.VITE_BASE || '/messenger_yp/',
+	base: '/',
 	build: {
-		outDir: 'dist',
-		sourcemap: true,
+		// outDir: 'dist',
+		// sourcemap: true,
 		rollupOptions: {
 			input: {
 				main: resolve(__dirname, 'index.html'),
