@@ -14,7 +14,7 @@ export class ModalErrorBlock extends Block {
 		super({
 			...props,
 			...state,
-			class: styles['modal-error'],
+			styles,
 			id: IDS.MODAL.CONTENT,
 			markup: {
 				[IDS.MODAL.MODAL_ERROR_BTN]: `<div id="${ IDS.MODAL.MODAL_ERROR_BTN }"></div>`,

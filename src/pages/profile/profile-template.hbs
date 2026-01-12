@@ -12,7 +12,7 @@
 							Поменять аватар
 						</div>
 						{{#if userData.avatar.length}}
-							<img src="https://ya-praktikum.tech/api/v2/resources{{userData.avatar}}" alt="avatar"/>
+							<img src="{{baseUrl}}{{userData.avatar}}" alt="avatar"/>
 						{{/if}}
 					</div>
 					<div class="{{styles.name}}">{{userData.first_name}}</div>

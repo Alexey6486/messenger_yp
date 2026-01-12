@@ -22,6 +22,7 @@ export class ModalRemoveUsersBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
+			styles,
 			id: IDS.MODAL.CONTENT,
 			events: {
 				submit: (e: Event) => {
@@ -140,6 +141,6 @@ export class ModalRemoveUsersBlock extends Block {
 
 	override render(): string {
 		console.log('Render ModalRemoveUsersBlock', this, Store);
-		return compile(template, { ...this.props, styles });
+		return compile(template, this.props);
 	}
 }

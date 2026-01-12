@@ -105,6 +105,7 @@ export const IDS: Record<string, Record<string, string>> = {
 		CHAT_INFO: 'modal-chat-info',
 		CHAT_INFO_USERS: 'modal-chat-info-users',
 		CHAT_AVATAR: 'modal-chat-avatar',
+		REMOVE_GROUP_BTN: 'modal-chat-remove',
 	},
 	COMMON: {
 		INPUT: 'input',

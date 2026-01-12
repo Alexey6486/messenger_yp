@@ -4,12 +4,12 @@ import type { RequestOptions } from 'http';
 import { responseHandler } from '@/utils';
 
 const chatAPIInstance = new HTTPTransport();
-const baseChatApi = '/api/v2/chats';
+const url = '/api/v2/chats';
 
 export class ChatAPI {
 	public getChats(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.get(
-			`${ baseChatApi }`,
+			`${ url }`,
 			{ ...options },
 		).then(resolve => {
 			console.log('ChatAPI.getChats resolve: ', { resolve });
@@ -18,14 +18,14 @@ export class ChatAPI {
 	}
 
 	public getChatToken(id: string): unknown {
-		return chatAPIInstance.post(`${ baseChatApi }/token/${ id }`).then(resolve => {
+		return chatAPIInstance.post(`${ url }/token/${ id }`).then(resolve => {
 			console.log('ChatAPI.getChatToken resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public unreadCounter(id: string): unknown {
-		return chatAPIInstance.get(`${ baseChatApi }/new/${ id }`).then(resolve => {
+		return chatAPIInstance.get(`${ url }/new/${ id }`).then(resolve => {
 			console.log('ChatAPI.unreadCounter resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
@@ -33,7 +33,7 @@ export class ChatAPI {
 
 	public createChat(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.post(
-			`${ baseChatApi }`,
+			`${ url }`,
 			{
 				...options,
 				headers: {
@@ -47,9 +47,25 @@ export class ChatAPI {
 		});
 	}
 
+	public deleteChat(options?: Partial<RequestOptions & IRequestOptions>) {
+		return chatAPIInstance.delete(
+			`${ url }`,
+			{
+				...options,
+				headers: {
+					'content-type': 'application/json',
+				},
+				credentials: 'include',
+			},
+		).then(resolve => {
+			console.log('ChatAPI.deleteChat resolve: ', { resolve });
+			return responseHandler(resolve);
+		});
+	}
+
 	public addUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.put(
-			`${ baseChatApi }/users`,
+			`${ url }/users`,
 			{
 				...options,
 				headers: {
@@ -64,7 +80,7 @@ export class ChatAPI {
 	}
 
 	public getChatUsers(chatId: string) {
-		return chatAPIInstance.get(`${ baseChatApi }/${ chatId }/users`).then(resolve => {
+		return chatAPIInstance.get(`${ url }/${ chatId }/users`).then(resolve => {
 			console.log('ChatAPI.getChatUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
@@ -72,7 +88,7 @@ export class ChatAPI {
 
 	public deleteUsers(options?: Partial<RequestOptions & IRequestOptions>) {
 		return chatAPIInstance.delete(
-			`${ baseChatApi }/users`,
+			`${ url }/users`,
 			{
 				...options,
 				headers: {
@@ -90,7 +106,7 @@ export class ChatAPI {
 		console.log('ChatAPI.avatar options: ', { options });
 
 		return chatAPIInstance.put(
-			`${ baseChatApi }/avatar`,
+			`${ url }/avatar`,
 			{
 				...options,
 				credentials: 'include',

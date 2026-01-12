@@ -1,4 +1,4 @@
-.add-modal-form {
+.modal-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -8,7 +8,7 @@
 	}
 }
 
-.chat-user-list {
+.modal-chat-user-list {
 	position: absolute;
 	top: 70px;
 	left: 0;
@@ -16,7 +16,7 @@
 	box-shadow: var(--shadow-btn);
 }
 
-.new-users-list {
+.modal-new-users-list {
 	display: flex;
 	flex-direction: column;
 	max-height: 200px;
@@ -24,7 +24,7 @@
 	margin-bottom: 20px;
 }
 
-.no-users {
+.modal-no-users {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -32,16 +32,16 @@
 	width: 100%;
 }
 
-.chat-info {
+.modal-chat-info {
 	display: flex;
 	flex-direction: column;
 
-	& > .chat-info-avatar {
+	& > .modal-chat-info-avatar {
 		font-weight: 400;
 		margin: 0 auto;
 	}
 
-	& > .chat-info-title {
+	& > .modal-chat-info-title {
 		display: flex;
 		justify-content: center;
 		font-weight: bold;
@@ -55,5 +55,13 @@
 		overflow: auto;
 		width: 100%;
 		font-weight: 400;
+	}
+}
+
+.modal-chat-remove {
+	margin: 20px auto 20px;
+
+	& > button {
+
 	}
 }

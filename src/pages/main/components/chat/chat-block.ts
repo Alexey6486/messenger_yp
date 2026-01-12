@@ -8,6 +8,7 @@ import {
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
+import { BASE_IMG_URL } from '@/constants';
 import template from './chat-template';
 
 export class ChatBlock extends Block {
@@ -17,6 +18,7 @@ export class ChatBlock extends Block {
 		super({
 			...props,
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
+			baseUrl: BASE_IMG_URL,
 			events: {
 				click: (e: Event) => {
 					e.preventDefault();

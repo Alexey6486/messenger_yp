@@ -8,7 +8,7 @@ import {
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
-import { IDS } from '@/constants';
+import { IDS, BASE_IMG_URL } from '@/constants';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import {
 	SvgCross,
@@ -24,6 +24,7 @@ export class ChatUserBlock extends Block {
 		super({
 			...props,
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
+			baseUrl: BASE_IMG_URL,
 			markup: {
 				[IDS.CHAT_USER.ADD]: `<div id="${ IDS.CHAT_USER.ADD }"></div>`,
 				[IDS.CHAT_USER.REMOVE]: `<div id="${ IDS.CHAT_USER.REMOVE }"></div>`,

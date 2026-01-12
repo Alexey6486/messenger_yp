@@ -59,6 +59,7 @@ export interface BlockProps {
 	direction?: string;
 	icon?: string;
 	href?: string;
+	baseUrl?: string;
 	ariaLabel?: string;
 	tooltip?: string;
 	target?: string;

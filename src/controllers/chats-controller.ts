@@ -132,6 +132,16 @@ class ChatsController {
 		}
 	}
 
+	public async deleteChat(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
+		try {
+			const result = await api.deleteChat(options);
+			console.log('ChatController.deleteChat result: ', { result });
+		} catch (e: unknown) {
+			console.log('ChatController.deleteChat Error: ', { e });
+			handleRequestError(e, instance);
+		}
+	}
+
 	public async getChatUsers(chat: IChat, instance?: Block) {
 		try {
 			const result = await api.getChatUsers(chat.id) as IChatUserResponse[];

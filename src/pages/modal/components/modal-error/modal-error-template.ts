@@ -1,5 +1,5 @@
 export default `
-<div class="{{class}}" id="{{id}}">
+<div class="{{styles.modal-error}}" id="{{id}}">
 <div>
 <div>{{ modalError.code }}</div>
 <div>{{ modalError.text }}</div>

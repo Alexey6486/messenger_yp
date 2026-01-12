@@ -8,7 +8,6 @@ import {
 	getFocusData,
 } from '@/focus-manager';
 import {
-	CLASSES,
 	IDS,
 } from '@/constants';
 import {
@@ -24,15 +23,10 @@ import type {
 	IInputChangeParams,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
-import { DropDownBlock } from '@/components/drop-down/drop-down-block';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
 import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
 import { InputBlock } from '@/components/input/input-block';
 import {
 	SvgArrowRight,
-	SvgCenter,
-	SvgFile,
-	SvgPhoto,
 } from '@/components/icons';
 import template from './messaging-footer-template';
 
@@ -44,50 +38,10 @@ export class MessagingFooterBlock extends Block {
 			...props,
 			...(props?.mapStateToProps && props.mapStateToProps(Store.getState())),
 			markup: {
-				[IDS.MAIN.MESSAGING_DD_FOOTER]: `<div id="${ IDS.MAIN.MESSAGING_DD_FOOTER }"></div>`,
 				[IDS.MAIN.SEND_MESSAGE_BTN]: `<div id="${ IDS.MAIN.SEND_MESSAGE_BTN }"></div>`,
 				[IDS.MAIN.NEW_MESSAGE_INPUT]: `<div id="${ IDS.MAIN.NEW_MESSAGE_INPUT }"></div>`,
 			},
 			children: {
-				[IDS.MAIN.MESSAGING_DD_FOOTER]: new DropDownBlock({
-					id: IDS.MAIN.MESSAGING_DD_FOOTER,
-					direction: 'top right',
-					childrenList: [
-						new DropDownOptionBlock({
-							id: IDS.MAIN.MAIN_ADD_PHOTO_OPTION,
-							icon: SvgPhoto,
-							text: 'Фото или видео',
-							onClick: (event: Event) => {
-								event.preventDefault();
-								event.stopPropagation();
-
-								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_FOOTER);
-							},
-						}),
-						new DropDownOptionBlock({
-							id: IDS.MAIN.MAIN_ADD_FILE_OPTION,
-							icon: SvgFile,
-							text: 'Файл',
-							onClick: (event: Event) => {
-								event.preventDefault();
-								event.stopPropagation();
-
-								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_FOOTER);
-							},
-						}),
-						new DropDownOptionBlock({
-							id: IDS.MAIN.MAIN_ADD_LOCATION_OPTION,
-							icon: SvgCenter,
-							text: 'Локация',
-							onClick: (event: Event) => {
-								event.preventDefault();
-								event.stopPropagation();
-
-								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_FOOTER);
-							},
-						}),
-					],
-				}),
 				[IDS.MAIN.SEND_MESSAGE_BTN]: new ButtonRoundBlock({
 					id: IDS.MAIN.SEND_MESSAGE_BTN,
 					type: 'submit',

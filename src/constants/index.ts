@@ -20,4 +20,6 @@ export * from './validation';
 export {
 	STORAGE_KEY,
 	PROMISE_STATUS,
+	BASE_API,
+	BASE_IMG_URL,
 } from './api';

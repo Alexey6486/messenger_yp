@@ -4,14 +4,14 @@ import type { RequestOptions } from 'http';
 import { responseHandler } from '@/utils';
 
 const authAPIInstance = new HTTPTransport();
-const baseApi = '/api/v2/auth/';
+const url = '/api/v2/auth/';
 
 export class AuthAPI {
 	public signin(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('AuthAPI.signin options: ', { options });
 
 		return authAPIInstance.post(
-			`${ baseApi }signin`,
+			`${ url }signin`,
 			{
 				...options,
 				headers: {
@@ -26,14 +26,14 @@ export class AuthAPI {
 	}
 
 	public logout() {
-		return authAPIInstance.post(`${ baseApi }logout`).then(resolve => {
+		return authAPIInstance.post(`${ url }logout`).then(resolve => {
 			console.log('AuthAPI.logout resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public user() {
-		return authAPIInstance.get(`${ baseApi }user`).then(resolve => {
+		return authAPIInstance.get(`${ url }user`).then(resolve => {
 			console.log('AuthAPI.user resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
@@ -43,7 +43,7 @@ export class AuthAPI {
 		console.log('AuthAPI.signup: ', { options });
 
 		return authAPIInstance.post(
-			`${ baseApi }signup`,
+			`${ url }signup`,
 			{
 				...options,
 				headers: {

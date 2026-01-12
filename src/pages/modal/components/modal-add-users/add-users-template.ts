@@ -1,12 +1,12 @@
 export default `
-<div class="{{styles.add-modal-form}}" id="{{id}}">
+<div class="{{styles.modal-container}}" id="{{id}}">
 
 <form>
 {{{ markup.modal-add-user-field }}}
 </form>
 
 {{#if addUsersList.length}}
-<div class="{{styles.new-users-list}} {{styles.modal-ul-list}}">
+<div class="{{styles.modal-new-users-list}} {{styles.modal-ul-list}}">
 {{{ markup.modal-new-users-list }}}
 </div>
 {{/if}}
@@ -14,7 +14,7 @@ export default `
 {{{ markup.modal-add-user-submit }}}
 
 {{#if searchUsersList.length}}
-<div class="{{styles.chat-user-list}}">
+<div class="{{styles.modal-chat-user-list}}">
 {{{ markup.modal-add-user-list }}}
 </div>
 {{/if}}

@@ -12,6 +12,7 @@
 	--color-sh: rgb(0 0 0 / 20%);
 	--color-br: rgb(126 253 215 / 15%);
 	--shadow-btn: 0 1px 5px 1px var(--color-bp);
+	--shadow-btn-red: 0 1px 3px 0px rgba(244, 96, 96, 0.75);
 	--trns: 0.3s ease-in-out;
 }
 
@@ -81,6 +82,10 @@ h1, h2, h3, h4, h5, h6 {
 
 	&.red {
 		color: var(--color-er);
+
+		&:hover {
+			box-shadow: var(--shadow-btn-red);
+		}
 	}
 }
 
@@ -312,7 +317,7 @@ input {
 	left: 0;
 	z-index: 8000;
 
-	& > .modal-container {
+	& > .modal-wrapper {
 		padding: 30px 20px 20px;
 		box-shadow: var(--shadow-btn);
 		background-color: white;

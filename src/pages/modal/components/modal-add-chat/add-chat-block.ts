@@ -35,6 +35,7 @@ export class ModalAddChatBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,
+			styles,
 			id: IDS.MODAL.CONTENT,
 			events: {
 				submit: (e: Event) => {
@@ -197,6 +198,6 @@ export class ModalAddChatBlock extends Block {
 
 	override render(): string {
 		console.log('Render ModalAddChat', this);
-		return compile(template, { ...this.props, class: styles['add-modal-form'] });
+		return compile(template, this.props);
 	}
 }

@@ -9,6 +9,7 @@ import {
 	getFocusData,
 } from '@/focus-manager';
 import {
+	BASE_IMG_URL,
 	IDS,
 	INIT_PROFILE_USER_DATA_STATE,
 	INIT_PROFILE_USER_PASSWORD_STATE,
@@ -48,6 +49,7 @@ export class ProfileBlock extends Block {
 		super({
 			...props,
 			styles,
+			baseUrl: BASE_IMG_URL,
 			markup: {
 				[IDS.PROFILE.EMAIL_FIELD]: `<div id="${ IDS.PROFILE.EMAIL_FIELD }"></div>`,
 				[IDS.PROFILE.LOGIN_FIELD]: `<div id="${ IDS.PROFILE.LOGIN_FIELD }"></div>`,

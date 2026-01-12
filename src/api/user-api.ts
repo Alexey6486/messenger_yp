@@ -4,14 +4,14 @@ import type { RequestOptions } from 'http';
 import { responseHandler } from '@/utils';
 
 const authAPIInstance = new HTTPTransport();
-const baseApi = '/api/v2/user/';
+const url = '/api/v2/user/';
 
 export class UserAPI {
 	public profile(options?: Partial<RequestOptions & IRequestOptions>) {
 		console.log('UserAPI.profile options: ', { options });
 
 		return authAPIInstance.put(
-			`${ baseApi }profile`,
+			`${ url }profile`,
 			{
 				...options,
 				headers: {
@@ -29,7 +29,7 @@ export class UserAPI {
 		console.log('UserAPI.avatar options: ', { options });
 
 		return authAPIInstance.put(
-			`${ baseApi }profile/avatar`,
+			`${ url }profile/avatar`,
 			{
 				...options,
 				credentials: 'include',
@@ -44,7 +44,7 @@ export class UserAPI {
 		console.log('UserAPI.password options: ', { options });
 
 		return authAPIInstance.put(
-			`${ baseApi }password`,
+			`${ url }password`,
 			{
 				...options,
 				headers: {
@@ -62,7 +62,7 @@ export class UserAPI {
 		console.log('UserAPI.search options: ', { options });
 
 		return authAPIInstance.post(
-			`${ baseApi }search`,
+			`${ url }search`,
 			{
 				...options,
 				headers: {
