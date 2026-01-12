@@ -1,7 +1,10 @@
 import { isJsonString } from '@/utils';
 import { Store } from '@/store';
 import type { Block } from '@/block';
-import { IDS } from '@/constants';
+import {
+	IDS,
+	USER_LOGGED_IN,
+} from '@/constants';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (
@@ -46,11 +49,16 @@ export function handleRequestError(e: unknown, instance?: Block) {
 	if (isErrorWithMessage(e)) {
 		const error = JSON.parse(e.message);
 		if (instance) {
-			Store.set('modalError', { ...error });
-			instance.createModal(
-				IDS.MODAL.MODAL_ERROR,
-				'Ошибка',
-			);
+			if (error.code === 400 && error.text === 'User already in system') {
+				return USER_LOGGED_IN;
+			} else {
+				Store.set('modalError', { ...error });
+				instance.createModal(
+					IDS.MODAL.MODAL_ERROR,
+					'Ошибка',
+				);
+				return '';
+			}
 		}
 	} else {
 		throw new Error('Unknown error');

@@ -957,7 +957,7 @@ export class ProfileBlock extends Block {
 				'userData' as BlockProps,
 			);
 		} else {
-			const storageData = sessionStorage.getItem(STORAGE_KEY);
+			const storageData = localStorage.getItem(STORAGE_KEY);
 			if (storageData) {
 				const userStorageData = JSON.parse(storageData);
 				Store.set(

@@ -40,7 +40,6 @@ export class LoginBlock extends Block {
 				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
 				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
 				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
-				['logout']: `<div id="logout"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -236,19 +235,12 @@ export class LoginBlock extends Block {
 						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
-				['logout']: new ButtonBlock({
-					id: 'logout',
-					type: 'button',
-					text: 'temp_logout',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						AuthController.logout(undefined, this);
-					},
-				}),
 			},
 		});
+	}
+
+	override componentWillUnmount() {
+		Store.clearAllSubs();
 	}
 
 	override render(): string {
