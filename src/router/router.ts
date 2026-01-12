@@ -56,12 +56,6 @@ class Route {
 	}
 
 	render() {
-		console.log('Route render: ', {
-			i: this._instance,
-			v: this._view,
-			c: this._rootContainer,
-		});
-
 		if (typeof this._view === 'function') {
 			this._instance = new this._view({ ...this._props, router: this._router });
 
@@ -93,7 +87,6 @@ export class Router {
 	}
 
 	use(pathname: string, block: new (props: BlockProps) => Block, router: Router, props?: BlockProps) {
-		console.log('use: ', { pathname, block });
 		if (this._rootContainer && this.routes) {
 			const route = new Route(pathname, block, this._rootContainer, router, props);
 			this.routes.push(route);
@@ -119,15 +112,6 @@ export class Router {
 		const route: Route | undefined = this.getRoute(pathname);
 		const isAuthed = Boolean(sessionStorage.getItem(STORAGE_KEY));
 
-		console.log('Router _onRoute: ', {
-			isAuthed,
-			pathname,
-			route,
-			cr: this._currentRoute,
-			check: this._currentRoute !== route,
-		});
-
-		// не авторизован - переход на страницу авторизации
 		if (
 			!isAuthed
 			&& route
@@ -137,20 +121,17 @@ export class Router {
 			return;
 		}
 
-		// авторизован - но такого урла нет, страница 404
 		if (!route) {
 			this.go(PAGES_URL.NOT_FOUND);
 			return;
 		}
 
-		// авторизован - при попытке перейти на страницу авторизации, переход на главную
 		if (
 			isAuthed
 			&& route
 			&& (route.match(PAGES_URL.AUTHORIZATION) || route.match(PAGES_URL.REGISTRATION))
 		) {
-			// TODO поменять на PAGES_URL.MAIN
-			this.go(PAGES_URL.PROFILE);
+			this.go(PAGES_URL.MAIN);
 			return;
 		}
 
@@ -163,7 +144,6 @@ export class Router {
 	}
 
 	go(pathname: string) {
-		console.log('Router go: ', { pathname, history: this.history });
 		if (this.history) {
 			this.history.pushState({}, '', pathname);
 			this._onRoute(pathname);
@@ -185,7 +165,6 @@ export class Router {
 	}
 
 	getRoute(pathname: string) {
-		console.log('getRoute: ', { pathname, r: this.routes });
 		if (this.routes) {
 			return this.routes.find((route) => route.match(pathname));
 		}

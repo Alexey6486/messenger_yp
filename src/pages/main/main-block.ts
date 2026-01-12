@@ -65,8 +65,7 @@ export class MainBlock extends Block {
 						this.createModal(
 							IDS.FORMS.MODAL_ADD_CHAT_FORM,
 							'Создание чата',
-							(event, data) => {
-								console.log('Add chat submit: ', { event, data });
+							(_, data) => {
 								if (data) {
 									ChatsController.createChat({ data: JSON.stringify(data) }, this);
 								}
@@ -77,9 +76,6 @@ export class MainBlock extends Block {
 
 				[IDS.MAIN.SEARCH_FORM]: new FormBlock({
 					id: IDS.MAIN.SEARCH_FORM,
-					onSubmit: () => {
-						console.log('Search submit: ', { title: this.props?.chatsSearchForm?.fields?.login ?? '' });
-					},
 					childrenList: [
 						new InputBlock({
 							id: IDS.MAIN.SEARCH_INPUT,
@@ -224,8 +220,6 @@ export class MainBlock extends Block {
 	}
 
 	override componentDidMount() {
-		console.log('ProfileBlock componentDidMount override', this);
-
 		const stateUser = Store.getState().userData;
 		let userId = stateUser?.id;
 		if (!stateUser || (stateUser && !stateUser.id)) {
@@ -252,7 +246,6 @@ export class MainBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MainBlock', this);
 		return compile(template, this.props);
 	}
 }

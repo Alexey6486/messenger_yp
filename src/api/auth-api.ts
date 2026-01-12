@@ -8,8 +8,6 @@ const url = '/api/v2/auth/';
 
 export class AuthAPI {
 	public signin(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('AuthAPI.signin options: ', { options });
-
 		return authAPIInstance.post(
 			`${ url }signin`,
 			{
@@ -20,28 +18,23 @@ export class AuthAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('AuthAPI.signin resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public logout() {
 		return authAPIInstance.post(`${ url }logout`).then(resolve => {
-			console.log('AuthAPI.logout resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public user() {
 		return authAPIInstance.get(`${ url }user`).then(resolve => {
-			console.log('AuthAPI.user resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public signup(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('AuthAPI.signup: ', { options });
-
 		return authAPIInstance.post(
 			`${ url }signup`,
 			{
@@ -52,7 +45,6 @@ export class AuthAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('AuthAPI.signup resolve: ', { options, resolve });
 			return responseHandler(resolve);
 		});
 	}

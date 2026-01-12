@@ -45,8 +45,6 @@ export function responseHandler(response?: XMLHttpRequest): unknown {
 export function handleRequestError(e: unknown, instance?: Block) {
 	if (isErrorWithMessage(e)) {
 		const error = JSON.parse(e.message);
-		console.log('handleRequestError Error Data: ', { ...error });
-
 		if (instance) {
 			Store.set('modalError', { ...error });
 			instance.createModal(

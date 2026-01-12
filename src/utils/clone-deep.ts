@@ -8,7 +8,6 @@ type CloneableResult<T> =
 
 export function cloneDeep<T = unknown>(obj: T): CloneableResult<T> {
 	return (function cloneDeepInner<U>(item: U): CloneableResult<U> {
-		console.log({ obj, item });
 		if (item === null || typeof item !== 'object') {
 			return item as CloneableResult<U>;
 		}

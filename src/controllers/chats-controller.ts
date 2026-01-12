@@ -30,7 +30,6 @@ class ChatsController {
 	public async getChats(userId?: string, instance?: Block, options?: Partial<RequestOptions & IRequestOptions>) {
 		try {
 			const chatsListResult: IChat[] = await api.getChats(options) as IChat[];
-			console.log('ChatController.getChats result: ', { chatsListResult });
 
 			const sockets = Store.getState().chatsSockets;
 			if (sockets && sockets.size > 0) {
@@ -46,15 +45,11 @@ class ChatsController {
 				});
 
 				const promiseTokensListResult: PromiseSettledResult<Awaited<Promise<IChatToken | undefined>>>[] = await Promise.allSettled(promiseTokensList);
-				console.log('ChatController.getChats allSettled promiseTokensListResult: ', { promiseTokensListResult });
-
 				const promiseChatUnreadCounterListResult: PromiseSettledResult<Awaited<Promise<IChatUnreadCounter | undefined>>>[] = await Promise.allSettled(promiseChatUnreadCounterList);
-				console.log('ChatController.getChats allSettled promiseChatUnreadCounterListResult: ', { promiseChatUnreadCounterListResult });
 
 				if (isArray(promiseTokensListResult, true)) {
 					const chatsSockets: Map<string, WebSocketService> = new Map();
 					promiseTokensListResult.forEach((el: TPromiseResponse<IChatToken>) => {
-						console.log('successfulPromises forEach', { el });
 						if (el.status === PROMISE_STATUS.FULFILLED && userId) {
 							const socket: WebSocketService = new WebSocketService();
 							socket.connect(userId, el.value.chatId, el.value.token);
@@ -62,14 +57,12 @@ class ChatsController {
 						}
 					});
 
-					console.log('ChatController.getChats chatsSockets: ', { chatsSockets });
 					Store.set(
 						'chats',
 						chatsListResult.map((ch) => {
 							let unread_count = '';
 							if (isArray(promiseChatUnreadCounterListResult, true)) {
 								promiseChatUnreadCounterListResult.forEach((el: TPromiseResponse<IChatUnreadCounter>) => {
-									console.log('successfulPromises forEach', { el });
 									if (el.status === PROMISE_STATUS.FULFILLED && el.value.chatId === ch.id) {
 										unread_count = el.value.unread_count;
 									}
@@ -94,7 +87,6 @@ class ChatsController {
 				Store.set('chatsSockets', null, 'chatsSockets' as BlockProps);
 			}
 		} catch (e: unknown) {
-			console.log('ChatController.getChats Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
@@ -102,10 +94,8 @@ class ChatsController {
 	public async getChatToken(chatId: string, instance?: Block): Promise<IChatToken | undefined> {
 		try {
 			const result: { token: string } = await api.getChatToken(chatId) as { token: string };
-			console.log('ChatController.getChatToken result: ', { result });
 			return { chatId, token: result.token };
 		} catch (e: unknown) {
-			console.log('ChatController.getChatToken Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
@@ -113,31 +103,25 @@ class ChatsController {
 	public async getChatUnreadCounter(chatId: string, instance?: Block): Promise<IChatUnreadCounter | undefined> {
 		try {
 			const result: IChatUnreadCounterResponse = await api.unreadCounter(chatId) as IChatUnreadCounterResponse;
-			console.log('ChatController.getChatUnreadCounter result: ', { result });
 			return { chatId, unread_count: result.unread_count };
 		} catch (e: unknown) {
-			console.log('ChatController.getChatUnreadCounter Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
 
 	public async createChat(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
-			const result = await api.createChat(options);
-			console.log('ChatController.createChat result: ', { result });
+			await api.createChat(options);
 			await this.getChats(undefined, instance);
 		} catch (e: unknown) {
-			console.log('ChatController.createChat Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
 
 	public async deleteChat(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
-			const result = await api.deleteChat(options);
-			console.log('ChatController.deleteChat result: ', { result });
+			await api.deleteChat(options);
 		} catch (e: unknown) {
-			console.log('ChatController.deleteChat Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
@@ -145,8 +129,6 @@ class ChatsController {
 	public async getChatUsers(chat: IChat, instance?: Block) {
 		try {
 			const result = await api.getChatUsers(chat.id) as IChatUserResponse[];
-			console.log('ChatController.getChatUsers result: ', { result });
-
 			Store.set(
 				'currentChatData',
 				{
@@ -156,7 +138,6 @@ class ChatsController {
 				},
 				'currentChatData' as BlockProps,
 			);
-
 			Store.set(
 				'chats',
 				Store.getState().chats?.map((el) => {
@@ -170,7 +151,6 @@ class ChatsController {
 				}),
 				'chats' as BlockProps,
 			);
-
 			const messages = Store.getState().messages?.get(chat.id);
 			Store.set(
 				'messagesList',
@@ -183,29 +163,24 @@ class ChatsController {
 				'messagesList' as BlockProps,
 			);
 		} catch (e: unknown) {
-			console.log('ChatController.getChatUsers Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
 
 	public async addUsers(users: number[], chat: IChat, instance?: Block) {
 		try {
-			console.log('ChatsController addUsers: ', { users, chat });
 			await api.addUsers({ data: JSON.stringify({ users, chatId: chat.id }) });
 			await this.getChatUsers(chat, instance);
 		} catch (e: unknown) {
-			console.log('ChatController.addUsers Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
 
 	public async removeUsers(users: number[], chat: IChat, instance?: Block) {
 		try {
-			console.log('ChatsController removeUsers: ', { users, chat });
 			await api.deleteUsers({ data: JSON.stringify({ users, chatId: chat.id }) });
 			await this.getChatUsers(chat, instance);
 		} catch (e: unknown) {
-			console.log('ChatController.removeUsers Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}
@@ -213,7 +188,6 @@ class ChatsController {
 	public async changeAvatar(options: Partial<RequestOptions & IRequestOptions>, instance?: Block) {
 		try {
 			const result: IChat = await api.avatar(options) as IChat;
-			console.log('ChatController.changeAvatar: ', { result });
 			const chats = Store.getState().chats;
 			Store.set('currentChatData.info', result, 'currentChatData' as BlockProps, false, StoreEvents.Updated_modal);
 			Store.set('currentChatData.info', result, 'currentChatData' as BlockProps);
@@ -234,7 +208,6 @@ class ChatsController {
 			}
 
 		} catch (e: unknown) {
-			console.log('ChatController.changeAvatar Error: ', { e });
 			handleRequestError(e, instance);
 		}
 	}

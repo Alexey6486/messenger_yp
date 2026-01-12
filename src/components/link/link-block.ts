@@ -29,22 +29,17 @@ export class LinkBlock extends Block {
 
 		Store.on(StoreEvents.Updated, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State LinkBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					this.setProps(newState);
 				}
 			}
-
 			state = newState;
 		});
 	}
 
 	override render(): string {
-		console.log('Render LinkBlock', this);
 		return compile(template, this.props);
 	}
 }

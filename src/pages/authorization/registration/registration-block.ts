@@ -516,14 +516,8 @@ export class RegistrationBlock extends Block {
 						});
 
 						const registrationForm: TNullable<IFormState<IRegistrationFormUi>> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
-						console.log({ pageProps });
-
-						if (
-							registrationForm
-							&& registrationForm.errors
-						) {
+						if (registrationForm && registrationForm.errors) {
 							const errorsList = Object.values(registrationForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList });
 
 							if (errorsList.length) {
 								const { registrationForm: { errors, fields } } = pageProps;
@@ -532,7 +526,6 @@ export class RegistrationBlock extends Block {
 									{ fields, errors },
 								);
 							} else {
-								console.log('Registration form submit: ', this.props?.registrationForm?.fields ?? '');
 								const data = JSON.stringify(this.props?.registrationForm?.fields);
 								AuthController.signup({ data }, this.props.router, this);
 							}
@@ -557,7 +550,6 @@ export class RegistrationBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render RegistrationBlock', this);
 		return compile(template, this.props);
 	}
 }

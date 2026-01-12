@@ -64,7 +64,6 @@ class Store extends EventBus {
 		noEmit?: boolean,
 		storeEvent = StoreEvents.Updated,
 	) {
-		console.log('Store set: ', { path, value });
 		setProps(this.state, path, value);
 
 		if (!noEmit) {

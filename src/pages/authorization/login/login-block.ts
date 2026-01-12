@@ -207,14 +207,8 @@ export class LoginBlock extends Block {
 						});
 
 						const authorizationForm: TNullable<IFormState<ILoginForm>> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
-						console.log({ pageProps, t: this });
-
-						if (
-							authorizationForm
-							&& authorizationForm.errors
-						) {
+						if (authorizationForm && authorizationForm.errors) {
 							const errorsList = Object.values(authorizationForm.errors).filter((el) => Boolean(el));
-							console.log({ errorsList });
 
 							if (errorsList.length) {
 								const { authorizationForm: { errors, fields } } = pageProps;
@@ -223,7 +217,6 @@ export class LoginBlock extends Block {
 									{ fields, errors },
 								);
 							} else {
-								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
 								const data = JSON.stringify(this.props?.authorizationForm?.fields);
 								AuthController.signin({ data }, this.props.router, this);
 							}
@@ -259,7 +252,6 @@ export class LoginBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render LoginBlock', this);
 		return compile(template, this.props);
 	}
 }

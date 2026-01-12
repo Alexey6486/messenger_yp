@@ -20,7 +20,6 @@ export class DropDownOptionBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render DropDownOptionBlock', this);
 		return compile(template, this.props);
 	}
 }

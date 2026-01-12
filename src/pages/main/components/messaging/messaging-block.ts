@@ -95,8 +95,6 @@ export class MessagingBlock extends Block {
 				if (!isEqualCheck) {
 					if (isArray(args, true)) {
 						const stateKey: keyof BlockProps = (args as BlockProps[])[0] as unknown as keyof BlockProps;
-						console.log('Store Updated MessagingBlock check: ', { stateKey, c: stateKey in newState });
-
 						if (stateKey && stateKey in newState) {
 							const targetField = newState[stateKey];
 							this.setProps({ [stateKey]: targetField });
@@ -113,7 +111,6 @@ export class MessagingBlock extends Block {
 	}
 
 	override render(): string {
-		console.log('Render MessagingBlock', this);
 		return compile(template, this.props);
 	}
 }

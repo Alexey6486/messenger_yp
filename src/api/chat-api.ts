@@ -12,21 +12,18 @@ export class ChatAPI {
 			`${ url }`,
 			{ ...options },
 		).then(resolve => {
-			console.log('ChatAPI.getChats resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public getChatToken(id: string): unknown {
 		return chatAPIInstance.post(`${ url }/token/${ id }`).then(resolve => {
-			console.log('ChatAPI.getChatToken resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public unreadCounter(id: string): unknown {
 		return chatAPIInstance.get(`${ url }/new/${ id }`).then(resolve => {
-			console.log('ChatAPI.unreadCounter resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
@@ -42,7 +39,6 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.createChat resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
@@ -58,7 +54,6 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.deleteChat resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
@@ -74,14 +69,12 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.addUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public getChatUsers(chatId: string) {
 		return chatAPIInstance.get(`${ url }/${ chatId }/users`).then(resolve => {
-			console.log('ChatAPI.getChatUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
@@ -97,14 +90,11 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.deleteUsers resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}
 
 	public avatar(options?: Partial<RequestOptions & IRequestOptions>) {
-		console.log('ChatAPI.avatar options: ', { options });
-
 		return chatAPIInstance.put(
 			`${ url }/avatar`,
 			{
@@ -112,7 +102,6 @@ export class ChatAPI {
 				credentials: 'include',
 			},
 		).then(resolve => {
-			console.log('ChatAPI.avatar resolve: ', { resolve });
 			return responseHandler(resolve);
 		});
 	}

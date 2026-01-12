@@ -8,14 +8,12 @@ export function merge(oldObj: TPlainObject, newObj: TPlainObject): TPlainObject 
 		}
 
 		try {
-			console.log('merge: ', { n: newObj[p], o: oldObj[p], newObj, oldObj, p });
 			if (isPlainObject(newObj[p]) && isPlainObject(oldObj[p])) {
 				oldObj[p] = merge(oldObj[p] as TPlainObject, newObj[p] as TPlainObject);
 			} else {
 				oldObj[p] = newObj[p];
 			}
-		} catch (e) {
-			console.log(e);
+		} catch {
 			oldObj[p] = newObj[p];
 		}
 	}

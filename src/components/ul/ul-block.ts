@@ -30,20 +30,15 @@ export class UlBlock extends Block {
 
 		Store.on(storeEvent, () => {
 			const newState = props?.mapStateToProps?.(Store.getState());
-
 			if (props.mapStateToProps && state && newState) {
 				const isEqualCheck = isEqual(state, newState);
-				console.log('State UlBlock: ', { isEqualCheck, state, newState, t: this });
-
 				if (!isEqualCheck) {
 					if (props?.onSetChildrenList) {
 						const blocks = props?.onSetChildrenList(newState);
 						if (blocks) {
 							if (props?.clearChildrenListOnStateChange) {
-								console.log('State UlBlock clearChildrenListOnStateChange');
 								this.clearChildrenList();
 							}
-							console.log('State UlBlock blocks: ', { blocks });
 							this.setChildrenList({ childrenList: blocks });
 						}
 					} else {
@@ -51,7 +46,6 @@ export class UlBlock extends Block {
 					}
 				}
 			}
-
 			state = newState;
 		});
 	}
@@ -62,7 +56,6 @@ export class UlBlock extends Block {
 
 
 	override render(): string {
-		console.log('Render UlBlock!', this);
 		return compile(template, this.props);
 	}
 }
