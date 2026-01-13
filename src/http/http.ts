@@ -1,10 +1,14 @@
 import type { IRequestOptions } from './types';
 import { ERequestMethods } from './types';
-import type { Nullable } from '@/types';
+import type { TNullable } from '@/types';
 import type { RequestOptions } from 'http';
+import { BASE_API } from '@/constants';
 
-function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
+function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
+	if (typeof data === 'string') {
+		data = JSON.parse(data);
+	}
 
 	if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
 		const dataList = Object.entries(data);
@@ -27,25 +31,30 @@ function queryStringify(data: Nullable<Document | XMLHttpRequestBodyInit>) {
 type HTTPMethod = (url: string, options?: Partial<RequestOptions & IRequestOptions>) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
-	// Фабричный метод для создания HTTP-методов
 	private createMethod(method: ERequestMethods): HTTPMethod {
 		return (url, options = {}) => this.request(url, { ...options, method });
 	}
 
-	// Методы HTTP
-	protected readonly get = this.createMethod(ERequestMethods.GET);
+	readonly get = this.createMethod(ERequestMethods.GET);
 
-	protected readonly put = this.createMethod(ERequestMethods.PUT);
+	readonly put = this.createMethod(ERequestMethods.PUT);
 
-	protected readonly post = this.createMethod(ERequestMethods.POST);
+	readonly post = this.createMethod(ERequestMethods.POST);
 
-	protected readonly delete = this.createMethod(ERequestMethods.DELETE);
+	readonly delete = this.createMethod(ERequestMethods.DELETE);
 
 	private request(
 		url: string,
 		options: Partial<RequestOptions> & IRequestOptions,
 	): Promise<XMLHttpRequest> {
-		const { headers = {}, method, data, timeout = 5000 } = options;
+		const {
+			headers = {},
+			credentials = 'include',
+			// mode = 'cors',
+			method,
+			data,
+			timeout = 5000,
+		} = options;
 
 		return new Promise(function (resolve, reject) {
 			if (!method) {
@@ -54,13 +63,14 @@ export class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
+			xhr.withCredentials = credentials === 'include';
 			const isGet = method === ERequestMethods.GET;
 
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${ url }${ queryStringify(data) }`
-					: url,
+					? `${BASE_API}${ url }${ queryStringify(data) }`
+					: `${BASE_API}${ url }`,
 			);
 
 			Object.keys(headers).forEach(key => {

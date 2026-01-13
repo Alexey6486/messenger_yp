@@ -1,22 +1,29 @@
 import { Block } from '@/block';
+import { AuthController } from '@/controllers';
+import { Store } from '@/store';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	IDS,
-	PAGES,
+	INIT_LOGIN_STATE,
+	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
+	getInputStateSlice,
 } from '@/utils';
 import type {
 	BlockProps,
-	IInputChangeParams,
-	IAddUserModalForm,
-	ILoginForm,
 	IFormState,
+	IInputChangeParams,
+	ILoginForm,
+	TNullable,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
@@ -29,16 +36,10 @@ export class LoginBlock extends Block {
 			...props,
 			styles,
 			markup: {
-				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${IDS.AUTHORIZATION.LOGIN_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${IDS.AUTHORIZATION.PSW_FIELD}"></div>`,
-				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${IDS.AUTHORIZATION.SUBMIT}"></div>`,
-				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${IDS.AUTHORIZATION.SIGNUP}"></div>`,
-
-				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: `<div id="${IDS.AUTHORIZATION.TEMP_ERROR}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: `<div id="${IDS.AUTHORIZATION.TEMP_PROFILE}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MAIN]: `<div id="${IDS.AUTHORIZATION.TEMP_MAIN}"></div>`,
-				[IDS.AUTHORIZATION.TEMP_MODAL]: `<div id="${IDS.AUTHORIZATION.TEMP_MODAL}"></div>`,
+				[IDS.AUTHORIZATION.LOGIN_FIELD]: `<div id="${ IDS.AUTHORIZATION.LOGIN_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.PSW_FIELD]: `<div id="${ IDS.AUTHORIZATION.PSW_FIELD }"></div>`,
+				[IDS.AUTHORIZATION.SUBMIT]: `<div id="${ IDS.AUTHORIZATION.SUBMIT }"></div>`,
+				[IDS.AUTHORIZATION.SIGNUP]: `<div id="${ IDS.AUTHORIZATION.SIGNUP }"></div>`,
 			},
 			children: {
 				[IDS.AUTHORIZATION.LOGIN_FIELD]: new FieldBlock({
@@ -47,7 +48,9 @@ export class LoginBlock extends Block {
 					input_data: {
 						value: props?.authorizationForm?.fields?.login ?? '',
 						error: props?.authorizationForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.authorizationForm, 'login');
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -57,35 +60,46 @@ export class LoginBlock extends Block {
 							input_data: {
 								value: props?.authorizationForm?.fields?.login ?? '',
 								error: props?.authorizationForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.authorizationForm, 'login');
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.login,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'authorizationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.login,
-												}),
-											},
-										}),
+										fields: {
+											...props?.authorizationForm?.fields,
+											login: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.authorizationForm?.errors,
+											login: data?.data?.error ?? '',
+										},
 									},
-									[IDS.AUTHORIZATION.LOGIN_INPUT, IDS.AUTHORIZATION.LOGIN_FIELD],
-									E_FORM_FIELDS_NAME.login,
-									IDS.FORMS.AUTHORIZATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.AUTHORIZATION.PSW_FIELD]: new FieldBlock({
@@ -94,7 +108,9 @@ export class LoginBlock extends Block {
 					input_data: {
 						value: props?.authorizationForm?.fields?.password ?? '',
 						error: props?.authorizationForm?.errors?.password ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.authorizationForm, 'password');
 					},
 					label: 'Пароль',
 					isRequired: true,
@@ -104,35 +120,46 @@ export class LoginBlock extends Block {
 							input_data: {
 								value: props?.authorizationForm?.fields?.password ?? '',
 								error: props?.authorizationForm?.errors?.password ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.authorizationForm, 'password');
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
 							name: E_FORM_FIELDS_NAME.password,
 							placeholder: '',
 							type: 'password',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.password,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'authorizationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.password,
-												}),
-											},
-										}),
+										fields: {
+											...props?.authorizationForm?.fields,
+											password: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.authorizationForm?.errors,
+											password: data?.data?.error ?? '',
+										},
 									},
-									[IDS.AUTHORIZATION.PSW_INPUT, IDS.AUTHORIZATION.PSW_FIELD],
-									E_FORM_FIELDS_NAME.password,
-									IDS.FORMS.AUTHORIZATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.AUTHORIZATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.AUTHORIZATION.PSW_INPUT }"></div>`,
 					},
 				}),
 
@@ -150,10 +177,7 @@ export class LoginBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										&& !inputInstance.props?.input_data?.error.length
-									) {
+									if (inputId.includes('input')) {
 										const fieldName = inputInstance.props.name as keyof ILoginForm;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
@@ -161,18 +185,9 @@ export class LoginBlock extends Block {
 										});
 
 										if (validationResult.length) {
-											const childProps = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
-												},
-											};
-											inputInstance.setProps(childProps);
-											fieldInstance.setProps(childProps);
-
 											const authorizationForm = pageProps?.authorizationForm as BlockProps['authorizationForm'];
 											const authorizationErrors = authorizationForm?.errors;
+
 											if (authorizationErrors) {
 												pageProps = {
 													authorizationForm: {
@@ -190,19 +205,20 @@ export class LoginBlock extends Block {
 							}
 						});
 
-						const authorizationForm: IFormState<ILoginForm> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
-						if (
-							authorizationForm
-							&& authorizationForm.errors
-						) {
+						const authorizationForm: TNullable<IFormState<ILoginForm>> | undefined = pageProps?.authorizationForm as BlockProps['authorizationForm'];
+						if (authorizationForm && authorizationForm.errors) {
 							const errorsList = Object.values(authorizationForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
-								console.log('Login form submit: ', this.props?.authorizationForm?.fields ?? '');
-							}
-						}
 
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
+							if (errorsList.length) {
+								const { authorizationForm: { errors, fields } } = pageProps;
+								Store.set(
+									'authorizationForm',
+									{ fields, errors },
+								);
+							} else {
+								const data = JSON.stringify(this.props?.authorizationForm?.fields);
+								AuthController.signin({ data }, this.props.router, this);
+							}
 						}
 					},
 				}),
@@ -214,66 +230,17 @@ export class LoginBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.REGISTRATION });
-					},
-				}),
-
-				// Временные кнопки для перехода на другие страницы
-				[IDS.AUTHORIZATION.TEMP_ERROR]: new ButtonBlock({
-					id: IDS.AUTHORIZATION.TEMP_ERROR,
-					type: 'button',
-					text: 'Страница ошибки',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.ERROR });
-					},
-				}),
-				[IDS.AUTHORIZATION.TEMP_PROFILE]: new ButtonBlock({
-					id: IDS.AUTHORIZATION.TEMP_PROFILE,
-					type: 'button',
-					text: 'Профиль',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.PROFILE });
-					},
-				}),
-				[IDS.AUTHORIZATION.TEMP_MAIN]: new ButtonBlock({
-					id: IDS.AUTHORIZATION.TEMP_MAIN,
-					type: 'button',
-					text: 'Главная',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.MAIN });
-					},
-				}),
-				[IDS.AUTHORIZATION.TEMP_MODAL]: new ButtonBlock({
-					id: IDS.AUTHORIZATION.TEMP_MODAL,
-					type: 'button',
-					text: 'Модальное окно',
-					onClick: (event: Event) => {
-						event.preventDefault();
-						event.stopPropagation();
-
-						this.createModal<IAddUserModalForm>(
-							'modalAddUserForm',
-							{
-								modalAddUserForm: {
-									fields: { login: '' },
-									errors: { login: '' },
-								},
-							},
-							'Добавить пользователя',
-						);
+						Store.clearAllSubs();
+						Store.set('authorizationForm', cloneDeep(INIT_LOGIN_STATE), undefined, true);
+						this?.props?.router?.go?.(PAGES_URL.REGISTRATION);
 					},
 				}),
 			},
 		});
+	}
+
+	override componentWillUnmount() {
+		Store.clearAllSubs();
 	}
 
 	override render(): string {

@@ -1,1 +1,4 @@
-export { RegistrationBlock } from './registration-block';
+export {
+	RegistrationPage,
+	mapUserToPropsRegistration,
+} from './connect-registration';

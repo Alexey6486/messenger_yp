@@ -1,26 +1,35 @@
 import { Block } from '@/block';
+import { AuthController } from '@/controllers';
+import { Store } from '@/store';
+import {
+	FocusManager,
+	getFocusData,
+} from '@/focus-manager';
 import {
 	IDS,
-	PAGES,
+	INIT_REGISTRATION_STATE,
+	PAGES_URL,
 } from '@/constants';
 import {
+	cloneDeep,
 	compile,
 	fieldsValidator,
+	getInputStateSlice,
 } from '@/utils';
 import type {
 	BlockProps,
+	IFormState,
 	IInputChangeParams,
 	IRegistrationFormUi,
-	IFormState,
+	TNullable,
 } from '@/types';
-import {
-	E_FORM_FIELDS_NAME,
-} from '@/types';
+import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components/button/button-block';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
+
 
 export class RegistrationBlock extends Block {
 	constructor(props: BlockProps) {
@@ -28,15 +37,15 @@ export class RegistrationBlock extends Block {
 			...props,
 			styles,
 			markup: {
-				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${IDS.REGISTRATION.EMAIL_FIELD}"></div>`,
-				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${IDS.REGISTRATION.LOGIN_FIELD}"></div>`,
-				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${IDS.REGISTRATION.F_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${IDS.REGISTRATION.S_NAME_FIELD}"></div>`,
-				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${IDS.REGISTRATION.PHONE_FIELD}"></div>`,
-				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${IDS.REGISTRATION.PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${IDS.REGISTRATION.C_PSW_FIELD}"></div>`,
-				[IDS.REGISTRATION.SUBMIT]: `<div id="${IDS.REGISTRATION.SUBMIT}"></div>`,
-				[IDS.REGISTRATION.SIGNIN]: `<div id="${IDS.REGISTRATION.SIGNIN}"></div>`,
+				[IDS.REGISTRATION.EMAIL_FIELD]: `<div id="${ IDS.REGISTRATION.EMAIL_FIELD }"></div>`,
+				[IDS.REGISTRATION.LOGIN_FIELD]: `<div id="${ IDS.REGISTRATION.LOGIN_FIELD }"></div>`,
+				[IDS.REGISTRATION.F_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.F_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.S_NAME_FIELD]: `<div id="${ IDS.REGISTRATION.S_NAME_FIELD }"></div>`,
+				[IDS.REGISTRATION.PHONE_FIELD]: `<div id="${ IDS.REGISTRATION.PHONE_FIELD }"></div>`,
+				[IDS.REGISTRATION.PSW_FIELD]: `<div id="${ IDS.REGISTRATION.PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.C_PSW_FIELD]: `<div id="${ IDS.REGISTRATION.C_PSW_FIELD }"></div>`,
+				[IDS.REGISTRATION.SUBMIT]: `<div id="${ IDS.REGISTRATION.SUBMIT }"></div>`,
+				[IDS.REGISTRATION.SIGNIN]: `<div id="${ IDS.REGISTRATION.SIGNIN }"></div>`,
 			},
 			children: {
 				[IDS.REGISTRATION.EMAIL_FIELD]: new FieldBlock({
@@ -45,7 +54,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.email ?? '',
 						error: props?.registrationForm?.errors?.email ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'email');
 					},
 					label: 'Почта',
 					isRequired: true,
@@ -55,35 +66,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.email ?? '',
 								error: props?.registrationForm?.errors?.email ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'email');
 							},
 							dataset: E_FORM_FIELDS_NAME.email,
 							name: E_FORM_FIELDS_NAME.email,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.email,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.email,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											email: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											email: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.EMAIL_INPUT, IDS.REGISTRATION.EMAIL_FIELD],
-									E_FORM_FIELDS_NAME.email,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.EMAIL_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.EMAIL_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.LOGIN_FIELD]: new FieldBlock({
@@ -92,7 +114,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.login ?? '',
 						error: props?.registrationForm?.errors?.login ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'login');
 					},
 					label: 'Логин',
 					isRequired: true,
@@ -102,35 +126,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.login ?? '',
 								error: props?.registrationForm?.errors?.login ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'login');
 							},
 							dataset: E_FORM_FIELDS_NAME.login,
 							name: E_FORM_FIELDS_NAME.login,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.login,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.login,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											login: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											login: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.LOGIN_INPUT, IDS.REGISTRATION.LOGIN_FIELD],
-									E_FORM_FIELDS_NAME.login,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.LOGIN_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.LOGIN_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.F_NAME_FIELD]: new FieldBlock({
@@ -139,7 +174,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.first_name ?? '',
 						error: props?.registrationForm?.errors?.first_name ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'first_name');
 					},
 					label: 'Имя',
 					isRequired: true,
@@ -149,35 +186,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.first_name ?? '',
 								error: props?.registrationForm?.errors?.first_name ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'first_name');
 							},
 							dataset: E_FORM_FIELDS_NAME.first_name,
 							name: E_FORM_FIELDS_NAME.first_name,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.first_name,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.first_name,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											first_name: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											first_name: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.F_NAME_INPUT, IDS.REGISTRATION.F_NAME_FIELD],
-									E_FORM_FIELDS_NAME.first_name,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.F_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.F_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.S_NAME_FIELD]: new FieldBlock({
@@ -186,7 +234,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.second_name ?? '',
 						error: props?.registrationForm?.errors?.second_name ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'second_name');
 					},
 					label: 'Фамилия',
 					isRequired: true,
@@ -196,35 +246,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.second_name ?? '',
 								error: props?.registrationForm?.errors?.second_name ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'second_name');
 							},
 							dataset: E_FORM_FIELDS_NAME.second_name,
 							name: E_FORM_FIELDS_NAME.second_name,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.second_name,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.second_name,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											second_name: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											second_name: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.S_NAME_INPUT, IDS.REGISTRATION.S_NAME_FIELD],
-									E_FORM_FIELDS_NAME.second_name,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.S_NAME_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.S_NAME_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PHONE_FIELD]: new FieldBlock({
@@ -233,7 +294,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.phone ?? '',
 						error: props?.registrationForm?.errors?.phone ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'phone');
 					},
 					label: 'Телефон',
 					isRequired: true,
@@ -243,35 +306,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.phone ?? '',
 								error: props?.registrationForm?.errors?.phone ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'phone');
 							},
 							dataset: E_FORM_FIELDS_NAME.phone,
 							name: E_FORM_FIELDS_NAME.phone,
 							placeholder: '',
 							type: 'text',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.phone,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.phone,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											phone: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											phone: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.PHONE_INPUT, IDS.REGISTRATION.PHONE_FIELD],
-									E_FORM_FIELDS_NAME.phone,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PHONE_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PHONE_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.PSW_FIELD]: new FieldBlock({
@@ -280,7 +354,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.password ?? '',
 						error: props?.registrationForm?.errors?.password ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'password');
 					},
 					label: 'Пароль',
 					isRequired: true,
@@ -290,35 +366,46 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.password ?? '',
 								error: props?.registrationForm?.errors?.password ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'password');
 							},
 							dataset: E_FORM_FIELDS_NAME.password,
 							name: E_FORM_FIELDS_NAME.password,
 							placeholder: '',
 							type: 'password',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.password,
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.password,
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											password: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											password: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.PSW_INPUT, IDS.REGISTRATION.PSW_FIELD],
-									E_FORM_FIELDS_NAME.password,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.PSW_INPUT }"></div>`,
 					},
 				}),
 				[IDS.REGISTRATION.C_PSW_FIELD]: new FieldBlock({
@@ -327,7 +414,9 @@ export class RegistrationBlock extends Block {
 					input_data: {
 						value: props?.registrationForm?.fields?.confirmPassword ?? '',
 						error: props?.registrationForm?.errors?.confirmPassword ?? '',
-						currentFocus: props.currentFocus,
+					},
+					mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+						return getInputStateSlice(data?.registrationForm, 'confirmPassword');
 					},
 					label: 'Пароль (еще раз)',
 					isRequired: true,
@@ -337,36 +426,47 @@ export class RegistrationBlock extends Block {
 							input_data: {
 								value: props?.registrationForm?.fields?.confirmPassword ?? '',
 								error: props?.registrationForm?.errors?.confirmPassword ?? '',
-								currentFocus: props.currentFocus,
+							},
+							mapStateToProps: (data: Partial<BlockProps>): Partial<BlockProps> => {
+								return getInputStateSlice(data?.registrationForm, 'confirmPassword');
 							},
 							dataset: E_FORM_FIELDS_NAME.confirmPassword,
 							name: E_FORM_FIELDS_NAME.confirmPassword,
 							placeholder: '',
 							type: 'password',
 							onInputChange: (params: IInputChangeParams) => {
-								this.onFormInputChange(
+								const data = {
+									...params,
+									...(params.info.event === 'blur' && {
+										data: {
+											...params.data,
+											error: fieldsValidator({
+												valueToValidate: params.data.value,
+												fieldName: E_FORM_FIELDS_NAME.confirmPassword,
+												valueToCompare: this.props?.registrationForm?.fields?.password ?? '',
+											}),
+										},
+									}),
+								};
+								FocusManager.set(getFocusData(params.info));
+								Store.set(
+									'registrationForm',
 									{
-										...params,
-										...(params.info.event === 'blur' && {
-											data: {
-												...params.data,
-												error: fieldsValidator({
-													valueToValidate: params.data.value,
-													fieldName: E_FORM_FIELDS_NAME.confirmPassword,
-													valueToCompare: this.props?.registrationForm?.fields?.password ?? '',
-												}),
-											},
-										}),
+										fields: {
+											...props?.registrationForm?.fields,
+											confirmPassword: data?.data?.value ?? '',
+										},
+										errors: {
+											...props?.registrationForm?.errors,
+											confirmPassword: data?.data?.error ?? '',
+										},
 									},
-									[IDS.REGISTRATION.C_PSW_INPUT, IDS.REGISTRATION.C_PSW_FIELD],
-									E_FORM_FIELDS_NAME.confirmPassword,
-									IDS.FORMS.REGISTRATION_FORM,
 								);
 							},
 						}),
 					},
 					markup: {
-						[IDS.COMMON.INPUT]: `<div id="${IDS.REGISTRATION.C_PSW_INPUT}"></div>`,
+						[IDS.COMMON.INPUT]: `<div id="${ IDS.REGISTRATION.C_PSW_INPUT }"></div>`,
 					},
 				}),
 
@@ -384,11 +484,7 @@ export class RegistrationBlock extends Block {
 						Object.entries(this.children).forEach(([fieldId, fieldInstance]) => {
 							if (fieldId.includes('field')) {
 								Object.entries(fieldInstance.children).forEach(([inputId, inputInstance]) => {
-									if (
-										inputId.includes('input')
-										&& typeof inputInstance?.props?.input_data?.error === 'string'
-										&& !inputInstance.props.input_data.error.length
-									) {
+									if (inputId.includes('input')) {
 										const fieldName = inputInstance.props.name as keyof IRegistrationFormUi;
 										validationResult = fieldsValidator({
 											valueToValidate: inputInstance?.props?.input_data?.value,
@@ -399,18 +495,9 @@ export class RegistrationBlock extends Block {
 										});
 
 										if (validationResult.length) {
-											const data = {
-												input_data: {
-													value: inputInstance?.props?.input_data?.value ?? '',
-													error: validationResult,
-													currentFocus: { element: null, selectionStart: null },
-												},
-											};
-											inputInstance.setProps(data);
-											fieldInstance.setProps(data);
-
 											const registrationForm = pageProps?.registrationForm as BlockProps['registrationForm'];
 											const registrationErrors = registrationForm?.errors;
+
 											if (registrationErrors) {
 												pageProps = {
 													registrationForm: {
@@ -428,19 +515,20 @@ export class RegistrationBlock extends Block {
 							}
 						});
 
-						const registrationForm: IFormState<IRegistrationFormUi> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
-						if (
-							registrationForm
-							&& registrationForm.errors
-						) {
+						const registrationForm: TNullable<IFormState<IRegistrationFormUi>> | undefined = pageProps?.registrationForm as BlockProps['registrationForm'];
+						if (registrationForm && registrationForm.errors) {
 							const errorsList = Object.values(registrationForm.errors).filter((el) => Boolean(el));
-							if (!errorsList.length) {
-								console.log('Registration form submit: ', this.props?.registrationForm?.fields ?? '');
-							}
-						}
 
-						if (validationResult.length) {
-							this.setProps(pageProps as BlockProps);
+							if (errorsList.length) {
+								const { registrationForm: { errors, fields } } = pageProps;
+								Store.set(
+									'registrationForm',
+									{ fields, errors },
+								);
+							} else {
+								const data = JSON.stringify(this.props?.registrationForm?.fields);
+								AuthController.signup({ data }, this.props.router, this);
+							}
 						}
 					},
 				}),
@@ -452,11 +540,17 @@ export class RegistrationBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.eventBus().emit(Block.EVENTS.FLOW_CWU, { page: PAGES.AUTHORIZATION });
+						Store.clearAllSubs();
+						Store.set('registrationForm', cloneDeep(INIT_REGISTRATION_STATE), undefined, true);
+						this?.props?.router?.go?.(PAGES_URL.AUTHORIZATION);
 					},
 				}),
 			},
 		});
+	}
+
+	override componentWillUnmount() {
+		Store.clearAllSubs();
 	}
 
 	override render(): string {

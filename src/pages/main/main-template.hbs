@@ -1,16 +1,16 @@
 <div class="{{styles.container}}">
-	<aside class="{{styles.left}} {{#unless currentChatId}}{{styles.left-shadow}}{{/unless}}">
+	<aside class="{{styles.left}} {{#unless currentChatData}}{{styles.left-shadow}}{{/unless}}">
 		<div class="{{styles.profile}}">
-			{{{ markup.main-dropdown-temp-nav }}}
+			{{{ markup.main-add-chat }}}
 			{{{ markup.main-profile-link }}}
 		</div>
-		<div class="{{styles.search}} {{#if chatsSearchForm.fields.title.length}}{{styles.filled}}{{/if}}">
+		<div class="{{styles.search}} {{#if chatsSearchForm.fields.login.length}}{{styles.filled}}{{/if}}">
 			{{{ markup.main-search-form }}}
 		</div>
 		{{{ markup.main-chat-list }}}
 	</aside>
 	<div class="{{styles.right}}">
-		{{#if currentChatId}}
+		{{#if currentChatData}}
 			{{{ markup.main-messaging }}}
 		{{else}}
 			<main class="{{styles.placeholder}}">

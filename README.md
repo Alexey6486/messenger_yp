@@ -11,8 +11,6 @@
 Кредит для бесплатного использования netlify израсходован, в связи с чем, проект развернут на github
 https://radiant-chimera-91049a.netlify.app/
 
-https://alexey6486.github.io/messenger_yp/
-
 ## Установка
 
 - `npm install` — установка зависимостей,

@@ -12,6 +12,7 @@
 	--color-sh: rgb(0 0 0 / 20%);
 	--color-br: rgb(126 253 215 / 15%);
 	--shadow-btn: 0 1px 5px 1px var(--color-bp);
+	--shadow-btn-red: 0 1px 3px 0px rgba(244, 96, 96, 0.75);
 	--trns: 0.3s ease-in-out;
 }
 
@@ -29,6 +30,11 @@
 
 body {
 	margin: 0;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -76,6 +82,10 @@ h1, h2, h3, h4, h5, h6 {
 
 	&.red {
 		color: var(--color-er);
+
+		&:hover {
+			box-shadow: var(--shadow-btn-red);
+		}
 	}
 }
 
@@ -307,7 +317,7 @@ input {
 	left: 0;
 	z-index: 8000;
 
-	& > .modal-container {
+	& > .modal-wrapper {
 		padding: 30px 20px 20px;
 		box-shadow: var(--shadow-btn);
 		background-color: white;
@@ -339,10 +349,10 @@ input {
 		}
 
 		& > .modal-content {
+			position: relative;
 			display: grid;
 			grid-template-rows: 1fr;
 			min-height: 190px;
-			margin-bottom: 20px;
 		}
 
 		& > .modal-footer {
@@ -365,6 +375,116 @@ input {
 			display: flex;
 			align-items: center;
 			color: var(--color-er);
+			margin-top: 20px;
+		}
+	}
+}
+
+.chat-user {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	background-color: white;
+	padding: 5px;
+
+	& > div,
+	& > img {
+		margin-right: 10px;
+		width: 30px;
+		height: 30px;
+		border: 1px solid var(--color-gl);
+		border-radius: 50%;
+	}
+
+	& > div {
+		background-color: var(--color-sh);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	& > span {
+		margin-right: 10px;
+		display: flex;
+		flex-grow: 1;
+		cursor: default;
+	}
+
+	& > button {
+
+		&:not(:last-child) {
+			margin-right: 10px;
+		}
+
+		&:hover {
+			box-shadow: none;
+		}
+	}
+
+	&:hover {
+		background-color: var(--color-gl);
+	}
+
+	&:not(:last-child) {
+		border-bottom: 1px solid var(--color-gl);
+	}
+}
+
+.avatar {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 50px;
+
+	& > .avatar-image {
+		position: relative;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		background-color: var(--color-g);
+		cursor: pointer;
+		overflow: hidden;
+		margin-bottom: 20px;
+
+		& > input {
+			position: relative;
+			z-index: 3;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		& > .avatar-mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+			background-color: var(--color-sh);
+			overflow-wrap: anywhere;
+			color: white;
+			text-align: center;
+		}
+
+		& > img {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 1;
+		}
+
+		&:hover > .avatar-mask {
+			display: flex;
 		}
 	}
 }

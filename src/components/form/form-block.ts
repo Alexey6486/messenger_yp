@@ -22,7 +22,7 @@ export class FormBlock extends Block {
 				},
 			},
 			markup: {
-				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${IDS.COMMON.COMPONENTS_LIST}"></div>`,
+				[IDS.COMMON.COMPONENTS_LIST]: `<div id="${ IDS.COMMON.COMPONENTS_LIST }"></div>`,
 			},
 		});
 	}

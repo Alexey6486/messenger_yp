@@ -1,1 +1,1 @@
-export { MainBlock } from './main-block';
+export { MainPage } from './connect-main';

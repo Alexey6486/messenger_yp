@@ -1,8 +1,6 @@
-import type {
-	Nullable,
-	TPages,
-} from '@/types';
 import type { Block } from '@/block';
+import type { WebSocketService } from '@/web-socket';
+import type { TNullable } from '@/types';
 
 export const E_FORM_FIELDS_NAME = {
 	first_name: 'first_name',
@@ -18,18 +16,23 @@ export const E_FORM_FIELDS_NAME = {
 	avatar: 'avatar',
 	title: 'title',
 	message: 'message',
+	search: 'search',
 } as const;
 
 export interface ISearchForm {
-	title: string;
+	login: string;
 }
 
 export interface IMessageForm {
 	message: string;
 }
 
-export interface IAddUserModalForm {
+export interface IAddUsersModalForm {
 	login: string;
+}
+
+export interface IAddChatModalForm {
+	title: string;
 }
 
 export interface ILoginForm {
@@ -83,15 +86,15 @@ export interface IUserBase {
 	login: string;
 }
 
+export interface IUserResponse extends IUserBase {
+	email: string;
+	phone: string;
+}
+
 export type TUserRole = 'admin' | 'regular';
 
 export interface IChatUserResponse extends IUserBase {
 	role: TUserRole[];
-}
-
-export interface IUserResponse extends IUserBase {
-	email: string;
-	phone: string;
 }
 
 export interface IChatLastMessage {
@@ -109,16 +112,28 @@ export interface IChat {
 	last_message: IChatLastMessage;
 }
 
-export interface IMainPageState {
-	currentChatId: Nullable<string>;
-	chatsSearchForm: IFormState<ISearchForm>;
-	newMessageForm: IFormState<IMessageForm>;
-	chats: Nullable<IChat[]>;
-	messages: Nullable<IChat[]>;
+export type TSocketChatDataType = 'message' | 'file';
+
+export interface ISocketChatFile {
+	id: string;
+	user_id: string;
+	path: string;
+	filename: string;
+	content_type: string;
+	content_size: string;
+	upload_date: string;
 }
 
-export interface IMainPageHbsState extends IMainPageState {
-	user: IUserResponse;
+export interface ISocketChatMessage {
+	chat_id: string;
+	content: string;
+	file: ISocketChatFile;
+	id: string;
+	is_read: boolean;
+	time: string;
+	type: TSocketChatDataType;
+	user_id: string;
+	login: string;
 }
 
 export interface IErrorPageState {
@@ -126,27 +141,8 @@ export interface IErrorPageState {
 	code: string;
 }
 
-export interface IProfilePageState {
-	isDataEdit: boolean
-	isPasswordEdit: boolean
-	passwordForm: IFormState<IUserPasswordForm>,
-	userForm: IFormState<IUserDataForm>,
-}
-
-export interface IProfilePageHbsState extends IProfilePageState {
-	user: IUserResponse,
-}
-
-export interface IState {
-	currentPage: TPages
-	user: IUserResponse,
-	pages: {
-		authorization: { authorizationForm: IFormState<ILoginForm> }
-		registration: { registrationForm: IFormState<IRegistrationFormUi> }
-		main: IMainPageState
-		profile: IProfilePageState
-		error: IErrorPageState
-	}
+export interface IErrorState {
+	error: IErrorPageState;
 }
 
 export type IChildren<T> = Record<string, T>;
@@ -158,8 +154,8 @@ export interface IInputData {
 
 export interface IInputInfo {
 	event: string;
-	element: Nullable<Block>;
-	selectionStart?: Nullable<number>;
+	element: TNullable<Block>;
+	selectionStart?: TNullable<number>;
 }
 
 export interface IInputChangeParams {
@@ -168,12 +164,35 @@ export interface IInputChangeParams {
 }
 
 export interface ICurrentFocus {
-	element: Nullable<Block>;
-	selectionStart: Nullable<number>;
+	element: TNullable<Block>;
+	selectionStart: TNullable<number>;
 }
 
 export interface IInputState {
 	value: string;
 	error: string;
-	currentFocus?: Nullable<ICurrentFocus>;
+}
+
+export interface ICurrentChatData {
+	users: IChatUserResponse[];
+	info: IChat;
+	owner: IChatUserResponse;
+}
+
+export interface IChatToken {
+	chatId: string;
+	token: string;
+}
+
+export interface IChatsSockets {
+	chatsSockets: Map<string, WebSocketService>;
+}
+
+export interface IChatUnreadCounterResponse {
+	unread_count: string;
+}
+
+export interface IChatUnreadCounter {
+	chatId: string;
+	unread_count: string;
 }
