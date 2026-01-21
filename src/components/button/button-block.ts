@@ -1,7 +1,7 @@
 import { Block } from '@/block';
 import { compile } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from '@/components/button/button-template';
+import template from './button-template';
 
 export class ButtonBlock extends Block {
 	constructor(props: BlockProps) {
