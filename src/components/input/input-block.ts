@@ -8,7 +8,7 @@ import {
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './input-template';
+import template from '@/components/input/input-template';
 
 export class InputBlock extends Block {
 	constructor(props: BlockProps) {
