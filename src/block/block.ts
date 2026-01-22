@@ -1,6 +1,6 @@
 import { EventBus } from '@/event-bus';
 import { FocusManager } from '@/focus-manager';
-import { ModalBlock } from '@/pages';
+// import { ModalBlock } from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
@@ -384,21 +384,21 @@ export abstract class Block {
 		title: string,
 		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {
-		const modal = new ModalBlock({
-			contentId,
-			title,
-			onSubmit,
-		});
-
-		if (this?.props?.container) {
-			const content = modal.getContent();
-
-			if (content) {
-				if (this?.props?.container?.parentNode) {
-					this.props.container.parentNode.appendChild(content);
-					modal.dispatchComponentDidMount();
-				}
-			}
-		}
+		// const modal = new ModalBlock({
+		// 	contentId,
+		// 	title,
+		// 	onSubmit,
+		// });
+		//
+		// if (this?.props?.container) {
+		// 	const content = modal.getContent();
+		//
+		// 	if (content) {
+		// 		if (this?.props?.container?.parentNode) {
+		// 			this.props.container.parentNode.appendChild(content);
+		// 			modal.dispatchComponentDidMount();
+		// 		}
+		// 	}
+		// }
 	}
 }
