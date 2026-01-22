@@ -10,7 +10,8 @@
 		],
 		"types": [
 			"vite/client",
-			"jest"
+			"jest",
+			"node"
 		],
 		"skipLibCheck": true,
 		"moduleResolution": "node",
@@ -36,6 +37,7 @@
 			"@/*": ["./src/*"],
 			"~/*": ["./src/*"],
 			"@components/*": ["./src/components/*"],
+			"@constants/*": ["./src/constants/*"],
 			"@utils/*": ["./src/utils/*"],
 			"@styles/*": ["./src/styles/*"]
 		}

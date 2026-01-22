@@ -19,6 +19,11 @@
 		"precommit": "husky"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.28.6",
+		"@babel/plugin-transform-runtime": "^7.28.5",
+		"@babel/preset-env": "^7.28.6",
+		"@babel/preset-typescript": "^7.28.5",
+		"@babel/runtime": "^7.28.6",
 		"@types/express": "^5.0.5",
 		"@types/handlebars": "^4.1.0",
 		"@types/jest": "^30.0.0",
@@ -27,6 +32,9 @@
 		"@types/postcss-preset-env": "^7.7.0",
 		"@typescript-eslint/eslint-plugin": "^8.48.0",
 		"@typescript-eslint/parser": "^8.48.0",
+		"babel-jest": "^30.2.0",
+		"babel-plugin-dynamic-import-node": "^2.3.3",
+		"babel-plugin-transform-import-meta": "^2.3.3",
 		"eslint": "^8.57.1",
 		"husky": "^9.1.7",
 		"identity-obj-proxy": "^3.0.0",

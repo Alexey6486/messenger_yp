@@ -1,0 +1,21 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "commonjs",
+		// Jest needs CommonJS
+		"moduleResolution": "node",
+		// Jest needs node resolution
+		"types": [
+			"jest",
+			"node"
+		],
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"src/**/*",
+		"jest.config.ts",
+		"**/*.test.ts",
+		"**/*.spec.ts"
+	]
+}
