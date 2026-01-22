@@ -1,25 +1,25 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { IDS } from '@/constants';
+} from '../../../../store';
+import { IDS } from '../../../../constants';
 import {
 	compile,
 	formatDate,
 	isArray,
 	isEqual,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	ISocketChatMessage,
-} from '@/types';
-import { MessagingMainBlock } from '@/pages/main/components/messaging-main/messaging-main-block';
-import { MessagingHeaderBlock } from '@/pages/main/components/messaging-header/messaging-header-block';
-import { MessagingFooterBlock } from '@/pages/main/components/messaging-footer/messaging-footer-block';
-import { UlBlock } from '@/components/ul/ul-block';
+} from '../../../../types';
+import { MessagingMainBlock } from '../messaging-main/messaging-main-block';
+import { MessagingHeaderBlock } from '../messaging-header/messaging-header-block';
+import { MessagingFooterBlock } from '../messaging-footer/messaging-footer-block';
+import { UlBlock } from '../../../../components/ul/ul-block';
 import template from './messaging-template';
-import styles from '@/pages/main/styles.module.pcss';
+import styles from '../../styles.module.pcss';
 
 export class MessagingBlock extends Block {
 	constructor(props: BlockProps) {

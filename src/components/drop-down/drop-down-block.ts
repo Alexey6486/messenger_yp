@@ -1,13 +1,13 @@
-import { Block } from '@/block';
-import { compile } from '@/utils';
+import { Block } from '../../block';
+import { compile } from '../../utils';
 import {
 	CLASSES,
 	IDS,
-} from '@/constants';
-import type { BlockProps } from '@/types';
-import type { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { SvgDots } from '@/components/icons';
+} from '../../constants';
+import type { BlockProps } from '../../types';
+import type { DropDownOptionBlock } from './drop-down-option-block';
+import { ButtonRoundBlock } from '../button-round/button-round-block';
+import { SvgDots } from '../../components/icons';
 import template from './drop-down-template';
 
 interface IDropDownBlockProps extends BlockProps {

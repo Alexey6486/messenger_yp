@@ -2,8 +2,8 @@ import type {
 	BlockProps,
 	IFormState,
 	IInputState,
-	TNullable
-} from '@/types';
+	TNullable,
+} from '../types';
 
 export function getInputStateSlice<T>(
 	form: TNullable<IFormState<T>> | undefined,

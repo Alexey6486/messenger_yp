@@ -1,6 +1,6 @@
-import type { Block } from '@/block';
-import type { WebSocketService } from '@/web-socket';
-import type { TNullable } from '@/types';
+import type { Block } from '../block';
+import type { WebSocketService } from '../web-socket';
+import type { TNullable } from '../types';
 
 export const E_FORM_FIELDS_NAME = {
 	first_name: 'first_name',

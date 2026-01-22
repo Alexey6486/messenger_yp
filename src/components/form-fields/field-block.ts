@@ -1,14 +1,14 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../store';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
-import template from '@/components/form-fields/field-template';
+} from '../../utils';
+import type { BlockProps } from '../../types';
+import template from '../../components/form-fields/field-template';
 
 export class FieldBlock extends Block {
 	constructor(props: BlockProps) {

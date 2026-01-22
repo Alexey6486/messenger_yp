@@ -1,15 +1,15 @@
-import type { Block } from '@/block';
+import type { Block } from '../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { ChatAPI } from '@/api';
-import { WebSocketService } from '@/web-socket';
+} from '../store';
+import { ChatAPI } from '../api';
+import { WebSocketService } from '../web-socket';
 import {
 	cloneDeep,
 	handleRequestError,
 	isArray,
-} from '@/utils';
+} from '../utils';
 import type {
 	BlockProps,
 	IChat,
@@ -19,10 +19,10 @@ import type {
 	IChatUserResponse,
 	ISocketChatMessage,
 	TPromiseResponse,
-} from '@/types';
-import { PROMISE_STATUS } from '@/constants';
+} from '../types';
+import { PROMISE_STATUS } from '../constants';
 import type { RequestOptions } from 'http';
-import type { IRequestOptions } from '@/http';
+import type { IRequestOptions } from '../http';
 
 const api = new ChatAPI();
 

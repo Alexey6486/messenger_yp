@@ -1,9 +1,9 @@
-import { EventBus } from '@/event-bus';
+import { EventBus } from '../event-bus';
 import {
 	cloneDeep,
 	setProps,
-} from '@/utils';
-import { StoreEvents } from '@/store/types';
+} from '../utils';
+import { StoreEvents } from './types';
 import type {
 	BlockProps,
 	IAddChatModalForm,
@@ -16,7 +16,7 @@ import type {
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
-} from '@/types';
+} from '../types';
 import {
 	INIT_ADD_CHAT_STATE,
 	INIT_ADD_USERS_STATE,
@@ -27,7 +27,7 @@ import {
 	INIT_REGISTRATION_STATE,
 	INIT_SEARCH_STATE,
 	INIT_USER_DATA,
-} from '@/constants';
+} from '../constants';
 
 class Store extends EventBus {
 	private state: Partial<BlockProps> = {

@@ -1,4 +1,4 @@
-import type { WebSocketService } from '@/web-socket';
+import type { WebSocketService } from '../web-socket';
 import type {
 	IAddChatModalForm,
 	IAddUsersModalForm,
@@ -17,11 +17,11 @@ import type {
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
-} from '@/types/state';
-import type { Block } from '@/block';
-import type { TNullable } from '@/types/general';
-import type { TPages } from '@/types/pages';
-import type { Router } from '@/router';
+} from './state';
+import type { Block } from '../block';
+import type { TNullable } from './general';
+import type { TPages } from './pages';
+import type { Router } from '../router';
 
 // function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 // 	return obj[key];

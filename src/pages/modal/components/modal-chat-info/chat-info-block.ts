@@ -1,26 +1,26 @@
-import { Block } from '@/block';
-import { ChatsController } from '@/controllers';
+import { Block } from '../../../../block';
+import { ChatsController } from '../../../../controllers';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../../../store';
 import {
 	BASE_IMG_URL,
 	IDS,
-} from '@/constants';
+} from '../../../../constants';
 import {
 	cloneDeep,
 	compile,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	IChatUserResponse,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { UlBlock } from '@/components/ul/ul-block';
-import { ChatUserBlock } from '@/components/chat-user/chat-user-block';
-import { InputBlock } from '@/components/input/input-block';
-import { ButtonBlock } from '@/components/button/button-block';
+} from '../../../../types';
+import { E_FORM_FIELDS_NAME } from '../../../../types';
+import { UlBlock } from '../../../../components/ul/ul-block';
+import { ChatUserBlock } from '../../../../components/chat-user/chat-user-block';
+import { InputBlock } from '../../../../components/input/input-block';
+import { ButtonBlock } from '../../../../components/button/button-block';
 import template from './chat-info-template';
 import styles from '../styles.module.pcss';
 

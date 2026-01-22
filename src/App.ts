@@ -1,5 +1,5 @@
 import * as Pages from './pages';
-import { Router } from '@/router';
+import { Router } from './router';
 import { PAGES_URL } from './constants';
 import type { TNullable } from './types';
 

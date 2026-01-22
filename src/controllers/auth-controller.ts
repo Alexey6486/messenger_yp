@@ -1,20 +1,20 @@
-import { AuthAPI } from '@/api';
-import { Store } from '@/store';
+import { AuthAPI } from '../api';
+import { Store } from '../store';
 import {
 	INIT_LOGIN_STATE,
 	INIT_REGISTRATION_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
 	USER_LOGGED_IN,
-} from '@/constants';
+} from '../constants';
 import type { RequestOptions } from 'http';
-import type { IRequestOptions } from '@/http';
-import type { Router } from '@/router';
-import type { Block } from '@/block';
+import type { IRequestOptions } from '../http';
+import type { Router } from '../router';
+import type { Block } from '../block';
 import {
 	cloneDeep,
 	handleRequestError,
-} from '@/utils';
+} from '../utils';
 
 const api = new AuthAPI();
 

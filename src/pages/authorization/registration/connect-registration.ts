@@ -1,11 +1,11 @@
 import { RegistrationBlock } from './registration-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../hoc';
 import type {
 	BlockProps,
 	IFormState,
 	IRegistrationFormUi,
 	TNullable,
-} from '@/types';
+} from '../../../types';
 
 export function mapUserToPropsRegistration(state: Partial<BlockProps>): { registrationForm: TNullable<IFormState<IRegistrationFormUi>> | undefined } {
 	return {

@@ -10,7 +10,7 @@ import type {
 	IUserDataForm,
 	IUserPasswordForm,
 	IUserResponse,
-} from '@/types';
+} from '../types';
 
 export const INIT_LOGIN_STATE: IFormState<ILoginForm> = {
 	fields: {

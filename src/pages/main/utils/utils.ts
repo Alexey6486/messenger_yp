@@ -1,7 +1,7 @@
 import {
 	MSG_PREVIEW_LENGTH_CUT,
 	MSG_PREVIEW_LENGTH_MAX,
-} from '@/pages/main/constants/constants';
+} from '../constants';
 
 export const formatContentLength = (message?: string): string => {
 	if (!message) {

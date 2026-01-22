@@ -1,20 +1,20 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { IDS } from '@/constants';
+} from '../../../../store';
+import { IDS } from '../../../../constants';
 import {
 	cloneDeep,
 	compile,
 	isArray,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	IChatUserResponse,
-} from '@/types';
-import { UlBlock } from '@/components/ul/ul-block';
-import { ChatUserBlock } from '@/components/chat-user/chat-user-block';
+} from '../../../../types';
+import { UlBlock } from '../../../../components/ul/ul-block';
+import { ChatUserBlock } from '../../../../components/chat-user/chat-user-block';
 import template from './remove-users-template';
 import styles from '../styles.module.pcss';
 

@@ -1,11 +1,11 @@
 import { LoginBlock } from './login-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../hoc';
 import type {
 	BlockProps,
 	IFormState,
 	ILoginForm,
 	TNullable,
-} from '@/types';
+} from '../../../types';
 
 export function mapUserToPropsLogin(state: Partial<BlockProps>): { authorizationForm: TNullable<IFormState<ILoginForm>> | undefined } {
 	return {

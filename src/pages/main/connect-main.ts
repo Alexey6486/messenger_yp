@@ -1,6 +1,6 @@
 import { MainBlock } from './main-block';
-import { connect } from '@/hoc';
-import type { WebSocketService } from '@/web-socket';
+import { connect } from '../../hoc';
+import type { WebSocketService } from '../../web-socket';
 import type {
 	BlockProps,
 	IChat,
@@ -10,8 +10,8 @@ import type {
 	ISearchForm,
 	IUserResponse,
 	TNullable,
-} from '@/types';
-import { cloneDeep } from '@/utils';
+} from '../../types';
+import { cloneDeep } from '../../utils';
 
 export function mapUserToPropsMain(state: Partial<BlockProps>): {
 	currentChatData: TNullable<ICurrentChatData> | undefined,

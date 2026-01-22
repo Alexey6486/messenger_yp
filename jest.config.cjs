@@ -1,20 +1,26 @@
 module.exports = {
 	preset: 'ts-jest',
-	testEnvironment: 'jsdom',
+	testEnvironment: 'node',
 	transform: {
-		'^.+\\.ts$': [
+		'^.+\\.tsx?$': [
 			'ts-jest',
 			{
-				tsconfig: 'tsconfig.json',
-			},
-		],
+				useESM: true,
+				tsconfig: '<rootDir>/tsconfig.json'
+			}
+		]
 	},
 	moduleNameMapper: {
-		'^@/(.*)$': '<rootDir>/src/$1',
+		'^(\\.*/.*)\\.ts$': '$1',
 	},
 	moduleFileExtensions: ['js', 'ts'],
 	testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 	clearMocks: true,
-	testMatch: ['**/*.test.{ts,js}'],
-	extensionsToTreatAsEsm: ['.ts'],
+	testMatch: [
+		'**/*.test.ts',
+		'**/*.spec.ts'
+	],
+	extensionsToTreatAsEsm: ['.ts', '.tsx'],
+	verbose: true
 };
+

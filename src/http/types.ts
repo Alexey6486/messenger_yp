@@ -1,4 +1,4 @@
-import type { TNullable } from '@/types';
+import type { TNullable } from '../types';
 
 export enum ERequestMethods {
 	GET = 'GET',

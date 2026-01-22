@@ -1,13 +1,13 @@
-import { Block } from '@/block';
+import { Block } from '../block';
 import type {
 	BlockProps,
 	TNullable,
-} from '@/types';
+} from '../types';
 import {
 	PAGES_URL,
 	STORAGE_KEY,
-} from '@/constants';
-import { AuthController } from '@/controllers';
+} from '../constants';
+import { AuthController } from '../controllers';
 
 function isEqual(lhs: string, rhs: string) {
 	return lhs === rhs;
@@ -111,7 +111,7 @@ export class Router {
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
 		const isAuthed = Boolean(localStorage.getItem(STORAGE_KEY));
-		console.log({route, isAuthed});
+		console.log({ route, isAuthed });
 		if (
 			// !isAuthed
 			// && route

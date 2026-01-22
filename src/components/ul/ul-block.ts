@@ -1,14 +1,14 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { IDS } from '@/constants';
+} from '../../store';
+import { IDS } from '../../constants';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
+} from '../../utils';
+import type { BlockProps } from '../../types';
 import template from './ul-template';
 
 interface IUlBlockProps extends BlockProps {

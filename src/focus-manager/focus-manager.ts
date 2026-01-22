@@ -1,6 +1,4 @@
-import type {
-	ICurrentFocus,
-} from '@/types';
+import type { ICurrentFocus } from '../types';
 
 class FocusManager {
 	private state: ICurrentFocus = {

@@ -1,13 +1,13 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	AuthController,
 	UserController,
-} from '@/controllers';
-import { Store } from '@/store';
+} from '../../controllers';
+import { Store } from '../../store';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../focus-manager';
 import {
 	BASE_IMG_URL,
 	IDS,
@@ -15,7 +15,7 @@ import {
 	INIT_PROFILE_USER_PASSWORD_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
-} from '@/constants';
+} from '../../constants';
 import {
 	cloneDeep,
 	compile,
@@ -23,8 +23,8 @@ import {
 	getInputStateSlice,
 	isEmpty,
 	isEqual,
-} from '@/utils';
-import { mapUserToPropsUserData } from '@/pages/profile/utils';
+} from '../../utils';
+import { mapUserToPropsUserData } from './utils';
 import type {
 	BlockProps,
 	IFormState,
@@ -34,13 +34,13 @@ import type {
 	IUserResponse,
 	TNullable,
 	TPlainObject,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { ProfileFieldBlock } from '@/pages/profile/components/field/profile-field-block';
-import { SvgArrowLeft } from '@/components/icons';
-import { ButtonBlock } from '@/components/button/button-block';
-import { InputBlock } from '@/components/input/input-block';
+} from '../../types';
+import { E_FORM_FIELDS_NAME } from '../../types';
+import { ButtonRoundBlock } from '../../components/button-round/button-round-block';
+import { ProfileFieldBlock } from './components/field/profile-field-block';
+import { SvgArrowLeft } from '../../components/icons';
+import { ButtonBlock } from '../../components/button/button-block';
+import { InputBlock } from '../../components/input/input-block';
 import template from './profile-template.hbs?raw';
 import styles from './styles.module.pcss';
 

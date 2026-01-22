@@ -1,35 +1,35 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { UserController } from '@/controllers';
+} from '../../../../store';
+import { UserController } from '../../../../controllers';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../../../focus-manager';
 import {
 	IDS,
 	INIT_ADD_USERS_STATE,
-} from '@/constants';
+} from '../../../../constants';
 import {
 	cloneDeep,
 	compile,
 	getInputStateSlice,
 	hasTargetParent,
 	isArray,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	IChatUserResponse,
 	IInputChangeParams,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { FieldBlock } from '@/components/form-fields/field-block';
-import { InputBlock } from '@/components/input/input-block';
-import { ButtonBlock } from '@/components/button/button-block';
-import { UlBlock } from '@/components/ul/ul-block';
-import { ChatUserBlock } from '@/components/chat-user/chat-user-block';
+} from '../../../../types';
+import { E_FORM_FIELDS_NAME } from '../../../../types';
+import { FieldBlock } from '../../../../components/form-fields/field-block';
+import { InputBlock } from '../../../../components/input/input-block';
+import { ButtonBlock } from '../../../../components/button/button-block';
+import { UlBlock } from '../../../../components/ul/ul-block';
+import { ChatUserBlock } from '../../../../components/chat-user/chat-user-block';
 import template from './add-users-template';
 import styles from '../styles.module.pcss';
 

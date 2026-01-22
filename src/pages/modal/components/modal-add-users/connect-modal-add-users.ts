@@ -1,5 +1,5 @@
 import { ModalAddUsersBlock } from './add-users-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../../hoc';
 import type {
 	BlockProps,
 	IAddUsersModalForm,
@@ -7,8 +7,8 @@ import type {
 	ICurrentChatData,
 	IFormState,
 	TNullable,
-} from '@/types';
-import { StoreEvents } from '@/store';
+} from '../../../../types';
+import { StoreEvents } from '../../../../store';
 
 export function mapUserToPropsAddUsers(state: Partial<BlockProps>): {
 	modalAddUsersForm: TNullable<IFormState<IAddUsersModalForm>> | undefined,

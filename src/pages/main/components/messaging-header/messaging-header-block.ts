@@ -1,25 +1,25 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { ChatsController } from '@/controllers';
+} from '../../../../store';
+import { ChatsController } from '../../../../controllers';
 import {
 	CLASSES,
 	IDS,
-} from '@/constants';
+} from '../../../../constants';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
-import { DropDownBlock } from '@/components/drop-down/drop-down-block';
-import { DropDownOptionBlock } from '@/components/drop-down/drop-down-option-block';
-import { ChatInfoBlock } from '@/pages/main/components/chat-info/chat-info-block';
+} from '../../../../utils';
+import type { BlockProps } from '../../../../types';
+import { DropDownBlock } from '../../../../components/drop-down/drop-down-block';
+import { DropDownOptionBlock } from '../../../../components/drop-down/drop-down-option-block';
+import { ChatInfoBlock } from '../chat-info/chat-info-block';
 import {
 	SvgCross,
 	SvgPlus,
-} from '@/components/icons';
+} from '../../../../components/icons';
 import template from './messaging-header-template';
 
 export class MessagingHeaderBlock extends Block {

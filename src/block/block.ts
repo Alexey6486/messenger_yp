@@ -1,16 +1,16 @@
-import { EventBus } from '@/event-bus';
-import { FocusManager } from '@/focus-manager';
-import * as Pages from '@/pages';
-import { IDS } from '@/constants';
+import { EventBus } from '../event-bus';
+import { FocusManager } from '../focus-manager';
+import * as Pages from '../pages';
+import { IDS } from '../constants';
 import type {
 	BlockProps,
 	IChildren,
 	TNullable,
-} from '@/types';
-import { IEbEvents } from '@/types';
-import { isEmpty } from '@/utils';
+} from '../types';
+import { IEbEvents } from '../types';
+import { isEmpty } from '../utils';
 
-export abstract class Block {
+export default class Block {
 	static EVENTS = {
 		INIT: IEbEvents.INIT,
 		FLOW_CDM: IEbEvents.FLOW_CDM,

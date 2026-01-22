@@ -1,12 +1,12 @@
 import { ModalChatInfoBlock } from './chat-info-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../../hoc';
 import type {
 	BlockProps,
 	TNullable,
 	ICurrentChatData,
-} from '@/types';
-import { StoreEvents } from '@/store';
-import { cloneDeep } from '@/utils';
+} from '../../../../types';
+import { StoreEvents } from '../../../../store';
+import { cloneDeep } from '../../../../utils';
 
 export function mapUserToPropsChatInfo(state: Partial<BlockProps>): {
 	currentChatData: TNullable<ICurrentChatData> | undefined,

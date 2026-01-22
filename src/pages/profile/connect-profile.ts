@@ -1,7 +1,7 @@
 import { ProfileBlock } from './profile-block';
-import { connect } from '@/hoc';
-import type { BlockProps } from '@/types';
-import { cloneDeep } from '@/utils';
+import { connect } from '../../hoc';
+import type { BlockProps } from '../../types';
+import { cloneDeep } from '../../utils';
 
 export function mapUserToPropsProfile(state: Partial<BlockProps>) {
 	return {

@@ -1,8 +1,15 @@
-import { Block } from '@/block';
-import { Router } from '@/router';
-import { STORAGE_KEY } from '@/constants';
-import type { BlockProps } from '@/types';
-import { compile } from '@/utils';
+import {
+	describe,
+	expect,
+} from '@jest/globals';
+import Block from '../block/block';
+import { Router } from './router';
+import {
+	PAGES_URL,
+	STORAGE_KEY,
+} from '../constants';
+import type { BlockProps } from '../types';
+import { compile } from '../utils';
 
 const UNKNOWN_PAGE_INNER = '<h1>Page not found</h1>';
 const AUTH_PAGE_INNER = '<h1>Authorization page</h1>';
@@ -43,14 +50,14 @@ describe('Router', () => {
 		mockApp.id = 'app';
 		document.body.appendChild(mockApp);
 
-		// router = new Router(mockApp);
-		//
-		// if (router) {
-		// 	router
-		// 		.use(PAGES_URL.NOT_FOUND, UnknownPage, router)
-		// 		.use(PAGES_URL.AUTHORIZATION, AuthorizationPage, router)
-		// 		.start();
-		// }
+		router = new Router(mockApp);
+
+		if (router) {
+			router
+				.use(PAGES_URL.NOT_FOUND, UnknownPage, router)
+				.use(PAGES_URL.AUTHORIZATION, AuthorizationPage, router)
+				.start();
+		}
 	});
 
 	afterEach(() => {
@@ -61,9 +68,9 @@ describe('Router', () => {
 
 	test('renders 404 for unknown routes', () => {
 		if (router) {
-			// router.go('/unknown');
+			router.go('/unknown');
 
-			// expect(mockApp.innerHTML).toBe(UNKNOWN_PAGE_INNER);
+			expect(mockApp.innerHTML).toBe(UNKNOWN_PAGE_INNER);
 		}
 	});
 });

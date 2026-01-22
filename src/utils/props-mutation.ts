@@ -1,5 +1,5 @@
-import type { TPlainObject } from '@/types';
-import { merge } from '@/utils/merge';
+import type { TPlainObject } from '../types';
+import { merge } from './merge';
 
 const prepData = (str: string, val: unknown): Record<string, unknown> => str
 	.split('.')

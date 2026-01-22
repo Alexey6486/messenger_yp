@@ -1,33 +1,33 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../../../store';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../../../focus-manager';
 import {
 	IDS,
 	INIT_ADD_CHAT_STATE,
-} from '@/constants';
+} from '../../../../constants';
 import {
 	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	IAddChatModalForm,
 	IFormState,
 	IInputChangeParams,
 	TNullable,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { FieldBlock } from '@/components/form-fields/field-block';
-import { InputBlock } from '@/components/input/input-block';
-import { ButtonBlock } from '@/components/button/button-block';
+} from '../../../../types';
+import { E_FORM_FIELDS_NAME } from '../../../../types';
+import { FieldBlock } from '../../../../components/form-fields/field-block';
+import { InputBlock } from '../../../../components/input/input-block';
+import { ButtonBlock } from '../../../../components/button/button-block';
 import template from './add-chat-template';
 import styles from '../styles.module.pcss';
 

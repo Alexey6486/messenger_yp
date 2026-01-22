@@ -1,13 +1,13 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../store';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
+} from '../../utils';
+import type { BlockProps } from '../../types';
 import template from './link-template';
 
 export class LinkBlock extends Block {

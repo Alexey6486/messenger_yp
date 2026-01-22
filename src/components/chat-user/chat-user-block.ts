@@ -1,19 +1,22 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../store';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
-import { IDS, BASE_IMG_URL } from '@/constants';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
+} from '../../utils';
+import type { BlockProps } from '../../types';
+import {
+	IDS,
+	BASE_IMG_URL,
+} from '../../constants';
+import { ButtonRoundBlock } from '../button-round/button-round-block';
 import {
 	SvgCross,
 	SvgPlus,
-} from '@/components/icons';
+} from '../../components/icons';
 import template from './chat-user-template';
 
 export class ChatUserBlock extends Block {

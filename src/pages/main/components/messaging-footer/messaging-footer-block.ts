@@ -1,15 +1,15 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../../../../store';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../../../focus-manager';
 import {
 	IDS,
-} from '@/constants';
+} from '../../../../constants';
 import {
 	compile,
 	escapeHTML,
@@ -17,17 +17,17 @@ import {
 	getInputStateSlice,
 	isArray,
 	isEqual,
-} from '@/utils';
+} from '../../../../utils';
 import type {
 	BlockProps,
 	IInputChangeParams,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { InputBlock } from '@/components/input/input-block';
+} from '../../../../types';
+import { E_FORM_FIELDS_NAME } from '../../../../types';
+import { ButtonRoundBlock } from '../../../../components/button-round/button-round-block';
+import { InputBlock } from '../../../../components/input/input-block';
 import {
 	SvgArrowRight,
-} from '@/components/icons';
+} from '../../../../components/icons';
 import template from './messaging-footer-template';
 
 export class MessagingFooterBlock extends Block {

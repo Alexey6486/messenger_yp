@@ -1,9 +1,9 @@
-import { Block } from '@/block';
-import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
-import template from '@/components/button/button-template';
+import Block from '../../block/block';
+import { compile } from '../../utils';
+import type { BlockProps } from '../../types';
+import template from '../../components/button/button-template';
 
-export class ButtonBlock extends Block {
+export default class ButtonBlock extends Block {
 	constructor(props: BlockProps) {
 		super({
 			...props,

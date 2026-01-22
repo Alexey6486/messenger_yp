@@ -1,12 +1,12 @@
 import { ModalAddChatBlock } from './add-chat-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../../hoc';
 import type {
 	BlockProps,
 	IAddChatModalForm,
 	IFormState,
 	TNullable,
-} from '@/types';
-import { StoreEvents } from '@/store';
+} from '../../../../types';
+import { StoreEvents } from '../../../../store';
 
 export function mapUserToPropsAddChat(state: Partial<BlockProps>): { modalAddChatForm: TNullable<IFormState<IAddChatModalForm>> | undefined } {
 	return {

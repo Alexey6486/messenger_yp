@@ -1,18 +1,18 @@
-import { Store } from '@/store';
+import { Store } from '../store';
 import {
-	SCK_PING,
 	MSG_OFFSET,
+	SCK_PING,
 	WS_BASE_URL,
-} from '@/constants';
+} from '../constants';
 import type {
 	BlockProps,
 	IChat,
-} from '@/types';
+} from '../types';
 import {
 	cloneDeep,
 	isArray,
 	isPlainObject,
-} from '@/utils';
+} from '../utils';
 
 export class WebSocketService {
 	private socket: WebSocket | null = null;
@@ -22,7 +22,7 @@ export class WebSocketService {
 	connect(userId: string, chatId: string, token: string) {
 		if (!userId || !chatId || !token) return;
 
-		this.socket = new WebSocket(`${WS_BASE_URL}/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
+		this.socket = new WebSocket(`${ WS_BASE_URL }/${ userId }/${ chatId }/${ token }`) as WebSocket | null;
 		this.chatId = chatId;
 
 		if (!this.socket) return;

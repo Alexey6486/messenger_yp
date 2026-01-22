@@ -1,10 +1,10 @@
-import { isJsonString } from '@/utils';
-import { Store } from '@/store';
-import type { Block } from '@/block';
+import { isJsonString } from '../utils';
+import { Store } from '../store';
+import type { Block } from '../block';
 import {
 	IDS,
 	USER_LOGGED_IN,
-} from '@/constants';
+} from '../constants';
 
 export function isErrorWithMessage(error: unknown): error is { message: string } {
 	return (

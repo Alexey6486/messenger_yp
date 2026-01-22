@@ -1,14 +1,14 @@
-import { Block } from '@/block';
+import { Block } from '../../../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import type { BlockProps } from '@/types';
+} from '../../../../store';
+import type { BlockProps } from '../../../../types';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import { BASE_IMG_URL } from '@/constants';
+} from '../../../../utils';
+import { BASE_IMG_URL } from '../../../../constants';
 import template from './chat-info-template';
 
 export class ChatInfoBlock extends Block {

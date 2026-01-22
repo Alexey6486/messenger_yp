@@ -1,9 +1,9 @@
-import type { TNullable } from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
+import type { TNullable } from '../types';
+import { E_FORM_FIELDS_NAME } from '../types';
 import {
 	REGEX,
 	VALIDATION_MSG,
-} from '@/constants';
+} from '../constants';
 
 export class Validator {
 	private value: string | undefined;

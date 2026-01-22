@@ -1,14 +1,14 @@
-import { UserAPI } from '@/api';
+import { UserAPI } from '../api';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { STORAGE_KEY } from '@/constants';
+} from '../store';
+import { STORAGE_KEY } from '../constants';
 import type { RequestOptions } from 'http';
-import type { IRequestOptions } from '@/http';
-import type { Block } from '@/block';
-import type { BlockProps } from '@/types';
-import { handleRequestError } from '@/utils';
+import type { IRequestOptions } from '../http';
+import type { Block } from '../block';
+import type { BlockProps } from '../types';
+import { handleRequestError } from '../utils';
 
 const api = new UserAPI();
 

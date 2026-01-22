@@ -1,10 +1,10 @@
-import { Block } from '@/block';
-import { Store } from '@/store';
+import { Block } from '../../../../block';
+import { Store } from '../../../../store';
 import { mapUserToPropsModalError } from './utils';
-import { IDS } from '@/constants';
-import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
-import { ButtonBlock } from '@/components/button/button-block';
+import { IDS } from '../../../../constants';
+import { compile } from '../../../../utils';
+import type { BlockProps } from '../../../../types';
+import { ButtonBlock } from '../../../../components/button/button-block';
 import template from './modal-error-template';
 import styles from './styles.module.pcss';
 

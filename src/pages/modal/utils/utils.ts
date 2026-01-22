@@ -1,13 +1,13 @@
-import { IDS } from '@/constants';
-import type { Block } from '@/block';
+import { IDS } from '../../../constants';
+import type { Block } from '../../../block';
 import {
 	ModalAddChat,
 	ModalAddUsers,
 	ModalErrorBlock,
 	ModalRemoveUsers,
 	ModalChatInfo,
-} from '@/pages/modal/components';
-import { PlaceholderBlock } from '@/components/placeholder/placeholder-block';
+} from '../components';
+import { PlaceholderBlock } from '../../../components/placeholder/placeholder-block';
 
 export const getModalContentBlock = (
 	contentId: string | undefined,

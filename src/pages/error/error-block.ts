@@ -1,16 +1,16 @@
-import { Block } from '@/block';
+import { Block } from '../../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
-import { mapUserToPropsError } from '@/pages/error/connect-error';
-import { IDS } from '@/constants';
+} from '../../store';
+import { mapUserToPropsError } from './connect-error';
+import { IDS } from '../../constants';
 import {
 	compile,
 	isEqual,
-} from '@/utils';
-import type { BlockProps } from '@/types';
-import { ButtonBlock } from '@/components/button/button-block';
+} from '../../utils';
+import type { BlockProps } from '../../types';
+import { ButtonBlock } from '../../components/button/button-block';
 import template from './error-template.hbs?raw';
 import styles from './styles.module.pcss';
 

@@ -1,10 +1,10 @@
-import { Block } from '@/block';
-import { IDS } from '@/constants';
-import { compile } from '@/utils';
-import { getModalContentBlock } from '@/pages/modal/utils';
-import type { BlockProps } from '@/types';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { SvgCross } from '@/components/icons';
+import { Block } from '../../block';
+import { IDS } from '../../constants';
+import { compile } from '../../utils';
+import { getModalContentBlock } from './utils';
+import type { BlockProps } from '../../types';
+import { ButtonRoundBlock } from '../../components/button-round/button-round-block';
+import { SvgCross } from '../../components/icons';
 import template from './modal-template.hbs?raw';
 
 export class ModalBlock extends Block {

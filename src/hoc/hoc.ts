@@ -1,13 +1,13 @@
-import type { BlockProps } from '@/types';
-import type { Block } from '@/block';
+import type { BlockProps } from '../types';
+import type { Block } from '../block';
 import {
 	Store,
 	StoreEvents,
-} from '@/store';
+} from '../store';
 import {
 	isArray,
 	isEqual,
-} from '@/utils';
+} from '../utils';
 
 export function connect(
 	mapStateToProps: (state: Partial<BlockProps>) => Partial<BlockProps>,

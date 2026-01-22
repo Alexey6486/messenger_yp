@@ -1,12 +1,12 @@
 import { ModalRemoveUsersBlock } from './remove-users-block';
-import { connect } from '@/hoc';
+import { connect } from '../../../../hoc';
 import type {
 	BlockProps,
 	ICurrentChatData,
 	TNullable,
-} from '@/types';
-import { StoreEvents } from '@/store';
-import { cloneDeep } from '@/utils';
+} from '../../../../types';
+import { StoreEvents } from '../../../../store';
+import { cloneDeep } from '../../../../utils';
 
 export function mapUserToPropsRemoveUsers(state: Partial<BlockProps>): {
 	currentChatData: TNullable<ICurrentChatData> | undefined,

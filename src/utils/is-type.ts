@@ -1,7 +1,7 @@
 import type {
 	TFunctionUnknown,
 	TPlainObject,
-} from '@/types';
+} from '../types';
 
 export function isPlainObject(value: unknown): boolean {
 	return typeof value === 'object'

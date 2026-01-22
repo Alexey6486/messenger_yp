@@ -1,6 +1,6 @@
-import { Block } from '@/block';
-import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
+import { Block } from '../../../../block';
+import { compile } from '../../../../utils';
+import type { BlockProps } from '../../../../types';
 import template from './messaging-main-template';
 
 export class MessagingMainBlock extends Block {

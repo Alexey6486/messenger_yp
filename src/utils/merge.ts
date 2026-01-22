@@ -1,5 +1,5 @@
-import type { TPlainObject } from '@/types';
-import { isPlainObject } from '@/utils/is-type';
+import type { TPlainObject } from '../types';
+import { isPlainObject } from './is-type';
 
 export function merge(oldObj: TPlainObject, newObj: TPlainObject): TPlainObject {
 	for (const p in newObj) {

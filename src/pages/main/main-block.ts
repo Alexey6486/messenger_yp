@@ -1,17 +1,17 @@
-import { Block } from '@/block';
-import { Store } from '@/store';
-import { ChatsController } from '@/controllers';
+import { Block } from '../../block';
+import { Store } from '../../store';
+import { ChatsController } from '../../controllers';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../focus-manager';
 import {
 	IDS,
 	INIT_MESSAGE_STATE,
 	INIT_SEARCH_STATE,
 	PAGES_URL,
 	STORAGE_KEY,
-} from '@/constants';
+} from '../../constants';
 import {
 	cloneDeep,
 	compile,
@@ -20,23 +20,23 @@ import {
 	formatDate,
 	getInputStateSlice,
 	isArray,
-} from '@/utils';
+} from '../../utils';
 import type {
 	BlockProps,
 	IChat,
 	IInputChangeParams,
 	IUserResponse,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { FormBlock } from '@/components/form/form-block';
-import { InputBlock } from '@/components/input/input-block';
-import { UlBlock } from '@/components/ul/ul-block';
-import { LinkBlock } from '@/components/link/link-block';
-import { ButtonRoundBlock } from '@/components/button-round/button-round-block';
-import { MessagingBlock } from '@/pages/main/components/messaging/messaging-block';
-import { ChatBlock } from '@/pages/main/components/chat/chat-block';
-import { formatContentLength } from '@/pages/main/utils';
-import { SvgPlus } from '@/components/icons';
+} from '../../types';
+import { E_FORM_FIELDS_NAME } from '../../types';
+import { FormBlock } from '../../components/form/form-block';
+import { InputBlock } from '../../components/input/input-block';
+import { UlBlock } from '../../components/ul/ul-block';
+import { LinkBlock } from '../../components/link/link-block';
+import { ButtonRoundBlock } from '../../components/button-round/button-round-block';
+import { MessagingBlock } from '../main/components';
+import { ChatBlock } from './components/chat/chat-block';
+import { formatContentLength } from './utils';
+import { SvgPlus } from '../../components/icons';
 import template from './main-template.hbs?raw';
 import styles from './styles.module.pcss';
 

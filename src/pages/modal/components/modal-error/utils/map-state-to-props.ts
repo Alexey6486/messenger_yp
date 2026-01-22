@@ -1,8 +1,8 @@
-import type { BlockProps } from '@/types';
+import type { BlockProps } from '../../../../../types';
 import type {
 	IErrorPageState,
 	TNullable,
-} from '@/types';
+} from '../../../../../types';
 
 export function mapUserToPropsModalError(state: Partial<BlockProps>): { modalError: TNullable<IErrorPageState> | undefined } {
 	return {

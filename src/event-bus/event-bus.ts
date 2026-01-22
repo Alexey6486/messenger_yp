@@ -1,7 +1,7 @@
 import type {
 	TEbCallback,
 	TEbListener,
-} from '@/types';
+} from '../types';
 
 export class EventBus {
 	private listeners: TEbListener = {};

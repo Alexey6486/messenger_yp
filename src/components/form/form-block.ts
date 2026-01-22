@@ -1,8 +1,8 @@
-import { Block } from '@/block';
-import { IDS } from '@/constants';
-import { compile } from '@/utils';
-import type { BlockProps } from '@/types';
-import type { InputBlock } from '@/components/input/input-block';
+import { Block } from '../../block';
+import { IDS } from '../../constants';
+import { compile } from '../../utils';
+import type { BlockProps } from '../../types';
+import type { InputBlock } from '../input/input-block';
 import template from './form-template';
 
 interface IFormBlockProps extends BlockProps {

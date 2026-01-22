@@ -1,8 +1,8 @@
 import type { IRequestOptions } from './types';
 import { ERequestMethods } from './types';
-import type { TNullable } from '@/types';
+import type { TNullable } from '../types';
 import type { RequestOptions } from 'http';
-import { BASE_API } from '@/constants';
+import { BASE_API } from '../constants';
 
 function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 	let result = '';
@@ -69,8 +69,8 @@ export class HTTPTransport {
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${BASE_API}${ url }${ queryStringify(data) }`
-					: `${BASE_API}${ url }`,
+					? `${ BASE_API }${ url }${ queryStringify(data) }`
+					: `${ BASE_API }${ url }`,
 			);
 
 			Object.keys(headers).forEach(key => {

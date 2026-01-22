@@ -1,33 +1,33 @@
-import { Block } from '@/block';
-import { AuthController } from '@/controllers';
-import { Store } from '@/store';
+import Block from '../../../block/block';
+import { AuthController } from '../../../controllers';
+import { Store } from '../../../store';
 import {
 	FocusManager,
 	getFocusData,
-} from '@/focus-manager';
+} from '../../../focus-manager';
 import {
 	IDS,
 	INIT_LOGIN_STATE,
 	PAGES_URL,
-} from '@/constants';
+} from '../../../constants';
 import {
 	cloneDeep,
 	compile,
 	fieldsValidator,
 	getInputStateSlice,
-} from '@/utils';
+} from '../../../utils';
 import type {
 	BlockProps,
 	IFormState,
 	IInputChangeParams,
 	ILoginForm,
 	TNullable,
-} from '@/types';
-import { E_FORM_FIELDS_NAME } from '@/types';
-import { ButtonBlock } from '@/components/button/button-block';
-import { FieldBlock } from '@/components/form-fields/field-block';
-import { InputBlock } from '@/components/input/input-block';
-import template from '@/pages/main/login-template.hbs?raw';
+} from '../../../types';
+import { E_FORM_FIELDS_NAME } from '../../../types';
+import ButtonBlock from '../../../components/button/button-block';
+import { FieldBlock } from '../../../components/form-fields/field-block';
+import { InputBlock } from '../../../components/input/input-block';
+import template from '../main/login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
 export class LoginBlock extends Block {
