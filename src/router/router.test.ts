@@ -1,11 +1,27 @@
 import { Block } from '@/block';
 import { Router } from '@/router';
-import { STORAGE_KEY } from '@/constants';
+import {
+	PAGES_URL,
+	STORAGE_KEY,
+} from '@/constants';
 import type { BlockProps } from '@/types';
 import { compile } from '@/utils';
 
+const MAIN_PAGE_INNER = '<h1>Main Page</h1>';
 const UNKNOWN_PAGE_INNER = '<h1>Page not found</h1>';
 const AUTH_PAGE_INNER = '<h1>Authorization page</h1>';
+
+class MainPage extends Block {
+	constructor(props: BlockProps) {
+		super({
+			...props,
+		});
+	}
+
+	override render(): string {
+		return compile(MAIN_PAGE_INNER, this.props);
+	}
+}
 
 class AuthorizationPage extends Block {
 	constructor(props: BlockProps) {
@@ -34,8 +50,6 @@ class UnknownPage extends Block {
 describe('Router', () => {
 	let router: Router | null;
 	let mockApp: HTMLElement;
-	// let originalPushState: (data: unknown, unused: string, url?: string | URL | null) => void;
-	// let originalLocation: Location;
 
 	beforeEach(() => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: 'test' }));
@@ -43,14 +57,15 @@ describe('Router', () => {
 		mockApp.id = 'app';
 		document.body.appendChild(mockApp);
 
-		// router = new Router(mockApp);
-		//
-		// if (router) {
-		// 	router
-		// 		.use(PAGES_URL.NOT_FOUND, UnknownPage, router)
-		// 		.use(PAGES_URL.AUTHORIZATION, AuthorizationPage, router)
-		// 		.start();
-		// }
+		router = new Router(mockApp);
+
+		if (router) {
+			router
+				.use(PAGES_URL.AUTHORIZATION, AuthorizationPage, router)
+				.use(PAGES_URL.MAIN, MainPage, router)
+				.use(PAGES_URL.NOT_FOUND, UnknownPage, router)
+				.start();
+		}
 	});
 
 	afterEach(() => {
@@ -61,9 +76,9 @@ describe('Router', () => {
 
 	test('renders 404 for unknown routes', () => {
 		if (router) {
-			// router.go('/unknown');
+			router.go('/unknown');
 
-			// expect(mockApp.innerHTML).toBe(UNKNOWN_PAGE_INNER);
+			expect(mockApp.innerHTML).toBe(UNKNOWN_PAGE_INNER);
 		}
 	});
 });

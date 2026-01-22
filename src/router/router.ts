@@ -111,11 +111,10 @@ export class Router {
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
 		const isAuthed = Boolean(localStorage.getItem(STORAGE_KEY));
-		console.log({route, isAuthed});
+		console.log({ pathname, route, isAuthed });
 		if (
-			// !isAuthed
-			// && route
-			route
+			!isAuthed
+			&& route
 			&& (!route.match(PAGES_URL.AUTHORIZATION) && !route.match(PAGES_URL.REGISTRATION))
 		) {
 			this.go(PAGES_URL.AUTHORIZATION);
@@ -123,6 +122,7 @@ export class Router {
 		}
 
 		if (!route) {
+			console.log({ route });
 			this.go(PAGES_URL.NOT_FOUND);
 			return;
 		}
