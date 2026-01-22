@@ -18,4 +18,5 @@ module.exports = {
 	// clearMocks: true,
 	// testMatch: ['**/*.test.{ts,js}'],
 	extensionsToTreatAsEsm: ['.ts'],
+	resetModules: true
 };
