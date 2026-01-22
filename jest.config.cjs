@@ -5,6 +5,7 @@ module.exports = {
 		'^.+\\.ts$': [
 			'ts-jest',
 			{
+				useESM: true,
 				tsconfig: 'tsconfig.json',
 			},
 		],
@@ -12,9 +13,9 @@ module.exports = {
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/src/$1',
 	},
-	moduleFileExtensions: ['js', 'ts'],
-	testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-	clearMocks: true,
-	testMatch: ['**/*.test.{ts,js}'],
+	// moduleFileExtensions: ['js', 'ts'],
+	// testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+	// clearMocks: true,
+	// testMatch: ['**/*.test.{ts,js}'],
 	extensionsToTreatAsEsm: ['.ts'],
 };
