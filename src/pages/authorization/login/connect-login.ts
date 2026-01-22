@@ -1,4 +1,4 @@
-import { LoginBlock } from './login-block';
+import { LoginBlock } from '@/pages/authorization/login/login-block';
 import { connect } from '@/hoc';
 import type {
 	BlockProps,

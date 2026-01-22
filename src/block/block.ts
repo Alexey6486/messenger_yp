@@ -1,6 +1,6 @@
 import { EventBus } from '@/event-bus';
 import { FocusManager } from '@/focus-manager';
-import * as Pages from '@/pages';
+import { ModalBlock } from '@/pages';
 import { IDS } from '@/constants';
 import type {
 	BlockProps,
@@ -384,7 +384,7 @@ export abstract class Block {
 		title: string,
 		onSubmit?: (event?: Event, data?: unknown) => void,
 	) {
-		const modal = new Pages.ModalBlock({
+		const modal = new ModalBlock({
 			contentId,
 			title,
 			onSubmit,
