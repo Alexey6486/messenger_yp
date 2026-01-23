@@ -27,7 +27,7 @@ import { E_FORM_FIELDS_NAME } from '@/types';
 import { ButtonBlock } from '@/components';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
-import template from '@/pages/main/login-template.hbs?raw';
+import template from './login-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
 export class LoginBlock extends Block {

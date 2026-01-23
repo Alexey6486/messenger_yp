@@ -1,13 +1,12 @@
 import { EventBus } from '@/event-bus';
 import { FocusManager } from '@/focus-manager';
-// import { ModalBlock } from '@/pages';
 import { IDS } from '@/constants';
+import { IEbEvents } from '@/types';
 import type {
 	BlockProps,
 	IChildren,
 	TNullable,
 } from '@/types';
-import { IEbEvents } from '@/types';
 import { isEmpty } from '@/utils';
 
 export abstract class Block {
@@ -379,26 +378,16 @@ export abstract class Block {
 		}
 	}
 
-	createModal(
-		contentId: string,
-		title: string,
-		onSubmit?: (event?: Event, data?: unknown) => void,
-	) {
-		// const modal = new ModalBlock({
-		// 	contentId,
-		// 	title,
-		// 	onSubmit,
-		// });
-		//
-		// if (this?.props?.container) {
-		// 	const content = modal.getContent();
-		//
-		// 	if (content) {
-		// 		if (this?.props?.container?.parentNode) {
-		// 			this.props.container.parentNode.appendChild(content);
-		// 			modal.dispatchComponentDidMount();
-		// 		}
-		// 	}
-		// }
+	createModal(modal: Block) {
+		if (this?.props?.container) {
+			const content = modal.getContent();
+
+			if (content) {
+				if (this?.props?.container?.parentNode) {
+					this.props.container.parentNode.appendChild(content);
+					modal.dispatchComponentDidMount();
+				}
+			}
+		}
 	}
 }

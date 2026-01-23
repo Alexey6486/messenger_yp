@@ -1,7 +1,7 @@
 import type { IRequestOptions } from '@/http';
 import { HTTPTransport } from '@/http';
 import type { RequestOptions } from 'http';
-import { responseHandler } from '@/utils';
+import { responseHandler } from '@/utils/response-handler';
 
 const authAPIInstance = new HTTPTransport();
 const url = '/api/v2/user/';

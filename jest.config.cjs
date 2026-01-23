@@ -13,6 +13,7 @@ module.exports = {
 	},
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/src/$1',
+		'\\.(css|pcss|hbs?.raw)$': 'identity-obj-proxy'
 	},
 	testMatch: [
 		'**/*.test.ts',
