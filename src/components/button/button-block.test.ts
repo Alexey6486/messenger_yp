@@ -2,13 +2,14 @@ import { ButtonBlock } from '@/components';
 
 const CONTAINER_ID = 'app';
 const BUTTON_ID = 'btn-test-id';
-const mockClick = jest.fn();
+const BUTTON_TEXT = 'Тест кнопка';
+const ON_CLICK = jest.fn();
 
 const BUTTON = new ButtonBlock({
 	id: BUTTON_ID,
 	type: 'submit',
-	text: 'Тест кнопка',
-	onClick: mockClick,
+	text: BUTTON_TEXT,
+	onClick: ON_CLICK,
 });
 
 describe('Button component', () => {
@@ -39,8 +40,19 @@ describe('Button component', () => {
 
 			if (btn) {
 				btn.click();
-				expect(mockClick).toHaveBeenCalledTimes(1);
+				expect(ON_CLICK).toHaveBeenCalledTimes(1);
 			}
 		}
 	});
+
+	test('button text', () => {
+		if (container) {
+			const btn = document.getElementById(BUTTON_ID);
+
+			if (btn) {
+				expect(btn.textContent).toContain(BUTTON_TEXT);
+			}
+		}
+	});
+
 });
