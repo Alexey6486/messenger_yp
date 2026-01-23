@@ -111,7 +111,7 @@ export class Router {
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
 		const isAuthed = Boolean(localStorage.getItem(STORAGE_KEY));
-
+		console.log({pathname, route, isAuthed});
 		if (
 			!isAuthed
 			&& route
@@ -131,6 +131,9 @@ export class Router {
 			&& route
 			&& (route.match(PAGES_URL.AUTHORIZATION) || route.match(PAGES_URL.REGISTRATION))
 		) {
+			if (this._currentRoute && this._currentRoute !== route) {
+				this._currentRoute.leave();
+			}
 			this.go(PAGES_URL.MAIN);
 			return;
 		}
