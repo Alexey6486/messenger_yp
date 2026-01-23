@@ -75,7 +75,7 @@ export class MessagingHeaderBlock extends Block {
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
 
 								this.createModal(new ModalBlock({
-									contentId: IDS.MODAL.MODAL_REMOVE_USERSM,
+									contentId: IDS.MODAL.MODAL_REMOVE_USERS,
 									title: 'Удаление пользователей',
 									onSubmit: (_, data) => {
 										if (data && state?.currentChatData?.info) {

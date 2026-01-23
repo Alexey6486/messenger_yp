@@ -67,15 +67,15 @@ class Route {
 }
 
 export class Router {
-	private static __instance: Router;
+	private instance: Router | null = null;
 	private routes: TNullable<Route[]> = null;
 	private history: TNullable<History> = null;
 	private _currentRoute: TNullable<Route> = null;
 	private _rootContainer: TNullable<HTMLElement> = null;
 
 	constructor(rootContainer: HTMLElement) {
-		if (Router.__instance) {
-			return Router.__instance;
+		if (this.instance) {
+			return this.instance;
 		}
 
 		this.routes = [];
@@ -83,7 +83,7 @@ export class Router {
 		this._currentRoute = null;
 		this._rootContainer = rootContainer;
 
-		Router.__instance = this;
+		this.instance = this;
 	}
 
 	use(pathname: string, block: new (props: BlockProps) => Block, router: Router, props?: BlockProps) {
@@ -111,7 +111,7 @@ export class Router {
 	_onRoute(pathname: string) {
 		const route: Route | undefined = this.getRoute(pathname);
 		const isAuthed = Boolean(localStorage.getItem(STORAGE_KEY));
-		console.log({ pathname, route, isAuthed });
+
 		if (
 			!isAuthed
 			&& route
@@ -122,7 +122,6 @@ export class Router {
 		}
 
 		if (!route) {
-			console.log({ route });
 			this.go(PAGES_URL.NOT_FOUND);
 			return;
 		}
@@ -169,5 +168,9 @@ export class Router {
 		if (this.routes) {
 			return this.routes.find((route) => route.match(pathname));
 		}
+	}
+
+	clearInstance() {
+		this.instance = null;
 	}
 }

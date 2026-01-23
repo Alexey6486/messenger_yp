@@ -49,15 +49,15 @@ class UnknownPage extends Block {
 
 describe('Router', () => {
 	let router: Router | null;
-	let mockApp: HTMLElement;
+	let container: HTMLElement | null;
 
 	beforeEach(() => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: 'test' }));
-		mockApp = document.createElement('div');
-		mockApp.id = 'app';
-		document.body.appendChild(mockApp);
+		container = document.createElement('div');
+		container.id = 'app';
+		document.body.appendChild(container);
 
-		router = new Router(mockApp);
+		router = new Router(container);
 
 		if (router) {
 			router
@@ -69,25 +69,29 @@ describe('Router', () => {
 	});
 
 	afterEach(() => {
-		document.body.removeChild(mockApp);
-		router = null;
-		localStorage.removeItem(STORAGE_KEY);
+		if (container) {
+			document.body.removeChild(container);
+		}
+
+		if (router && 'clearInstance' in router) {
+			router.clearInstance();
+		}
 	});
 
-	test('renders 404 for unknown routes', () => {
-		if (router) {
+	test('redirect to page 404 if route doesn\'t exist', () => {
+
+		if (router && container) {
 			router.go('/unknown');
 
-			expect(mockApp.innerHTML).toBe(UNKNOWN_PAGE_INNER);
+			expect(container.innerHTML).toBe(UNKNOWN_PAGE_INNER);
+		}
+	});
+
+	test('redirect to authorization page if user is not authorized', () => {
+		localStorage.removeItem(STORAGE_KEY);
+		if (router && container) {
+			router.go(PAGES_URL.MAIN);
+			expect(container.innerHTML).toBe(AUTH_PAGE_INNER);
 		}
 	});
 });
-
-// const sum = (a: number, b: number) => {
-// 	return a + b;
-// }
-// describe('sum module', () => {
-// 	test('adds 1 + 2 to equal 3', () => {
-// 		expect(sum(1, 2)).toBe(3);
-// 	});
-// });
