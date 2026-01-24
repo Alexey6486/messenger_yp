@@ -63,7 +63,7 @@ class SettingsPage extends Block {
 	}
 }
 
-describe('Router', () => {
+describe('Jest router test', () => {
 	let router: Router | null;
 	let container: HTMLElement | null;
 

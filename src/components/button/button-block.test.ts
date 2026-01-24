@@ -12,14 +12,14 @@ const BUTTON = new ButtonBlock({
 	onClick: ON_CLICK,
 });
 
-describe('Button component', () => {
+describe('Jest button component test', () => {
 	let container: HTMLElement | null;
 
 	beforeEach(() => {
 		container = document.createElement('div');
 		container.id = CONTAINER_ID;
 		document.body.appendChild(container);
-		container.appendChild(BUTTON.getContent())
+		container.appendChild(BUTTON.getContent());
 	});
 
 	afterEach(() => {
@@ -54,5 +54,4 @@ describe('Button component', () => {
 			}
 		}
 	});
-
 });
