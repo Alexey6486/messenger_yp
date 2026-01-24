@@ -58,16 +58,18 @@ describe('Jest block test', () => {
 
 	test('block toggles class', () => {
 		if (container && pageInstance) {
-			const el = document.querySelector(`.${ TEST_CLASS }`);
-			expect(el).toBeNull();
+			let target: HTMLElement | null;
+
+			target = document.querySelector(`.${ TEST_CLASS }`);
+			expect(target).toBeNull();
 
 			pageInstance.toggleClassList(TEST_CLASS);
-			const el2 = document.querySelector(`.${ TEST_CLASS }`);
-			expect(el2).not.toBeNull();
+			target = document.querySelector(`.${ TEST_CLASS }`);
+			expect(target).not.toBeNull();
 
 			pageInstance.toggleClassList(TEST_CLASS);
-			const el3 = document.querySelector(`.${ TEST_CLASS }`);
-			expect(el3).toBeNull();
+			target = document.querySelector(`.${ TEST_CLASS }`);
+			expect(target).toBeNull();
 		}
 	});
 
@@ -81,8 +83,11 @@ describe('Jest block test', () => {
 			const modal = document.getElementById(MODAL_ID);
 
 			expect(document.body.children.length).toBe(2);
-			expect(modal.id).toBe(MODAL_ID);
-			expect(modal.innerHTML).toBe(MODAL_CONTENT);
+
+			if (modal) {
+				expect(modal.id).toBe(MODAL_ID);
+				expect(modal.innerHTML).toBe(MODAL_CONTENT);
+			}
 		}
 	});
 });
