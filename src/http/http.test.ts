@@ -82,7 +82,7 @@ describe('Jest HTTPTransport test', () => {
 					return null;
 				});
 				xhr.getAllResponseHeaders = jest.fn().mockReturnValue(
-					'Content-type: application/json\r\nx-custom: value',
+					'Content-type: application/json',
 				);
 				if (xhr.onload) {
 					xhr.onload();
@@ -90,11 +90,130 @@ describe('Jest HTTPTransport test', () => {
 			}, 0);
 
 			const response = await promise;
+			// {
+			// 	open: [Function: mockConstructor] {
+			// 	_isMockFunction: true,
+			// 		getMockImplementation: [Function (anonymous)],
+			// 		mock: [Getter/Setter],
+			// 		mockClear: [Function (anonymous)],
+			// 		mockReset: [Function (anonymous)],
+			// 		mockRestore: [Function (anonymous)],
+			// 		mockReturnValueOnce: [Function (anonymous)],
+			// 		mockResolvedValueOnce: [Function (anonymous)],
+			// 		mockRejectedValueOnce: [Function (anonymous)],
+			// 		mockReturnValue: [Function (anonymous)],
+			// 		mockResolvedValue: [Function (anonymous)],
+			// 		mockRejectedValue: [Function (anonymous)],
+			// 		mockImplementationOnce: [Function (anonymous)],
+			// 		withImplementation: [Function: bound withImplementation],
+			// 	mockImplementation: [Function (anonymous)],
+			// 		mockReturnThis: [Function (anonymous)],
+			// 		mockName: [Function (anonymous)],
+			// 		getMockName: [Function (anonymous)],
+			// 		Symbol(Symbol.dispose): [Function (anonymous)]
+			// },
+			// 	send: [Function: mockConstructor] {
+			// 	_isMockFunction: true,
+			// 		getMockImplementation: [Function (anonymous)],
+			// 		mock: [Getter/Setter],
+			// 		mockClear: [Function (anonymous)],
+			// 		mockReset: [Function (anonymous)],
+			// 		mockRestore: [Function (anonymous)],
+			// 		mockReturnValueOnce: [Function (anonymous)],
+			// 		mockResolvedValueOnce: [Function (anonymous)],
+			// 		mockRejectedValueOnce: [Function (anonymous)],
+			// 		mockReturnValue: [Function (anonymous)],
+			// 		mockResolvedValue: [Function (anonymous)],
+			// 		mockRejectedValue: [Function (anonymous)],
+			// 		mockImplementationOnce: [Function (anonymous)],
+			// 		withImplementation: [Function: bound withImplementation],
+			// 	mockImplementation: [Function (anonymous)],
+			// 		mockReturnThis: [Function (anonymous)],
+			// 		mockName: [Function (anonymous)],
+			// 		getMockName: [Function (anonymous)],
+			// 		Symbol(Symbol.dispose): [Function (anonymous)]
+			// },
+			// 	setRequestHeader: [Function: mockConstructor] {
+			// 	_isMockFunction: true,
+			// 		getMockImplementation: [Function (anonymous)],
+			// 		mock: [Getter/Setter],
+			// 		mockClear: [Function (anonymous)],
+			// 		mockReset: [Function (anonymous)],
+			// 		mockRestore: [Function (anonymous)],
+			// 		mockReturnValueOnce: [Function (anonymous)],
+			// 		mockResolvedValueOnce: [Function (anonymous)],
+			// 		mockRejectedValueOnce: [Function (anonymous)],
+			// 		mockReturnValue: [Function (anonymous)],
+			// 		mockResolvedValue: [Function (anonymous)],
+			// 		mockRejectedValue: [Function (anonymous)],
+			// 		mockImplementationOnce: [Function (anonymous)],
+			// 		withImplementation: [Function: bound withImplementation],
+			// 	mockImplementation: [Function (anonymous)],
+			// 		mockReturnThis: [Function (anonymous)],
+			// 		mockName: [Function (anonymous)],
+			// 		getMockName: [Function (anonymous)],
+			// 		Symbol(Symbol.dispose): [Function (anonymous)]
+			// },
+			// 	getAllResponseHeaders: [Function: mockConstructor] {
+			// 	_isMockFunction: true,
+			// 		getMockImplementation: [Function (anonymous)],
+			// 		mock: [Getter/Setter],
+			// 		mockClear: [Function (anonymous)],
+			// 		mockReset: [Function (anonymous)],
+			// 		mockRestore: [Function (anonymous)],
+			// 		mockReturnValueOnce: [Function (anonymous)],
+			// 		mockResolvedValueOnce: [Function (anonymous)],
+			// 		mockRejectedValueOnce: [Function (anonymous)],
+			// 		mockReturnValue: [Function (anonymous)],
+			// 		mockResolvedValue: [Function (anonymous)],
+			// 		mockRejectedValue: [Function (anonymous)],
+			// 		mockImplementationOnce: [Function (anonymous)],
+			// 		withImplementation: [Function: bound withImplementation],
+			// 	mockImplementation: [Function (anonymous)],
+			// 		mockReturnThis: [Function (anonymous)],
+			// 		mockName: [Function (anonymous)],
+			// 		getMockName: [Function (anonymous)],
+			// 		Symbol(Symbol.dispose): [Function (anonymous)]
+			// },
+			// 	getResponseHeader: [Function: mockConstructor] {
+			// 	_isMockFunction: true,
+			// 		getMockImplementation: [Function (anonymous)],
+			// 		mock: [Getter/Setter],
+			// 		mockClear: [Function (anonymous)],
+			// 		mockReset: [Function (anonymous)],
+			// 		mockRestore: [Function (anonymous)],
+			// 		mockReturnValueOnce: [Function (anonymous)],
+			// 		mockResolvedValueOnce: [Function (anonymous)],
+			// 		mockRejectedValueOnce: [Function (anonymous)],
+			// 		mockReturnValue: [Function (anonymous)],
+			// 		mockResolvedValue: [Function (anonymous)],
+			// 		mockRejectedValue: [Function (anonymous)],
+			// 		mockImplementationOnce: [Function (anonymous)],
+			// 		withImplementation: [Function: bound withImplementation],
+			// 	mockImplementation: [Function (anonymous)],
+			// 		mockReturnThis: [Function (anonymous)],
+			// 		mockName: [Function (anonymous)],
+			// 		getMockName: [Function (anonymous)],
+			// 		Symbol(Symbol.dispose): [Function (anonymous)]
+			// },
+			// 	readyState: 4,
+			// 		status: 200,
+			// 	statusText: 'OK',
+			// 	responseText: '{"id":1,"name":"John Doe"}',
+			// 	responseType: '',
+			// 	timeout: 5000,
+			// 	onload: [Function (anonymous)],
+			// 	onerror: [Function (anonymous)],
+			// 	ontimeout: [Function (anonymous)],
+			// 	onabort: [Function (anonymous)],
+			// 	withCredentials: true
+			// }
 
 			expect(mockXHR.open).toHaveBeenCalledWith('GET', `${ BASE_URL }/users/1`);
 			expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-type', 'application/json');
 			expect(mockXHR.send).toHaveBeenCalled();
 			expect(response.status).toBe(200);
+			expect(JSON.parse(response.responseText)).toEqual(mockResponseData);
 		});
 	});
 });
