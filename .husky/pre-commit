@@ -1,12 +1,8 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Exit on any failure
 set -e
 
 echo "Running pre-commit checks..."
 
-npm run lint
+npx lint-staged
 npm run test
 
 echo "All checks passed!"
