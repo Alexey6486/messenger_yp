@@ -19,14 +19,14 @@
 		"prepare": "husky"
 	},
 	"lint-staged": {
-		"*.ts": [
+		"src/**/*.ts": [
 			"eslint --fix",
 			"tsc --noEmit"
 		],
-		"*.pcss": [
+		"src/**/*.pcss": [
 			"stylelint --fix"
 		],
-		"*.module.pcss": [
+		"src/**/*.module.pcss": [
 			"stylelint --fix"
 		]
 	},
