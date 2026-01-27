@@ -15,7 +15,7 @@
 		"lint:fix": "eslint . --ext .ts --fix",
 		"lint:style": "stylelint \"**/*.{module.pcss,pcss}\"",
 		"lint:style:fix": "stylelint \"**/*.{module.pcss,pcss}\" --fix",
-		"jest:test": "jest",
+		"test": "jest",
 		"prepare": "husky"
 	},
 	"devDependencies": {
