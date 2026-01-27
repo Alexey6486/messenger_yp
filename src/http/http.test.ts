@@ -78,6 +78,7 @@ describe('Jest HTTPTransport test', () => {
 		beforeEach(() => {
 			timeout = setTimeout(() => {
 				const xhr = xhrInstances[0];
+
 				xhr.status = 200;
 				xhr.statusText = 'OK';
 				xhr.responseText = JSON.stringify(RESPONSE_DATA);
@@ -88,6 +89,7 @@ describe('Jest HTTPTransport test', () => {
 				xhr.getAllResponseHeaders = jest.fn().mockReturnValue(
 					'Content-type: application/json',
 				);
+
 				if (xhr.onload) {
 					xhr.onload();
 				}
