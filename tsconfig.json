@@ -9,7 +9,8 @@
 			"DOM.Iterable"
 		],
 		"types": [
-			"vite/client"
+			"vite/client",
+			"jest"
 		],
 		"skipLibCheck": true,
 		"moduleResolution": "node",
@@ -32,16 +33,16 @@
 		"isolatedModules": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": [
-				"src/*"
-			]
+			"@/*": ["src/*"],
 		}
 	},
 	"include": [
 		"src",
+		"src/**/*",
 		"src/**/*.ts",
 		"types/**/*.ts",
-		"vite.config.ts"
+		"vite.config.ts",
+		"src/**/*.test.ts"
 	],
 	"exclude": [
 		"node_modules",

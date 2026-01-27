@@ -1,4 +1,4 @@
-import { RegistrationBlock } from './registration-block';
+import { RegistrationBlock } from '@/pages/authorization/registration/registration-block';
 import { connect } from '@/hoc';
 import type {
 	BlockProps,

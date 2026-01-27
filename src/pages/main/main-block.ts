@@ -5,6 +5,7 @@ import {
 	FocusManager,
 	getFocusData,
 } from '@/focus-manager';
+import { ModalBlock } from '@/pages/modal';
 import {
 	IDS,
 	INIT_MESSAGE_STATE,
@@ -62,15 +63,15 @@ export class MainBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.createModal(
-							IDS.FORMS.MODAL_ADD_CHAT_FORM,
-							'Создание чата',
-							(_, data) => {
+						this.createModal(new ModalBlock({
+							contentId: IDS.FORMS.MODAL_ADD_CHAT_FORM,
+							title: 'Создание чата',
+							onSubmit: (_, data) => {
 								if (data) {
 									ChatsController.createChat({ data: JSON.stringify(data) }, this);
 								}
 							},
-						);
+						}));
 					},
 				}),
 

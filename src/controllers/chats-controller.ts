@@ -7,9 +7,11 @@ import { ChatAPI } from '@/api';
 import { WebSocketService } from '@/web-socket';
 import {
 	cloneDeep,
-	handleRequestError,
 	isArray,
 } from '@/utils';
+import {
+	handleRequestError,
+} from '@/utils/error';
 import type {
 	BlockProps,
 	IChat,

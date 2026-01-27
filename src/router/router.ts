@@ -67,15 +67,15 @@ class Route {
 }
 
 export class Router {
-	private static __instance: Router;
+	private instance: Router | null = null;
 	private routes: TNullable<Route[]> = null;
 	private history: TNullable<History> = null;
 	private _currentRoute: TNullable<Route> = null;
 	private _rootContainer: TNullable<HTMLElement> = null;
 
 	constructor(rootContainer: HTMLElement) {
-		if (Router.__instance) {
-			return Router.__instance;
+		if (this.instance) {
+			return this.instance;
 		}
 
 		this.routes = [];
@@ -83,7 +83,7 @@ export class Router {
 		this._currentRoute = null;
 		this._rootContainer = rootContainer;
 
-		Router.__instance = this;
+		this.instance = this;
 	}
 
 	use(pathname: string, block: new (props: BlockProps) => Block, router: Router, props?: BlockProps) {
@@ -131,6 +131,9 @@ export class Router {
 			&& route
 			&& (route.match(PAGES_URL.AUTHORIZATION) || route.match(PAGES_URL.REGISTRATION))
 		) {
+			if (this._currentRoute && this._currentRoute !== route) {
+				this._currentRoute.leave();
+			}
 			this.go(PAGES_URL.MAIN);
 			return;
 		}
@@ -168,5 +171,9 @@ export class Router {
 		if (this.routes) {
 			return this.routes.find((route) => route.match(pathname));
 		}
+	}
+
+	clearInstance() {
+		this.instance = null;
 	}
 }

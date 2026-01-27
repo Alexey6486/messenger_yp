@@ -30,7 +30,6 @@ import { InputBlock } from '@/components/input/input-block';
 import template from './registration-template.hbs?raw';
 import styles from '../styles.module.pcss';
 
-
 export class RegistrationBlock extends Block {
 	constructor(props: BlockProps) {
 		super({

@@ -1,49 +1,11 @@
-import { isJsonString } from '@/utils';
+import { isErrorWithMessage } from '@/utils';
 import { Store } from '@/store';
 import type { Block } from '@/block';
+import { ModalBlock } from '@/pages/modal';
 import {
 	IDS,
 	USER_LOGGED_IN,
 } from '@/constants';
-
-export function isErrorWithMessage(error: unknown): error is { message: string } {
-	return (
-		typeof error === 'object' &&
-		error !== null &&
-		'message' in error &&
-		typeof error.message === 'string'
-	);
-}
-
-export function getErrorText(response?: XMLHttpRequest) {
-	const code = response?.status ?? '';
-	let text = '';
-	if (isJsonString(response?.response)) {
-		const parsedText = JSON.parse(response?.response);
-		if (parsedText && parsedText.reason) {
-			text = parsedText.reason;
-		}
-	} else if (typeof response?.statusText === 'string' && !isJsonString(response?.statusText)) {
-		text = response.statusText;
-	}
-
-	return `{"code": ${ code }, "text": "${ text }"}`;
-}
-
-export function responseHandler(response?: XMLHttpRequest): unknown {
-	if (typeof response?.status === 'number' && response.status > 399) {
-		throw new Error(getErrorText(response));
-	} else {
-		let result = {};
-		if (isJsonString(response?.response)) {
-			const parsedText = JSON.parse(response?.response);
-			if (parsedText) {
-				result = parsedText;
-			}
-		}
-		return result;
-	}
-}
 
 export function handleRequestError(e: unknown, instance?: Block) {
 	if (isErrorWithMessage(e)) {
@@ -53,12 +15,15 @@ export function handleRequestError(e: unknown, instance?: Block) {
 				return USER_LOGGED_IN;
 			} else {
 				Store.set('modalError', { ...error });
-				instance.createModal(
-					IDS.MODAL.MODAL_ERROR,
-					'Ошибка',
-				);
+
+				instance.createModal(new ModalBlock({
+					contentId: IDS.MODAL.MODAL_ERROR,
+					title: 'Ошибка',
+				}));
 				return '';
 			}
+		} else {
+			return error;
 		}
 	} else {
 		throw new Error('Unknown error');

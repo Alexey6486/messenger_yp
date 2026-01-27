@@ -8,7 +8,7 @@ import {
 	isEqual,
 } from '@/utils';
 import type { BlockProps } from '@/types';
-import template from './field-template';
+import template from '@/components/form-fields/field-template';
 
 export class FieldBlock extends Block {
 	constructor(props: BlockProps) {

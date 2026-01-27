@@ -31,6 +31,12 @@ function queryStringify(data: TNullable<Document | XMLHttpRequestBodyInit>) {
 type HTTPMethod = (url: string, options?: Partial<RequestOptions & IRequestOptions>) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
+	private baseURL: string;
+
+	constructor(baseURL = BASE_API) {
+		this.baseURL = baseURL;
+	}
+
 	private createMethod(method: ERequestMethods): HTTPMethod {
 		return (url, options = {}) => this.request(url, { ...options, method });
 	}
@@ -43,20 +49,19 @@ export class HTTPTransport {
 
 	readonly delete = this.createMethod(ERequestMethods.DELETE);
 
-	private request(
+	private request = (
 		url: string,
 		options: Partial<RequestOptions> & IRequestOptions,
-	): Promise<XMLHttpRequest> {
+	): Promise<XMLHttpRequest> => {
 		const {
 			headers = {},
 			credentials = 'include',
-			// mode = 'cors',
 			method,
 			data,
 			timeout = 5000,
 		} = options;
 
-		return new Promise(function (resolve, reject) {
+		return new Promise((resolve, reject) => {
 			if (!method) {
 				reject('No method');
 				return;
@@ -69,8 +74,8 @@ export class HTTPTransport {
 			xhr.open(
 				method,
 				isGet && !!data
-					? `${BASE_API}${ url }${ queryStringify(data) }`
-					: `${BASE_API}${ url }`,
+					? `${ this.baseURL }${ url }${ queryStringify(data) }`
+					: `${ this.baseURL }${ url }`,
 			);
 
 			Object.keys(headers).forEach(key => {
@@ -93,5 +98,5 @@ export class HTTPTransport {
 				xhr.send(data);
 			}
 		});
-	}
+	};
 }
