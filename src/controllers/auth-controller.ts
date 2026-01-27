@@ -13,8 +13,10 @@ import type { Router } from '@/router';
 import type { Block } from '@/block';
 import {
 	cloneDeep,
-	handleRequestError,
 } from '@/utils';
+import {
+	handleRequestError,
+} from '@/utils/error';
 
 const api = new AuthAPI();
 

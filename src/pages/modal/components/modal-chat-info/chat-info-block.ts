@@ -83,7 +83,7 @@ export class ModalChatInfoBlock extends Block {
 					id: IDS.MODAL.REMOVE_GROUP_BTN,
 					type: 'button',
 					text: props?.buttonText ?? 'Удалить группу',
-					class: 'red',
+					class: 'red shadow',
 					onClick: (event: Event) => {
 						event.preventDefault();
 						event.stopPropagation();

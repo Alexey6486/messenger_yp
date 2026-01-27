@@ -4,6 +4,7 @@ import {
 	StoreEvents,
 } from '@/store';
 import { ChatsController } from '@/controllers';
+import { ModalBlock } from '@/pages/modal';
 import {
 	CLASSES,
 	IDS,
@@ -48,10 +49,10 @@ export class MessagingHeaderBlock extends Block {
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
 
-								this.createModal(
-									IDS.FORMS.MODAL_ADD_USERS_FORM,
-									'Добавление пользователей',
-									(_, data) => {
+								this.createModal(new ModalBlock({
+									contentId: IDS.FORMS.MODAL_ADD_USERS_FORM,
+									title: 'Добавление пользователей',
+									onSubmit: (_, data) => {
 										if (data && state?.currentChatData?.info) {
 											ChatsController.addUsers(
 												data as number[],
@@ -60,7 +61,7 @@ export class MessagingHeaderBlock extends Block {
 											);
 										}
 									},
-								);
+								}));
 							},
 						}),
 						new DropDownOptionBlock({
@@ -73,10 +74,10 @@ export class MessagingHeaderBlock extends Block {
 
 								this.toggleClassList(CLASSES.ACT, IDS.MAIN.MESSAGING_DD_HEADER);
 
-								this.createModal(
-									IDS.MODAL.MODAL_REMOVE_USERS,
-									'Удаление пользователей',
-									(_, data) => {
+								this.createModal(new ModalBlock({
+									contentId: IDS.MODAL.MODAL_REMOVE_USERS,
+									title: 'Удаление пользователей',
+									onSubmit: (_, data) => {
 										if (data && state?.currentChatData?.info) {
 											ChatsController.removeUsers(
 												data as number[],
@@ -85,7 +86,7 @@ export class MessagingHeaderBlock extends Block {
 											);
 										}
 									},
-								);
+								}));
 							},
 						}),
 					],
@@ -105,10 +106,10 @@ export class MessagingHeaderBlock extends Block {
 						event.preventDefault();
 						event.stopPropagation();
 
-						this.createModal(
-							IDS.MODAL.CHAT_INFO,
-							'Информация о чате',
-						);
+						this.createModal(new ModalBlock({
+							contentId: IDS.MODAL.CHAT_INFO,
+							title: 'Информация о чате',
+						}));
 					},
 				}),
 			},

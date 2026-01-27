@@ -10,15 +10,13 @@ export {
 	isArray,
 	isFunction,
 	isJsonString,
+	isErrorWithMessage,
 } from './is-type';
 export { isEqual } from './is-equal';
 export { cloneDeep } from './clone-deep';
-export {
-	handleRequestError,
-	responseHandler,
-} from './error';
 export { getInputStateSlice } from './state-slice';
 export { isEmpty } from './is-empty';
 export { hasTargetParent } from './search-element';
 export { formatDate } from './date';
 export { escapeHTML } from './xss';
+export { responseHandler, getErrorText } from './response-handler';

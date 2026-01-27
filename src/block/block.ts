@@ -1,13 +1,12 @@
 import { EventBus } from '@/event-bus';
 import { FocusManager } from '@/focus-manager';
-import * as Pages from '@/pages';
 import { IDS } from '@/constants';
+import { IEbEvents } from '@/types';
 import type {
 	BlockProps,
 	IChildren,
 	TNullable,
 } from '@/types';
-import { IEbEvents } from '@/types';
 import { isEmpty } from '@/utils';
 
 export abstract class Block {
@@ -379,17 +378,7 @@ export abstract class Block {
 		}
 	}
 
-	createModal(
-		contentId: string,
-		title: string,
-		onSubmit?: (event?: Event, data?: unknown) => void,
-	) {
-		const modal = new Pages.ModalBlock({
-			contentId,
-			title,
-			onSubmit,
-		});
-
+	createModal(modal: Block) {
 		if (this?.props?.container) {
 			const content = modal.getContent();
 

@@ -24,7 +24,7 @@ import type {
 	TNullable,
 } from '@/types';
 import { E_FORM_FIELDS_NAME } from '@/types';
-import { ButtonBlock } from '@/components/button/button-block';
+import { ButtonBlock } from '@/components';
 import { FieldBlock } from '@/components/form-fields/field-block';
 import { InputBlock } from '@/components/input/input-block';
 import template from './login-template.hbs?raw';

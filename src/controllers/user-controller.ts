@@ -8,7 +8,7 @@ import type { RequestOptions } from 'http';
 import type { IRequestOptions } from '@/http';
 import type { Block } from '@/block';
 import type { BlockProps } from '@/types';
-import { handleRequestError } from '@/utils';
+import { handleRequestError } from '@/utils/error';
 
 const api = new UserAPI();
 

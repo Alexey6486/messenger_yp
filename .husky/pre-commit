@@ -1,0 +1,8 @@
+set -e
+
+echo "Running pre-commit checks..."
+
+npx lint-staged
+npm run test
+
+echo "All checks passed!"
