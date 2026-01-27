@@ -17,4 +17,5 @@ https://radiant-chimera-91049a.netlify.app/
 - `npm run start` — запуск приложения,
 - `npm run build` — сборка стабильной версии,
 - `npm run lint` — запуск проверки eslint,
-- `npm run lint:style` — запуск проверки стилей stylelint.
+- `npm run lint:style` — запуск проверки стилей stylelint,
+- `npm run jest:test` — запуск тестов
