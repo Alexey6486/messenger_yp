@@ -22,6 +22,8 @@ export function handleRequestError(e: unknown, instance?: Block) {
 				}));
 				return '';
 			}
+		} else {
+			return error;
 		}
 	} else {
 		throw new Error('Unknown error');
